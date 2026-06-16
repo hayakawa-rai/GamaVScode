@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+<<<<<<< HEAD
 
 public class test extends Application {
 	// 1マス辺りのサイズ（ピクセル）
@@ -98,3 +99,12 @@ public class test extends Application {
         launch(args);
     }
 }
+=======
+public class test {
+	//6/16日だよ
+	//早川です
+	//成田大和大国女王小川ちぃ
+	//あいうえお
+	//和田だよ
+}
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
