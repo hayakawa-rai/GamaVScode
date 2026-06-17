@@ -9,6 +9,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class gameover extends Application {
@@ -24,7 +26,12 @@ public class gameover extends Application {
 
 		//GAME OVER
 		Label gameOverLabel = new Label("GAME OVER");
-		gameOverLabel.setStyle("-fx-font-size: 70px; -fx-font-weight: bold; -fx-text-fill: red;");
+		gameOverLabel.setStyle(
+				"-fx-font-size: 100px;" +
+				"-fx-font-weight: 900;" +
+				"-fx-text-fill: linear-gradient(red, darkred);" +
+				"-fx-effect: dropshadow(gaussian, black, 20, 0.8, 0, 0);"
+				);
 
 		VBox titleBox = new VBox(gameOverLabel);
 		titleBox.setAlignment(Pos.CENTER);
@@ -38,17 +45,24 @@ public class gameover extends Application {
 		
 		//ボタンのスタイル
 		String buttonStyle =
-				"-fx-background-color: #1f3134;" +
+				"-fx-background-color: #a7a7a7;" +
 				"-fx-text-fill: white;" +
 				"-fx-font-size: 22px;" +
-				"-fx background-radius: 10;" +
+				"-fx-background-radius: 15;" +
+				"-fx-border-radius: 15;" +
+				"-fx-border-color: #474747;" +
+				"-fx-border-width: 4px;" +
 				"-fx cursor: hand;";
+				
 		
 		String buttonHoverStyle =
-				"-fx-background-color: #47585c;" +
+				"-fx-background-color: #676767;" +
 				"-fx-text-fill: white;" +
 				"-fx-font-size: 22px;" +
-				"-fx-background-radius: 10;";
+				"-fx-background-radius: 15;" +
+				"-fx-border-radius: 15;" +
+				"-fx-border-color: #474747;" +
+				"-fx-border-width: 4px;";
 				
 		//練習画面へ戻る
 		Button retryBtn = new Button("練習画面へ");
@@ -95,13 +109,18 @@ public class gameover extends Application {
 		bg.setFitHeight(600);
 		bg.setPreserveRatio(false);
 		
+		// 白い透明レイヤー（背景を柔らかくする）
+		Rectangle whiteOverlay = new Rectangle(800, 600);
+		whiteOverlay.setFill(Color.rgb(255, 255, 255, 0.15));
+		
 
 		//レイアウト
 		BorderPane ui = new BorderPane();
 		ui.setTop(titleBox);
 		ui.setCenter(centerBox);
 
-		StackPane root = new StackPane(bg, ui);
+		StackPane root = new StackPane();
+		root.getChildren().addAll(bg, whiteOverlay, ui);
 
 		return new Scene(root, 800, 600);
 
