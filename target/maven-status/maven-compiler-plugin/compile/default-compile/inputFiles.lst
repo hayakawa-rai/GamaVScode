@@ -1,5 +1,6 @@
 C:\Users\EMD-571\git\GameApplication\src\main\java\Character\Character.java
 C:\Users\EMD-571\git\GameApplication\src\main\java\Character\Direction.java
+C:\Users\EMD-571\git\GameApplication\src\main\java\Character\GameMap.java
 C:\Users\EMD-571\git\GameApplication\src\main\java\Character\Sengoku.java
 C:\Users\EMD-571\git\GameApplication\src\main\java\Character\SengokuState.java
 C:\Users\EMD-571\git\GameApplication\src\main\java\gameover.java
@@ -15,4 +16,8 @@ C:\Users\EMD-571\git\GameApplication\src\main\java\stageclear1.java
 C:\Users\EMD-571\git\GameApplication\src\main\java\stageclear2.java
 C:\Users\EMD-571\git\GameApplication\src\main\java\stageclear3.java
 C:\Users\EMD-571\git\GameApplication\src\main\java\start.java
-C:\Users\EMD-571\git\GameApplication\src\main\java\test.java
+C:\Users\EMD-571\git\GameApplication\src\main\java\test\controller\SampleController.java
+C:\Users\EMD-571\git\GameApplication\src\main\java\test\model\SampleModel.java
+C:\Users\EMD-571\git\GameApplication\src\main\java\test\SampleMainApp.java
+C:\Users\EMD-571\git\GameApplication\src\main\java\test\test.java
+C:\Users\EMD-571\git\GameApplication\src\main\java\test\view\SampleView.java

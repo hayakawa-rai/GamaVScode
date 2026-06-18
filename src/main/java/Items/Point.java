@@ -1,8 +1,8 @@
-package Item;
+package Items;
 
+import Character.Sengoku;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import Character.Sengoku;
 
 public class Point extends Item {
     public Point(double pixelX, double pixelY) {
