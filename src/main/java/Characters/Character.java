@@ -36,5 +36,5 @@ public abstract class Character {
 	}
 
 	// キャラクターを移動させる処理
-	public abstract void move();
+	public abstract void move(int[][] map);
 }

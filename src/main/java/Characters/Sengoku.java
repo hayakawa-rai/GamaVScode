@@ -20,6 +20,7 @@ public class Sengoku extends Character {
 		this.nextdirection = direction;
 	}
 
+	@Override
 	public void move(int[][] map) {
 		
 		// キャラクターの中心点を計算
@@ -169,9 +170,4 @@ public class Sengoku extends Character {
 		return this.hp > 0;
 	}
 
-	@Override
-	public void move() {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
 }
