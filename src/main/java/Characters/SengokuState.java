@@ -1,4 +1,4 @@
-package Character;
+package Characters;
 
 public enum SengokuState {
 	

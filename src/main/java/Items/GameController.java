@@ -1,8 +1,8 @@
-package Item;
+package Items;
 
 import java.util.Map;
 
-import Character.Sengoku;
+import Characters.Sengoku;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
