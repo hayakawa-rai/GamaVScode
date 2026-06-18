@@ -1,3 +1,4 @@
+import Item.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -68,6 +69,15 @@ public class start extends Application {
 		Button btn1 = new Button("▶ストーリー");
 		btn1.setPrefSize(200, 50); //ストーリーボタン作成
 		btn1.getStyleClass().add("game-button");
+		btn1.setOnAction(e -> {
+		    timer.stop(); // 背景タイマー停止
+
+		    // コントローラーをインスタンス化
+		    GameController controller = new GameController();
+		    
+		    // コントローラーにStageを渡して、あとの画面管理をすべて任せる！
+		    controller.start(stage); 
+		});
         
 		Button btn2 = new Button("⚔練習モード");
 		btn2.setPrefSize(200, 50); //練習モードボタン作成
