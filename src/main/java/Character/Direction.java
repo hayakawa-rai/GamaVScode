@@ -21,7 +21,7 @@ public enum Direction {
 	}
 	
 	//移動した量を取得するゲッター
-	public double getDX() {return dx ;}
+	public double getDX() {return dx;}
 	public double getDY() {return dy;}
 	
 	
