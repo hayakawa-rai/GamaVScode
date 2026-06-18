@@ -3,6 +3,7 @@ package Item;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import Character.Sengoku;
 
 // パワーエサ（Chii）
 public class Chii extends Item {
@@ -16,7 +17,7 @@ public class Chii extends Item {
         
         try {
             // 画像ファイルを読み込む で、なぜか画像が読み込まれなくて頭抱えている
-        	Image img = new Image(Chii.class.getResourceAsStream("resources/Chii.png"));
+        	Image img = new Image(Chii.class.getResourceAsStream("/Chii.png"));
             ImageView iv = new ImageView(img);
             
             // 💡 画像のサイズを自由に変更（上で設定したIMAGE_SIZEになります）
