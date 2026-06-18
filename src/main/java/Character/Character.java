@@ -1,39 +1,35 @@
 package Character;
 
 public abstract class Character {
-	
-	private int x; //左右移動
-	private int y; //上下移動
-	
-	private int speed; //移動速度　定義
-	private Direction direction; //現在向いている方向
-	
 
-	public Character(int speed) { //コンストラクタ
-        this.speed = speed;
-    }
+	private int x; // 現在のX座標(左右移動)
+	private int y; // 現在のY座標（上下位置）
+	private int speed; // 移動速度
+	private Direction direction; // キャラクターが現在向いている方向
 
-	public void move() {         //キャラクターの移動処理
-		switch(direction) {
-			case UP:
-				y -= speed; // 上へ移動
-                break;
-
-            case DOWN:
-                y += speed; // 下へ移動
-                break;
-
-            case LEFT:
-                x -= speed; // 左へ移動
-                break;
-
-            case RIGHT:
-                x += speed; // 右へ移動
-                break;
-
-            case NONE: //不動
-                break;
-
-		}
+	public Character(int x, int y, int speed) {
+		this.x = x; // 初期X座標
+		this.y = y; // 初期Y座標
+		this.speed = speed; // 初期移動速度
+		this.direction = Direction.NONE; // 初期状態では停止
 	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getSpeed() {
+		return speed;
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	// キャラクターを移動させる処理
+	public abstract void move();
 }
