@@ -1,5 +1,5 @@
 package Items;
-import Character.Sengoku;
+import Characters.Sengoku;
 import javafx.scene.Node;
 
 public abstract class Item {

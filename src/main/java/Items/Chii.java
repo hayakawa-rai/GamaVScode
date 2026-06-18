@@ -1,6 +1,6 @@
-package Item;
+package Items;
 
-import Character.Sengoku;
+import Characters.Sengoku;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
