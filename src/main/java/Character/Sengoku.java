@@ -15,11 +15,9 @@ public class Sengoku extends Character {
 	        this.score = 0;
 	    }
 
-	    // メソッド（Methods）
-
 	    // キャラクターを移動させる
 	    public void move() {
-	        // TODO: 移動処理を実装
+	        // 移動処理とかスピード設定を入れる
 	    }
 	        // 壁判定つき move()
 	        public void move(GameMap map) {
