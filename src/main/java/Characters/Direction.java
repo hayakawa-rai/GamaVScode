@@ -1,14 +1,14 @@
-package Character;
+package Characters;
 
 public enum Direction {
 	
 	//JavaFXの画面座標は「上がマイナスの値、下がプラスの値」になっている
 	
-	//上下左右に1ピクセル移動
-	UP(0,-1),
-	DOWN(0,1),
-	LEFT(-1,0),
-	RIGHT(1,0),
+	//上下左右に5マス移動
+	UP(0,-5),
+	DOWN(0,5),
+	LEFT(-5,0),
+	RIGHT(5,0),
 	NONE(0,0);	//押されていない停止状態。始まるまで仙石さんを停止させるため
 	
 	private final double dx;
