@@ -1,10 +1,8 @@
 package Item;
 
-
 import Character.Sengoku;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import Character.Sengoku;
 
 // パワーエサ（Chii）
 public class Chii extends Item {
