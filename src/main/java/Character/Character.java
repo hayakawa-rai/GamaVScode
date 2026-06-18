@@ -2,10 +2,10 @@ package Character;
 
 public abstract class Character {
 
-	private int x; // 現在のX座標(左右移動)
-	private int y; // 現在のY座標（上下位置）
-	private int speed; // 移動速度
-	private Direction direction; // キャラクターが現在向いている方向
+	protected int x; // 現在のX座標(左右移動)
+	protected int y; // 現在のY座標（上下位置）
+	protected int speed; // 移動速度
+	protected Direction direction; // キャラクターが現在向いている方向
 
 	public Character(int x, int y, int speed) {
 		this.x = x; // 初期X座標
