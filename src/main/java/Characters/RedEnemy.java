@@ -1,38 +1,27 @@
 package Characters;
 
-//最短距離で追跡する敵 赤
+import java.util.List;
+
+import javafx.scene.image.ImageView;
+
+// 仙石さんを最短距離で追いかける
 public class RedEnemy extends Enemy {
 
-    // 仮の初期位置（後で修正）
-    private static final int START_X = 700;
-    private static final int START_Y = 50;
+	// マップ右上からスタート （仮座標）
+	public RedEnemy(ImageView imageView) {
+		super(imageView, 27 * CELL_SIZE, 0, 1);
+	}
 
-    //マップ右上に出現
-    public RedEnemy() {
-        super(START_X, START_Y, 1);
-    }
+	// 次に進む方向を決定
+	@Override
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, Sengoku player) {
 
-    //追跡
-    public void move(int[][] map, Sengoku sengoku) {
+		// プレイヤーの現在マス
+		int targetCol = (int) ((player.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
 
-        // 仙石さんとの距離
-        double dx = sengoku.getX() - this.x;
-        double dy = sengoku.getY() - this.y;
+		int targetRow = (int) ((player.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
 
-        // 横方向が遠い場合
-        if (Math.abs(dx) > Math.abs(dy)) {
-            this.x += Math.signum(dx) * speed;
-        }
-        // 縦方向が遠い場合
-        else {
-            this.y += Math.signum(dy) * speed;
-        }
-    }
-
-    //Characterクラスの抽象メソッド
-    //現状は使用しないため空実装
-    @Override
-    public void move(int[][] map) {
-
-    }
+		// 一番近づける方向をEnemyクラスに選ばせる
+		return getClosestDirection(validDirections, targetCol, targetRow);
+	}
 }
