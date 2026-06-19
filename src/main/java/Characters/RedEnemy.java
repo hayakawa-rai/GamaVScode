@@ -1,3 +1,5 @@
+//最短で追いかける　RedEnemy(赤)
+
 package Characters;
 
 import java.util.List;
