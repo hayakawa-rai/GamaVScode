@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 
 public class start extends Application {
@@ -78,12 +79,34 @@ public class start extends Application {
 		//中央に設定
 		buttonBox.setAlignment(Pos.CENTER);
 		
+		
+		AudioClip clickSound = new AudioClip(
+			getClass().getResource("/click.mp3").toExternalForm()
+		);
+		// 音量調整（おすすめ）
+		clickSound.setVolume(0.3);
+
 		//ストーリーモードへ飛ぶボタンを作成
 		Button btn1 = new Button("▶ストーリー");
 		btn1.setPrefSize(300,100);
 		//btn1にCSSのgame-buttonを付与
 		btn1.getStyleClass().add("game-button");
-        
+		//setOnAction:クリックしたときに実行する処理を記述
+		//(e->:クリックされたら実行される処理を書いていくという記号)
+		btn1.setOnAction(e -> {
+			try {
+				//ボタンを押したときに音が鳴る
+				clickSound.stop();
+				clickSound.play();
+				//practiceクラスのインスタンス化とそのクラスのstart()の呼び出しを同時に実行
+				//現在と同じウィンドウを使用するためstageを渡す
+				new story1().start(stage);
+			} catch (Exception ex) {
+			//エラー内容を表示する
+			ex.printStackTrace();
+			}
+		});
+		
 		//練習モードへ飛ぶボタン作成
 		Button btn2 = new Button("⚔練習モード");
 		btn2.setPrefSize(300, 100); 
@@ -91,6 +114,9 @@ public class start extends Application {
 		//(e->:クリックされたら実行される処理を書いていくという記号)
 		btn2.setOnAction(e -> {
 			try {
+				//ボタンを押したときに音が鳴る
+				clickSound.stop();
+				clickSound.play();
 				//practiceクラスのインスタンス化とそのクラスのstart()の呼び出しを同時に実行
 				//現在と同じウィンドウを使用するためstageを渡す
 				new practice().start(stage);
