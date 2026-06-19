@@ -1,5 +1,4 @@
 //最短で追いかける　RedEnemy(赤)
-
 package Characters;
 
 import java.util.List;
@@ -9,9 +8,12 @@ import javafx.scene.image.ImageView;
 // 仙石さんを最短距離で追いかける
 public class RedEnemy extends Enemy {
 
-	// マップ右上からスタート （仮座標）
+	// マップ中心 エネミーハウス上 （仮座標）
+	private static final int START_COL = 13;
+	private static final int START_ROW = 11;
+
 	public RedEnemy(ImageView imageView) {
-		super(imageView, 27 * CELL_SIZE, 0, 1);
+		super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
 	}
 
 	// 次に進む方向を決定
