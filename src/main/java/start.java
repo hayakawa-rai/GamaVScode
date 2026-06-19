@@ -1,5 +1,6 @@
-import Item.GameController;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,7 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class start extends Application {
 	
@@ -79,37 +82,55 @@ public class start extends Application {
 		//中央に設定
 		buttonBox.setAlignment(Pos.CENTER);
 		
+		
+		AudioClip clickSound = new AudioClip(
+			getClass().getResource("/select01.mp3").toExternalForm()
+		);
+		// 音量調整（おすすめ）
+		clickSound.setVolume(0.4);
+
 		//ストーリーモードへ飛ぶボタンを作成
 		Button btn1 = new Button("▶ストーリー");
 		btn1.setPrefSize(300,100);
 		//btn1にCSSのgame-buttonを付与
 		btn1.getStyleClass().add("game-button");
 		btn1.setOnAction(e -> {
-		    timer.stop(); // 背景タイマー停止
-
-		    // コントローラーをインスタンス化
-		    GameController controller = new GameController();
-		    
-		    // コントローラーにStageを渡して、あとの画面管理をすべて任せる！
-		    controller.start(stage); 
+		    try {
+		    	 // 音を鳴らす
+		    	 clickSound.stop();
+		    	 clickSound.play();
+		    	// 0.15秒後に画面遷移
+		    	Timeline delay = new Timeline(
+		    			new KeyFrame(Duration.millis(500), ev -> {
+		    				timer.stop();
+		    	            new story1().start(stage);
+		    	})
+		    );
+		    delay.play();
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
 		});
-        
 		//練習モードへ飛ぶボタン作成
 		Button btn2 = new Button("⚔練習モード");
 		btn2.setPrefSize(300, 100); 
 		//setOnAction:クリックしたときに実行する処理を記述
 		//(e->:クリックされたら実行される処理を書いていくという記号)
 		btn2.setOnAction(e -> {
-			try {
-				// stop the title background timer before switching to practice
-				timer.stop();
-				//practiceクラスのインスタンス化とそのクラスのstart()の呼び出しを同時に実行
-				//現在と同じウィンドウを使用するためstageを渡す
-				new practice().start(stage);
-			} catch (Exception ex) {
-				//エラー内容を表示する
-				ex.printStackTrace();
-			}
+		    try {
+		        // 音を鳴らす
+		        clickSound.stop();
+		        clickSound.play();
+
+		        // 背景停止
+		        timer.stop();
+
+		        // 画面遷移
+		        new practice().start(stage);
+
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
 		});
 		//btn2にCSSのgame-buttonを付与
 		btn2.getStyleClass().add("game-button");
