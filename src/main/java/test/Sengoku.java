@@ -1,5 +1,5 @@
 package test;
-
+/*
 public class Sengoku extends Character {
 
 	private int hp = 3;
@@ -116,4 +116,4 @@ public class Sengoku extends Character {
 		return this.hp > 0;
 	}
 
-}
+}*/

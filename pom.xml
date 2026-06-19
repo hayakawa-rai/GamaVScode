@@ -42,7 +42,6 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>test.SampleMainApp</mainClass>
-
                 </configuration>
             </plugin>
         </plugins>
