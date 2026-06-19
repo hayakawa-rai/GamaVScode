@@ -1,3 +1,5 @@
+package sample;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -57,6 +59,16 @@ public class practice extends Application {
 		stage2.setPrefHeight(80);
 		stage3.setPrefHeight(80);
 
+		stage1.setOnAction(e -> {
+			// 1. 練習モードの背景アニメーションを停止
+			if (timer != null) {
+				timer.stop();
+			}
+			
+			// 2. SampleController の遷移メソッドを直接呼び出す！
+			// (※ メソッド名が switchToStart で合っているか、確認してね！)
+			test.controller.SampleController.switchToGame(stage);
+		});
 		VBox stageButtons = new VBox(20, stage1, stage2, stage3);
 		stageButtons.setAlignment(Pos.CENTER);
 

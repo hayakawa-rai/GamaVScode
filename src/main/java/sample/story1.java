@@ -1,3 +1,5 @@
+package sample;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -338,10 +340,14 @@ public class story1 extends Application{
         	    	jump.playFromStart();
         	    }
         	} else {//メッセージの最後まで行った後の処理
-        		//・・・を表示をする
-        	    text.setText("・・・");
-        	    //▼を消す
-        	    nextMark.setVisible(false);
+        		// 1. 各種タイマーやアニメーションを安全に停止
+                timeline.stop();
+                blink.stop();
+                arrowMove.stop();
+                jump.stop();
+                
+                // 2. 司令塔を経由してパックマンのゲーム画面へ一瞬で遷移！
+                test.controller.SampleController.switchToGame(stage);
         	}
         });
         //最初の文章を表示(部品のすべての処理を終えてから文字を表示するため最後に記述)

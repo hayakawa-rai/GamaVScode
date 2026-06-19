@@ -9,7 +9,7 @@ public class Sengoku extends Character {
 	//private final double rispornx; //スタート地点x
 	//private final double risporny; //スタート地点y
 	private Direction nextdirection = Direction.NONE; //入力された次に進みたい方向
-	private static final int CELL_SIZE = 24; //1マスの大きさ(px)
+	private static final int CELL_SIZE = 30; //1マスの大きさ(px)
 
 	// コンストラクタ
 	public Sengoku(double x, double y, int speed) {
@@ -49,6 +49,7 @@ public class Sengoku extends Character {
 
 				this.direction = nextdirection;
 			}
+		}
 			// 実際の移動処理
 			if (canmovego(this.direction, map)) {
 				// 移動可能ならその方向へ進む
@@ -65,7 +66,7 @@ public class Sengoku extends Character {
 				this.direction = Direction.NONE;
 			}
 
-		}
+		
 	}
 
 	//1が先行入力2が今動いてる方向
@@ -122,7 +123,7 @@ public class Sengoku extends Character {
 	}
 
 	// 位置を直接更新する
-	protected void setPosition(double x, double y) {
+	public void setPosition(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}

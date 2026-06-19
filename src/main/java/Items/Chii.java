@@ -1,8 +1,10 @@
 package Items;
 
 import Characters.Sengoku;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 
 // パワーエサ（Chii）
 public class Chii extends Item {
@@ -42,4 +44,36 @@ public class Chii extends Item {
         player.addScore(this.score);
         //ここにゴーストをイジケさせる処理を追加予定！！
     }
+        public Image getImage() {
+            if (this.view instanceof ImageView) {
+                return ((ImageView) this.view).getImage();
+            }
+            return null;
+        }
+
+        // 💡 【新設】設定された画像のサイズを返す
+        public double getSize() {
+            return IMAGE_SIZE;
+        }
+        @Override
+        public void draw(GraphicsContext gc, double x, double y, double tileSize) {
+            if (this.view instanceof ImageView) {
+                Image img = ((ImageView) this.view).getImage();
+                if (img != null) {
+                    gc.drawImage(
+                        img,
+                        x + tileSize / 2.0 - (IMAGE_SIZE / 2.0),
+                        y + tileSize / 2.0 - (IMAGE_SIZE / 2.0),
+                        IMAGE_SIZE, IMAGE_SIZE
+                    );
+                    return;
+                }
+            }
+            
+            // 保険用の黄緑の円
+            Circle circle = (Circle) this.view;
+            double radius = circle.getRadius();
+            gc.setFill(circle.getFill());
+            gc.fillOval(x + tileSize / 2.0 - radius, y + tileSize / 2.0 - radius, radius * 2, radius * 2);
+        }
 }
