@@ -1,3 +1,5 @@
+package story;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,8 +10,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import start.Start;
 
-public class stageclear3 extends Application{
+public class Stageclear1 extends Application{
 	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
     private Stage stage;
     //javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
@@ -19,29 +22,29 @@ public class stageclear3 extends Application{
         this.stage = stage;
         //ウィンドウの中身を決定
         stage.setScene(clear());
-        stage.setTitle("stage3CLEAR");
+        stage.setTitle("stage1CLEAR");
         stage.show();
     }
     public Scene clear() {
     //どこのステージをクリアしたか表示する
-    Text title = new Text("STAGE3    CLEAR!");
+    Text title = new Text("STAGE1    CLEAR!");
     //フォントサイズとカラーを指定
     title.setStyle("-fx-font-size: 80px; -fx-fill: rgb(180,180,180);");
     //獲得したアイテムを表示
-    Text text = new Text("ハンコを獲得しました！！");
+    Text text = new Text("鍵を獲得しました！！");
     //フォントサイズとカラーを指定
     text.setStyle("-fx-font-size: 20px; -fx-fill: gray;");
     //獲得したアイテムの画像読み込み
     Image image = new Image(
-    		getClass().getResource("/picture/hanko.png").toExternalForm()
+    		getClass().getResource("/picture/kagi.png").toExternalForm()
     );
     //読み込んだ画像を表示
     ImageView imageView = new ImageView(image);
-    //画像のサイズを調整
+    //画像のサイズ調整
     imageView.setFitWidth(150);  
     imageView.setFitHeight(150);
-
-    // 横並びにする箱を設定
+    
+    //横並びにする箱を設定
     HBox textAndImage = new HBox();
     //textと画像の間隔を設定
     textAndImage.setSpacing(10); 
@@ -70,7 +73,7 @@ public class stageclear3 extends Application{
     backButton.setPrefSize(250, 80);
     //スタート画面へ戻る
     backButton.setOnAction(e -> {
-        start titleScreen = new start();
+        Start titleScreen = new Start();
         try {
             titleScreen.start(stage);
         } catch (Exception ex) {
@@ -78,12 +81,11 @@ public class stageclear3 extends Application{
         }
     });
     //titleと画像とtextをまとめたもの、ボタン2つを箱に入れる。
-    buttonBox.getChildren().addAll(title,textAndImage,next, backButton);//ボタンを配置
+    buttonBox.getChildren().addAll(title,textAndImage,next, backButton);
     
     //buttonBoxを中身とした1000×800のウィンドウを作成
     Scene scene = new Scene(buttonBox, 1000, 800);
     //CSSを接続
-    
     scene.getStylesheets().add(
         getClass().getResource("/css/style.css").toExternalForm()
     );

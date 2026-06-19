@@ -1,8 +1,6 @@
 start.class
 Characters\BlueEnemy.class
-scene\Story1.class
 story1.class
-Items\GameController.class
 stageclear1.class
 practice.class
 Characters\GameMap.class
@@ -15,17 +13,12 @@ test\SampleMainApp.class
 start$1.class
 test\controller\SampleController.class
 test\model\SampleModel.class
-Items\Point.class
-Items\Chii.class
-scene\Story2.class
 test\view\SampleView.class
 gameover.class
-Characters\Sengoku.class
 test\test$1.class
-scene\Story3.class
 Characters\Direction.class
-Items\Item.class
 test\test.class
 Characters\SengokuState.class
 stageclear2.class
 test\controller\SampleController$1.class
+scene\story1.class

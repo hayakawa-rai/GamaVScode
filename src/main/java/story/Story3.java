@@ -1,3 +1,5 @@
+package story;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -23,7 +25,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class story1 extends Application{
+public class Story3 extends Application{
 	
 
 	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため

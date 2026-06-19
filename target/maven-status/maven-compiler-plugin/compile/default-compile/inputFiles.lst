@@ -2,6 +2,7 @@ C:\Users\EMD-573\git\GameApplication\src\main\java\Characters\BlueEnemy.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\Characters\Character.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\Characters\Direction.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\Characters\Enemy.java
+C:\Users\EMD-573\git\GameApplication\src\main\java\Characters\EnemyState.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\Characters\GameMap.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\Characters\GreenEnemy.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\Characters\RedEnemy.java
@@ -14,7 +15,7 @@ C:\Users\EMD-573\git\GameApplication\src\main\java\Items\GameController.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\Items\Item.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\Items\Point.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\practice.java
-C:\Users\EMD-573\git\GameApplication\src\main\java\scene\Story1.java
+C:\Users\EMD-573\git\GameApplication\src\main\java\scene\story1.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\scene\Story2.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\scene\Story3.java
 C:\Users\EMD-573\git\GameApplication\src\main\java\stageclear1.java

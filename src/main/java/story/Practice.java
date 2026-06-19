@@ -1,3 +1,5 @@
+package story;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -12,8 +14,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import start.Start;
 
-public class practice extends Application {
+public class Practice extends Application {
 
 	private Stage stage;
 	// hold the background animation so we can stop it when switching scenes
@@ -72,7 +75,7 @@ public class practice extends Application {
 			if (timer != null) {
 				timer.stop();
 			}
-			start titleScreen = new start();
+			Start titleScreen = new Start();
 			try {
 				titleScreen.start(stage);
 			} catch (Exception ex) {
@@ -86,7 +89,7 @@ public class practice extends Application {
 
 		// 背景
 		Image bgImage = new Image(
-				practice.class.getResource("/picture/background.png").toExternalForm());
+				Practice.class.getResource("/picture/background.png").toExternalForm());
 
 		ImageView bg1 = new ImageView(bgImage);
 		ImageView bg2 = new ImageView(bgImage);

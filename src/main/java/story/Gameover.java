@@ -1,3 +1,5 @@
+package story;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,8 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import start.Start;
 
-public class gameover extends Application {
+public class Gameover extends Application {
 
 	@Override
 	public void start(Stage stage) {
@@ -36,7 +39,7 @@ public class gameover extends Application {
 		titleBox.setStyle("-fx-padding: 150px 0 40px 0;");
 
 		//いらすとや
-		Image img = new Image(gameover.class.getResource("/irasutoya(gameover).png").toExternalForm());
+		Image img = new Image(Gameover.class.getResource("/irasutoya(gameover).png").toExternalForm());
 		ImageView icon = new ImageView(img);
 		icon.setFitWidth(200);
 		icon.setFitHeight(200);
@@ -47,7 +50,7 @@ public class gameover extends Application {
 		retryBtn.setPrefSize(300, 70);
 		retryBtn.getStyleClass().add("gameover-button");
 		retryBtn.setOnAction(e -> {
-			practice practiceScreen = new practice();
+			Practice practiceScreen = new Practice();
 			try {
 				practiceScreen.start(stage);
 			} catch (Exception ex) {
@@ -60,7 +63,7 @@ public class gameover extends Application {
 		titleBtn.setPrefSize(300, 70);
 		titleBtn.getStyleClass().add("gameover-button");
 		titleBtn.setOnAction(e -> {
-			start titleScreen = new start();
+			Start titleScreen = new Start();
 			try {
 				titleScreen.start(stage);
 			} catch (Exception ex) {
@@ -84,7 +87,7 @@ public class gameover extends Application {
 		StackPane root = new StackPane();
 
 		//背景
-		Image bgImage = new Image(gameover.class.getResource("/picture/gameover.jpg").toExternalForm());
+		Image bgImage = new Image(Gameover.class.getResource("/picture/gameover.jpg").toExternalForm());
 		ImageView bg = new ImageView(bgImage);
 		bg.setPreserveRatio(false);
 
@@ -103,7 +106,7 @@ public class gameover extends Application {
 		root.getChildren().addAll(bg, whiteOverlay, ui);
 		
 		Scene scene = new Scene(root, 800, 600);
-		scene.getStylesheets().add(gameover.class.getResource("/css/gameover.css").toExternalForm());
+		scene.getStylesheets().add(Gameover.class.getResource("/css/gameover.css").toExternalForm());
 
 		return scene;
 

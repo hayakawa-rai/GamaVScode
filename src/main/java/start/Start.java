@@ -1,3 +1,5 @@
+package start;
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,8 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import story.Practice;
+import story.Story1;
 
-public class start extends Application {
+public class Start extends Application {
 	
 	//javafxのApplicationにもともとあるstartを上書き
 	@Override
@@ -103,7 +107,7 @@ public class start extends Application {
 		    	Timeline delay = new Timeline(
 		    			new KeyFrame(Duration.millis(500), ev -> {
 		    				timer.stop();
-		    	            new story1().start(stage);
+		    	            new Story1().start(stage);
 		    	})
 		    );
 		    delay.play();
@@ -126,7 +130,7 @@ public class start extends Application {
 		        timer.stop();
 
 		        // 画面遷移
-		        new practice().start(stage);
+		        new Practice().start(stage);
 
 		    } catch (Exception ex) {
 		        ex.printStackTrace();
