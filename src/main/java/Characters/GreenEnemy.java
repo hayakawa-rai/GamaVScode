@@ -29,7 +29,6 @@ public class GreenEnemy extends Enemy {
 			int playerCol = (int) ((player.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
 
 			int playerRow = (int) ((player.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
-
 			// プレイヤーに最も近づける方向を選択
 
 			return getClosestDirection(validDirections, playerCol, playerRow);
