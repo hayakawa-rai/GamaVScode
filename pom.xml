@@ -25,6 +25,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        
+		<dependency>
+        	<groupId>org.openjfx</groupId>
+        	<artifactId>javafx-media</artifactId>
+        	<version>${javafx.version}</version>
+    	</dependency>
+
     </dependencies>
 
     <build>
@@ -34,7 +41,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>start</mainClass>
+                    <mainClass>test.SampleMainApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>

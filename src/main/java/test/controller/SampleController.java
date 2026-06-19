@@ -1,10 +1,12 @@
 package test.controller;
 
+import Characters.Direction;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import test.SampleMainApp;
 import test.model.SampleModel;
 import test.view.SampleView;
 
@@ -22,6 +24,34 @@ public class SampleController {
         attachInput(scene);
         startLoop();
     }
+    public static void switchToStart(javafx.stage.Stage stage) {
+        try {
+            // 1. startクラスのインスタンスを作る
+            sample.start titleScreen = new sample.start();
+            // 2. ウィンドウの権利(stage)を渡して、タイトル画面を起動・上書きする！
+            titleScreen.start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void switchTopractice(javafx.stage.Stage stage) {
+        try {
+            // 1. practiceクラスのインスタンスを作る
+            sample.practice practiceScreen = new sample.practice();
+            // 2. ウィンドウの権利(stage)を渡して、練習モード画面を起動・上書きする！
+            practiceScreen.start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void switchToGame(javafx.stage.Stage stage) {
+        try { SampleMainApp App = new SampleMainApp();
+            App.starts(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void attachInput(Scene scene) {
         scene.setOnKeyPressed(e -> {
@@ -32,10 +62,10 @@ public class SampleController {
             }
             if (model.isPaused()) return;
 
-            if (code == KeyCode.W) model.setNextDirection(0, -1);
-            if (code == KeyCode.S) model.setNextDirection(0, 1);
-            if (code == KeyCode.A) model.setNextDirection(-1, 0);
-            if (code == KeyCode.D) model.setNextDirection(1, 0);
+            if (code == KeyCode.W) model.setNextDirection(Direction.UP);
+            if (code == KeyCode.S) model.setNextDirection(Direction.DOWN);
+            if (code == KeyCode.A) model.setNextDirection(Direction.LEFT);
+            if (code == KeyCode.D) model.setNextDirection(Direction.RIGHT);
         });
     }
 

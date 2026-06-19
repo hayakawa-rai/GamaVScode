@@ -11,9 +11,13 @@ import test.model.SampleModel;
 import test.view.SampleView;
 
 public class SampleMainApp extends Application {
-
-    @Override
+	@Override
     public void start(Stage stage) {
+        // 起動した瞬間に、ボタン操作なしでコントローラーの遷移処理を呼び出す
+        SampleController.switchToStart(stage);
+    }
+    
+    public void starts(Stage stage) {
         SampleModel model = new SampleModel();
         SampleView view = new SampleView(model);
 
