@@ -81,7 +81,7 @@ public class start extends Application {
 		
 		
 		AudioClip clickSound = new AudioClip(
-			getClass().getResource("/click.mp3").toExternalForm()
+			getClass().getResource("/select01.mp3").toExternalForm()
 		);
 		// 音量調整（おすすめ）
 		clickSound.setVolume(0.3);
