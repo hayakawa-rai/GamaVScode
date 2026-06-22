@@ -22,7 +22,6 @@ package Characters;
 //		super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
 //	}
 
-
 //
 //	@Override
 //	public void move(int[][] map) {
