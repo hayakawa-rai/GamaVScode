@@ -10,7 +10,7 @@ public class YellowEnemy extends Enemy {
 
 
 private long startTime;
-private static final long DELAY = 10000; // ★ 10秒遅れて出発
+private static final long DELAY = 10000; // 10秒遅れて出発
 
  エネミーハウス左上 （仮）
 private static final int START_COL = 13;

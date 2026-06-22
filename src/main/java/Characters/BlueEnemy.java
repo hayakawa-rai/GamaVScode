@@ -8,7 +8,7 @@ public class BlueEnemy extends Enemy {
    private RedEnemy red;
    
    private long startTime;
-   private static final long DELAY = 2000; // ★ 2秒遅れて出発
+   private static final long DELAY = 2000; // 2秒遅れて出発
 
    private static final int CELL_SIZE = 24;
    private static final int PREDICT_TILES = 2;
