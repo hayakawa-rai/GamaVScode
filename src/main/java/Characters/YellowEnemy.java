@@ -1,4 +1,6 @@
-//package Characters;
+ // Sengokuの位置の4マス先を狙う YellowEnemy(黄) 
+
+package Characters;
 //
 //public class YellowEnemy extends Enemy {
 //
@@ -10,6 +12,17 @@
 //        super(x, y); // speed は Enemy 側で決める
 //        this.target = target;
 //    }
+
+
+	// エネミーハウス左上 （仮）
+//	private static final int START_COL = 13;
+//	private static final int START_ROW = 11;
+
+//	public YellowEnemy(ImageView imageView) {
+//		super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
+//	}
+
+
 //
 //	@Override
 //	public void move(int[][] map) {
