@@ -25,7 +25,8 @@ public class SampleMainApp extends Application {
             this.controller.stop();
         }
 
-        SampleModel model = new SampleModel();
+        // ストーリーモードはエサ復活なし
+        SampleModel model = new SampleModel(false);
         SampleView view = new SampleView(model);
 
         Group root = new Group();

@@ -32,7 +32,7 @@ public class SamplepracticeApp extends Application {
     // STAGE1（ゲーム本編）へ遷移
     public void starts(Stage stage) {
     	    // STAGE1 のゲームロジック（エサ復活つき）
-        SampleModel model = new SampleModel();
+        SampleModel model = new SampleModel(true);
         // 描画処理（ステージ・キャラ・アイテム）
         SampleView view = new SampleView(model);
 

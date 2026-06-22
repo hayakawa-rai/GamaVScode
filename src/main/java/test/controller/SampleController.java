@@ -6,7 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import test.SampleMainApp; // 👈 【修正】本番用のメインアプリをインポートします
+import test.SampleMainApp; // 👈 【修正】本番用のメインアプリをインポート
+import test.SamplepracticeApp;
 import test.model.SampleModel;
 import test.view.SampleView;
 
@@ -48,8 +49,8 @@ public class SampleController {
     }
     
     public static void switchToGame(javafx.stage.Stage stage) {
-        try { 
-           
+
+        try {
             SampleMainApp App = new SampleMainApp();
             App.starts(stage);
         } catch (Exception e) {
@@ -57,6 +58,16 @@ public class SampleController {
         }
     }
 
+
+    public static void switchToPracticeGame(javafx.stage.Stage stage) {
+        try {
+            SamplepracticeApp app = new SamplepracticeApp();
+            app.starts(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+ 
     private void attachInput(Scene scene) {
         scene.setOnKeyPressed(e -> {
             KeyCode code = e.getCode();
