@@ -165,7 +165,6 @@ public class SampleModel {
 			if (item != null) {
 				item.onEaten(sengoku);
 				itemMap[currentTileY][currentTileX] = null;
-				System.out.println("アイテムを食べた！現在のスコア: " + sengoku.getScore());
 			}
 		}
 	}

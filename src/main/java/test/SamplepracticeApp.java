@@ -12,6 +12,7 @@ import test.view.SampleView;
 
 public class SamplepracticeApp extends Application {
 
+
     @Override
     public void start(Stage stage) {
         // 起動したら練習モードへ
@@ -45,16 +46,12 @@ public class SamplepracticeApp extends Application {
         Canvas canvas = new Canvas(viewWidth, viewHeight);
         root.getChildren().add(canvas);
         // コントローラーを起動（ゲームループ開始
-        
-        new SampleController(model, view, canvas, scene);
 
-        // ウィンドウ設定
-        stage.setTitle("JavaFX Pacman Stage MVC");
-        stage.setScene(scene);
-        stage.show();
-    }
+		// SampleController を起動
+		new SampleController(model, view, canvas, scene);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+		stage.setTitle("JavaFX Pacman Stage MVC");
+		stage.setScene(scene);
+		stage.show();
+	}
 }
