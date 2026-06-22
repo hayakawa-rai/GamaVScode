@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 public abstract class Enemy extends Character {
 
 	protected ImageView imageView;
-	protected static final int CELL_SIZE = 24;//1マスの大きさ
+	protected static final int CELL_SIZE = 30;//1マスの大きさ
 	
 	//Sengokuをフィールドとして保持
 	protected Sengoku player;
@@ -196,6 +196,12 @@ public abstract class Enemy extends Character {
 		// 通常の画面外チェック（縦31マス：map.length, 横28マス：map[0].length）
 		if (nextRow < 0 || nextRow >= map.length || nextCol < 0 || nextCol >= map[0].length) {
 			return false;
+		}
+		//通常状態の時は、ゴーストの巣(行10以降、かつ中央の列8～10)への侵入を禁止にする
+		if(this.currentState != EnemyState.DEAD) {//死亡している時以外
+			if(nextRow >= 9 && nextRow <= 10 && nextCol >= 8 && nextCol <= 10) {
+				return false;//巣の方向の侵入禁止
+			}
 		}
 
 		return map[nextRow][nextCol] != 1; // 1は壁
