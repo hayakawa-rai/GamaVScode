@@ -1,16 +1,18 @@
 
-/*
-package Characters;
+package test;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Characters.EnemyState;
+import Characters.Sengoku;
 import javafx.scene.image.ImageView;
 
 public abstract class Enemy extends Character {
 
 	protected ImageView imageView;
-	protected static final int CELL_SIZE = 24;//1マスの大きさ
+	protected static final int CELL_SIZE = 30;//1マスの大きさ
 	
 	//Sengokuをフィールドとして保持
 	protected Sengoku player;
@@ -24,10 +26,10 @@ public abstract class Enemy extends Character {
 	protected javafx.scene.image.Image deadImage; // 食べられて初期地点に戻る敵
 
 	//コンストラクタ
-	public Enemy(ImageView imageView, double startX, double startY, int speed,Sengoku player) {
+	public Enemy(ImageView imageView, double startX, double startY, int speed,Characters.Sengoku sengoku) {
 		super(startX, startY, speed);
 		this.imageView = imageView;
-		this.player = player;
+		this.player = sengoku;
 		//初期位置をImageViewに反映
 		this.imageView.setLayoutX(startX);
 		this.imageView.setLayoutY(startY);
@@ -195,6 +197,12 @@ public abstract class Enemy extends Character {
 		if (nextRow < 0 || nextRow >= map.length || nextCol < 0 || nextCol >= map[0].length) {
 			return false;
 		}
+		//通常状態の時は、ゴーストの巣(行10以降、かつ中央の列8～10)への侵入を禁止にする
+		if(this.currentState != EnemyState.DEAD) {//死亡している時以外
+			if(nextRow >= 9 && nextRow <= 10 && nextCol >= 8 && nextCol <= 10) {
+				return false;//巣の方向の侵入禁止
+			}
+		}
 
 		return map[nextRow][nextCol] != 1; // 1は壁
 	}
@@ -219,4 +227,3 @@ public abstract class Enemy extends Character {
 		return imageView;
 	}
 }
-*/

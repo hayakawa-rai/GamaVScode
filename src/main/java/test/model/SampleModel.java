@@ -1,173 +1,234 @@
 package test.model;
 
+import Characters.Direction;
+import Characters.Sengoku;
+import Items.Chii;
+import Items.Item;
+import Items.Point;
+import test.Enemy;
+import test.RedEnemy;
+
 public class SampleModel {
 
-    public static final int TILE_SIZE = 30;
+	public static final int TILE_SIZE = 30;
 
-    // 0: 道, 1: 壁, 9: ワープ
-    private final int[][] map = {
-        { 1,1,1,1,1,1,1,1,1,9,1,1,1,1,1,1,1,1,1 },
-        { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1 },
-        { 1,0,0,0,0,1,0,1,1,1,1,1,0,1,0,0,0,0,1 },
-        { 1,0,1,1,0,0,0,0,0,1,0,0,0,0,0,1,1,0,1 },
-        { 1,0,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1 },
-        { 1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1 },
-        { 1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1 },
-        { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1 },
-        { 1,1,1,1,0,1,0,1,1,0,1,1,0,1,0,1,1,1,1 },
-        { 9,0,0,0,0,1,0,1,0,0,0,1,0,1,0,0,0,0,9 },
-        { 1,1,1,1,0,1,0,1,0,0,0,1,0,1,0,1,1,1,1 },
-        { 1,1,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,1,1 },
-        { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-        { 1,0,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1 },
-        { 1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1 },
-        { 1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,0,1 },
-        { 1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1 },
-        { 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1 },
-        { 1,1,1,1,1,1,1,1,1,9,1,1,1,1,1,1,1,1,1 }
-    };
+	// 0: 道, 1: 壁, 9: ワープ
+	private final int[][] map = {
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 },
+			{ 1, 2, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 2, 1 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 },
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 },
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 },
+			{ 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1 },
+			{ 9, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 9 },
+			{ 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1 },
+			{ 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 },
+			{ 1, 2, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 2, 1 },
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 },
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+	};
 
-    // パックマンの状態（タイル中央）
-    private double pacX = 10 * TILE_SIZE + TILE_SIZE / 2;
-    private double pacY = 14 * TILE_SIZE + TILE_SIZE / 2;
+	private final Item[][] itemMap;
+	private final Sengoku sengoku;
+	private Enemy enemy;
+	private boolean paused = false;
 
-    private int dirX = 1;
-    private int dirY = 0;
+	// 口パク
+	private double mouthAngle = 45;
+	private int mouthOpening = -1;
+	private boolean isBlocked = false;
 
-    private int nextDirX = 1;
-    private int nextDirY = 0;
+	// ワープ抑止
+	private boolean justWarped = false;
+	private int lastWarpX = -1;
+	private int lastWarpY = -1;
 
-    private double speed = 2.0;
-    private boolean paused = false;
+	public SampleModel() {
+		this.sengoku = new Sengoku(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
+		this.itemMap = new Item[map.length][map[0].length];
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[0].length; col++) {
+				double pixelX = col * TILE_SIZE + TILE_SIZE / 2.0;
+				double pixelY = row * TILE_SIZE + TILE_SIZE / 2.0;
 
-    // 口パク
-    private double mouthAngle = 45;
-    private int mouthOpening = -1;
-    private boolean isBlocked = false;
+				if (map[row][col] == 0) {
+					itemMap[row][col] = new Point(pixelX, pixelY);
+				} else if (map[row][col] == 2) {
+					itemMap[row][col] = new Chii(pixelX, pixelY);
+				}
+			}
+		}
+	}
 
-    // ワープ抑止
-    private boolean justWarped = false;
-    private int lastWarpX = -1;
-    private int lastWarpY = -1;
+	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
+		this.enemy = new RedEnemy(enemyImageView, this.sengoku);
+	}
 
-    // --- getters / setters ---
-    public int[][] getMap() { return map; }
-    public double getPacX() { return pacX; }
-    public double getPacY() { return pacY; }
-    public double getMouthAngle() { return mouthAngle; }
-    public int getDirX() { return dirX; }
-    public int getDirY() { return dirY; }
-    public boolean isPaused() { return paused; }
-    public boolean isBlocked() { return isBlocked; }
+	public void togglePause() {
+		paused = !paused;
+	}
 
-    public void setNextDirection(int nx, int ny) {
-        nextDirX = nx;
-        nextDirY = ny;
-    }
+	//ゲーム全体の定期更新
 
-    public void togglePause() {
-        paused = !paused;
-    }
+	public void update() {
+		if (paused)
+			return;
 
-    // --- 更新ロジック（外部から呼ぶ） ---
-    public void updatePacman() {
-        if (paused) return;
+		//パックマンの移動処理
+		updatePacman();
 
-        int tileX = (int) (pacX / TILE_SIZE);
-        int tileY = (int) (pacY / TILE_SIZE);
+		//敵キャラが存在すれば移動ロジックを実行
+		if (enemy != null) {
+			enemy.move(map);
+		}
 
-        // ワープ抑止ロジック
-        boolean skipWarp = false;
-        if (justWarped) {
-            if (tileX == lastWarpX && tileY == lastWarpY) {
-                skipWarp = true;
-            } else {
-                justWarped = false;
-                lastWarpX = -1;
-                lastWarpY = -1;
-            }
-        }
+		//口パクの更新
+		updateMouth();
 
-        // ワープ処理
-        if (!skipWarp && tileX >= 0 && tileX < map[0].length && tileY >= 0 && tileY < map.length) {
-            if (map[tileY][tileX] == 9) {
-                int warpX = tileX;
-                int warpY = tileY;
+		//パックマンと敵の当たり判定を毎フレーム確認
+		checkCollision();
+	}
 
-                if (dirX != 0) {
-                    for (int x = 0; x < map[0].length; x++) {
-                        if (map[tileY][x] == 9 && x != tileX) {
-                            warpX = x;
-                            break;
-                        }
-                    }
-                }
-                if (dirY != 0) {
-                    for (int y = 0; y < map.length; y++) {
-                        if (map[y][tileX] == 9 && y != tileY) {
-                            warpY = y;
-                            break;
-                        }
-                    }
-                }
+	public void updatePacman() {
+		if (paused || !sengoku.isAlive())
+			return;
 
-                pacX = warpX * TILE_SIZE + TILE_SIZE / 2;
-                pacY = warpY * TILE_SIZE + TILE_SIZE / 2;
+		int tileX = (int) (sengoku.getX() / TILE_SIZE);
+		int tileY = (int) (sengoku.getY() / TILE_SIZE);
 
-                justWarped = true;
-                lastWarpX = warpX;
-                lastWarpY = warpY;
+		// --- ワープ抑止ロジック ---
+		boolean skipWarp = false;
+		if (justWarped) {
+			if (tileX == lastWarpX && tileY == lastWarpY) {
+				sengoku.move(map);
+				return;
+			} else {
+				justWarped = false;
+				lastWarpX = -1;
+				lastWarpY = -1;
+			}
+		}
 
-                return;
-            }
-        }
+		// --- ワープ処理 ---
+		if (!skipWarp && tileX >= 0 && tileX < map[0].length && tileY >= 0 && tileY < map.length) {
+			if (map[tileY][tileX] == 9) {
+				int warpX = tileX;
+				int warpY = tileY;
 
-        // 方向転換（タイル中央でのみ）
-        boolean atCenter = Math.abs(pacX - (tileX * TILE_SIZE + TILE_SIZE / 2)) < 2 &&
-                           Math.abs(pacY - (tileY * TILE_SIZE + TILE_SIZE / 2)) < 2;
+				Direction currentDir = sengoku.getDirection();
 
-        if (atCenter) {
-            int nx = tileX + nextDirX;
-            int ny = tileY + nextDirY;
-            if (nx >= 0 && nx < map[0].length &&
-                ny >= 0 && ny < map.length &&
-                map[ny][nx] != 1) {
-                dirX = nextDirX;
-                dirY = nextDirY;
-            }
-        }
+				if (currentDir != Direction.NONE) {
+					if (currentDir.getDX() != 0) {
+						for (int x = 0; x < map[0].length; x++) {
+							if (map[tileY][x] == 9 && x != tileX) {
+								warpX = x;
+								break;
+							}
+						}
+					}
+					if (currentDir.getDY() != 0) {
+						for (int y = 0; y < map.length; y++) {
+							if (map[y][tileX] == 9 && y != tileY) {
+								warpY = y;
+								break;
+							}
+						}
+					}
+				}
 
-        // 次のタイル判定
-        int nextTileX = tileX + dirX;
-        int nextTileY = tileY + dirY;
+				double newPacX = warpX * TILE_SIZE;
+				double newPacY = warpY * TILE_SIZE;
+				sengoku.setPosition(newPacX, newPacY);
 
-        if (nextTileX >= 0 && nextTileX < map[0].length &&
-            nextTileY >= 0 && nextTileY < map.length) {
+				justWarped = true;
+				lastWarpX = warpX;
+				lastWarpY = warpY;
 
-            if (map[nextTileY][nextTileX] == 1) {
-                isBlocked = true;
-                double centerX = tileX * TILE_SIZE + TILE_SIZE / 2;
-                double centerY = tileY * TILE_SIZE + TILE_SIZE / 2;
-                pacX += (centerX - pacX) * 0.3;
-                pacY += (centerY - pacY) * 0.3;
-                return;
-            }
-        }
+				return;
+			}
+		}
 
-        isBlocked = false;
+		sengoku.move(map);
 
-        // 移動
-        pacX += dirX * speed;
-        pacY += dirY * speed;
+		int currentTileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int currentTileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
-        if (dirX != 0) pacY = tileY * TILE_SIZE + TILE_SIZE / 2;
-        if (dirY != 0) pacX = tileX * TILE_SIZE + TILE_SIZE / 2;
-    }
+		if (currentTileY >= 0 && currentTileY < map.length && currentTileX >= 0 && currentTileX < map[0].length) {
+			Item item = itemMap[currentTileY][currentTileX];
+			if (item != null) {
+				item.onEaten(sengoku);
+				itemMap[currentTileY][currentTileX] = null;
+			}
+		}
+	}
 
-    public void updateMouth() {
-        if (paused || isBlocked) return;
-        mouthAngle += mouthOpening * 2;
-        if (mouthAngle <= 10) mouthOpening = +1;
-        if (mouthAngle >= 45) mouthOpening = -1;
-    }
+	public void updateMouth() {
+		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Direction.NONE)
+			return;
+		mouthAngle += mouthOpening * 2;
+		if (mouthAngle <= 10)
+			mouthOpening = +1;
+		if (mouthAngle >= 45)
+			mouthOpening = -1;
+	}
+
+	public void setNextDirection(Direction dir) {
+
+		sengoku.setnextdirection(dir);
+	}
+
+	//敵との当たり判定
+
+	private void checkCollision() {
+		if (enemy == null || !sengoku.isAlive())
+			return;
+
+		double pacCenterX = sengoku.getX() + TILE_SIZE / 2.0;
+		double pacCenterY = sengoku.getY() + TILE_SIZE / 2.0;
+		double enemyCenterX = enemy.getX() + TILE_SIZE / 2.0;
+		double enemyCenterY = enemy.getY() + TILE_SIZE / 2.0;
+
+		double dx = pacCenterX - enemyCenterX;
+		double dy = pacCenterY - enemyCenterY;
+		double distance = Math.sqrt(dx * dx + dy * dy);
+
+		double collisionThreshold = TILE_SIZE * 0.8;
+
+		if (distance < collisionThreshold) {
+			System.out.println("💥 敵に捕まった！ゲームオーバー！");
+			this.paused = true;
+		}
+	}
+
+	// --- getters ---
+	public int[][] getMap() {
+		return map;
+	}
+
+	public Item[][] getItemMap() {
+		return itemMap;
+	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public double getMouthAngle() {
+		return mouthAngle;
+	}
+
+	public Sengoku getSengoku() {
+		return sengoku;
+	}
+
+	public Enemy getEnemy() {
+		return enemy;
+	}
 }

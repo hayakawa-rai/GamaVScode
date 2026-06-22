@@ -1,4 +1,4 @@
-package Characters;
+package test;
 
 public abstract class Character {
 
