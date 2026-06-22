@@ -5,6 +5,8 @@ import Characters.Sengoku;
 import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font; // ★フォント設定のためにインポートを追加
+import javafx.scene.text.FontWeight; // ★太字にするためにインポートを追加
 import test.model.SampleModel;
 
 public class SampleView {
@@ -20,6 +22,9 @@ public class SampleView {
     public void drawStage(GraphicsContext gc) {
         int cols = model.getMap()[0].length;
         int rows = model.getMap().length;
+        //Scoreを表示させるための宣言
+        double stageWidth = cols * SampleModel.TILE_SIZE;
+        double stageHeight = rows * SampleModel.TILE_SIZE;
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, cols * SampleModel.TILE_SIZE, rows * SampleModel.TILE_SIZE);
         //モデルからアイテム配列を取得
@@ -43,8 +48,27 @@ public class SampleView {
                         item.draw(gc, x, y, SampleModel.TILE_SIZE);
                     }
             }
+        //スコアを表示左折ためのコード
+        Sengoku sengoku = model.getSengoku();
+        if (sengoku != null) {
+            // 1. スコア用のテキストを作成
+            String scoreText = "SCORE: " + sengoku.getScore();
+            
+            // 2. 文字のデザインを設定 (フォント名, 太さ, サイズ)
+            gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+            
+            // 3. 文字の色を白に設定
+            gc.setFill(Color.WHITE);
+            
+            // 4. 文字の位置を「右下」に計算
+            // 右端と下端から少し内側（余白20ピクセル）に配置します
+            double textX = stageWidth - 140; // 文字幅を考慮して右端から引く
+            double textY = stageHeight - 20; // 下端から少し上げる
+            
+            // 5. 描画
+            gc.fillText(scoreText, textX, textY);
         }
-        
+    }
     }
 
     public void drawPacman(GraphicsContext gc) {

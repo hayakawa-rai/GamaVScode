@@ -1,5 +1,5 @@
 
-
+/*
 package Characters;
 
 import java.util.ArrayList;
@@ -219,3 +219,4 @@ public abstract class Enemy extends Character {
 		return imageView;
 	}
 }
+*/

@@ -6,7 +6,7 @@ public class Sengoku extends Character {
 	private int score = 0;
 	private boolean isAlive = true;
 	private Direction nextdirection = Direction.NONE;
-	private static final int CELL_SIZE = 24;
+	private static final int CELL_SIZE = 30;
 
 	public Sengoku(double x, double y, int speed) {
 		super(x, y, speed);
@@ -49,6 +49,9 @@ public class Sengoku extends Character {
 				this.direction = Direction.NONE;
 			}
 
+		}else {
+			this.x += this.direction.getDX() * this.speed;
+			this.y += this.direction.getDY() * this.speed;
 		}
 	}
 

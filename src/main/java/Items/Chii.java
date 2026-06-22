@@ -18,7 +18,7 @@ public class Chii extends Item {
         
         try {
             // 画像ファイルを読み込む
-            Image img = new Image(Chii.class.getResourceAsStream("/Chii.png"));
+            Image img = new Image(Chii.class.getResourceAsStream("/picture/hanko.png"));
             ImageView iv = new ImageView(img);
             
             // 画像のサイズを上で設定した IMAGE_SIZE に合わせる
