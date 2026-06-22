@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import test.SampleMainApp;
+import test.SamplepracticeApp;
 import test.model.SampleModel;
 import test.view.SampleView;
 
@@ -46,7 +46,7 @@ public class SampleController {
         }
     }
     public static void switchToGame(javafx.stage.Stage stage) {
-        try { SampleMainApp App = new SampleMainApp();
+        try { SamplepracticeApp App = new SamplepracticeApp();
             App.starts(stage);
         } catch (Exception e) {
             e.printStackTrace();

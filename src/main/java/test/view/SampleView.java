@@ -108,4 +108,11 @@ public class SampleView {
             javafx.scene.shape.ArcType.ROUND
         );
     }
+    
+    public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
+        // 敵の画像をステージのタイルサイズ（30x30）に引き伸ばしてぴったり合わせる
+        enemyImageView.setFitWidth(SampleModel.TILE_SIZE);
+        enemyImageView.setFitHeight(SampleModel.TILE_SIZE);
+        enemyImageView.setPreserveRatio(true);
+    }
 }

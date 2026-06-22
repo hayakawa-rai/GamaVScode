@@ -1,18 +1,18 @@
 package test;
-/*
+
 public class Sengoku extends Character {
 
 	private int hp = 3;
 	private int score = 0;
 	private boolean isAlive = true;
 	private Direction nextdirection = Direction.NONE;
-	private static final int CELL_SIZE = 24;
+	private static final int CELL_SIZE = 30;
 
 	public Sengoku(double x, double y, int speed) {
 		super(x, y, speed);
 	}
 
-	public void setnextdirection(Direction direction) {
+	public void setNextDirection(Direction direction) {
 		this.nextdirection = direction;
 	}
 
@@ -116,4 +116,4 @@ public class Sengoku extends Character {
 		return this.hp > 0;
 	}
 
-}*/
+}
