@@ -11,6 +11,9 @@ public abstract class Enemy extends Character {
 
 	protected ImageView imageView;
 	protected static final int CELL_SIZE = 24;//1マスの大きさ
+	
+	//Sengokuをフィールドとして保持
+	protected Sengoku player;
 
 	//[4つのモード]初期状態の「縄張りモード」からスタートする
 	protected EnemyState currentState = EnemyState.SCATTER;
@@ -21,24 +24,19 @@ public abstract class Enemy extends Character {
 	protected javafx.scene.image.Image deadImage; // 食べられて初期地点に戻る敵
 
 	//コンストラクタ
-	public Enemy(ImageView imageView, double startX, double startY, int speed) {
-		super(imageView, startX, startY, speed);
+	public Enemy(ImageView imageView, double startX, double startY, int speed,Sengoku player) {
+		super(startX, startY, speed);
 		this.imageView = imageView;
+		this.player = player;
 		//初期位置をImageViewに反映
 		this.imageView.setLayoutX(startX);
 		this.imageView.setLayoutY(startY);
 	}
 
-	//最上位の Character から引き継いだ引数なしの移動処理
-	//ゴーストは map と player が必要なので、このメソッドは空実装にしておく。
-	@Override
-	public void move() {
-		// 空実装（互換性維持のため）
-	}
 
 	//全ての敵に共通する物理移動のルール
-
-	public void move(int[][] map, Sengoku player) {
+	@Override
+	public void move(int[][] map) {
 		double centerX = this.getX() + CELL_SIZE / 2.0;
 		double centerY = this.getY() + CELL_SIZE / 2.0;
 
@@ -92,8 +90,6 @@ public abstract class Enemy extends Character {
 		this.imageView.setLayoutX(this.getX());
 		this.imageView.setLayoutY(this.getY());
 
-		//現在のモードに合わせて自動で画像を切り替える
-		updateImage();
 	}
 
 	// 【抽象メソッド】4つの子クラス（各ゴーストのAI）がそれぞれの意思決定を記述する部分
@@ -132,7 +128,11 @@ public abstract class Enemy extends Character {
 	}
 
 	public void setCurrentState(EnemyState state) {
+		if(this.currentState != state) {
 		this.currentState = state;
+		//現在のモードに合わせて自動で画像を切り替える
+		updateImage();
+		}
 	}
 
 	// 共通：真逆の方向（Uターン）チェック
