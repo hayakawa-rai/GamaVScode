@@ -35,7 +35,11 @@ public class SampleModel {
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
 	};
 
+	// Chii, Pointクラスにある設定を持っていく用のMap
 	private final Item[][] itemMap;
+	// 初期アイテム配置（エサ復活用）
+	private final Item[][] initialItemMap;
+	// パックマンの状態
 	private final Sengoku sengoku;
 	private Enemy enemy;
 	private boolean paused = false;
@@ -65,6 +69,18 @@ public class SampleModel {
 				}
 			}
 		}
+		// 初期アイテム配置を保存（エサ復活用）
+		this.initialItemMap = copyItemMap(itemMap);
+	}
+	// --- itemMap をコピーする ---（エサ復活用）
+	private Item[][] copyItemMap(Item[][] src) {
+		Item[][] dst = new Item[src.length][src[0].length];
+		for (int r = 0; r < src.length; r++) {
+			for (int c = 0; c < src[0].length; c++) {
+				dst[r][c] = src[r][c];
+			}
+		}
+		return dst;
 	}
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
@@ -123,7 +139,7 @@ public class SampleModel {
 				int warpY = tileY;
 
 				Direction currentDir = sengoku.getDirection();
-
+				// 横方向のワープ
 				if (currentDir != Direction.NONE) {
 					if (currentDir.getDX() != 0) {
 						for (int x = 0; x < map[0].length; x++) {
@@ -133,6 +149,7 @@ public class SampleModel {
 							}
 						}
 					}
+					// 縦方向のワープ
 					if (currentDir.getDY() != 0) {
 						for (int y = 0; y < map.length; y++) {
 							if (map[y][tileX] == 9 && y != tileY) {
@@ -167,7 +184,31 @@ public class SampleModel {
 				itemMap[currentTileY][currentTileX] = null;
 			}
 		}
+		// 全部食べたかチェック（エサ復活用）
+		checkAllEaten();
 	}
+	// --- 全部食べたかチェック ---（エサ復活用）
+		private void checkAllEaten() {
+			for (int r = 0; r < itemMap.length; r++) {
+				for (int c = 0; c < itemMap[0].length; c++) {
+					if (itemMap[r][c] != null)
+						return; // まだ残っている
+				}
+			}
+			// 全部食べた → 復活（エサ復活用）
+			resetItems();
+		}
+
+		// --- エサ復活 ---（エサ復活用）
+		private void resetItems() {
+			for (int r = 0; r < itemMap.length; r++) {
+				for (int c = 0; c < itemMap[0].length; c++) {
+					itemMap[r][c] = initialItemMap[r][c];
+				}
+			}
+			System.out.println("ステージクリア！エサが復活しました！");
+		}
+
 
 	public void updateMouth() {
 		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Direction.NONE)
