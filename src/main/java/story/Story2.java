@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
@@ -105,6 +106,12 @@ public class Story2 extends Application{
         	);
         //音量調整
         damageSound.setVolume(0.3);
+        //ダメージ音の読み込み
+        AudioClip aSound = new AudioClip(
+        	    getClass().getResource("/music/damage2.mp3").toExternalForm()
+        	);
+        //音量調整
+        aSound.setVolume(0.3);
         //攻撃音の読み込み
         AudioClip atacSound = new AudioClip(
         	    getClass().getResource("/music/atac.mp3").toExternalForm()
@@ -113,30 +120,30 @@ public class Story2 extends Application{
         atacSound.setVolume(0.3);
     	//会話内容を設定
     	List<Dialogue> dialogues = Arrays.asList( 
-        		new Dialogue("なりなり", "あ、あれっ…！？",mysteriousSound,Color.ORANGE),
-        		new Dialogue("仙石さん", "弱いな！？",jumpSound,Color.WHITE),
-        		new Dialogue("なりなり", "ま、まだだ…まだ終わってない…！",jumpSound,Color.ORANGE),
-        		new Dialogue("仙石さん", "もう終わってる。",mysteriousSound,Color.WHITE),
-        		new Dialogue("なりなり", "ぐああああああ！！",damageSound,Color.ORANGE),
-        		new Dialogue("あにき", "クク…やはり雑魚か。",jumpSound,Color.RED),
-        		new Dialogue("仙石さん", "おい、完全に遊ばれてるぞ。",jumpSound,Color.WHITE),
-        		new Dialogue("あにき", "まあいい。次は特別だ。",jumpSound,Color.RED),
-        		new Dialogue("あにき", "来い、わだたく。",jumpSound,Color.RED),
-        		new Dialogue("わだたく", "……とてとて…",cuteSound,Color.PINK),
-        		new Dialogue("わだたく", "……ぴょこっ",appearSound,Color.PINK),
-        		new Dialogue("仙石さん", "……ん？",mysteriousSound,Color.WHITE),
-        		new Dialogue("仙石さん", "なんだこのかわいい生き物は。",jumpSound,Color.WHITE),
-        		new Dialogue("わだたく", "わだ〜たく〜…♪",shineSound,Color.PINK),
-        		new Dialogue("わだたく", "よろしくね♪",shineSound,Color.PINK),
-        		new Dialogue("仙石さん", "……弱そうだな。",mysteriousSound,Color.WHITE),
-        		new Dialogue("あにき", "見た目で判断するな。",jumpSound,Color.RED),
-        		new Dialogue("わだたく", "えいっ",atacSound,Color.PINK),
-        		new Dialogue("仙石さん", "ぐっ！？",jumpSound,Color.WHITE),
-        		new Dialogue("仙石さん", "な、何だ今の一撃は…！",jumpSound,Color.WHITE),
-        		new Dialogue("わだたく", "あそぼ？♪",shineSound,Color.RED),
-        		new Dialogue("わだたく", "いっぱいあそぼ〜♪",shineSound,Color.RED),
-        		new Dialogue("あにき", "そいつは俺のペットでな。",jumpSound,Color.RED),
-        		new Dialogue("あにき", "強そうに見えないが、遊ばれたら最後だ。",jumpSound,Color.RED)
+        		new Dialogue("なりなり", "あ、あれっ…！？",mysteriousSound,Color.ORANGE),//0
+        		new Dialogue("仙石さん", "弱いな！？",jumpSound,Color.WHITE),//1
+        		new Dialogue("なりなり", "ま、まだだ…まだ終わってない…！",null,Color.ORANGE),//2
+        		new Dialogue("仙石さん", "もう終わってる。",mysteriousSound,Color.WHITE),//3
+        		new Dialogue("なりなり", "ぐああああああ！！",damageSound,Color.ORANGE),//4
+        		new Dialogue("あにき", "クク…やはり雑魚か。",null,Color.RED),//5
+        		new Dialogue("仙石さん", "おい、完全に遊ばれてるぞ。",jumpSound,Color.WHITE),//6
+        		new Dialogue("あにき", "まあいい。次は特別だ。",null,Color.RED),//7
+        		new Dialogue("あにき", "来い、わだたく。",jumpSound,Color.RED),//8
+        		new Dialogue("わだたく", "……とてとて…",cuteSound,Color.PINK),//9
+        		new Dialogue("わだたく", "……ぴょこっ",appearSound,Color.PINK),//10
+        		new Dialogue("仙石さん", "……ん？",mysteriousSound,Color.WHITE),//11
+        		new Dialogue("仙石さん", "なんだこのかわいい生き物は。",jumpSound,Color.WHITE),//12
+        		new Dialogue("わだたく", "わだ〜たく〜…♪",shineSound,Color.PINK),//13
+        		new Dialogue("わだたく", "よろしくね♪",shineSound,Color.PINK),//14
+        		new Dialogue("仙石さん", "……弱そうだな。",mysteriousSound,Color.WHITE),//15
+        		new Dialogue("あにき", "見た目で判断するな。",null,Color.RED),//16
+        		new Dialogue("わだたく", "えいっ",atacSound,Color.PINK),//17
+        		new Dialogue("仙石さん", "ぐっ！？",aSound,Color.WHITE),//18
+        		new Dialogue("仙石さん", "な、何だ今の一撃は…！",null,Color.WHITE),//19
+        		new Dialogue("わだたく", "あそぼ？♪",shineSound,Color.RED),//20
+        		new Dialogue("わだたく", "いっぱいあそぼ〜♪",shineSound,Color.RED),//21
+        		new Dialogue("あにき", "そいつは俺のペットでな。",null,Color.RED),//22
+        		new Dialogue("あにき", "強そうに見えないが、遊ばれたら最後だ。",jumpSound,Color.RED)//23
         );
     	
     	//テキストクラスのインスタンスを作成
@@ -248,7 +255,7 @@ public class Story2 extends Application{
         narinariView.setVisible(false);
         anikiView.setVisible(true);
         wadatakuView.setVisible(false);
-        
+     
         
         //挿絵画像の読み込み
         Image insertImage = new Image(
@@ -301,8 +308,8 @@ public class Story2 extends Application{
         narinariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
         narinariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(わだたく)をウィンドウサイズに合わせる(右に表示)
-        wadatakuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
-        wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
+        wadatakuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+        wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
         wadatakuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
         sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.6));
@@ -370,12 +377,16 @@ public class Story2 extends Application{
         				narinariView.setVisible(true);
         				wadatakuView.setVisible(false);
         			}else if (speaker.equals("わだたく")) {
-        				//あにきの画像を非表示・わだたくの画像を表示
-        				anikiView.setVisible(false);
-        				narinariView.setVisible(false);
-        				wadatakuView.setVisible(true);
+        				//登場するまで画像非表示
+        			    if (messageIndex < 10) {
+        			        wadatakuView.setVisible(false);
+        			    } else {
+        			        wadatakuView.setVisible(true);
+        			    }
+        			    //あにきとなりなりの画像を非表示
+        			    anikiView.setVisible(false);
+        			    narinariView.setVisible(false);
         			}
-        			
         			
         			//表示しているメッセージに対して1文ずつ表示する文字数を増やしていく処理
         			//例：メッセージがhelloのとき、h→he→hel→hell→hello
@@ -425,6 +436,7 @@ public class Story2 extends Application{
         	if (messageIndex < dialogues.size() - 1) {
         		//メッセージカウントを増やす
         	    messageIndex++;
+        	    
         	    //差し込み絵の処理
         	    if (messageIndex == 4) {
         	    	insertView.setVisible(true);
@@ -433,7 +445,31 @@ public class Story2 extends Application{
         	    if (messageIndex == 5) {
         	    	insertView.setVisible(false);
         	    }
-        	    
+        	   
+        	    //ダメージ受けたときの横揺れ
+        	    if (messageIndex == 18) {
+
+        	        sengokuView.setOpacity(0.5);
+
+        	        // bind一旦外す
+        	        sengokuView.translateXProperty().unbind();
+
+        	        TranslateTransition shake = new TranslateTransition(Duration.millis(100), sengokuView);
+        	        shake.setByX(20);
+        	        shake.setCycleCount(6);
+        	        shake.setAutoReverse(true);
+        	        shake.play();
+
+        	        Timeline recover = new Timeline(
+        	            new KeyFrame(Duration.millis(300), e2 -> {
+        	                sengokuView.setOpacity(1.0);
+        	                // bind戻す
+        	                sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
+        	            })
+        	        );
+        	        recover.play();
+        	    }
+
         	    //タイピングを再スタート
         	    startTyping();
         	    //▼を消す
@@ -447,8 +483,8 @@ public class Story2 extends Application{
         	    //誰が話しているかの情報取得
         	    String speaker = d.speaker;
         	    //設定した音をならす
+        	    
         	    if (d.sound != null && d.sound != jumpSound) {
-        	        d.sound.stop();
         	        d.sound.play();
         	    }
         	    if (d.sound == jumpSound) {
