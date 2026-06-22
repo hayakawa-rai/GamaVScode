@@ -12,7 +12,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <javafx.version>21</javafx.version>
-    </properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        </properties>
 
     <dependencies>
         <dependency>
@@ -25,6 +27,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        
+		<dependency>
+        	<groupId>org.openjfx</groupId>
+        	<artifactId>javafx-media</artifactId>
+        	<version>${javafx.version}</version>
+    	</dependency>
+
     </dependencies>
 
     <build>
@@ -34,7 +43,11 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
+<<<<<<< HEAD
                     <mainClass>test2.Main</mainClass>
+=======
+                    <mainClass>test.SampleMainApp</mainClass>
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
                 </configuration>
             </plugin>
         </plugins>
