@@ -1,10 +1,9 @@
-// 最短で追いかける RedEnemy(赤)
 package test;
 
 import java.util.List;
 
 import Characters.Sengoku;
-import javafx.scene.image.Image; // ★インポートを追加
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class RedEnemy extends Enemy {
@@ -15,17 +14,18 @@ public class RedEnemy extends Enemy {
     public RedEnemy(ImageView imageView, Sengoku sengoku) {
         super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1, sengoku);
         
-        //画像を読み込んでエネミーに設定する処理
         try {
-            // resources/images/red_ghost.png を読み込む
-            this.normalImage = new Image(getClass().getResourceAsStream("/picture/hayakawa-udekumi.png"));
+            java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa-udekumi.png");
             
-            if (this.normalImage != null) {
-                // 読み込みに成功したらImageViewにセット
+            if (is == null) {
+                System.err.println("❌【重大エラー】画像 '/picture/hayakawa-udekumi.png' が見つかりません！");
+            } else {
+                this.normalImage = new Image(is);
                 this.imageView.setImage(this.normalImage);
+                System.out.println("⭕【大成功】早川さんの画像を敵キャラに設定しました！");
             }
         } catch (Exception e) {
-            System.out.println("赤ゴーストの画像読み込みに失敗しました。パスを確認してください。");
+            System.err.println("❌【例外発生】画像読み込み中にエラーが起きました。");
             e.printStackTrace();
         }
     }

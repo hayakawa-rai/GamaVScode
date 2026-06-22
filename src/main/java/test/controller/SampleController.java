@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import test.SamplepracticeApp;
+import test.SampleMainApp; // 👈 【修正】本番用のメインアプリをインポートします
 import test.model.SampleModel;
 import test.view.SampleView;
 
@@ -24,6 +24,7 @@ public class SampleController {
         attachInput(scene);
         startLoop();
     }
+    
     public static void switchToStart(javafx.stage.Stage stage) {
         try {
             // startクラスのインスタンスを作る
@@ -45,8 +46,11 @@ public class SampleController {
             e.printStackTrace();
         }
     }
+    
     public static void switchToGame(javafx.stage.Stage stage) {
-        try { SamplepracticeApp App = new SamplepracticeApp();
+        try { 
+           
+            SampleMainApp App = new SampleMainApp();
             App.starts(stage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,10 +66,11 @@ public class SampleController {
             }
             if (model.isPaused()) return;
 
-            if (code == KeyCode.W) model.setNextDirection(Direction.UP);
-            if (code == KeyCode.S) model.setNextDirection(Direction.DOWN);
-            if (code == KeyCode.A) model.setNextDirection(Direction.LEFT);
-            if (code == KeyCode.D) model.setNextDirection(Direction.RIGHT);
+            // 矢印キーでも操作できるように拡張
+            if (code == KeyCode.W || code == KeyCode.UP)    model.setNextDirection(Direction.UP);
+            if (code == KeyCode.S || code == KeyCode.DOWN)  model.setNextDirection(Direction.DOWN);
+            if (code == KeyCode.A || code == KeyCode.LEFT)  model.setNextDirection(Direction.LEFT);
+            if (code == KeyCode.D || code == KeyCode.RIGHT) model.setNextDirection(Direction.RIGHT);
         });
     }
 
@@ -74,9 +79,6 @@ public class SampleController {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-               // model.updatePacman();
-                //model.updateMouth();
-            	
                 // パックマンの移動、アイテム捕食、口パク、敵の移動がすべて入った update()
                 model.update();
                 
