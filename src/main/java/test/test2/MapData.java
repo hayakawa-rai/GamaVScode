@@ -86,6 +86,7 @@ public class MapData {
 	}
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
+		
 		this.enemy = new RedEnemy(enemyImageView, this.sengoku);
 	}
 

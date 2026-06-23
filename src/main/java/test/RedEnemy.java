@@ -8,8 +8,8 @@ import javafx.scene.image.ImageView;
 
 public class RedEnemy extends Enemy {
 
-    private static final int START_COL = 9;
-    private static final int START_ROW = 9;
+    private static final int START_COL = 13;
+    private static final int START_ROW = 11;
 
     public RedEnemy(ImageView imageView, Sengoku sengoku) {
         super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1, sengoku);
