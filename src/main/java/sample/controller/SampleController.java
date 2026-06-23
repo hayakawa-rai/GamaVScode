@@ -1,4 +1,4 @@
-package test.controller;
+package sample.controller;
 
 import Characters.Direction;
 import javafx.animation.AnimationTimer;
@@ -6,10 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import sample.model.SampleModel;
+import sample.view.SampleView;
 import test.SampleMainApp; // 👈 【修正】本番用のメインアプリをインポート
 import test.SamplepracticeApp;
-import test.model.SampleModel;
-import test.view.SampleView;
 
 public class SampleController {
 

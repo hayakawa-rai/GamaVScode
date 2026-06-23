@@ -1,4 +1,4 @@
-package test.model;
+package sample.model;
 
 import Characters.Direction;
 import Characters.Sengoku;

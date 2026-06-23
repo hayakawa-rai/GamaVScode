@@ -9,49 +9,113 @@ test1\controller\GameController$1.class
 Characters\Direction$1.class
 test\Sengoku.class
 test2\model\MapData.class
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+sample\controller\SampleController.class
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 Items\Chii.class
 sample\stageclear2.class
 sample\practice$1.class
+<<<<<<< HEAD
 test\view\SampleView.class
 character\GameMap.class
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 Characters\Sengoku.class
 test3\model\MapData.class
+<<<<<<< HEAD
 character\Character.class
+=======
+<<<<<<< HEAD
+character\Character.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 sample\stageclear3.class
+<<<<<<< HEAD
 start.class
 character\Direction.class
+=======
+<<<<<<< HEAD
+start.class
+character\Direction.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 test3\controller\GameController$1.class
 story\Stageclear1.class
 test3\Main.class
 start\Start$1.class
 story\Story3.class
 sample\story1.class
+sample\controller\SampleController$1.class
 test\Character.class
+<<<<<<< HEAD
 character\Sengoku.class
+=======
+<<<<<<< HEAD
+character\Sengoku.class
+=======
+sample\view\SampleView.class
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 test\test2\MapData.class
 test2\Main.class
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 character\SengokuState.class
 test\model\SampleModel.class
+=======
+sample\model\SampleModel.class
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 story\Stageclear2.class
+<<<<<<< HEAD
 Item\Chii.class
 META-INF\maven\sample\Game\pom.xml
+=======
+<<<<<<< HEAD
+Item\Chii.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 sample\start.class
 sample\practice.class
 test\Direction.class
-Map.class
 story\Practice.class
 test\test2\TestMainapp.class
 sample\stageclear1.class
 practice.class
 test\test2\GameController.class
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 Item\Point.class
 test\PacmanSample.class
 character\Direction$1.class
+=======
+test\PacmanSample.class
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 story\Dialogue.class
 story\StoryUtils.class
 sample\start$1.class
+<<<<<<< HEAD
 start$1.class
 META-INF\MANIFEST.MF
+=======
+<<<<<<< HEAD
+start$1.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 test\Enemy.class
 Characters\EnemyState.class
 story\Gameover.class
@@ -60,10 +124,10 @@ Characters\Direction.class
 story\Story2.class
 Characters\SengokuState.class
 test\test2\GameController$1.class
-test\controller\SampleController$1.class
 story\Practice$1.class
 test\RedEnemy.class
 test1\model\MapData.class
+<<<<<<< HEAD
 Item\Item.class
 start\Start.class
 test2\controller\GameController.class
@@ -74,14 +138,42 @@ test\controller\SampleController.class
 test2\controller\GameController$1.class
 test3\view\MapView.class
 META-INF\maven\sample\Game\pom.properties
+=======
+<<<<<<< HEAD
+Item\Item.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+start\Start.class
+test2\controller\GameController.class
+sample\gameover.class
+practice$1.class
+test\SampleMainApp.class
+<<<<<<< HEAD
+test\controller\SampleController.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+test2\controller\GameController$1.class
+test3\view\MapView.class
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 test\SamplepracticeApp.class
 Items\Point.class
 test\Direction$1.class
 test1\controller\GameController.class
+<<<<<<< HEAD
 test$1.class
 gameover.class
 start\Bgm.class
 test.class
+=======
+<<<<<<< HEAD
+test$1.class
+gameover.class
+start\Bgm.class
+test.class
+=======
+start\Bgm.class
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 Items\Item.class
 test1\view\MapView.class
 test2\view\MapView.class

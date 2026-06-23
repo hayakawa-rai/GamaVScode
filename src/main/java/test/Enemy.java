@@ -61,8 +61,8 @@ public abstract class Enemy extends Character {
 
 				int col = (int) (centerX / CELL_SIZE);
 				int row = (int) (centerY / CELL_SIZE);
-				this.x = col * CELL_SIZE;
-				this.y = row * CELL_SIZE;
+				this.x = (int) Math.round(centerX / CELL_SIZE) * CELL_SIZE;
+				this.y = (int) Math.round(centerY / CELL_SIZE) * CELL_SIZE;
 
 				this.direction = chosenDirection;
 			}
@@ -199,7 +199,7 @@ public abstract class Enemy extends Character {
 		}
 		//通常状態の時は、ゴーストの巣(行10以降、かつ中央の列8～10)への侵入を禁止にする
 		if(this.currentState != EnemyState.DEAD) {//死亡している時以外
-			if(nextRow >= 9 && nextRow <= 10 && nextCol >= 8 && nextCol <= 10) {
+			if(nextRow >= 13 && nextRow <= 15 && nextCol >= 12 && nextCol <= 15) {
 				return false;//巣の方向の侵入禁止
 			}
 		}
