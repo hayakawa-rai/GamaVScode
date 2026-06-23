@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 public class RedEnemy extends Enemy {
 
 	// マップ中心 エネミーハウス上 （仮座標）
-	private static final int START_COL = 13;
-	private static final int START_ROW = 11;
+	private static final int START_COL = 19;
+	private static final int START_ROW = 14;
 
 	 // 縄張りエリアの中心（右上）（仮座標）
 	private static final int TERRITORY_COL = 24;

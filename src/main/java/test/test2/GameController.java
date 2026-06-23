@@ -33,11 +33,11 @@ public class GameController {
 	public static void switchToStart(javafx.stage.Stage stage) {
 		try {
 			// startクラスのインスタンスを作る
-			sample.start titleScreen = new sample.start();
+				sample.start titleScreen = new sample.start();
 			// ウィンドウの権利(stage)を渡して、タイトル画面を起動・上書きする！
-			titleScreen.start(stage);
+				titleScreen.start(stage);
 		} catch (Exception e) {
-			e.printStackTrace();
+				e.printStackTrace();
 		}
 	}
 	
@@ -98,8 +98,12 @@ public class GameController {
 				model.updateMouth();   // 口のアニメーション
 				
 				// 画面描写（ステージ背景とパックマンの描画を分離して実行）
-				view.drawStage(gc);
-				view.drawPacman(gc);
+				//Canvasの現在のリアルタイムな横幅・縦幅を取得してビューに渡す
+				double currentWidth = canvas.getWidth();
+				double currentHeight = canvas.getHeight();
+				
+				// 新しく統合した draw メソッドを呼び出す
+				view.draw(gc, currentWidth, currentHeight);
 			}
 		};
 
