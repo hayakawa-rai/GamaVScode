@@ -1,6 +1,7 @@
 package story;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,8 +14,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
-import sample.start;
+import javafx.util.Duration;
+import start.Start;
 
 public class Practice extends Application {
 
@@ -31,7 +34,7 @@ public class Practice extends Application {
 	}
 
 	public Scene createScene() {
-
+		
 		// タイトル
 		Label title = new Label("練習モード");
 		title.setStyle(
@@ -59,8 +62,27 @@ public class Practice extends Application {
 		stage1.setPrefHeight(80);
 		stage2.setPrefHeight(80);
 		stage3.setPrefHeight(80);
-
+		
+		//音声読み込み
+		AudioClip clickSound = new AudioClip(
+			getClass().getResource("/music/select.mp3").toExternalForm()
+		);
+		// 音量調整
+		clickSound.setVolume(0.4);
+		//音声読み込み
+		AudioClip cancelSound = new AudioClip(
+			getClass().getResource("/music/cancel.mp3").toExternalForm()
+		);
+		// 音量調整
+		cancelSound.setVolume(0.4);
+		
 		stage1.setOnAction(e -> {
+			//音をつける
+	    	clickSound.stop();
+	    	clickSound.play();
+	    	
+	    	// 0.5秒待つ
+	        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
 			// 1. 練習モードの背景アニメーションを停止
 			if (timer != null) {
 				timer.stop();
@@ -81,17 +103,26 @@ public class Practice extends Application {
 
 		// ★ master側の処理を残す
 		backButton.setOnAction(e -> {
-			// stop the background animation before switching back
-			if (timer != null) {
-				timer.stop();
-			}
-			start titleScreen = new start();
-			try {
-				titleScreen.start(stage);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+	    	cancelSound.stop();
+	    	cancelSound.play();
+	    	
+	    	// 0.5秒待つ
+	        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+
+	        // 待った後に画面遷移
+	        pause.setOnFinished(ev -> {
+	        Start titleScreen = new Start();
+	        // 背景停止
+	        timer.stop();
+	        try {
+	            titleScreen.start(stage);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	    });
+	        // タイマー開始
+	        pause.play();
+	    });
 
 		HBox backBox = new HBox(backButton);
 		backBox.setAlignment(Pos.BOTTOM_RIGHT);
@@ -139,7 +170,7 @@ public class Practice extends Application {
 
 		root.getChildren().addAll(bgPane, ui);
 
-		Scene scene = new Scene(root, 800, 600);
+		Scene scene = new Scene(root, 1000, 800);
 
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());

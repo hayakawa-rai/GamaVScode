@@ -3,6 +3,7 @@ package story;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -22,6 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import start.Bgm;
 
 public class Story1 extends Application{
 
@@ -37,8 +39,8 @@ public class Story1 extends Application{
         stage.setTitle("story1");
         stage.show();
     }
-    
-    
+    //ストーリー終了処理を1回だけにする用
+    private boolean isEndingStarted = false;
     //今どのメッセージを表示しているかのカウント用
     private int messageIndex = 0;
     //何文字目まで表示するか(タイピング演出のためのカウンター)
@@ -66,6 +68,10 @@ public class Story1 extends Application{
     
     public Scene story() {
     	
+    	//BGMの再生
+    	Bgm.stopBGM();
+    	Bgm.playBGM("/music/storybgm.mp3");
+    
     	 //ジャンプ音の読み込み
         AudioClip jumpSound = new AudioClip(
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
@@ -97,7 +103,7 @@ public class Story1 extends Application{
     	//上にあげる
         text.setTranslateY(-5);
         
-        
+         
     	//吹き出し(textの背景)作成
     	Rectangle box = new Rectangle();
     	//横幅が760pxを超えたら自動で改行する
@@ -372,12 +378,34 @@ public class Story1 extends Application{
         	   		jumpNarinari.playFromStart();
         	    }
         	} else {//メッセージの最後まで行った後の処理
-        		//・・・を表示をする
-        	    text.setText("・・・");
-        	    //▼を消す
+
+        	    if (isEndingStarted) return;
+        	    isEndingStarted = true;
+
         	    nextMark.setVisible(false);
+
+        	    // ✅ 黒いフェード用
+        	    Rectangle fadeRect = new Rectangle(1000, 800, Color.BLACK);
+        	    fadeRect.setOpacity(0);
+        	    base.getChildren().add(fadeRect);
+
+        	    // ✅ フェードアウト
+        	    FadeTransition fade = new FadeTransition(Duration.seconds(1.5), fadeRect);
+        	    fade.setFromValue(0);
+        	    fade.setToValue(1);
+
+        	    fade.setOnFinished(ev -> {
+        	        // ✅ BGM停止
+        	        Bgm.stopBGM();
+
+        	        // ✅ 次の画面へ
+        	        test.test2.GameController.switchToGame(stage);
+        	    });
+
+        	    fade.play();
         	}
         });
+        
         //最初の文章を表示(部品のすべての処理を終えてから文字を表示するため最後に記述)
         startTyping();
         

@@ -85,6 +85,9 @@ public class Start extends Application {
 		buttonBox.setSpacing(20); 
 		//中央に設定
 		buttonBox.setAlignment(Pos.CENTER);
+		//BGMの再生
+		Bgm.playBGM("/music/startbgm.mp3");
+
 		
 		//音声読み込み
 		AudioClip clickSound = new AudioClip(
@@ -107,6 +110,7 @@ public class Start extends Application {
 		    	Timeline delay = new Timeline(
 		    			new KeyFrame(Duration.millis(500), ev -> {
 		    				timer.stop();
+		    				Bgm.stopBGM();
 		    	            new Story1().start(stage);
 		    	})
 		    );
