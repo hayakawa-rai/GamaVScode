@@ -77,7 +77,7 @@ public class Story1 extends Application{
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
         	);
         //音量調整
-        jumpSound.setVolume(0.3); 
+        jumpSound.setVolume(0.2); 
       
          List<Dialogue> dialogues = Arrays.asList( 
         		new Dialogue("仙石さん", "おはよ～～！！",jumpSound,Color.WHITE),

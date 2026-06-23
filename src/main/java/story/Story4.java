@@ -3,6 +3,7 @@ package story;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -24,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Bgm;
+import start.Start;
 
 public class Story4 extends Application{
 
@@ -40,7 +42,8 @@ public class Story4 extends Application{
         stage.show();
     }
 	
-
+    //ストーリー終了処理を1回だけにする用
+    private boolean isEndingStarted = false;
     //今どのメッセージを表示しているかのカウント用
     private int messageIndex = 0;
     //何文字目まで表示するか(タイピング演出のためのカウンター)
@@ -78,13 +81,13 @@ public class Story4 extends Application{
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
         	);
         //音量調整
-        jumpSound.setVolume(0.3); 
+        jumpSound.setVolume(0.2); 
         //ダメージ音の読み込み
         AudioClip aSound = new AudioClip(
         	getClass().getResource("/music/damage2.mp3").toExternalForm()
         );
         //音量調整
-        aSound.setVolume(0.3);
+        aSound.setVolume(0.4);
      
         
     	//会話内容を設定
@@ -169,7 +172,7 @@ public class Story4 extends Application{
         
         //背景画像を読み込み
         Image bgImage = new Image(
-        		getClass().getResourceAsStream("/picture/emd-nottori.jpg")
+        		getClass().getResourceAsStream("/picture/shatyoroom.jpg")
         );
         //背景画像の表示
         ImageView bgView = new ImageView(bgImage);
@@ -438,10 +441,31 @@ public class Story4 extends Application{
         	        }
         	    }
         	} else {//メッセージの最後まで行った後の処理
-        		//・・・を表示をする
-        	    text.setText("・・・");
-        	    //▼を消す
+        		if (isEndingStarted) return;
+        	    isEndingStarted = true;
+
         	    nextMark.setVisible(false);
+
+        	    //黒いフェード用
+        	    Rectangle fadeRect = new Rectangle(1000, 800, Color.BLACK);
+        	    fadeRect.setOpacity(0);
+        	    base.getChildren().add(fadeRect);
+
+        	    //フェードアウト
+        	    FadeTransition fade = new FadeTransition(Duration.seconds(1.5), fadeRect);
+        	    fade.setFromValue(0);
+        	    fade.setToValue(1);
+
+        	    fade.setOnFinished(ev -> {
+        	        //BGM停止
+        	        Bgm.stopBGM();
+
+        	        //スタート画面へ遷移
+        	        Start start = new Start();
+        	        start.start(stage);
+        	    });
+
+        	    fade.play();
         	}
         });
 

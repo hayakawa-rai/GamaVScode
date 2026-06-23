@@ -171,6 +171,9 @@ public class Practice extends Application {
 		root.getChildren().addAll(bgPane, ui);
 
 		Scene scene = new Scene(root, 1000, 800);
+		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
 
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());

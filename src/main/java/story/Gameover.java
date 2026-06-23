@@ -105,7 +105,10 @@ public class Gameover extends Application {
 		//rootに追加
 		root.getChildren().addAll(bg, whiteOverlay, ui);
 		
-		Scene scene = new Scene(root, 800, 600);
+		Scene scene = new Scene(root, 1000, 800);
+		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
 		scene.getStylesheets().add(Gameover.class.getResource("/css/gameover.css").toExternalForm());
 
 		return scene;
