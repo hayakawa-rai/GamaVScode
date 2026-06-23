@@ -44,6 +44,7 @@
                 <version>0.0.8</version>
                 <configuration>
                 
+  
                     <mainClass>start.Start</mainClass>
                 </configuration>
             </plugin>
