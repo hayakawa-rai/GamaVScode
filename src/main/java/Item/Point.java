@@ -1,6 +1,6 @@
 package Item;
 
-import character.Sengoku;
+import Character.Sengoku;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
