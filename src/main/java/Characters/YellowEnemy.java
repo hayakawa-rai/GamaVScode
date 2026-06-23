@@ -1,4 +1,5 @@
 /* Sengokuの位置の4マス先を狙う YellowEnemy(黄) 
+//test
 
 package Characters;
 

@@ -23,6 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import start.Bgm;
 
 public class Story4 extends Application{
 
@@ -69,7 +70,9 @@ public class Story4 extends Application{
     
     public Scene story4() {
     	
-        
+    	//BGMの再生
+    	Bgm.stopBGM();
+    	Bgm.playBGM("/music/endhing.mp3");
         //ジャンプ音の読み込み
         AudioClip jumpSound = new AudioClip(
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
@@ -95,7 +98,7 @@ public class Story4 extends Application{
     			new Dialogue("あにき", "……悪かった。全部返します。",jumpSound,Color.RED),
     			new Dialogue("仙石さん", "……はぁ。やっとか。",null,Color.WHITE),
     			new Dialogue("仙石さん", "これで普通に働けるな。",jumpSound,Color.WHITE),
-    			new Dialogue("あにき", "ああ。一社員としっかり働きます。",jumpSound,Color.RED),
+    			new Dialogue("あにき", "ああ。一社員としてしっかり働きます。",jumpSound,Color.RED),
     			new Dialogue("仙石さん", "よし。しっかり反省してるみたいだな。",null,Color.WHITE),
     			new Dialogue("仙石さん", "戻るぞ。仕事が待ってる。",jumpSound,Color.WHITE),
     			new Dialogue("あにき", "はい。先輩！！",jumpSound,Color.RED)
@@ -383,30 +386,6 @@ public class Story4 extends Application{
         		//メッセージカウントを増やす
         	    messageIndex++;
         	    
-        	    if (messageIndex == 12) {
-        	    	Timeline shakeSlot = new Timeline(
-        	    		    new KeyFrame(Duration.millis(0), e2 -> {
-        	    		        base.setTranslateX(Math.random() * 30 - 15); // -15〜+15
-        	    		        base.setTranslateY(Math.random() * 20 - 10); // -10〜+10
-        	    		    }),
-        	    		    new KeyFrame(Duration.millis(40)) // 更新間隔
-        	    		);
-
-        	    		//回数（揺れ時間）
-        	    		shakeSlot.setCycleCount(15);
-
-        	    		//終わったら元に戻す
-        	    		shakeSlot.setOnFinished(e2 -> {
-        	    		    base.setTranslateX(0);
-        	    		    base.setTranslateY(0);
-        	    		});
-
-        	    		shakeSlot.play();
-        	    		
-        	    }
-
-        	    
-        	    //差し込み絵の処理
         	    //タイピングを再スタート
         	    startTyping();
         	    //▼を消す
