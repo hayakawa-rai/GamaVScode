@@ -5,11 +5,24 @@ test\test2\TestMainapp.class
 sample\stageclear1.class
 test\test2\MapView.class
 test\test2\GameController.class
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'otoha' of https://github.com/hayakawa-rai/GameApplication.git
 Characters\GameMap.class
 story\Story4.class
 story\Stageclear3.class
 Characters\Character.class
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'otoha' of https://github.com/hayakawa-rai/GameApplication.git
 story\Dialogue.class
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> branch 'otoha' of https://github.com/hayakawa-rai/GameApplication.git
 Characters\Direction$1.class
 story\StoryUtils.class
 sample\start$1.class
@@ -19,9 +32,17 @@ Items\Chii.class
 sample\stageclear2.class
 sample\practice$1.class
 test\view\SampleView.class
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'otoha' of https://github.com/hayakawa-rai/GameApplication.git
 Characters\EnemyState.class
 story\Gameover.class
 Characters\Sengoku.class
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'otoha' of https://github.com/hayakawa-rai/GameApplication.git
 Characters\Direction.class
 story\Story2.class
 Characters\SengokuState.class
@@ -41,6 +62,12 @@ test\Character.class
 test\controller\SampleController.class
 test\test2\MapData.class
 test\model\SampleModel.class
+<<<<<<< HEAD
+=======
+
+test\Direction$1.class
+
+>>>>>>> branch 'otoha' of https://github.com/hayakawa-rai/GameApplication.git
 test\SamplepracticeApp.class
 Items\Point.class
 story\Stageclear2.class
