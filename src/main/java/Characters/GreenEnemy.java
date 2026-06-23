@@ -8,12 +8,14 @@ import javafx.scene.image.ImageView;
 
 public class GreenEnemy extends Enemy {
 
+
     // この距離以上ならプレイヤーを追いかける（8マス）
     private static final double BORDER = 8 * CELL_SIZE;
 
-    // 縄張り（左下）
-    private static final int CORNER_COL = 0;
-    private static final int CORNER_ROW = 30;
+    // 縄張りエリアの中心（左下）（仮座標）
+    private static final int TERRITORY_COL = 3;
+	private static final int TERRITORY_ROW = 26;
+
 
     // 初期位置(出撃待機)
     private long startTime;
@@ -79,7 +81,6 @@ public class GreenEnemy extends Enemy {
                     (int)((player.getY() + CELL_SIZE / 2.0)
 
 
-
 	// プレイヤーに最も近づく方向を選択
             return getClosestDirection(
                     validDirections,
@@ -88,10 +89,12 @@ public class GreenEnemy extends Enemy {
         }
 
         // プレイヤーが近い場合は縄張りへ戻る
-        return getClosestDirection(
-                validDirections,
-                CORNER_COL,
-                CORNER_ROW);
+       
+			return getClosestDirection(
+        			validDirections,
+        			TERRITORY_COL,
+        			TERRITORY_ROW);
+
     }
 }
 */

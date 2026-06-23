@@ -61,6 +61,12 @@ public class MapData {
 	private boolean justWarped = false;
 	private int lastWarpX = -1;
 	private int lastWarpY = -1;
+	
+	//booleanを受け取る新しいコンストラクターを追加
+	public MapData(boolean paused) {
+		this(); // 上にある引数なしのコンストラクターを呼び出して初期化を行う
+		this.paused = paused; // 受け取った値をpausedフィールドにセットする
+	}
 
 	public MapData() {
 		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
@@ -80,6 +86,7 @@ public class MapData {
 	}
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
+		
 		this.enemy = new RedEnemy(enemyImageView, this.sengoku);
 	}
 
