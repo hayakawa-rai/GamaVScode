@@ -405,11 +405,15 @@ public class Story4 extends Application{
         	            getClass().getResourceAsStream("/picture/hayakawa2.png")
         	        ));
         	        // サイズ変更
-        	        anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
-        	        anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
+        	        anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.7));
+        	        anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.1));
+        	        anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         	    } else {
         	        // 元の画像に戻す
         	        anikiView.setImage(anikiImage);
+        	        anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+        	        anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
+        	        anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         	    }
         	    //設定した音をならす
         	    if (d.sound != null && d.sound != jumpSound) {
