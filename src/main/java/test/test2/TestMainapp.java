@@ -1,72 +1,60 @@
 package test.test2;
 
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Screen;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-//パックマン・アプリケーションの起動クラス
 public class TestMainapp extends Application {
-
-	//JavaFX起動時に最初に呼ばれるメソッド
+    
+    private GameController controller;
+    
     @Override
     public void start(Stage stage) {
+        GameController.switchToStart(stage);
+    }
+    
+    public void starts(Stage stage) {
+        // 多重起動を確実に防止
+        if (this.controller != null) {
+            this.controller.stop();
+        }
 
-    	//ModelとViewの作成
-        MapData model = new MapData();  //ゲームデータ(マップ・パックマン状態)
-        MapView view = new MapView(model);  //描画担当
+        MapData model = new MapData();
+        MapView view = new MapView(model);
 
-        // 画面サイズ取得
-        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        double screenW = bounds.getWidth();
-        double screenH = bounds.getHeight();
+        Group root = new Group();
+        int viewWidth = model.getMap()[0].length * MapData.TILE_SIZE;
+        int viewHeight = model.getMap().length * MapData.TILE_SIZE;
 
-        //HUD（情報表示領域）
-        // HUDの高さ
-        double hudHeight = 50;
+        Scene scene = new Scene(root, viewWidth, viewHeight, Color.BLACK);
+        Canvas canvas = new Canvas(viewWidth, viewHeight);
+        root.getChildren().add(canvas);
+        
+        // 先に空の ImageView を用意
+        javafx.scene.image.ImageView redImageView = new javafx.scene.image.ImageView();
+        
+        // モデル側で敵を生成し、内部で画像（Image）を確実にセットさせる
+        model.initEnemy(redImageView);
+        
+        //  画像が入った「後」に、ビューを通してサイズを30x30にフィットさせる
+        view.setupEnemyView(redImageView);
+        
+        //  敵の ImageView を画面に登録
+        root.getChildren().add(redImageView);
+        
+        //  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
+        this.controller = new GameController(model, view, canvas, scene);
 
-        //Canvas作成
-        //メインゲーム描画用キャンバス
-        Canvas gameCanvas = new Canvas(screenW, screenH - hudHeight * 2);
-        //上部HUD
-        Canvas topHud = new Canvas(screenW, hudHeight);
-        //下部HUD
-        Canvas bottomHud = new Canvas(screenW, hudHeight);
-
-        //画面レイアウト作成
-        BorderPane root = new BorderPane();
-        root.setTop(topHud);  //上段
-        root.setCenter(gameCanvas);  //中央(ゲーム画面配置)
-        root.setBottom(bottomHud);  //下段
-
-        //シーン生成
-        Scene scene = new Scene(root);
-
-        //ウィンドウ設定
+        stage.setTitle("JavaFX Pacman Stage MVC");
         stage.setScene(scene);
-        
-        //ウィンドウタイトル
-        stage.setTitle("Pacman MVC");
-        
-        //起動時に最大化
-        stage.setMaximized(true);
-
-        //Controller生成
-        //MVCを接続しゲーム開始
-        new GameController(model, view, gameCanvas, scene);
-
-        //ウィンドウ表示
         stage.show();
-
-        //キーボード入力を受け取る設定
-        gameCanvas.setFocusTraversable(true);
-        gameCanvas.requestFocus();
+        
+        canvas.requestFocus(); 
     }
 
-    //プログラム開始地点
     public static void main(String[] args) {
         launch(args);
     }

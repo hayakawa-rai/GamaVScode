@@ -1,7 +1,6 @@
 package story;
 
 import javafx.animation.AnimationTimer;
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,9 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import start.Start;
 
 public class Practice extends Application {
@@ -44,19 +41,8 @@ public class Practice extends Application {
 			    "-fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3);"
 			);
 
-		//音声読み込み
-		AudioClip clickSound = new AudioClip(
-			getClass().getResource("/music/select.mp3").toExternalForm()
-		);
-		// 音量調整
-		clickSound.setVolume(0.4);
-		//音声読み込み
-		AudioClip cancelSound = new AudioClip(
-			getClass().getResource("/music/cancel.mp3").toExternalForm()
-		);
-		// 音量調整
-		cancelSound.setVolume(0.4);
-				
+
+
 		// ステージ選択
 		Button stage1 = new Button("STAGE 1");
 		Button stage2 = new Button("STAGE 2");
@@ -84,26 +70,18 @@ public class Practice extends Application {
 		backButton.setPrefWidth(200);
 
 		// ★ master側の処理を残す
-		//スタート画面へ戻る
-	    backButton.setOnAction(e -> {
-	    	cancelSound.stop();
-	    	cancelSound.play();
-	    	
-	    	// 0.5秒待つ
-	        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
-
-	        // 待った後に画面遷移
-	        pause.setOnFinished(ev -> {
-	        Start titleScreen = new Start();
-	        try {
-	            titleScreen.start(stage);
-	        } catch (Exception ex) {
-	            ex.printStackTrace();
-	        }
-	    });
-	        // タイマー開始
-	        pause.play();
-	    });
+		backButton.setOnAction(e -> {
+			// stop the background animation before switching back
+			if (timer != null) {
+				timer.stop();
+			}
+			Start titleScreen = new Start();
+			try {
+				titleScreen.start(stage);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
 
 		HBox backBox = new HBox(backButton);
 		backBox.setAlignment(Pos.BOTTOM_RIGHT);
@@ -151,7 +129,7 @@ public class Practice extends Application {
 
 		root.getChildren().addAll(bgPane, ui);
 
-		Scene scene = new Scene(root, 1000, 800);
+		Scene scene = new Scene(root, 800, 600);
 
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
