@@ -81,7 +81,28 @@ public class Stageclear3 extends Application{
     //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
     next.getStyleClass().add("game-button2");
     next.setPrefSize(250, 80);
-    
+    //次の画面に遷移
+    next.setOnAction(e -> {
+        // 音を再生
+    	clickSound.stop();
+        clickSound.play();
+
+        // 0.5秒待つ
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+
+        // 待った後に画面遷移
+        pause.setOnFinished(ev -> {
+            Story4 story4 = new Story4();
+            try {
+                story4.start(stage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // タイマー開始
+        pause.play();
+    });
     // 戻るボタン
     Button backButton = new Button("タイトルへ");
     //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定

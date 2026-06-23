@@ -76,39 +76,29 @@ public class Story4 extends Application{
         	);
         //音量調整
         jumpSound.setVolume(0.3); 
-        //倒される時の音の読み込み
-        AudioClip downSound = new AudioClip(
-        	    getClass().getResource("/music/down.mp3").toExternalForm()
-        	);
+        //ダメージ音の読み込み
+        AudioClip aSound = new AudioClip(
+        	getClass().getResource("/music/damage2.mp3").toExternalForm()
+        );
         //音量調整
-        downSound.setVolume(0.3); 
-        //起こった時の音の読み込み
-        AudioClip feelSound = new AudioClip(
-        	    getClass().getResource("/music/feel.mp3").toExternalForm()
-        	);
-        //音量調整
-        feelSound.setVolume(0.3);  //起こった時の音の読み込み
-        //最後の戦いの音楽の読み込み
-        AudioClip endSound = new AudioClip(
-        	    getClass().getResource("/music/end.mp3").toExternalForm()
-        	);
-        //音量調整
-        endSound.setVolume(0.3);
+        aSound.setVolume(0.3);
+     
+        
     	//会話内容を設定
     	List<Dialogue> dialogues = Arrays.asList( 
-        		new Dialogue("わだたく", "……あれ……？もう、あそべない……？",downSound,Color.RED),
-        		new Dialogue("仙石さん", "終わったか……",null,Color.WHITE),
-        		new Dialogue("あにき", "……ペットがやられたな。まあいい。",jumpSound,Color.RED),
-        		new Dialogue("あにき", "代わりはいくらでもいる。",null,Color.RED),
-        		new Dialogue("仙石さん", "……ふざけるな。",feelSound,Color.WHITE),
-        		new Dialogue("仙石さん", "社員を、道具みたいに扱いやがって……！",null,Color.WHITE),
-        		new Dialogue("仙石さん", "会社は、お前の遊び場じゃない！",jumpSound,Color.WHITE),
-        		new Dialogue("あにき", "会社？",null,Color.RED),
-        		new Dialogue("あにき", "ここはもう俺の支配下だ。",jumpSound,Color.RED),
-        		new Dialogue("あにき", "来るか、先輩社員サン。",jumpSound,Color.RED),
-        		new Dialogue("仙石さん", "取り戻す。ここは俺たちの会社だ！",jumpSound,Color.WHITE),
-        		new Dialogue("あにき", "いいだろう。",null,Color.RED),
-        		new Dialogue("あにき", "絶望を教えてやる！！",endSound,Color.RED)
+    			new Dialogue("あにき", "……!?。",aSound,Color.RED),
+    			new Dialogue("仙石さん", "……終わりだな。",null,Color.WHITE),
+    			new Dialogue("あにき", "……ああ、負けだ。",null,Color.RED),
+    			new Dialogue("仙石さん", "やりすぎだ。会社まで巻き込んで。",jumpSound,Color.WHITE),
+    			new Dialogue("あにき", "分かってる。もうやめる。",jumpSound,Color.RED),
+    			new Dialogue("仙石さん", "ならいい。今ならまだ戻せる。",null,Color.WHITE),
+    			new Dialogue("あにき", "……悪かった。全部返します。",jumpSound,Color.RED),
+    			new Dialogue("仙石さん", "……はぁ。やっとか。",null,Color.WHITE),
+    			new Dialogue("仙石さん", "これで普通に働けるな。",jumpSound,Color.WHITE),
+    			new Dialogue("あにき", "ああ。一社員としっかり働きます。",jumpSound,Color.RED),
+    			new Dialogue("仙石さん", "よし。しっかり反省してるみたいだな。",null,Color.WHITE),
+    			new Dialogue("仙石さん", "戻るぞ。仕事が待ってる。",jumpSound,Color.WHITE),
+    			new Dialogue("あにき", "はい。先輩！！",jumpSound,Color.RED)
         );
     	
     	//テキストクラスのインスタンスを作成
