@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
@@ -75,68 +76,39 @@ public class Story3 extends Application{
         	);
         //音量調整
         jumpSound.setVolume(0.3); 
-        //足音の読み込み
-        AudioClip cuteSound = new AudioClip(
-        	    getClass().getResource("/music/footsteps.mp3").toExternalForm()
+        //倒される時の音の読み込み
+        AudioClip downSound = new AudioClip(
+        	    getClass().getResource("/music/down.mp3").toExternalForm()
         	);
         //音量調整
-        cuteSound.setVolume(0.3);
-        //登場音の読み込み
-        AudioClip appearSound = new AudioClip(
-        	    getClass().getResource("/music/appearance.mp3").toExternalForm()
+        downSound.setVolume(0.3); 
+        //起こった時の音の読み込み
+        AudioClip feelSound = new AudioClip(
+        	    getClass().getResource("/music/feel.mp3").toExternalForm()
         	);
         //音量調整
-        appearSound.setVolume(0.3);
-        //まぬけな音の読み込み
-        AudioClip mysteriousSound = new AudioClip(
-        	    getClass().getResource("/music/nari.mp3").toExternalForm()
+        feelSound.setVolume(0.3);  //起こった時の音の読み込み
+        //最後の戦いの音楽の読み込み
+        AudioClip endSound = new AudioClip(
+        	    getClass().getResource("/music/end.mp3").toExternalForm()
         	);
         //音量調整
-        mysteriousSound.setVolume(0.3);
-        //輝く音の読み込み
-        AudioClip shineSound = new AudioClip(
-        	    getClass().getResource("/music/shine.mp3").toExternalForm()
-        	);
-        //音量調整
-        shineSound.setVolume(0.3);
-        //ダメージ音の読み込み
-        AudioClip damageSound = new AudioClip(
-        	    getClass().getResource("/music/damage.mp3").toExternalForm()
-        	);
-        //音量調整
-        damageSound.setVolume(0.3);
-        //攻撃音の読み込み
-        AudioClip atacSound = new AudioClip(
-        	    getClass().getResource("/music/atac.mp3").toExternalForm()
-        	);
-        //音量調整
-        atacSound.setVolume(0.3);
+        endSound.setVolume(0.3);
     	//会話内容を設定
     	List<Dialogue> dialogues = Arrays.asList( 
-        		new Dialogue("なりなり", "あ、あれっ…！？",mysteriousSound,Color.ORANGE),
-        		new Dialogue("仙石さん", "弱いな！？",jumpSound,Color.WHITE),
-        		new Dialogue("なりなり", "ま、まだだ…まだ終わってない…！",jumpSound,Color.ORANGE),
-        		new Dialogue("仙石さん", "もう終わってる。",mysteriousSound,Color.WHITE),
-        		new Dialogue("なりなり", "ぐああああああ！！",damageSound,Color.ORANGE),
-        		new Dialogue("あにき", "クク…やはり雑魚か。",jumpSound,Color.RED),
-        		new Dialogue("仙石さん", "おい、完全に遊ばれてるぞ。",jumpSound,Color.WHITE),
-        		new Dialogue("あにき", "まあいい。次は特別だ。",jumpSound,Color.RED),
-        		new Dialogue("あにき", "来い、わだたく。",jumpSound,Color.RED),
-        		new Dialogue("わだたく", "……とてとて…",cuteSound,Color.PINK),
-        		new Dialogue("わだたく", "……ぴょこっ",appearSound,Color.PINK),
-        		new Dialogue("仙石さん", "……ん？",mysteriousSound,Color.WHITE),
-        		new Dialogue("仙石さん", "なんだこのかわいい生き物は。",jumpSound,Color.WHITE),
-        		new Dialogue("わだたく", "わだ〜たく〜…♪",shineSound,Color.PINK),
-        		new Dialogue("わだたく", "よろしくね♪",shineSound,Color.PINK),
-        		new Dialogue("仙石さん", "……弱そうだな。",mysteriousSound,Color.WHITE),
-        		new Dialogue("あにき", "見た目で判断するな。",jumpSound,Color.RED),
-        		new Dialogue("わだたく", "えいっ",atacSound,Color.PINK),
-        		new Dialogue("仙石さん", "ぐっ！？",jumpSound,Color.WHITE),
-        		new Dialogue("仙石さん", "な、何だ今の一撃は…！",jumpSound,Color.WHITE),
-        		new Dialogue("わだたく", "あそぼ？♪",shineSound,Color.RED),
-        		new Dialogue("わだたく", "いっぱいあそぼ〜♪",shineSound,Color.RED),
-        		new Dialogue("あにき", "そいつは俺のペットでな。",jumpSound,Color.RED),
-        		new Dialogue("あにき", "強そうに見えないが、遊ばれたら最後だ。",jumpSound,Color.RED)
+        		new Dialogue("わだたく", "……あれ……？もう、あそべない……？",downSound,Color.RED),
+        		new Dialogue("仙石さん", "終わったか……",null,Color.WHITE),
+        		new Dialogue("あにき", "……ペットがやられたな。まあいい。",jumpSound,Color.RED),
+        		new Dialogue("あにき", "代わりはいくらでもいる。",null,Color.RED),
+        		new Dialogue("仙石さん", "……ふざけるな。",feelSound,Color.WHITE),
+        		new Dialogue("仙石さん", "社員を、道具みたいに扱いやがって……！",null,Color.WHITE),
+        		new Dialogue("仙石さん", "会社は、お前の遊び場じゃない！",jumpSound,Color.WHITE),
+        		new Dialogue("あにき", "会社？",null,Color.RED),
+        		new Dialogue("あにき", "ここはもう俺の支配下だ。",jumpSound,Color.RED),
+        		new Dialogue("あにき", "来るか、先輩社員サン。",jumpSound,Color.RED),
+        		new Dialogue("仙石さん", "取り戻す。ここは俺たちの会社だ！",jumpSound,Color.WHITE),
+        		new Dialogue("あにき", "いいだろう。",null,Color.RED),
+        		new Dialogue("あにき", "絶望を教えてやる！！",endSound,Color.RED)
         );
     	
     	//テキストクラスのインスタンスを作成
@@ -238,7 +210,7 @@ public class Story3 extends Application{
         narinariView.setPreserveRatio(true);
         //人物画像の読み込み(わだたく)
         Image wadatakuImage = new Image(
-        		getClass().getResourceAsStream("/picture/wadataku.png")
+        		getClass().getResourceAsStream("/picture/wadataku2.png")
         );
         //人物画像の表示
         ImageView wadatakuView = new ImageView(wadatakuImage);
@@ -249,17 +221,11 @@ public class Story3 extends Application{
         anikiView.setVisible(true);
         wadatakuView.setVisible(false);
         
+        //画像を下にスライドするアニメーション
+        TranslateTransition fall = new TranslateTransition(Duration.millis(800), wadatakuView);
+        fall.setByY(200);  // 下に200px落ちる（調整OK）
+
         
-        //挿絵画像の読み込み
-        Image insertImage = new Image(
-        	    getClass().getResourceAsStream("/picture/insert.png")
-        	);
-        //画像の表示
-        ImageView insertView = new ImageView(insertImage);
-        insertView.setPreserveRatio(false);  // 画面にフィットさせるため OFF
-        insertView.setVisible(false);        // 最初は非表示
-        
-        	
         //box(吹き出し)とbubble(テキストと▼)をまとめる
         //StackPaneにより同じ位置の前後に置かれるので重なって見える
         StackPane messageBox = new StackPane();
@@ -284,7 +250,7 @@ public class Story3 extends Application{
         
         //ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
         StackPane base = new StackPane();
-        base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root,insertView);
+        base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root);
         //rootを中身とした1000×800のウィンドウを作成
         Scene scene = new Scene(base,1000,800);
         
@@ -301,16 +267,13 @@ public class Story3 extends Application{
         narinariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
         narinariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(わだたく)をウィンドウサイズに合わせる(右に表示)
-        wadatakuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
-        wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
+        wadatakuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+        wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
         wadatakuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
         sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.6));
         sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.0));
         sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
-        //差し込み用の画像を調整
-        insertView.fitWidthProperty().bind(scene.widthProperty());
-        insertView.fitHeightProperty().bind(scene.heightProperty());
         //boxのサイズをウィンドウに合わせる
         box.widthProperty().bind(scene.widthProperty().multiply(0.9));
         box.heightProperty().bind(scene.heightProperty().multiply(0.18));
@@ -354,6 +317,10 @@ public class Story3 extends Application{
         		if(charIndex < d.message.length()) {
         			//文字カウントを増やす
         			charIndex++;
+        			//最初に画像を下に落とす
+        			if (messageIndex == 0) {  
+        			    fall.play();
+        			}
         			//誰が話しているか情報取得(話者によって話者名・テキストの色を変化)
         			String speaker = d.speaker;
         			nameText.setText(speaker);
@@ -425,15 +392,31 @@ public class Story3 extends Application{
         	if (messageIndex < dialogues.size() - 1) {
         		//メッセージカウントを増やす
         	    messageIndex++;
-        	    //差し込み絵の処理
-        	    if (messageIndex == 4) {
-        	    	insertView.setVisible(true);
+        	    
+        	    if (messageIndex == 12) {
+        	    	Timeline shakeSlot = new Timeline(
+        	    		    new KeyFrame(Duration.millis(0), e2 -> {
+        	    		        base.setTranslateX(Math.random() * 30 - 15); // -15〜+15
+        	    		        base.setTranslateY(Math.random() * 20 - 10); // -10〜+10
+        	    		    }),
+        	    		    new KeyFrame(Duration.millis(40)) // 更新間隔
+        	    		);
+
+        	    		//回数（揺れ時間）
+        	    		shakeSlot.setCycleCount(15);
+
+        	    		//終わったら元に戻す
+        	    		shakeSlot.setOnFinished(e2 -> {
+        	    		    base.setTranslateX(0);
+        	    		    base.setTranslateY(0);
+        	    		});
+
+        	    		shakeSlot.play();
+        	    		
         	    }
 
-        	    if (messageIndex == 5) {
-        	    	insertView.setVisible(false);
-        	    }
         	    
+        	    //差し込み絵の処理
         	    //タイピングを再スタート
         	    startTyping();
         	    //▼を消す
