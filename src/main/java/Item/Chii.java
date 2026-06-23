@@ -1,7 +1,7 @@
 package Item;
 
 
-import character.Sengoku;
+import Character.Sengoku;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
