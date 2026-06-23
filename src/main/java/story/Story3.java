@@ -34,7 +34,7 @@ public class Story3 extends Application{
     	//受け取った変数Stageを自分のStageに保存
         this.stage = stage;
         //ウィンドウの中身を決定
-        stage.setScene(story());
+        stage.setScene(story3());
         stage.setTitle("story3");
         stage.show();
     }
@@ -67,7 +67,7 @@ public class Story3 extends Application{
         timeline.playFromStart();
     }
     
-    public Scene story() {
+    public Scene story3() {
     	
         
         //ジャンプ音の読み込み

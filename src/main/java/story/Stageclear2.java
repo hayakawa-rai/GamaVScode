@@ -1,5 +1,6 @@
 package story;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,8 +9,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import start.Start;
 
 public class Stageclear2 extends Application{
@@ -60,12 +63,47 @@ public class Stageclear2 extends Application{
 	//中央に配置
 	buttonBox.setAlignment(Pos.CENTER);
 	
+	//音声読み込み
+	AudioClip clickSound = new AudioClip(
+		getClass().getResource("/music/select.mp3").toExternalForm()
+	);
+	// 音量調整
+	clickSound.setVolume(0.4);
+		
+	//音声読み込み
+	AudioClip cancelSound = new AudioClip(
+		getClass().getResource("/music/cancel.mp3").toExternalForm()
+	);
+	// 音量調整
+	cancelSound.setVolume(0.4);
+	
     // 次に進むボタン
     Button next = new Button("次のステージへ");
     //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
     next.getStyleClass().add("game-button2");
     next.setPrefSize(250, 80);
-    
+    //次の画面に遷移
+    next.setOnAction(e -> {
+        // 音を再生
+    	clickSound.stop();
+        clickSound.play();
+
+        // 0.5秒待つ
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+
+        // 待った後に画面遷移
+        pause.setOnFinished(ev -> {
+            Story3 story3 = new Story3();
+            try {
+                story3.start(stage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // タイマー開始
+        pause.play();
+    });
     // 戻るボタン
     Button backButton = new Button("タイトルへ");
     //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
@@ -73,12 +111,23 @@ public class Stageclear2 extends Application{
     backButton.setPrefSize(250, 80);
     //スタート画面へ戻る
     backButton.setOnAction(e -> {
+    	cancelSound.stop();
+    	cancelSound.play();
+    	
+    	// 0.5秒待つ
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+
+        // 待った後に画面遷移
+        pause.setOnFinished(ev -> {
         Start titleScreen = new Start();
         try {
             titleScreen.start(stage);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    });
+        // タイマー開始
+        pause.play();
     });
     //titleと画像とtextをまとめたもの、ボタン2つを箱に入れる。
     buttonBox.getChildren().addAll(title,textAndImage,next, backButton);//ボタンを配置

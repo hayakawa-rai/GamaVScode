@@ -24,7 +24,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Story2 extends Application{
+public class Story4 extends Application{
 
 	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
     private Stage stage;
@@ -34,8 +34,8 @@ public class Story2 extends Application{
     	//受け取った変数Stageを自分のStageに保存
         this.stage = stage;
         //ウィンドウの中身を決定
-        stage.setScene(story2());
-        stage.setTitle("story2");
+        stage.setScene(story4());
+        stage.setTitle("story4");
         stage.show();
     }
 	
@@ -67,7 +67,7 @@ public class Story2 extends Application{
         timeline.playFromStart();
     }
     
-    public Scene story2() {
+    public Scene story4() {
     	
         
         //ジャンプ音の読み込み
@@ -76,74 +76,39 @@ public class Story2 extends Application{
         	);
         //音量調整
         jumpSound.setVolume(0.3); 
-        //足音の読み込み
-        AudioClip cuteSound = new AudioClip(
-        	    getClass().getResource("/music/footsteps.mp3").toExternalForm()
+        //倒される時の音の読み込み
+        AudioClip downSound = new AudioClip(
+        	    getClass().getResource("/music/down.mp3").toExternalForm()
         	);
         //音量調整
-        cuteSound.setVolume(0.3);
-        //登場音の読み込み
-        AudioClip appearSound = new AudioClip(
-        	    getClass().getResource("/music/appearance.mp3").toExternalForm()
+        downSound.setVolume(0.3); 
+        //起こった時の音の読み込み
+        AudioClip feelSound = new AudioClip(
+        	    getClass().getResource("/music/feel.mp3").toExternalForm()
         	);
         //音量調整
-        appearSound.setVolume(0.3);
-        //まぬけな音の読み込み
-        AudioClip mysteriousSound = new AudioClip(
-        	    getClass().getResource("/music/nari.mp3").toExternalForm()
+        feelSound.setVolume(0.3);  //起こった時の音の読み込み
+        //最後の戦いの音楽の読み込み
+        AudioClip endSound = new AudioClip(
+        	    getClass().getResource("/music/end.mp3").toExternalForm()
         	);
         //音量調整
-        mysteriousSound.setVolume(0.3);
-        //輝く音の読み込み
-        AudioClip shineSound = new AudioClip(
-        	    getClass().getResource("/music/shine.mp3").toExternalForm()
-        	);
-        //音量調整
-        shineSound.setVolume(0.3);
-        //ダメージ音の読み込み
-        AudioClip damageSound = new AudioClip(
-        	    getClass().getResource("/music/damage.mp3").toExternalForm()
-        	);
-        //音量調整
-        damageSound.setVolume(0.3);
-        //ダメージ音の読み込み
-        AudioClip aSound = new AudioClip(
-        	    getClass().getResource("/music/damage2.mp3").toExternalForm()
-        	);
-        //音量調整
-        aSound.setVolume(0.3);
-        //攻撃音の読み込み
-        AudioClip atacSound = new AudioClip(
-        	    getClass().getResource("/music/atac.mp3").toExternalForm()
-        	);
-        //音量調整
-        atacSound.setVolume(0.3);
+        endSound.setVolume(0.3);
     	//会話内容を設定
     	List<Dialogue> dialogues = Arrays.asList( 
-        		new Dialogue("なりなり", "あ、あれっ…！？",mysteriousSound,Color.ORANGE),//0
-        		new Dialogue("仙石さん", "弱いな！？",jumpSound,Color.WHITE),//1
-        		new Dialogue("なりなり", "ま、まだだ…まだ終わってない…！",null,Color.ORANGE),//2
-        		new Dialogue("仙石さん", "もう終わってる。",mysteriousSound,Color.WHITE),//3
-        		new Dialogue("なりなり", "ぐああああああ！！",damageSound,Color.ORANGE),//4
-        		new Dialogue("あにき", "クク…やはり雑魚か。",null,Color.RED),//5
-        		new Dialogue("仙石さん", "おい、完全に遊ばれてるぞ。",jumpSound,Color.WHITE),//6
-        		new Dialogue("あにき", "まあいい。次は特別だ。",null,Color.RED),//7
-        		new Dialogue("あにき", "来い、わだたく。",jumpSound,Color.RED),//8
-        		new Dialogue("わだたく", "……とてとて…",cuteSound,Color.PINK),//9
-        		new Dialogue("わだたく", "……ぴょこっ",appearSound,Color.PINK),//10
-        		new Dialogue("仙石さん", "……ん？",mysteriousSound,Color.WHITE),//11
-        		new Dialogue("仙石さん", "なんだこのかわいい生き物は。",jumpSound,Color.WHITE),//12
-        		new Dialogue("わだたく", "わだ〜たく〜…♪",shineSound,Color.PINK),//13
-        		new Dialogue("わだたく", "よろしくね♪",shineSound,Color.PINK),//14
-        		new Dialogue("仙石さん", "……弱そうだな。",mysteriousSound,Color.WHITE),//15
-        		new Dialogue("あにき", "見た目で判断するな。",null,Color.RED),//16
-        		new Dialogue("わだたく", "えいっ",atacSound,Color.PINK),//17
-        		new Dialogue("仙石さん", "ぐっ！？",aSound,Color.WHITE),//18
-        		new Dialogue("仙石さん", "な、何だ今の一撃は…！",null,Color.WHITE),//19
-        		new Dialogue("わだたく", "あそぼ？♪",shineSound,Color.RED),//20
-        		new Dialogue("わだたく", "いっぱいあそぼ〜♪",shineSound,Color.RED),//21
-        		new Dialogue("あにき", "そいつは俺のペットでな。",null,Color.RED),//22
-        		new Dialogue("あにき", "強そうに見えないが、遊ばれたら最後だ。",jumpSound,Color.RED)//23
+        		new Dialogue("わだたく", "……あれ……？もう、あそべない……？",downSound,Color.RED),
+        		new Dialogue("仙石さん", "終わったか……",null,Color.WHITE),
+        		new Dialogue("あにき", "……ペットがやられたな。まあいい。",jumpSound,Color.RED),
+        		new Dialogue("あにき", "代わりはいくらでもいる。",null,Color.RED),
+        		new Dialogue("仙石さん", "……ふざけるな。",feelSound,Color.WHITE),
+        		new Dialogue("仙石さん", "社員を、道具みたいに扱いやがって……！",null,Color.WHITE),
+        		new Dialogue("仙石さん", "会社は、お前の遊び場じゃない！",jumpSound,Color.WHITE),
+        		new Dialogue("あにき", "会社？",null,Color.RED),
+        		new Dialogue("あにき", "ここはもう俺の支配下だ。",jumpSound,Color.RED),
+        		new Dialogue("あにき", "来るか、先輩社員サン。",jumpSound,Color.RED),
+        		new Dialogue("仙石さん", "取り戻す。ここは俺たちの会社だ！",jumpSound,Color.WHITE),
+        		new Dialogue("あにき", "いいだろう。",null,Color.RED),
+        		new Dialogue("あにき", "絶望を教えてやる！！",endSound,Color.RED)
         );
     	
     	//テキストクラスのインスタンスを作成
@@ -245,7 +210,7 @@ public class Story2 extends Application{
         narinariView.setPreserveRatio(true);
         //人物画像の読み込み(わだたく)
         Image wadatakuImage = new Image(
-        		getClass().getResourceAsStream("/picture/wadataku.png")
+        		getClass().getResourceAsStream("/picture/wadataku2.png")
         );
         //人物画像の表示
         ImageView wadatakuView = new ImageView(wadatakuImage);
@@ -255,18 +220,12 @@ public class Story2 extends Application{
         narinariView.setVisible(false);
         anikiView.setVisible(true);
         wadatakuView.setVisible(false);
-     
         
-        //挿絵画像の読み込み
-        Image insertImage = new Image(
-        	    getClass().getResourceAsStream("/picture/insert.png")
-        	);
-        //画像の表示
-        ImageView insertView = new ImageView(insertImage);
-        insertView.setPreserveRatio(false);  // 画面にフィットさせるため OFF
-        insertView.setVisible(false);        // 最初は非表示
+        //画像を下にスライドするアニメーション
+        TranslateTransition fall = new TranslateTransition(Duration.millis(800), wadatakuView);
+        fall.setByY(200);  // 下に200px落ちる（調整OK）
+
         
-        	
         //box(吹き出し)とbubble(テキストと▼)をまとめる
         //StackPaneにより同じ位置の前後に置かれるので重なって見える
         StackPane messageBox = new StackPane();
@@ -291,7 +250,7 @@ public class Story2 extends Application{
         
         //ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
         StackPane base = new StackPane();
-        base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root,insertView);
+        base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root);
         //rootを中身とした1000×800のウィンドウを作成
         Scene scene = new Scene(base,1000,800);
         
@@ -315,9 +274,6 @@ public class Story2 extends Application{
         sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.6));
         sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.0));
         sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
-        //差し込み用の画像を調整
-        insertView.fitWidthProperty().bind(scene.widthProperty());
-        insertView.fitHeightProperty().bind(scene.heightProperty());
         //boxのサイズをウィンドウに合わせる
         box.widthProperty().bind(scene.widthProperty().multiply(0.9));
         box.heightProperty().bind(scene.heightProperty().multiply(0.18));
@@ -361,6 +317,10 @@ public class Story2 extends Application{
         		if(charIndex < d.message.length()) {
         			//文字カウントを増やす
         			charIndex++;
+        			//最初に画像を下に落とす
+        			if (messageIndex == 0) {  
+        			    fall.play();
+        			}
         			//誰が話しているか情報取得(話者によって話者名・テキストの色を変化)
         			String speaker = d.speaker;
         			nameText.setText(speaker);
@@ -377,16 +337,12 @@ public class Story2 extends Application{
         				narinariView.setVisible(true);
         				wadatakuView.setVisible(false);
         			}else if (speaker.equals("わだたく")) {
-        				//登場するまで画像非表示
-        			    if (messageIndex < 10) {
-        			        wadatakuView.setVisible(false);
-        			    } else {
-        			        wadatakuView.setVisible(true);
-        			    }
-        			    //あにきとなりなりの画像を非表示
-        			    anikiView.setVisible(false);
-        			    narinariView.setVisible(false);
+        				//あにきの画像を非表示・わだたくの画像を表示
+        				anikiView.setVisible(false);
+        				narinariView.setVisible(false);
+        				wadatakuView.setVisible(true);
         			}
+        			
         			
         			//表示しているメッセージに対して1文ずつ表示する文字数を増やしていく処理
         			//例：メッセージがhelloのとき、h→he→hel→hell→hello
@@ -437,39 +393,30 @@ public class Story2 extends Application{
         		//メッセージカウントを増やす
         	    messageIndex++;
         	    
+        	    if (messageIndex == 12) {
+        	    	Timeline shakeSlot = new Timeline(
+        	    		    new KeyFrame(Duration.millis(0), e2 -> {
+        	    		        base.setTranslateX(Math.random() * 30 - 15); // -15〜+15
+        	    		        base.setTranslateY(Math.random() * 20 - 10); // -10〜+10
+        	    		    }),
+        	    		    new KeyFrame(Duration.millis(40)) // 更新間隔
+        	    		);
+
+        	    		//回数（揺れ時間）
+        	    		shakeSlot.setCycleCount(15);
+
+        	    		//終わったら元に戻す
+        	    		shakeSlot.setOnFinished(e2 -> {
+        	    		    base.setTranslateX(0);
+        	    		    base.setTranslateY(0);
+        	    		});
+
+        	    		shakeSlot.play();
+        	    		
+        	    }
+
+        	    
         	    //差し込み絵の処理
-        	    if (messageIndex == 4) {
-        	    	insertView.setVisible(true);
-        	    }
-
-        	    if (messageIndex == 5) {
-        	    	insertView.setVisible(false);
-        	    }
-        	   
-        	    //ダメージ受けたときの横揺れ
-        	    if (messageIndex == 18) {
-
-        	        sengokuView.setOpacity(0.5);
-
-        	        // bind一旦外す
-        	        sengokuView.translateXProperty().unbind();
-
-        	        TranslateTransition shake = new TranslateTransition(Duration.millis(100), sengokuView);
-        	        shake.setByX(20);
-        	        shake.setCycleCount(6);
-        	        shake.setAutoReverse(true);
-        	        shake.play();
-
-        	        Timeline recover = new Timeline(
-        	            new KeyFrame(Duration.millis(300), e2 -> {
-        	                sengokuView.setOpacity(1.0);
-        	                // bind戻す
-        	                sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
-        	            })
-        	        );
-        	        recover.play();
-        	    }
-
         	    //タイピングを再スタート
         	    startTyping();
         	    //▼を消す
@@ -483,8 +430,8 @@ public class Story2 extends Application{
         	    //誰が話しているかの情報取得
         	    String speaker = d.speaker;
         	    //設定した音をならす
-        	    
         	    if (d.sound != null && d.sound != jumpSound) {
+        	        d.sound.stop();
         	        d.sound.play();
         	    }
         	    if (d.sound == jumpSound) {

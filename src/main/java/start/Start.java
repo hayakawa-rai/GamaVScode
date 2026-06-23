@@ -86,11 +86,11 @@ public class Start extends Application {
 		//中央に設定
 		buttonBox.setAlignment(Pos.CENTER);
 		
-		
+		//音声読み込み
 		AudioClip clickSound = new AudioClip(
-			getClass().getResource("/music/select01.mp3").toExternalForm()
+			getClass().getResource("/music/select.mp3").toExternalForm()
 		);
-		// 音量調整（おすすめ）
+		// 音量調整
 		clickSound.setVolume(0.4);
 
 		//ストーリーモードへ飛ぶボタンを作成
@@ -125,13 +125,17 @@ public class Start extends Application {
 		        // 音を鳴らす
 		        clickSound.stop();
 		        clickSound.play();
-
-		        // 背景停止
-		        timer.stop();
-
-		        // 画面遷移
-		        new Practice().start(stage);
-
+		        
+		        // 0.15秒後に画面遷移
+		    	Timeline delay = new Timeline(
+		    			new KeyFrame(Duration.millis(500), ev -> {
+		    				// 背景停止
+		    		        timer.stop();
+		    				// 画面遷移
+		    				new Practice().start(stage);
+		    	})	    
+		    );
+		    delay.play();	
 		    } catch (Exception ex) {
 		        ex.printStackTrace();
 		    }
