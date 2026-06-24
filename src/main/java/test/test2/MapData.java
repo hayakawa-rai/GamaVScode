@@ -101,15 +101,13 @@ public class MapData {
 		enemies.add(new RedEnemy(this));
 		enemies.add(new GreenEnemy(this)); // 今後Map3Enemyなどもここに enemies.add(...) するだけで追加可能
 		enemies.add(new YellowEnemy(this));
-<<<<<<< HEAD
-		//enemies.add(new BlueEnemy(this));
-=======
 		enemies.add(new BlueEnemy(this));
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 
 		// 安全対策: リスト内の全ての敵の初期状態をセット
 		for (Enemy e : enemies) {
-			e.setCurrentState(Characters.EnemyState.SCATTER);
+			if (e != null) {
+				e.setCurrentState(Characters.EnemyState.SCATTER);
+			}
 		}
 	}
 
