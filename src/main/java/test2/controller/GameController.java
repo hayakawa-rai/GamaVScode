@@ -35,9 +35,9 @@ public class GameController {
 
 	}
 
-	// ★ ステージの見た目をCSSクラスで切り替えるメソッドを追加
+	//ステージの見た目をCSSクラスで切り替えるメソッドを追加
 	public void changeStage(int stageNum) {
-		// ★ Canvasからではなく、画面全体のルート（BorderPane）からクラスを削除・追加する
+		//Canvasからではなく、画面全体のルート（BorderPane）からクラスを削除・追加する
 	    javafx.scene.Parent root = scene.getRoot();
 	    root.getStyleClass().removeAll("stage1", "stage2", "stage3");
 	    root.getStyleClass().add("stage" + stageNum);
@@ -88,6 +88,7 @@ public class GameController {
 				//ゲーム状態更新
 				model.updatePacman(); //位置・衝突・ワープ処理
 				model.updateMouth(); //口のアニメーション
+				
 
 				//デバックログ
 				System.out.println("LOOP");

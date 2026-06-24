@@ -1,228 +1,153 @@
-
 package test;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Characters.EnemyState;
-import Characters.Sengoku;
-import javafx.scene.image.ImageView;
+import test2.model.MapData; 
 
 public abstract class Enemy extends Character {
 
-	protected ImageView imageView;
-	protected static final int CELL_SIZE = 30;//1マスの大きさ
-	
-	//Sengokuをフィールドとして保持
-	protected Sengoku player;
+    protected javafx.scene.image.ImageView imageView;
+    protected static final int CELL_SIZE = 30; // 1マスの大きさ
+    
+    protected MapData mapData;
 
-	//[4つのモード]初期状態の「縄張りモード」からスタートする
-	protected EnemyState currentState = EnemyState.SCATTER;
+    protected Characters.EnemyState currentState = Characters.EnemyState.SCATTER;
 
-	//状態ごとの画像(こんな感じで書く(多分))
-	protected javafx.scene.image.Image normalImage; // 通常状態敵
-	protected javafx.scene.image.Image feverImage; // パワーアイテムを取得して逃げてる敵
-	protected javafx.scene.image.Image deadImage; // 食べられて初期地点に戻る敵
+    protected javafx.scene.image.Image normalImage;
+    protected javafx.scene.image.Image feverImage;
+    protected javafx.scene.image.Image deadImage;
 
-	//コンストラクタ
-	public Enemy(ImageView imageView, double startX, double startY, int speed,Characters.Sengoku sengoku) {
-		super(startX, startY, speed);
-		this.imageView = imageView;
-		this.player = sengoku;
-		//初期位置をImageViewに反映
-		this.imageView.setLayoutX(startX);
-		this.imageView.setLayoutY(startY);
-	}
+    public Enemy(double startX, double startY, int speed) {
+        super(startX, startY, speed);
+    }
+    // ★ 抽象メソッドの第3引数を MapData に変更
+    protected abstract Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData);
 
+    @Override
+    public void move(int[][] map) {
+        // 現在いるマスの行列インデックスを計算
+        int tileX = (int) (this.x / CELL_SIZE);
+        int tileY = (int) (this.y / CELL_SIZE);
 
-	//全ての敵に共通する物理移動のルール
-	@Override
-	public void move(int[][] map) {
-		double centerX = this.getX() + CELL_SIZE / 2.0;
-		double centerY = this.getY() + CELL_SIZE / 2.0;
+        // 範囲外防止
+        if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) {
+            return;
+        }
 
-		int currentMeshX = (int) centerX % CELL_SIZE;
-		int currentMeshY = (int) centerY % CELL_SIZE;
-		int centerOffset = CELL_SIZE / 2;
+        // 現在のタイルの中心ピクセル座標を計算
+        double cx = tileX * CELL_SIZE + CELL_SIZE / 2.0;
+        double cy = tileY * CELL_SIZE + CELL_SIZE / 2.0;
 
-		//マスの中心に来たら、次の進行方向を決める
-		if (Math.abs(currentMeshX - centerOffset) < this.getSpeed()
-				&& Math.abs(currentMeshY - centerOffset) < this.getSpeed()) {
+        // 現在のスピードの計算
+        double currentSpeed = this.getSpeed();
+        if (this.currentState == Characters.EnemyState.DEAD) {
+            currentSpeed = this.getSpeed() * 2; // 死亡時は爆速
+        }
 
-			//上下左右の中で、物理的に進める方向(壁がなく、Uターンではない方向)をリストアップ
-			List<Direction> validDirections = getValidDirections(map);
+        // タイルの中心に近づいたか判定 (パックマンの atCenter と同期)
+        boolean atCenter = Math.abs(this.x - cx) < currentSpeed 
+                        && Math.abs(this.y - cy) < currentSpeed;
 
-			if (!validDirections.isEmpty()) {
-				//具体的に進む方向は,4つのモードとプレイヤー情報を使って子クラスのAIに選ばせる
-				Direction chosenDirection = decideNextDirection(validDirections, map, player);
+        // 完全に停止している(NONE)か、マスの中心に到達したら方向転換
+        if (this.direction == Direction.NONE || atCenter) {
+            List<Direction> validDirections = getValidDirections(map);
 
-				//位置補正
-				int col = (int) Math.round(centerX / CELL_SIZE);
-				int row = (int) Math.round(centerY / CELL_SIZE);
-				this.x = col * CELL_SIZE;
-				this.y = row * CELL_SIZE;
+            if (!validDirections.isEmpty()) {
+                //保持している mapData を引数に渡す
+                Direction chosenDirection = decideNextDirection(validDirections, map, this.mapData);
 
-				this.direction = chosenDirection;
+                // 中心にぴったり位置補正（軸ズレによるスタック防止）
+                this.x = cx;
+                this.y = cy;
+                this.direction = chosenDirection;
+            } else {
+                this.direction = Direction.NONE;
+            }
+        }
+
+        // 決定した方向に実際に移動する処理
+        if (this.direction != Direction.NONE) {
+            this.x += this.direction.getDX() * currentSpeed;
+            this.y += this.direction.getDY() * currentSpeed;
+
+            // 左右移動中は上下を、上下移動中は左右を中心へとマイルドに補正
+			if (this.direction.getDX() != 0) {
+				this.y += (cy - this.y) * 0.2;
 			}
-		}
-
-		//  実際の移動処理（スピード決定）
-		int currentSpeed = this.getSpeed();
-
-		// 【死亡状態（DEAD）】のときは、巣に戻るために爆速（例: 普段の2倍）にする
-		if (this.currentState == EnemyState.DEAD) {
-			currentSpeed = this.getSpeed() * 2;
-		}
-
-		// 移動継続チェックを行って座標を更新
-		if (canmovego(this.direction, map)) {
-			this.x += this.direction.getDX() * currentSpeed;
-			this.y += this.direction.getDY() * currentSpeed;
-		} else {
-			// 万が一壁にぶつかった場合の安全停止
-			int col = (int) ((this.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
-			int row = (int) ((this.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
-			this.x = col * CELL_SIZE;
-			this.y = row * CELL_SIZE;
-			this.direction = Direction.NONE;
-		}
-		//計算した内部座標をJavaFXのImageView（画面上の見た目）に同期
-		this.imageView.setLayoutX(this.getX());
-		this.imageView.setLayoutY(this.getY());
-
-	}
-
-	// 【抽象メソッド】4つの子クラス（各ゴーストのAI）がそれぞれの意思決定を記述する部分
-
-	protected abstract Direction decideNextDirection(List<Direction> validDirections, int[][] map, Sengoku player);
-
-	//【すべての敵共通】三平方の定理（直線距離の2乗）を使って、目的地に一番近い方向を1つ選ぶ
-
-	protected Direction getClosestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
-		Direction bestDirection = Direction.NONE;
-		double minDistance = Double.MAX_VALUE;
-
-		// 現在の敵のマス
-		int currentCol = (int) ((this.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
-		int currentRow = (int) ((this.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
-
-		for (Direction dir : validDirections) {
-			int nextCol = currentCol + (int) dir.getDX();
-			int nextRow = currentRow + (int) dir.getDY();
-
-			// 三平方の定理： (x1 - x2)^2 + (y1 - y2)^2
-			double distanceSq = Math.pow(nextCol - targetCol, 2) + Math.pow(nextRow - targetRow, 2);
-
-			if (distanceSq < minDistance) {
-				minDistance = distanceSq;
-				bestDirection = dir;
+			if (this.direction.getDY() != 0) {
+				this.x += (cx - this.x) * 0.2;
 			}
-		}
-		// ベストな方向を返す（万が一なければ候補の最初の方向）
-		return bestDirection != Direction.NONE ? bestDirection : validDirections.get(0);
-	}
+        }
+    }
 
-	// --- 状態管理用のゲッターとセッター ---
-	public EnemyState getCurrentState() {
-		return currentState;
-	}
+    // 三平方の定理を使って目的地に一番近い方向を選ぶ共通処理
+    protected Direction getClosestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
+        Direction bestDirection = Direction.NONE;
+        double minDistance = Double.MAX_VALUE;
 
-	public void setCurrentState(EnemyState state) {
-		if(this.currentState != state) {
-		this.currentState = state;
-		//現在のモードに合わせて自動で画像を切り替える
-		updateImage();
-		}
-	}
+        int currentCol = (int) (this.x / CELL_SIZE);
+        int currentRow = (int) (this.y / CELL_SIZE);
 
-	// 共通：真逆の方向（Uターン）チェック
-	private boolean isOppositeDirection(Direction dir1, Direction dir2) {
-		if (dir1 == Direction.NONE || dir2 == Direction.NONE)
-			return false;
-		return (dir1.getDX() + dir2.getDX() == 0) && (dir1.getDY() + dir2.getDY() == 0);
-	}
+        for (Direction dir : validDirections) {
+            int nextCol = currentCol + (int) dir.getDX();
+            int nextRow = currentRow + (int) dir.getDY();
 
-	// 共通：物理的に進める方向のリストアップ
-	private List<Direction> getValidDirections(int[][] map) {
-		List<Direction> list = new ArrayList<>();
-		for (Direction dir : Direction.values()) {
-			if (dir == Direction.NONE)
-				continue;
+            double distanceSq = Math.pow(nextCol - targetCol, 2) + Math.pow(nextRow - targetRow, 2);
 
-			//死亡状態(DEAD)の時以外は、真後ろへのUターン移動は禁止
-			if (this.currentState != EnemyState.DEAD && isOppositeDirection(dir, this.direction)) {
-				continue;
-			}
-			//1マス先が壁じゃなければ候補に入れる
-			if (canmove(dir, map)) {
-				list.add(dir);
-			}
-		}
-		return list;
-	}
+            if (distanceSq < minDistance) {
+                minDistance = distanceSq;
+                bestDirection = dir;
+            }
+        }
+        return bestDirection != Direction.NONE ? bestDirection : validDirections.get(0);
+    }
 
-	//ドット（px）単位での移動継続チェック
-	private boolean canmovego(Direction direction, int[][] map) {
-		if (direction == Direction.NONE)
-			return false;
+    private boolean isOppositeDirection(Direction dir1, Direction dir2) {
+        if (dir1 == Direction.NONE || dir2 == Direction.NONE) return false;
+        return (dir1.getDX() + dir2.getDX() == 0) && (dir1.getDY() + dir2.getDY() == 0);
+    }
 
-		double centerX = this.getX() + CELL_SIZE / 2.0;
-		double centerY = this.getY() + CELL_SIZE / 2.0;
+    private List<Direction> getValidDirections(int[][] map) {
+        List<Direction> list = new ArrayList<>();
+        for (Direction dir : Direction.values()) {
+            if (dir == Direction.NONE) continue;
 
-		int currentMeshX = (int) centerX % CELL_SIZE;
-		int currentMeshY = (int) centerY % CELL_SIZE;
-		int centerOffset = CELL_SIZE / 2;
+            if (this.currentState != Characters.EnemyState.DEAD && isOppositeDirection(dir, this.direction)) {
+                continue; // 原則Uターン禁止
+            }
+            if (canmove(dir, map)) {
+                list.add(dir);
+            }
+        }
+        return list;
+    }
 
-		if (Math.abs(currentMeshX - centerOffset) < this.getSpeed()
-				&& Math.abs(currentMeshY - centerOffset) < this.getSpeed()) {
-			return canmove(direction, map);
-		}
-		return true;
-	}
+    private boolean canmove(Direction direction, int[][] map) {
+        if (direction == Direction.NONE) return false;
 
-	//1マス先の壁チェック
-	private boolean canmove(Direction direction, int[][] map) {
-		if (direction == Direction.NONE)
-			return false;
+        int currentCol = (int) (this.x / CELL_SIZE);
+        int currentRow = (int) (this.y / CELL_SIZE);
 
-		int currentCol = (int) ((this.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
-		int currentRow = (int) ((this.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
+        int nextCol = currentCol + (int) direction.getDX();
+        int nextRow = currentRow + (int) direction.getDY();
 
-		int nextCol = currentCol + (int) direction.getDX();
-		int nextRow = currentRow + (int) direction.getDY();
+        if (nextRow < 0 || nextRow >= map.length || nextCol < 0 || nextCol >= map[0].length) {
+            return false;
+        }
+        
+        // ゴーストの巣への通常侵入禁止ルール
+        if (this.currentState != Characters.EnemyState.DEAD) {
+            if (nextRow >= 13 && nextRow <= 15 && nextCol >= 12 && nextCol <= 15) {
+                return false;
+            }
+        }
 
-		// 通常の画面外チェック（縦31マス：map.length, 横28マス：map[0].length）
-		if (nextRow < 0 || nextRow >= map.length || nextCol < 0 || nextCol >= map[0].length) {
-			return false;
-		}
-		//通常状態の時は、ゴーストの巣(行10以降、かつ中央の列8～10)への侵入を禁止にする
-		if(this.currentState != EnemyState.DEAD) {//死亡している時以外
-			if(nextRow >= 13 && nextRow <= 15 && nextCol >= 12 && nextCol <= 15) {
-				return false;//巣の方向の侵入禁止
-			}
-		}
+        return map[nextRow][nextCol] != 1; // 1は壁
+    }
 
-		return map[nextRow][nextCol] != 1; // 1は壁
-	}
-
-	// 現在の状態（currentState）に合わせて、ImageViewの画像を切り替える処理
-
-	private void updateImage() {
-		if (this.currentState == EnemyState.DEAD) {
-			if (deadImage != null)
-				this.imageView.setImage(deadImage);
-		} else if (this.currentState == EnemyState.FEVER) {
-			if (feverImage != null)
-				this.imageView.setImage(feverImage);
-		} else {
-			// SCATTER（縄張り） や CHASE（追跡） などの通常時は通常画像
-			if (normalImage != null)
-				this.imageView.setImage(normalImage);
-		}
-	}
-
-	public ImageView getImageView() {
-		return imageView;
-	}
+    public Characters.EnemyState getCurrentState() { return currentState; }
+    public void setCurrentState(Characters.EnemyState state) { this.currentState = state; }
+    public double getX() { return x; }
+    public double getY() { return y; }
 }

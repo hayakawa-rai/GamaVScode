@@ -2,38 +2,58 @@ package test;
 
 import java.util.List;
 
-import Characters.Sengoku;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import test2.model.MapData; 
 
 public class RedEnemy extends Enemy {
 
-    private static final int START_COL = 13;
-    private static final int START_ROW = 11;
+    // 開けた安全な通路からスタートさせる（壁埋まり・フリーズ防止）
+    private static final int START_COL = 1;
+    private static final int START_ROW = 1;
 
-    public RedEnemy(ImageView imageView, Sengoku sengoku) {
-        super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1, sengoku);
+    // コンストラクタ引数を MapData に一本化
+    public RedEnemy(MapData sampleModel) {
+        // パックマンと同じくマスの「中心ピクセル座標」を初期位置として親に渡す
+        super(START_COL * CELL_SIZE + CELL_SIZE / 2.0, 
+              START_ROW * CELL_SIZE + CELL_SIZE / 2.0, 
+              1); // スピードは 1
         
+        this.mapData = sampleModel; // 親クラスのフィールドに代入して保持
+
+        // 画像の読み込み処理
         try {
             java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa-udekumi.png");
-            
             if (is == null) {
-                System.err.println("❌【重大エラー】画像 '/picture/hayakawa-udekumi.png' が見つかりません！");
+                System.err.println("❌【エラー】画像が見つかりません");
             } else {
                 this.normalImage = new Image(is);
-                this.imageView.setImage(this.normalImage);
-                System.out.println("⭕【大成功】早川さんの画像を敵キャラに設定しました！");
+                System.out.println("⭕【成功】早川さんの画像を読み込みました！");
             }
         } catch (Exception e) {
-            System.err.println("❌【例外発生】画像読み込み中にエラーが起きました。");
             e.printStackTrace();
         }
     }
 
+	// MapView から現在の画像を取り出すためのゲッター
+    public Image getEnemyImage() {
+        if (this.currentState == Characters.EnemyState.DEAD) return deadImage;
+        if (this.currentState == Characters.EnemyState.FEVER) return feverImage;
+        return normalImage;
+    }
+
     @Override
-    protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, Sengoku player) {
-        int targetCol = (int) ((player.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
-        int targetRow = (int) ((player.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
+    protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
+        if (mapData == null) return validDirections.get(0);
+
+        // キーボード操作で動いている本物のパックマン座標(px)をMapDataから取得
+        double pacX = mapData.getPacX();
+        double pacY = mapData.getPacY();
+
+        // ピクセル座標から、AIが目指すべき「ターゲットのマス」を算出
+        int targetCol = (int) (pacX / CELL_SIZE);
+        int targetRow = (int) (pacY / CELL_SIZE);
+
+        // 親クラスの最短ルート計算メソッドにターゲットマスを渡して、次の一歩を決める
         return getClosestDirection(validDirections, targetCol, targetRow);
     }
 }

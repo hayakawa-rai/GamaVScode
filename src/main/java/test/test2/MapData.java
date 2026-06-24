@@ -6,7 +6,6 @@ import Items.Chii;
 import Items.Item;
 import Items.Point;
 import test.Enemy;
-import test.RedEnemy;
 
 public class MapData {
 
@@ -87,7 +86,7 @@ public class MapData {
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
 		
-		this.enemy = new RedEnemy(enemyImageView, this.sengoku);
+		
 	}
 
 	public void togglePause() {

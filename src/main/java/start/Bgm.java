@@ -16,7 +16,7 @@ public class Bgm   {
 
         bgmPlayer = new MediaPlayer(bgm);
         bgmPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        bgmPlayer.setVolume(0.1);
+        bgmPlayer.setVolume(0.2);
         bgmPlayer.play();
     }
 
