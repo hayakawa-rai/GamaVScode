@@ -1,11 +1,15 @@
 package test.test2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Characters.Direction;
 import Characters.Sengoku;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
 import test.Enemy;
+import test.GreenEnemy;
 import test.RedEnemy;
 
 public class MapData {
@@ -14,42 +18,44 @@ public class MapData {
 
 	// 0: 道, 1: 壁, 2: パワーエサ, 9: ワープ
 	private final int[][] map = {
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, 
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, 
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, 
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, 
-			{ 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0 }, 
-			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 }, 
-			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, 
-			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 }, 
-			{ 9, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 9 }, 
-			{ 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, 
-			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, 
-			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, 
-			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 }, 
-			{ 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0 }, 
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, 
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, 
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, 
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, 
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, 
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 },
+			{ 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0 },
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 },
+			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 },
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 },
+			{ 9, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 9 },
+			{ 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 },
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 },
+			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 },
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 },
+			{ 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0 },
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
 	};
 
 	private final Item[][] itemMap;
 	private final Sengoku sengoku;
-	private Enemy enemy;
+	//敵のリスト管理
+	private final List<Enemy> enemies = new ArrayList<>();
+
 	private boolean paused = false;
 
 	// 口パク
@@ -61,7 +67,7 @@ public class MapData {
 	private boolean justWarped = false;
 	private int lastWarpX = -1;
 	private int lastWarpY = -1;
-	
+
 	//booleanを受け取る新しいコンストラクターを追加
 	public MapData(boolean paused) {
 		this(); // 上にある引数なしのコンストラクターを呼び出して初期化を行う
@@ -83,15 +89,21 @@ public class MapData {
 				}
 			}
 		}
+		initEnemy(null); 
 	}
+
 	//コード追加　成田
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
-		//敵を生成
-		this.enemy = new RedEnemy(this);
-		
-		// 安全対策: 生成した敵クラスへ現在のMapDataインスタンスを確実に紐付ける
-		if (this.enemy != null) {
-			this.enemy.setCurrentState(Characters.EnemyState.SCATTER); // 初期状態をセット
+		// ⭕ リストを一度クリアして、敵をどんどん追加する
+		enemies.clear();
+		enemies.add(new RedEnemy(this));
+		enemies.add(new GreenEnemy(this)); // 今後Map3Enemyなどもここに enemies.add(...) するだけで追加可能
+		//enemies.add(new YellowEnemy(this));
+		//enemies.add(new BlueEnemy(this));
+
+		// 安全対策: リスト内の全ての敵の初期状態をセット
+		for (Enemy e : enemies) {
+			e.setCurrentState(Characters.EnemyState.SCATTER);
 		}
 	}
 
@@ -107,10 +119,10 @@ public class MapData {
 
 		//パックマンの移動処理
 		updatePacman();
-
+		
 		//敵キャラが存在すれば移動ロジックを実行
-		if (enemy != null) {
-			enemy.move(map);
+		for (Enemy e : enemies) {
+			e.move(map);
 		}
 
 		//口パクの更新
@@ -124,8 +136,8 @@ public class MapData {
 		if (paused || !sengoku.isAlive())
 			return;
 
-		int tileX = (int) (sengoku.getX() / TILE_SIZE);
-		int tileY = (int) (sengoku.getY() / TILE_SIZE);
+		int tileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int tileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		// --- ワープ抑止ロジック ---
 		boolean skipWarp = false;
@@ -211,23 +223,23 @@ public class MapData {
 	//敵との当たり判定
 
 	private void checkCollision() {
-		if (enemy == null || !sengoku.isAlive())
+		if (!sengoku.isAlive())
 			return;
 
 		double pacCenterX = sengoku.getX() + TILE_SIZE / 2.0;
 		double pacCenterY = sengoku.getY() + TILE_SIZE / 2.0;
-		double enemyCenterX = enemy.getX() + TILE_SIZE / 2.0;
-		double enemyCenterY = enemy.getY() + TILE_SIZE / 2.0;
-
-		double dx = pacCenterX - enemyCenterX;
-		double dy = pacCenterY - enemyCenterY;
-		double distance = Math.sqrt(dx * dx + dy * dy);
-
 		double collisionThreshold = TILE_SIZE * 0.8;
 
-		if (distance < collisionThreshold) {
-			System.out.println("💥 敵に捕まった！ゲームオーバー！");
-			this.paused = true;
+		// ⭕ ループ処理でリスト内のどの敵に捕まったかを一斉に判定
+		for (Enemy e : enemies) {
+			double dx = pacCenterX - e.getX();
+			double dy = pacCenterY - e.getY();
+			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
+				String enemyName = (e instanceof RedEnemy) ? "赤敵" : "緑敵";
+				System.out.println("💥 " + enemyName + "に捕まった！ゲームオーバー！");
+				this.paused = true;
+				return;
+			}
 		}
 	}
 
@@ -252,9 +264,15 @@ public class MapData {
 		return sengoku;
 	}
 
-	public Enemy getEnemy() {
-		return enemy;
-	}
+	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
+		public Enemy getEnemy() { return enemies.isEmpty() ? null : enemies.get(0); }
+
+		// ⭕ MapViewでループ描画するためのリストゲッター
+		public List<Enemy> getEnemies() { return enemies; }
+
+		public double getPacX1() { return sengoku != null ? sengoku.getX() : 0; }
+		public double getPacY1() { return sengoku != null ? sengoku.getY() : 0; }
+
 	//追加項目
 	public double getPacX() {
 		return sengoku != null ? sengoku.getX() : 0;
@@ -263,5 +281,5 @@ public class MapData {
 	public double getPacY() {
 		return sengoku != null ? sengoku.getY() : 0;
 	}
-	
+
 }

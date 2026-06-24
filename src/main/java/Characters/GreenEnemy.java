@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 
 public class GreenEnemy extends Enemy {
 
-    // マップ中心 エネミーハウス内（仮座標）
+    // スタート位置(マップ中心 エネミーハウス内)
     private static final int START_COL = 16;
     private static final int START_ROW = 17;
 
@@ -29,6 +29,29 @@ public class GreenEnemy extends Enemy {
 
         startTime = System.currentTimeMillis();
     }
+    
+    // 画像の読み込み処理
+		try{
+			java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa-udekumi.png");
+			if (is == null) {
+				System.err.println("❌【エラー】画像が見つかりません");
+			} else {
+				this.normalImage = new Image(is);
+				System.out.println("⭕【成功】早川さんの画像を読み込みました！");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// MapView から現在の画像を取り出すためのゲッター
+	public Image getEnemyImage() {
+		if (this.currentState == Characters.EnemyState.DEAD)
+			return deadImage;
+		if (this.currentState == Characters.EnemyState.FEVER)
+			return feverImage;
+		return normalImage;
+	}
 
     @Override
     public void move(int[][] map) {

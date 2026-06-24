@@ -33,6 +33,7 @@ public class TestMainapp extends Application {
         Canvas canvas = new Canvas(viewWidth, viewHeight);
         root.getChildren().add(canvas);
         
+        model.initEnemy(null);
       /*コメントで隠してるのが前の描写方法  
         // 先に空の ImageView を用意
         javafx.scene.image.ImageView redImageView = new javafx.scene.image.ImageView();
