@@ -11,6 +11,7 @@ import Items.Point;
 import test.Enemy;
 import test.GreenEnemy;
 import test.RedEnemy;
+import test.YellowEnemy;
 
 public class MapData {
 
@@ -98,7 +99,7 @@ public class MapData {
 		enemies.clear();
 		enemies.add(new RedEnemy(this));
 		enemies.add(new GreenEnemy(this)); // 今後Map3Enemyなどもここに enemies.add(...) するだけで追加可能
-		//enemies.add(new YellowEnemy(this));
+		enemies.add(new YellowEnemy(this));
 		//enemies.add(new BlueEnemy(this));
 
 		// 安全対策: リスト内の全ての敵の初期状態をセット
