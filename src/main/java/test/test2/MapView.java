@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import test.BlueEnemy;
 import test.Enemy;
 import test.GreenEnemy;
 import test.RedEnemy;
@@ -189,6 +190,9 @@ public class MapView {
 		}else if (enemy instanceof YellowEnemy) {
 			// ⭕ 黄色の画像を取得
 			img = ((YellowEnemy) enemy).getEnemyImage();
+		} else if (enemy instanceof BlueEnemy) {
+			// ⭕ 青の画像を取得
+			img = ((BlueEnemy) enemy).getEnemyImage();
 		}
 		
 		// マスの中心座標(X, Y)から半マス引いて、画像の左上基準座標を計算（70%縮小でも絶対にズレない魔法の補正）

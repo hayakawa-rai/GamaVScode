@@ -105,7 +105,9 @@ public class MapData {
 
 		// 安全対策: リスト内の全ての敵の初期状態をセット
 		for (Enemy e : enemies) {
-			e.setCurrentState(Characters.EnemyState.SCATTER);
+			if (e != null) {
+				e.setCurrentState(Characters.EnemyState.SCATTER);
+			}
 		}
 	}
 
