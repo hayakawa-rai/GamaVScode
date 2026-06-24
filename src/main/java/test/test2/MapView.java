@@ -1,110 +1,172 @@
 package test.test2;
 
+import Characters.Direction;
+import Characters.Sengoku;
+import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import test.Enemy;
+import test.RedEnemy;
 
 public class MapView {
 
-	//モデル（ゲームデータ）
 	private final MapData model;
+	// 口の向きを記憶しておく。（初期は右向き）
+	private double lastBaseAngle = 0;
 
 	public MapView(MapData model) {
 		this.model = model;
 	}
 
-	//マップ描画（壁など）
-	public void drawStage(GraphicsContext gc) {
-		int[][] map = model.getMap();
+	/**
+	 * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
+	 */
+	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
+		// 1. ステージ本来のサイズを計算
+		int cols = model.getMap()[0].length;
+		int rows = model.getMap().length;
+		double stageWidth = cols * MapData.TILE_SIZE;
+		double stageHeight = rows * MapData.TILE_SIZE;
+		
+		double scaleX = canvasWidth / stageWidth;
+		double scaleY = canvasHeight / stageHeight;
 
-		for (int y = 0; y < map.length; y++) {
-			for (int x = 0; x < map[0].length; x++) {
+		// 2. 画面にぴったり収まる拡大率に「0.9」を掛けて、全体を90%の大きさに縮小する
+		double bufferRatio = 0.7; // ★ここを変えることでサイズを自由に調整できます（0.8なら80%）
+		double scale = Math.min(scaleX, scaleY) * bufferRatio;
 
-				//壁だけ描画
-				if (map[y][x] == 1) {
+		// 3. 小さくなった分も含めて、改めて中央に配置するための余白（オフセット）を計算
+		double offsetX = (canvasWidth - (stageWidth * scale)) / 2.0;
+		double offsetY = (canvasHeight - (stageHeight * scale)) / 2.0;
+
+		// 4. 背景の黒を画面全体に塗る（余白も含めて真っ黒にする場合）
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, canvasWidth, canvasHeight);
+
+		// 5. グラフィックスの状態を保存
+		gc.save();
+
+		// 6. 変換行列を適用（中央へ移動させてから、拡大する）
+		gc.translate(offsetX, offsetY);
+		gc.scale(scale, scale);
+
+		// 7. 実際の描画処理を呼び出す
+		drawStageContent(gc, cols, rows, stageWidth, stageHeight);
+		drawPacman(gc);
+		
+		
+		
+		//敵の描画メソッド　追加しました　成田
+		drawEnemy(gc);
+
+		
+		
+		// 8. グラフィックスの状態を元に戻す（これを行わないと次回呼び出し時にズレが増幅します）
+		gc.restore();
+	}
+
+	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
+	private void drawStageContent(GraphicsContext gc, int cols, int rows, double stageWidth, double stageHeight) {
+		Item[][] itemMap = model.getItemMap();
+
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < cols; col++) {
+				int tile = model.getMap()[row][col];
+				int x = col * MapData.TILE_SIZE;
+				int y = row * MapData.TILE_SIZE;
+				Item item = itemMap[row][col];
+				
+				// 壁の描画
+				if (tile == 1) {
 					gc.setFill(Color.BLUE);
-					gc.fillRect(
-							x * MapData.TILE_SIZE,
-							y * MapData.TILE_SIZE,
-							MapData.TILE_SIZE,
-							MapData.TILE_SIZE);
+					gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
+				}
+				
+				// アイテムの描画
+				if (item != null) {
+					item.draw(gc, x, y, MapData.TILE_SIZE);
 				}
 			}
 		}
+
+		// スコアを表示させるためのコード
+		Sengoku sengoku = model.getSengoku();
+		if (sengoku != null) {
+			String scoreText = "SCORE: " + sengoku.getScore();
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+			gc.setFill(Color.WHITE);
+			
+			// ステージの右下に配置
+			double textX = stageWidth - 140; 
+			double textY = stageHeight - 20; 
+			
+			gc.fillText(scoreText, textX, textY);
+		}
 	}
 
-	//パックマン描画
+	//内部の座標計算
 	public void drawPacman(GraphicsContext gc) {
+		Sengoku sengoku = model.getSengoku();
+		if (sengoku == null || !sengoku.isAlive()) return;
 
-		//パックマンの色
 		gc.setFill(Color.YELLOW);
+		
+		double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
+		double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+		double mouthAngle = model.getMouthAngle();
+		Direction currentDir = sengoku.getDirection();
 
-		//扇形を描き始める基準の角度
-		double startAngle = 0;
+		if (currentDir != null) {
+			if (currentDir.getDX() == 1)  lastBaseAngle = 0;   // 右
+			if (currentDir.getDX() == -1) lastBaseAngle = 180; // 左
+			if (currentDir.getDY() == -1) lastBaseAngle = 90;  // 上
+			if (currentDir.getDY() == 1)  lastBaseAngle = 270; // 下
+		}
 
-		//向きに応じて口の向きを変える
-		if (model.getDirX() == 1)
-			//【右向き】基準は0度。上下に半分ずつ口が開く
-			startAngle = model.getMouthAngle();
-
-		if (model.getDirX() == -1)
-			//【左向き】基準は180度
-			startAngle = 180 + model.getMouthAngle();
-
-		if (model.getDirY() == -1)
-			//【上向き】基準は90度
-			startAngle = 90 + model.getMouthAngle();
-
-		if (model.getDirY() == 1)
-			//【下向き】基準は270度
-			startAngle = 270 + model.getMouthAngle();
-
-		//円弧でパックマンを描画（口が開く）
+		double finalStartAngle = lastBaseAngle + mouthAngle;
+		
 		gc.fillArc(
-				model.getPacX() - MapData.TILE_SIZE / 2,  //描画の左上X座標に変換
-				model.getPacY() - MapData.TILE_SIZE / 2,  //描画の左上Y座標に変換
-				MapData.TILE_SIZE,  //横幅（30px）
-				MapData.TILE_SIZE,  //縦幅（30px）
-				startAngle,  //口が開く手前の角度からスタート
-				360 - model.getMouthAngle() * 2,  //360度から口の開き分を引いた「円の残り」を描画
-				javafx.scene.shape.ArcType.ROUND);  //中心からピザのピースのように閉じる
+			pacX - MapData.TILE_SIZE / 2.0,
+			pacY - MapData.TILE_SIZE / 2.0,
+			MapData.TILE_SIZE, MapData.TILE_SIZE,
+			finalStartAngle,
+			360 - mouthAngle * 2,
+			javafx.scene.shape.ArcType.ROUND
+		);
 	}
-
-	//全体描画
-	public void draw(GraphicsContext gc) {
-
-		//マップの実サイズ（ピクセル）
-	    int mapW = model.getMap()[0].length * MapData.TILE_SIZE;
-	    int mapH = model.getMap().length * MapData.TILE_SIZE;
-
-	    //画面サイズに合わせて縮尺計算
-	    double scaleX = gc.getCanvas().getWidth() / mapW;
-	    double scaleY = gc.getCanvas().getHeight() / mapH;
-
-	    //アスペクト比（縦横比）を維持するため、小さい方の倍率に合わせる
-	    double scale = Math.min(scaleX, scaleY);
-
-	    //中央に表示するためのオフセット
-	    double offsetX = (gc.getCanvas().getWidth() - mapW * scale) / 2;
-	    double offsetY = (gc.getCanvas().getHeight() - mapH * scale) / 2;
-
-	    //描画状態を一時保存
-	    gc.save();
-
-	    //画面を中央＆スケール調整
-	    gc.translate(offsetX, offsetY);
-	    gc.scale(scale, scale);
-
-	    //背景（黒)
-	    gc.setFill(Color.BLACK);
-	    gc.fillRect(0, 0, mapW, mapH);
-
-	    //壁の描画
-	    drawStage(gc);
-	    
-	    //パックマンの描画
-	    drawPacman(gc);
-
-	    //元に戻す
-	    gc.restore();
+	
+	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
+		enemyImageView.setFitWidth(MapData.TILE_SIZE);
+		enemyImageView.setFitHeight(MapData.TILE_SIZE);
+		enemyImageView.setPreserveRatio(true);
+	}
+	//追加項目
+	private void drawEnemy(GraphicsContext gc) {
+		Enemy enemy = model.getEnemy();
+		if (enemy == null) return;
+ 
+		if (enemy instanceof RedEnemy) {
+			RedEnemy red = (RedEnemy) enemy;
+			Image img = red.getEnemyImage();
+			double enemyLeftX = red.getX() - MapData.TILE_SIZE / 2.0;
+			double enemyTopY = red.getY() - MapData.TILE_SIZE / 2.0;
+ 
+			if (img != null) {
+				// ⭕ 画像が正常にある場合は画像を描画
+				gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
+			} else {
+				// ⚠️ 画像読み込みに失敗している場合は「赤い円」で身代わり描画
+				gc.setFill(Color.RED);
+				gc.fillOval(red.getX(), red.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
+ 
+				// 中心点が視覚的にわかりやすいように小さな黒い点を打つ
+				gc.setFill(Color.BLACK);
+				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2,
+				            red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
+			}
+		}
 	}
 }

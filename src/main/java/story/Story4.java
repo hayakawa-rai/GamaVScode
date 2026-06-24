@@ -3,6 +3,7 @@ package story;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -23,6 +24,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import start.Bgm;
+import start.Start;
 
 public class Story4 extends Application{
 
@@ -39,7 +42,8 @@ public class Story4 extends Application{
         stage.show();
     }
 	
-
+    //ストーリー終了処理を1回だけにする用
+    private boolean isEndingStarted = false;
     //今どのメッセージを表示しているかのカウント用
     private int messageIndex = 0;
     //何文字目まで表示するか(タイピング演出のためのカウンター)
@@ -69,46 +73,38 @@ public class Story4 extends Application{
     
     public Scene story4() {
     	
-        
+    	//BGMの再生
+    	Bgm.stopBGM();
+    	Bgm.playBGM("/music/endhing.mp3");
         //ジャンプ音の読み込み
         AudioClip jumpSound = new AudioClip(
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
         	);
         //音量調整
-        jumpSound.setVolume(0.3); 
-        //倒される時の音の読み込み
-        AudioClip downSound = new AudioClip(
-        	    getClass().getResource("/music/down.mp3").toExternalForm()
-        	);
+        jumpSound.setVolume(0.2); 
+        //ダメージ音の読み込み
+        AudioClip aSound = new AudioClip(
+        	getClass().getResource("/music/damage2.mp3").toExternalForm()
+        );
         //音量調整
-        downSound.setVolume(0.3); 
-        //起こった時の音の読み込み
-        AudioClip feelSound = new AudioClip(
-        	    getClass().getResource("/music/feel.mp3").toExternalForm()
-        	);
-        //音量調整
-        feelSound.setVolume(0.3);  //起こった時の音の読み込み
-        //最後の戦いの音楽の読み込み
-        AudioClip endSound = new AudioClip(
-        	    getClass().getResource("/music/end.mp3").toExternalForm()
-        	);
-        //音量調整
-        endSound.setVolume(0.3);
+        aSound.setVolume(0.4);
+     
+        
     	//会話内容を設定
     	List<Dialogue> dialogues = Arrays.asList( 
-        		new Dialogue("わだたく", "……あれ……？もう、あそべない……？",downSound,Color.RED),
-        		new Dialogue("仙石さん", "終わったか……",null,Color.WHITE),
-        		new Dialogue("あにき", "……ペットがやられたな。まあいい。",jumpSound,Color.RED),
-        		new Dialogue("あにき", "代わりはいくらでもいる。",null,Color.RED),
-        		new Dialogue("仙石さん", "……ふざけるな。",feelSound,Color.WHITE),
-        		new Dialogue("仙石さん", "社員を、道具みたいに扱いやがって……！",null,Color.WHITE),
-        		new Dialogue("仙石さん", "会社は、お前の遊び場じゃない！",jumpSound,Color.WHITE),
-        		new Dialogue("あにき", "会社？",null,Color.RED),
-        		new Dialogue("あにき", "ここはもう俺の支配下だ。",jumpSound,Color.RED),
-        		new Dialogue("あにき", "来るか、先輩社員サン。",jumpSound,Color.RED),
-        		new Dialogue("仙石さん", "取り戻す。ここは俺たちの会社だ！",jumpSound,Color.WHITE),
-        		new Dialogue("あにき", "いいだろう。",null,Color.RED),
-        		new Dialogue("あにき", "絶望を教えてやる！！",endSound,Color.RED)
+    			new Dialogue("あにき", "……!?。",aSound,Color.RED),
+    			new Dialogue("仙石さん", "……終わりだな。",null,Color.WHITE),
+    			new Dialogue("あにき", "……ああ、負けだ。",null,Color.RED),
+    			new Dialogue("仙石さん", "やりすぎだ。会社まで巻き込んで。",jumpSound,Color.WHITE),
+    			new Dialogue("あにき", "分かってる。もうやめる。",jumpSound,Color.RED),
+    			new Dialogue("仙石さん", "ならいい。今ならまだ戻せる。",null,Color.WHITE),
+    			new Dialogue("あにき", "……悪かった。全部返します。",jumpSound,Color.RED),
+    			new Dialogue("仙石さん", "……はぁ。やっとか。",null,Color.WHITE),
+    			new Dialogue("仙石さん", "これで普通に働けるな。",jumpSound,Color.WHITE),
+    			new Dialogue("あにき", "ああ。一社員としてしっかり働きます。",jumpSound,Color.RED),
+    			new Dialogue("仙石さん", "よし。しっかり反省してるみたいだな。",null,Color.WHITE),
+    			new Dialogue("仙石さん", "戻るぞ。仕事が待ってる。",jumpSound,Color.WHITE),
+    			new Dialogue("あにき", "はい。先輩！！",jumpSound,Color.RED)
         );
     	
     	//テキストクラスのインスタンスを作成
@@ -176,7 +172,7 @@ public class Story4 extends Application{
         
         //背景画像を読み込み
         Image bgImage = new Image(
-        		getClass().getResourceAsStream("/picture/emd-nottori.jpg")
+        		getClass().getResourceAsStream("/picture/shatyoroom.jpg")
         );
         //背景画像の表示
         ImageView bgView = new ImageView(bgImage);
@@ -393,30 +389,6 @@ public class Story4 extends Application{
         		//メッセージカウントを増やす
         	    messageIndex++;
         	    
-        	    if (messageIndex == 12) {
-        	    	Timeline shakeSlot = new Timeline(
-        	    		    new KeyFrame(Duration.millis(0), e2 -> {
-        	    		        base.setTranslateX(Math.random() * 30 - 15); // -15〜+15
-        	    		        base.setTranslateY(Math.random() * 20 - 10); // -10〜+10
-        	    		    }),
-        	    		    new KeyFrame(Duration.millis(40)) // 更新間隔
-        	    		);
-
-        	    		//回数（揺れ時間）
-        	    		shakeSlot.setCycleCount(15);
-
-        	    		//終わったら元に戻す
-        	    		shakeSlot.setOnFinished(e2 -> {
-        	    		    base.setTranslateX(0);
-        	    		    base.setTranslateY(0);
-        	    		});
-
-        	    		shakeSlot.play();
-        	    		
-        	    }
-
-        	    
-        	    //差し込み絵の処理
         	    //タイピングを再スタート
         	    startTyping();
         	    //▼を消す
@@ -429,6 +401,23 @@ public class Story4 extends Application{
                 Dialogue d = dialogues.get(messageIndex);
         	    //誰が話しているかの情報取得
         	    String speaker = d.speaker;
+        	    //あにきの画像差し替え
+        	    if (messageIndex >= 2 && messageIndex <= 10) {
+        	        // 差し替え画像
+        	        anikiView.setImage(new Image(
+        	            getClass().getResourceAsStream("/picture/hayakawa2.png")
+        	        ));
+        	        // サイズ変更
+        	        anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.7));
+        	        anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.1));
+        	        anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+        	    } else {
+        	        // 元の画像に戻す
+        	        anikiView.setImage(anikiImage);
+        	        anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+        	        anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
+        	        anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+        	    }
         	    //設定した音をならす
         	    if (d.sound != null && d.sound != jumpSound) {
         	        d.sound.stop();
@@ -452,10 +441,35 @@ public class Story4 extends Application{
         	        }
         	    }
         	} else {//メッセージの最後まで行った後の処理
-        		//・・・を表示をする
-        	    text.setText("・・・");
-        	    //▼を消す
+        		if (isEndingStarted) return;
+        	    isEndingStarted = true;
+
         	    nextMark.setVisible(false);
+
+        	    //黒いフェード用
+        	    Rectangle fadeRect = new Rectangle(1000, 800, Color.BLACK);
+        	    fadeRect.setOpacity(0);
+        	    base.getChildren().add(fadeRect);
+
+        	    //フェードアウト
+        	    FadeTransition fade = new FadeTransition(Duration.seconds(1.5), fadeRect);
+        	    fade.setFromValue(0);
+        	    fade.setToValue(1);
+
+        	    //サイズをウィンドウに合わせる
+        	    fadeRect.widthProperty().bind(scene.widthProperty());
+        	    fadeRect.heightProperty().bind(scene.heightProperty());
+        	    
+        	    fade.setOnFinished(ev -> {
+        	        //BGM停止
+        	        Bgm.stopBGM();
+
+        	        //スタート画面へ遷移
+        	        Start start = new Start();
+        	        start.start(stage);
+        	    });
+
+        	    fade.play();
         	}
         });
 

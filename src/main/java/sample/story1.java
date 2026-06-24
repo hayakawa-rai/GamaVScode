@@ -347,7 +347,7 @@ public class story1 extends Application{
                 jump.stop();
                 
                 // 2. 司令塔を経由してパックマンのゲーム画面へ一瞬で遷移！
-                test.controller.SampleController.switchToGame(stage);
+                sample.controller.SampleController.switchToGame(stage);
         	}
         });
         //最初の文章を表示(部品のすべての処理を終えてから文字を表示するため最後に記述)

@@ -29,6 +29,23 @@ public class Stageclear2 extends Application{
         stage.show();
     }
     public Scene clear() {
+    // クリア音
+    AudioClip clearSound = new AudioClip(
+    getClass().getResource("/music/yay.mp3").toExternalForm()
+    );
+    clearSound.setVolume(0.5);
+    
+    // 0.5秒待つ
+    PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
+        	
+    // 時間経過後に再生
+    delay.setOnFinished(e -> {
+    	clearSound.play();
+    });
+        	
+    // タイマー開始
+    delay.play();
+    
     //どこのステージをクリアしたか表示する
     Text title = new Text("STAGE2    CLEAR!");
     //フォントサイズとカラーを指定
@@ -134,6 +151,9 @@ public class Stageclear2 extends Application{
     
     //buttonBoxを中身とした1000×800のウィンドウを作成
     Scene scene = new Scene(buttonBox, 1000, 800);
+    //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+    stage.setMinWidth(800);
+    stage.setMinHeight(600);
     //CSSを接続
     scene.getStylesheets().add(
         getClass().getResource("/css/style.css").toExternalForm()

@@ -3,6 +3,7 @@ package story;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -23,6 +24,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import start.Bgm;
 
 public class Story3 extends Application{
 
@@ -39,7 +41,8 @@ public class Story3 extends Application{
         stage.show();
     }
 	
-
+    //ストーリー終了処理を1回だけにする用
+    private boolean isEndingStarted = false;
     //今どのメッセージを表示しているかのカウント用
     private int messageIndex = 0;
     //何文字目まで表示するか(タイピング演出のためのカウンター)
@@ -69,13 +72,15 @@ public class Story3 extends Application{
     
     public Scene story3() {
     	
-        
+    	//BGMの再生
+    	Bgm.stopBGM();
+    	Bgm.playBGM("/music/wadabgm.mp3");
         //ジャンプ音の読み込み
         AudioClip jumpSound = new AudioClip(
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
         	);
         //音量調整
-        jumpSound.setVolume(0.3); 
+        jumpSound.setVolume(0.2); 
         //倒される時の音の読み込み
         AudioClip downSound = new AudioClip(
         	    getClass().getResource("/music/down.mp3").toExternalForm()
@@ -87,13 +92,13 @@ public class Story3 extends Application{
         	    getClass().getResource("/music/feel.mp3").toExternalForm()
         	);
         //音量調整
-        feelSound.setVolume(0.3);  //起こった時の音の読み込み
+        feelSound.setVolume(0.5);  //起こった時の音の読み込み
         //最後の戦いの音楽の読み込み
         AudioClip endSound = new AudioClip(
         	    getClass().getResource("/music/end.mp3").toExternalForm()
         	);
         //音量調整
-        endSound.setVolume(0.3);
+        endSound.setVolume(0.4);
     	//会話内容を設定
     	List<Dialogue> dialogues = Arrays.asList( 
         		new Dialogue("わだたく", "……あれ……？もう、あそべない……？",downSound,Color.RED),
@@ -176,7 +181,7 @@ public class Story3 extends Application{
         
         //背景画像を読み込み
         Image bgImage = new Image(
-        		getClass().getResourceAsStream("/picture/emd-nottori.jpg")
+        		getClass().getResourceAsStream("/picture/shatyoroom.jpg")
         );
         //背景画像の表示
         ImageView bgView = new ImageView(bgImage);
@@ -415,8 +420,7 @@ public class Story3 extends Application{
         	    		
         	    }
 
-        	    
-        	    //差し込み絵の処理
+        	  
         	    //タイピングを再スタート
         	    startTyping();
         	    //▼を消す
@@ -451,11 +455,36 @@ public class Story3 extends Application{
         	            jumpWadataku.playFromStart();
         	        }
         	    }
-        	} else {//メッセージの最後まで行った後の処理
-        		//・・・を表示をする
-        	    text.setText("・・・");
-        	    //▼を消す
+        	}else {//メッセージの最後まで行った後の処理
+
+        	    if (isEndingStarted) return;
+        	    isEndingStarted = true;
+
         	    nextMark.setVisible(false);
+
+        	    //黒いフェード用
+        	    Rectangle fadeRect = new Rectangle(1000, 800, Color.BLACK);
+        	    fadeRect.setOpacity(0);
+        	    base.getChildren().add(fadeRect);
+
+        	    //フェードアウト
+        	    FadeTransition fade = new FadeTransition(Duration.seconds(1.5), fadeRect);
+        	    fade.setFromValue(0);
+        	    fade.setToValue(1);
+        	    
+        	    //サイズをウィンドウに合わせる
+        	    fadeRect.widthProperty().bind(scene.widthProperty());
+        	    fadeRect.heightProperty().bind(scene.heightProperty());
+        	    
+        	    fade.setOnFinished(ev -> {
+        	        //BGM停止
+        	        Bgm.stopBGM();
+
+        	        //次の画面へ
+        	        test.test2.GameController.switchToGame(stage);
+        	    });
+
+        	    fade.play();
         	}
         });
 

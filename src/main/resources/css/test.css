@@ -1,0 +1,13 @@
+/*stage1(test1)*/
+.stage1 .game-bg     { -fx-background-color: #474747; }
+.stage1 .game-wall   { -fx-background-color: #00a381; }
+.stage1 .game-pacman { -fx-background-color: #f8f4e6; }
+/*stage2(test2)*/
+.stage2 .game-bg     { -fx-background-color: #000080; }
+.stage2 .game-wall   { -fx-background-color: #ff14ff; }
+.stage2 .game-pacman { -fx-background-color: #00f3ff; }
+
+/*stage3(test3)*/
+.stage3 .game-bg     { -fx-background-color: #0a0000; }
+.stage3 .game-wall   { -fx-background-color: #ff0000; }
+.stage3 .game-pacman { -fx-background-color: #ffee00; }

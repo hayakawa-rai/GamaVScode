@@ -29,6 +29,24 @@ public class Stageclear3 extends Application{
         stage.show();
     }
     public Scene clear() {
+    	
+    // クリア音
+    AudioClip clearSound = new AudioClip(
+    	getClass().getResource("/music/yay.mp3").toExternalForm()
+    );
+    clearSound.setVolume(0.5);
+
+    // 0.5秒待つ
+    PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
+        	
+    // 時間経過後に再生
+    delay.setOnFinished(e -> {
+    	clearSound.play();
+    });
+        	
+    // タイマー開始
+    delay.play();	
+    
     //どこのステージをクリアしたか表示する
     Text title = new Text("STAGE3    CLEAR!");
     //フォントサイズとカラーを指定
@@ -81,7 +99,28 @@ public class Stageclear3 extends Application{
     //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
     next.getStyleClass().add("game-button2");
     next.setPrefSize(250, 80);
-    
+    //次の画面に遷移
+    next.setOnAction(e -> {
+        // 音を再生
+    	clickSound.stop();
+        clickSound.play();
+
+        // 0.5秒待つ
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+
+        // 待った後に画面遷移
+        pause.setOnFinished(ev -> {
+            Story4 story4 = new Story4();
+            try {
+                story4.start(stage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // タイマー開始
+        pause.play();
+    });
     // 戻るボタン
     Button backButton = new Button("タイトルへ");
     //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
@@ -113,6 +152,9 @@ public class Stageclear3 extends Application{
     
     //buttonBoxを中身とした1000×800のウィンドウを作成
     Scene scene = new Scene(buttonBox, 1000, 800);
+    //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+    stage.setMinWidth(800);
+    stage.setMinHeight(600);
     //CSSを接続
     
     scene.getStylesheets().add(

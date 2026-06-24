@@ -1,41 +1,85 @@
-// 遠くにいるときは追跡、近づくと自分の縄張りへ戻る　GreenEnemy(緑)
+// 遠くにいるときは追跡、近づくと縄張りへ戻る敵（緑）
 package Characters;
 /*
+import java.util.List;
+import javafx.scene.image.ImageView;
+
 public class GreenEnemy extends Enemy {
-	
-	// この距離以上ならプレイヤーを追いかける
-	private static final double BORDER = 8 * CELL_SIZE;
 
-	// 縄張り(退避場所)の座標
-	// マップ左下を指定
-	private static final int CORNER_COL = 0;
-	private static final int CORNER_ROW = 30;
+    // マップ中心 エネミーハウス内（仮座標）
+    private static final int START_COL = 16;
+    private static final int START_ROW = 17;
 
-	public GreenEnemy(ImageView imageView) {
+    // この距離以上ならプレイヤーを追いかける（8マス）
+    private static final double BORDER = 8 * CELL_SIZE;
 
-		super(imageView, 15 * CELL_SIZE, 15 * CELL_SIZE, 1);
-	}
+    // 縄張りエリアの中心（左下）（仮座標）
+    private static final int TERRITORY_COL = 3;
+    private static final int TERRITORY_ROW = 26;
 
-	@Override
-	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, Sengoku player) {
+    // 出撃待機用
+    private long startTime;
 
-		double distance = getDistanceTo(player);
+    // 巣から出たか
+    private boolean released = false;
 
-		// 遠いなら追跡
-		if (distance >= BORDER) {
+    public GreenEnemy(ImageView imageView) {
 
-			// プレイヤーの座標(px)をセル座標に変換
+        super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
 
-			int playerCol = (int) ((player.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
+        startTime = System.currentTimeMillis();
+    }
 
-			int playerRow = (int) ((player.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
-			// プレイヤーに最も近づける方向を選択
+    @Override
+    public void move(int[][] map) {
 
-			return getClosestDirection(validDirections, playerCol, playerRow);
-		}
+        // ゲーム開始から20秒間は待機
+        if (!released) {
 
-		// 近いなら縄張りへ戻る(左下) //後から設定
-		return getClosestDirection(validDirections, CORNER_COL, CORNER_ROW);
-	}
-	
-}*/
+            long elapsed =
+                    System.currentTimeMillis() - startTime;
+
+            if (elapsed < 20000) {
+                return;
+            }
+
+            released = true;
+        }
+
+        super.move(map);
+    }
+
+    @Override
+    protected Direction decideNextDirection(
+            List<Direction> validDirections,
+            int[][] map,
+            Sengoku player) {
+
+        // プレイヤーとの距離を取得
+        double distance = getDistanceTo(player);
+
+        // プレイヤーが遠い場合は追跡
+        if (distance >= BORDER) {
+
+            int playerCol =
+                    (int) ((player.getX() + CELL_SIZE / 2.0)
+                            / CELL_SIZE);
+
+            int playerRow =
+                    (int) ((player.getY() + CELL_SIZE / 2.0)
+                            / CELL_SIZE);
+
+            return getClosestDirection(
+                    validDirections,
+                    playerCol,
+                    playerRow);
+        }
+
+        // プレイヤーが近い場合は縄張りへ戻る
+        return getClosestDirection(
+                validDirections,
+                TERRITORY_COL,
+                TERRITORY_ROW);
+    }
+}
+*/

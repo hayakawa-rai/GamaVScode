@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import start.Bgm;
 import start.Start;
 
 public class Practice extends Application {
@@ -34,7 +35,7 @@ public class Practice extends Application {
 	}
 
 	public Scene createScene() {
-
+		
 		// タイトル
 		Label title = new Label("練習モード");
 		title.setStyle(
@@ -44,19 +45,8 @@ public class Practice extends Application {
 			    "-fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3);"
 			);
 
-		//音声読み込み
-		AudioClip clickSound = new AudioClip(
-			getClass().getResource("/music/select.mp3").toExternalForm()
-		);
-		// 音量調整
-		clickSound.setVolume(0.4);
-		//音声読み込み
-		AudioClip cancelSound = new AudioClip(
-			getClass().getResource("/music/cancel.mp3").toExternalForm()
-		);
-		// 音量調整
-		cancelSound.setVolume(0.4);
-				
+
+
 		// ステージ選択
 		Button stage1 = new Button("STAGE 1");
 		Button stage2 = new Button("STAGE 2");
@@ -73,7 +63,38 @@ public class Practice extends Application {
 		stage1.setPrefHeight(80);
 		stage2.setPrefHeight(80);
 		stage3.setPrefHeight(80);
-
+		
+		//音声読み込み
+		AudioClip clickSound = new AudioClip(
+			getClass().getResource("/music/select.mp3").toExternalForm()
+		);
+		// 音量調整
+		clickSound.setVolume(0.4);
+		//音声読み込み
+		AudioClip cancelSound = new AudioClip(
+			getClass().getResource("/music/cancel.mp3").toExternalForm()
+		);
+		// 音量調整
+		cancelSound.setVolume(0.4);
+		
+		stage1.setOnAction(e -> {
+			//音をつける
+	    	clickSound.stop();
+	    	clickSound.play();
+	    	
+	    	// 0.5秒待つ
+	        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+			// 1. 練習モードの背景アニメーションを停止
+			if (timer != null) {
+				timer.stop();
+				//BGm停止
+		        Bgm.stopBGM();
+			}
+			
+			// 2. SampleController の遷移メソッドを直接呼び出す！
+			// (※ メソッド名が switchToStart で合っているか、確認してね！)
+			test.test2.GameController.switchToGame(stage);
+		});
 		VBox stageButtons = new VBox(20, stage1, stage2, stage3);
 		stageButtons.setAlignment(Pos.CENTER);
 
@@ -84,8 +105,7 @@ public class Practice extends Application {
 		backButton.setPrefWidth(200);
 
 		// ★ master側の処理を残す
-		//スタート画面へ戻る
-	    backButton.setOnAction(e -> {
+		backButton.setOnAction(e -> {
 	    	cancelSound.stop();
 	    	cancelSound.play();
 	    	
@@ -95,6 +115,8 @@ public class Practice extends Application {
 	        // 待った後に画面遷移
 	        pause.setOnFinished(ev -> {
 	        Start titleScreen = new Start();
+	        // 背景停止
+	        timer.stop();
 	        try {
 	            titleScreen.start(stage);
 	        } catch (Exception ex) {
@@ -152,6 +174,9 @@ public class Practice extends Application {
 		root.getChildren().addAll(bgPane, ui);
 
 		Scene scene = new Scene(root, 1000, 800);
+		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
 
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
