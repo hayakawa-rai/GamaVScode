@@ -36,7 +36,15 @@ public class Story1 extends Application {
         stage.setTitle("story1");
         stage.show();
     }
+<<<<<<< HEAD
+    private Timeline blink;
+    private Timeline arrowMove;
+    private AudioClip jumpSound;
+
+    //ストーリー終了処理を1回だけにする用
+=======
     
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
     private boolean isEndingStarted = false;
     private int messageIndex = 0;
     private int charIndex = 0;
@@ -78,12 +86,68 @@ public class Story1 extends Application {
         jumpNarinari = null;
     }
     
+    private void cleanup(Scene scene) {
+
+        // 文字タイピング
+        if (timeline != null) {
+            timeline.stop();
+            timeline = null;
+        }
+
+        // ジャンプ
+        if (jumpAniki != null) {
+            jumpAniki.stop();
+            jumpAniki = null;
+        }
+        if (jumpSengoku != null) {
+            jumpSengoku.stop();
+            jumpSengoku = null;
+        }
+        if (jumpNarinari != null) {
+            jumpNarinari.stop();
+            jumpNarinari = null;
+        }
+
+        // ▼アニメーション
+        if (blink != null) {
+            blink.stop();
+            blink = null;
+        }
+        if (arrowMove != null) {
+            arrowMove.stop();
+            arrowMove = null;
+        }
+
+        // 効果音
+        if (jumpSound != null) {
+            jumpSound.stop();
+            jumpSound = null;
+        }
+
+        // BGM停止
+        Bgm.stopBGM();
+
+        // クリックイベント解除
+        if (scene != null) {
+            scene.setOnMouseClicked(null);   // 念のため
+            scene.removeEventFilter(MouseEvent.MOUSE_CLICKED, null);
+        }
+    }
+    
     public Scene story() {
         
         Bgm.stopBGM();
         Bgm.playBGM("/music/storybgm.mp3");
     
+<<<<<<< HEAD
+    	 //ジャンプ音の読み込み
+        jumpSound = new AudioClip(
+        	    getClass().getResource("/music/jump06.mp3").toExternalForm()
+        	);
+        //音量調整
+=======
         AudioClip jumpSound = new AudioClip(getClass().getResource("/music/jump06.mp3").toExternalForm());
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
         jumpSound.setVolume(0.2); 
       
         List<Dialogue> dialogues = Arrays.asList( 
@@ -118,6 +182,12 @@ public class Story1 extends Application {
         nextMark.setFill(Color.WHITE);
         nextMark.setVisible(false);
         nextMark.setTranslateY(40);
+<<<<<<< HEAD
+        //▼のアニメーション設定
+        blink = StoryUtils.createBlink(nextMark);
+        arrowMove = StoryUtils.createArrowMove(nextMark);
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
         
         // メンバ変数に代入（のちほどクリーンアップするため）
         blink = StoryUtils.createBlink(nextMark);
@@ -189,11 +259,36 @@ public class Story1 extends Application {
         text.wrappingWidthProperty().bind(box.widthProperty().multiply(0.95));
         bubble.prefWidthProperty().bind(box.widthProperty());
         bubble.maxWidthProperty().bind(box.widthProperty());
+<<<<<<< HEAD
+        //フォントサイズも変化
+        text.styleProperty().bind(
+        		Bindings.format(
+        				"-fx-font-size: %.0fpx; -fx-font-family: monospace;",
+        				scene.widthProperty().multiply(0.03)
+        		)
+        );
+        //▼のサイズも変化
+        nextMark.styleProperty().bind(
+        		Bindings.format(
+        				"-fx-font-size: %.0fpx; -fx-fill: white; -fx-font-family: monospace;",
+        				scene.widthProperty().multiply(0.02)
+        		)
+        );
+        //名前表示も変化
+        nameText.styleProperty().bind(
+        	    Bindings.format(
+        	        "-fx-font-size: %.0fpx; -fx-fill: lightgray;",
+        	        scene.widthProperty().multiply(0.025)
+        	    )
+        );
+        //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+=======
         
         text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: white; -fx-font-family: monospace;", scene.widthProperty().multiply(0.03)));
         nextMark.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: white; -fx-font-family: monospace;", scene.widthProperty().multiply(0.02)));
         nameText.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: lightgray;", scene.widthProperty().multiply(0.025)));
         
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
         stage.setMinWidth(800);
         stage.setMinHeight(600);
         
@@ -278,12 +373,33 @@ public class Story1 extends Application {
                     // 【最重要】次の画面に行く直前に、この画面のタイマーをすべて止めてお掃除する
                     cleanup(); 
 
+<<<<<<< HEAD
+        	    //フェードアウト
+        	    FadeTransition fade = new FadeTransition(Duration.seconds(1.5), fadeRect);
+        	    fade.setFromValue(0);
+        	    fade.setToValue(1);
+        	    
+        	    //サイズをウィンドウに合わせる
+        	    fadeRect.widthProperty().bind(scene.widthProperty());
+        	    fadeRect.heightProperty().bind(scene.heightProperty());
+        	    
+        	    fade.setOnFinished(ev -> {
+        	    	cleanup(scene); 
+        	    	base.getChildren().clear();
+        	        //次の画面へ
+        	        test.test2.GameController.switchToGame1(stage);
+        	    });
+
+        	    fade.play();
+        	}
+=======
                     // 次の画面へ（既存のstageを受け渡す）
                     test.test2.GameController.switchToGame1(stage);
                 });
 
                 fade.play();
             }
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
         });
         
         startTyping();

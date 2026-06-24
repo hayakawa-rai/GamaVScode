@@ -40,7 +40,15 @@ public class Story3 extends Application{
         stage.setTitle("story3");
         stage.show();
     }
-	
+    private Timeline blink;
+    private Timeline arrowMove;
+
+    private AudioClip jumpSound;
+    private AudioClip downSound;
+    private AudioClip feelSound;
+    private AudioClip endSound;
+
+    private TranslateTransition fall;
     //ストーリー終了処理を1回だけにする用
     private boolean isEndingStarted = false;
     //今どのメッセージを表示しているかのカウント用
@@ -70,31 +78,99 @@ public class Story3 extends Application{
         timeline.playFromStart();
     }
     
+    
+    private void cleanup(Scene scene, StackPane base) {
+
+        // タイピング
+        if (timeline != null) {
+            timeline.stop();
+            timeline = null;
+        }
+
+        // ジャンプ
+        if (jumpAniki != null) {
+            jumpAniki.stop();
+            jumpAniki = null;
+        }
+        if (jumpSengoku != null) {
+            jumpSengoku.stop();
+            jumpSengoku = null;
+        }
+        if (jumpNarinari != null) {
+            jumpNarinari.stop();
+            jumpNarinari = null;
+        }
+        if (jumpWadataku != null) {
+            jumpWadataku.stop();
+            jumpWadataku = null;
+        }
+
+        // ▼アニメ
+        if (blink != null) {
+            blink.stop();
+            blink = null;
+        }
+        if (arrowMove != null) {
+            arrowMove.stop();
+            arrowMove = null;
+        }
+
+        // 落下アニメ
+        if (fall != null) {
+            fall.stop();
+            fall = null;
+        }
+
+        // 音停止
+        if (jumpSound != null) jumpSound.stop();
+        if (downSound != null) downSound.stop();
+        if (feelSound != null) feelSound.stop();
+        if (endSound != null) endSound.stop();
+
+        jumpSound = null;
+        downSound = null;
+        feelSound = null;
+        endSound = null;
+
+        // BGM
+        Bgm.stopBGM();
+
+        // イベント解除
+        if (scene != null) {
+            scene.setOnMouseClicked(null);
+        }
+
+        // 画面全部削除（超重要）
+        if (base != null) {
+            base.getChildren().clear();
+        }
+    }
+    
     public Scene story3() {
     	
     	//BGMの再生
     	Bgm.stopBGM();
     	Bgm.playBGM("/music/wadabgm.mp3");
         //ジャンプ音の読み込み
-        AudioClip jumpSound = new AudioClip(
+        jumpSound = new AudioClip(
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
         	);
         //音量調整
         jumpSound.setVolume(0.2); 
         //倒される時の音の読み込み
-        AudioClip downSound = new AudioClip(
+        downSound = new AudioClip(
         	    getClass().getResource("/music/down.mp3").toExternalForm()
         	);
         //音量調整
         downSound.setVolume(0.3); 
         //起こった時の音の読み込み
-        AudioClip feelSound = new AudioClip(
+        feelSound = new AudioClip(
         	    getClass().getResource("/music/feel.mp3").toExternalForm()
         	);
         //音量調整
         feelSound.setVolume(0.5);  //起こった時の音の読み込み
         //最後の戦いの音楽の読み込み
-        AudioClip endSound = new AudioClip(
+        endSound = new AudioClip(
         	    getClass().getResource("/music/end.mp3").toExternalForm()
         	);
         //音量調整
@@ -150,8 +226,8 @@ public class Story3 extends Application{
         //下に下げる
         nextMark.setTranslateY(40);
         //▼のアニメーション設定
-        Timeline blink = StoryUtils.createBlink(nextMark);
-        Timeline arrowMove = StoryUtils.createArrowMove(nextMark);
+        blink = StoryUtils.createBlink(nextMark);
+        arrowMove = StoryUtils.createArrowMove(nextMark);
         
         //会話している人の名前表示用
         Text nameText = new Text();
@@ -227,7 +303,7 @@ public class Story3 extends Application{
         wadatakuView.setVisible(false);
         
         //画像を下にスライドするアニメーション
-        TranslateTransition fall = new TranslateTransition(Duration.millis(800), wadatakuView);
+        fall = new TranslateTransition(Duration.millis(800), wadatakuView);
         fall.setByY(200);  // 下に200px落ちる（調整OK）
 
         
@@ -290,7 +366,7 @@ public class Story3 extends Application{
         //フォントサイズも変化
         text.styleProperty().bind(
         		Bindings.format(
-        				"-fx-font-size: %.0fpx; -fx-fill: white; -fx-font-family: monospace;",
+        				"-fx-font-size: %.0fpx; -fx-font-family: monospace;",
         				scene.widthProperty().multiply(0.03)
         		)
         );
@@ -477,9 +553,8 @@ public class Story3 extends Application{
         	    fadeRect.heightProperty().bind(scene.heightProperty());
         	    
         	    fade.setOnFinished(ev -> {
-        	        //BGM停止
-        	        Bgm.stopBGM();
-
+        	    	cleanup(scene, base); 
+        	    	base.getChildren().clear();
         	        //次の画面へ
         	        test.test2.GameController.switchToGame3(stage);
         	    });

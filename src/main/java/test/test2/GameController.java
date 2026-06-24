@@ -11,6 +11,7 @@ import story.Practice;
 import story.Story1;
 import story.Story2;
 import story.Story3;
+import story.Story4;
 import test1.Main1;
 import test2.Main2;
 import test3.Main3;
@@ -204,10 +205,10 @@ public class GameController {
 		}
 	}
 	
-	//画面変更Story3
+	//画面変更Story4
 	public static void switchStory4(javafx.stage.Stage stage) {
 		try { 
-			Story3 App = new Story3();
+			Story4 App = new Story4();
 			App.start(stage);
 		} catch (Exception e) {
 			e.printStackTrace();

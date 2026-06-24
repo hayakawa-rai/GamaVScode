@@ -40,7 +40,18 @@ public class Story2 extends Application{
         stage.setTitle("story2");
         stage.show();
     }
-	
+    private Timeline blink;
+    private Timeline arrowMove;
+
+    private AudioClip jumpSound;
+    private AudioClip cuteSound;
+    private AudioClip appearSound;
+    private AudioClip mysteriousSound;
+    private AudioClip shineSound;
+    private AudioClip damageSound;
+    private AudioClip aSound;
+    private AudioClip atacSound;
+    
     //ストーリー終了処理を1回だけにする用
     private boolean isEndingStarted = false;
     //今どのメッセージを表示しているかのカウント用
@@ -70,55 +81,120 @@ public class Story2 extends Application{
         timeline.playFromStart();
     }
     
+    private void cleanup(Scene scene) {
+
+        // テキストタイピング
+        if (timeline != null) {
+            timeline.stop();
+            timeline = null;
+        }
+
+        // ジャンプ系
+        if (jumpAniki != null) {
+            jumpAniki.stop();
+            jumpAniki = null;
+        }
+        if (jumpSengoku != null) {
+            jumpSengoku.stop();
+            jumpSengoku = null;
+        }
+        if (jumpNarinari != null) {
+            jumpNarinari.stop();
+            jumpNarinari = null;
+        }
+        if (jumpWadataku != null) {
+            jumpWadataku.stop();
+            jumpWadataku = null;
+        }
+
+        // ▼アニメーション
+        if (blink != null) {
+            blink.stop();
+            blink = null;
+        }
+        if (arrowMove != null) {
+            arrowMove.stop();
+            arrowMove = null;
+        }
+
+        // 効果音（全部止める）
+        if (jumpSound != null) jumpSound.stop();
+        if (cuteSound != null) cuteSound.stop();
+        if (appearSound != null) appearSound.stop();
+        if (mysteriousSound != null) mysteriousSound.stop();
+        if (shineSound != null) shineSound.stop();
+        if (damageSound != null) damageSound.stop();
+        if (aSound != null) aSound.stop();
+        if (atacSound != null) atacSound.stop();
+
+        jumpSound = null;
+        cuteSound = null;
+        appearSound = null;
+        mysteriousSound = null;
+        shineSound = null;
+        damageSound = null;
+        aSound = null;
+        atacSound = null;
+
+        // BGM停止
+        Bgm.stopBGM();
+
+        // イベント解除
+        if (scene != null) {
+            scene.setOnMouseClicked(null);
+        }
+    }
+    
+    
     public Scene story2() {
     	
     	//BGMの再生
     	Bgm.stopBGM();
     	Bgm.playBGM("/music/naribgm.mp3");
         //ジャンプ音の読み込み
-        AudioClip jumpSound = new AudioClip(
+        jumpSound = new AudioClip(
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
         	);
         //音量調整
         jumpSound.setVolume(0.2); 
         //足音の読み込み
-        AudioClip cuteSound = new AudioClip(
+        cuteSound = new AudioClip(
         	    getClass().getResource("/music/footsteps.mp3").toExternalForm()
         	);
         //音量調整
         cuteSound.setVolume(0.3);
         //登場音の読み込み
-        AudioClip appearSound = new AudioClip(
+        appearSound = new AudioClip(
         	    getClass().getResource("/music/appearance.mp3").toExternalForm()
         	);
         //音量調整
         appearSound.setVolume(0.3);
         //まぬけな音の読み込み
-        AudioClip mysteriousSound = new AudioClip(
+        mysteriousSound = new AudioClip(
         	    getClass().getResource("/music/nari.mp3").toExternalForm()
         	);
         //音量調整
         mysteriousSound.setVolume(0.3);
         //輝く音の読み込み
-        AudioClip shineSound = new AudioClip(
+        shineSound = new AudioClip(
         	    getClass().getResource("/music/shine.mp3").toExternalForm()
         	);
         //音量調整
         shineSound.setVolume(0.3);
         //ダメージ音の読み込み
-        AudioClip damageSound = new AudioClip(
+        damageSound = new AudioClip(
         	    getClass().getResource("/music/damage.mp3").toExternalForm()
         	);
         //音量調整
         damageSound.setVolume(0.3);
         //ダメージ音の読み込み
-        AudioClip aSound = new AudioClip(
+        aSound = new AudioClip(
         	    getClass().getResource("/music/damage2.mp3").toExternalForm()
         	);
         //音量調整
         aSound.setVolume(0.3);
         //攻撃音の読み込み
-        AudioClip atacSound = new AudioClip(
+        atacSound = new AudioClip(
         	    getClass().getResource("/music/atac.mp3").toExternalForm()
         	);
         //音量調整
@@ -185,8 +261,8 @@ public class Story2 extends Application{
         //下に下げる
         nextMark.setTranslateY(40);
         //▼のアニメーション設定
-        Timeline blink = StoryUtils.createBlink(nextMark);
-        Timeline arrowMove = StoryUtils.createArrowMove(nextMark);
+        blink = StoryUtils.createBlink(nextMark);
+        arrowMove = StoryUtils.createArrowMove(nextMark);
         
         //会話している人の名前表示用
         Text nameText = new Text();
@@ -334,7 +410,7 @@ public class Story2 extends Application{
         //フォントサイズも変化
         text.styleProperty().bind(
         		Bindings.format(
-        				"-fx-font-size: %.0fpx; -fx-fill: white; -fx-font-family: monospace;",
+        				"-fx-font-size: %.0fpx; -fx-font-family: monospace;",
         				scene.widthProperty().multiply(0.03)
         		)
         );
@@ -534,9 +610,8 @@ public class Story2 extends Application{
         	    fadeRect.heightProperty().bind(scene.heightProperty());
         	    
         	    fade.setOnFinished(ev -> {
-        	        //BGM停止
-        	        Bgm.stopBGM();
-
+        	    	cleanup(scene); 
+        	    	base.getChildren().clear();
         	        //次の画面へ
         	        test.test2.GameController.switchToGame2(stage);
         	    });
