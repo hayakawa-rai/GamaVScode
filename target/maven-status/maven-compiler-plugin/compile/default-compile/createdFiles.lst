@@ -28,6 +28,7 @@ sample\view\SampleView.class
 test\test2\MapData.class
 sample\model\SampleModel.class
 story\Stageclear2.class
+META-INF\maven\sample\Game\pom.xml
 sample\start.class
 sample\practice.class
 test\Direction.class
@@ -39,6 +40,7 @@ test\PacmanSample.class
 story\Dialogue.class
 story\StoryUtils.class
 sample\start$1.class
+META-INF\MANIFEST.MF
 test\Enemy.class
 Characters\EnemyState.class
 story\Gameover.class
@@ -54,6 +56,7 @@ start\Start.class
 sample\gameover.class
 test\SampleMainApp.class
 test3\view\MapView.class
+META-INF\maven\sample\Game\pom.properties
 test\SamplepracticeApp.class
 Items\Point.class
 test\Direction$1.class
