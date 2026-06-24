@@ -1,5 +1,4 @@
 // RedEnemy と連携してはさみうちにする BlueEnemy(青) 
-
 package test;
 
 import java.util.List;
@@ -12,18 +11,19 @@ public class BlueEnemy extends Enemy {
 	// スタート位置(マップ中心 エネミーハウス上)
 	private static final int START_COL = 16;
 	private static final int START_ROW = 16;
+	
+	// プレイヤーの進行方向の2マス先を狙う
+	private static final int PREDICT_TILES = 2;
 
 	// 縄張りエリアの中心（右下）（仮座標）
 	private static final int TERRITORY_COL = 24;
 	private static final int TERRITORY_ROW = 26;
 
-	// プレイヤーの進行方向の2マス先を狙う
-	private static final int PREDICT_TILES = 2;
-	// 出発遅延（2秒後に動き始める)
-	private static final long DELAY = 2000;
-
 	// 出発時間の記録
 	private long startTime;
+	// 巣から出たか
+	private boolean released = false;
+	
 	// 赤の位置を参照
 	private RedEnemy red;
 	// プレイヤー座標取得用
@@ -31,16 +31,15 @@ public class BlueEnemy extends Enemy {
 
 	public BlueEnemy(MapData mapData, RedEnemy red) {
 		// マスの中心座標を初期位置として Enemy に渡す
-		super(
-				START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-				1);
+		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
 
 		this.mapData = mapData;
 		this.red = red;
+		// 生成時刻を記録
 		this.startTime = System.currentTimeMillis();
 
-		// 画像の読み込み処理
+		// 画像の読み込み
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream("/picture/wadataku.png");
 			if (is == null) {
@@ -54,26 +53,37 @@ public class BlueEnemy extends Enemy {
 		}
 	}
 
-	// MapView から現在の画像を取り出すためのゲッター
+	// 画像の読み込み処理
 	public Image getEnemyImage() {
-		if (this.currentState == Characters.EnemyState.DEAD)
+		if (this.currentState == Characters.EnemyState.DEAD) {
 			return deadImage;
-		if (this.currentState == Characters.EnemyState.FEVER)
+		}
+		if (this.currentState == Characters.EnemyState.FEVER) {
 			return feverImage;
+		}
 		return normalImage;
 	}
+	
+	//2秒経過後に出撃
+		@Override
+		public void move(int[][] map) {
+			if (!released) {
+				long elapsed = System.currentTimeMillis() - startTime;
+
+				// ゲーム開始から10秒は待機
+				if (elapsed < 2000) {
+					return;
+				}
+
+				// 出撃
+				released = true;
+			}
+			super.move(map);
+		}
+
 
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
-
-		// まだ出発時間に達していない → 動かない
-		if (System.currentTimeMillis() - startTime < DELAY) {
-			return Direction.NONE;
-		}
-		// 進める方向がない場合は停止
-		if (mapData == null || red == null || validDirections.isEmpty()) {
-			return Direction.NONE;
-		}
 		
 		// FEVER 時はランダム移動
         //if (this.currentState == EnemyState.FEVER) {

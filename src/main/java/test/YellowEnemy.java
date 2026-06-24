@@ -113,9 +113,7 @@ public class YellowEnemy extends Enemy {
 			break;
 		}
 
-		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
-		return
-
-		getClosestDirection(validDirections, pacCol, pacRow);
+		// 親クラスの 最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
+		return getClosestDirection(validDirections, pacCol, pacRow);
 	}
 }
