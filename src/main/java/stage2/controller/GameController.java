@@ -1,12 +1,12 @@
-package test2.controller;
-
+package stage2.controller;
+/*
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import test2.model.MapData;
-import test2.view.MapView;
+import stage2.model.MapData;
+import stage2.view.MapView;
 
 public class GameController {
 
@@ -84,11 +84,16 @@ public class GameController {
 
 			@Override
 			public void handle(long now) {
-
+				
+				if (!model.isPaused()) {
 				//ゲーム状態更新
 				model.updatePacman(); //位置・衝突・ワープ処理
 				model.updateMouth(); //口のアニメーション
-				
+				if (model.getRedEnemy() != null) {
+					// 敵の move メソッドに現在のマップ配列を渡して毎フレーム動かす
+					model.getRedEnemy().move(model.getMap());
+				}
+				}
 
 				//デバックログ
 				System.out.println("LOOP");
@@ -115,3 +120,4 @@ public class GameController {
 	}
 
 }
+*/

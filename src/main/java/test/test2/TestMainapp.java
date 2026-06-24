@@ -33,6 +33,7 @@ public class TestMainapp extends Application {
         Canvas canvas = new Canvas(viewWidth, viewHeight);
         root.getChildren().add(canvas);
         
+      /*コメントで隠してるのが前の描写方法  
         // 先に空の ImageView を用意
         javafx.scene.image.ImageView redImageView = new javafx.scene.image.ImageView();
         
@@ -44,6 +45,10 @@ public class TestMainapp extends Application {
         
         //  敵の ImageView を画面に登録
         root.getChildren().add(redImageView);
+        */
+        //敵描画呼び出し　成田
+        model.initEnemy(new javafx.scene.image.ImageView());
+        
         
         //  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
         this.controller = new GameController(model, view, canvas, scene);

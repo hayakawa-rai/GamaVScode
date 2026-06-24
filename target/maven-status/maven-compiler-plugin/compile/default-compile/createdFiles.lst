@@ -8,7 +8,6 @@ Characters\Character.class
 test1\controller\GameController$1.class
 Characters\Direction$1.class
 test\Sengoku.class
-test2\model\MapData.class
 sample\controller\SampleController.class
 Items\Chii.class
 sample\stageclear2.class
@@ -26,7 +25,6 @@ sample\controller\SampleController$1.class
 test\Character.class
 sample\view\SampleView.class
 test\test2\MapData.class
-test2\Main.class
 sample\model\SampleModel.class
 story\Stageclear2.class
 sample\start.class
@@ -53,10 +51,8 @@ story\Practice$1.class
 test\RedEnemy.class
 test1\model\MapData.class
 start\Start.class
-test2\controller\GameController.class
 sample\gameover.class
 test\SampleMainApp.class
-test2\controller\GameController$1.class
 test3\view\MapView.class
 test\SamplepracticeApp.class
 Items\Point.class
@@ -65,4 +61,3 @@ test1\controller\GameController.class
 start\Bgm.class
 Items\Item.class
 test1\view\MapView.class
-test2\view\MapView.class

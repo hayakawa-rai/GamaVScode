@@ -4,9 +4,12 @@ import Characters.Direction;
 import Characters.Sengoku;
 import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import test.Enemy;
+import test.RedEnemy;
 
 public class MapView {
 
@@ -32,7 +35,7 @@ public class MapView {
 		double scaleY = canvasHeight / stageHeight;
 
 		// 2. 画面にぴったり収まる拡大率に「0.9」を掛けて、全体を90%の大きさに縮小する
-		double bufferRatio = 0.9; // ★ここを変えることでサイズを自由に調整できます（0.8なら80%）
+		double bufferRatio = 0.7; // ★ここを変えることでサイズを自由に調整できます（0.8なら80%）
 		double scale = Math.min(scaleX, scaleY) * bufferRatio;
 
 		// 3. 小さくなった分も含めて、改めて中央に配置するための余白（オフセット）を計算
@@ -53,7 +56,14 @@ public class MapView {
 		// 7. 実際の描画処理を呼び出す
 		drawStageContent(gc, cols, rows, stageWidth, stageHeight);
 		drawPacman(gc);
+		
+		
+		
+		//敵の描画メソッド　追加しました　成田
+		drawEnemy(gc);
 
+		
+		
 		// 8. グラフィックスの状態を元に戻す（これを行わないと次回呼び出し時にズレが増幅します）
 		gc.restore();
 	}
@@ -132,5 +142,31 @@ public class MapView {
 		enemyImageView.setFitWidth(MapData.TILE_SIZE);
 		enemyImageView.setFitHeight(MapData.TILE_SIZE);
 		enemyImageView.setPreserveRatio(true);
+	}
+	//追加項目
+	private void drawEnemy(GraphicsContext gc) {
+		Enemy enemy = model.getEnemy();
+		if (enemy == null) return;
+ 
+		if (enemy instanceof RedEnemy) {
+			RedEnemy red = (RedEnemy) enemy;
+			Image img = red.getEnemyImage();
+			double enemyLeftX = red.getX() - MapData.TILE_SIZE / 2.0;
+			double enemyTopY = red.getY() - MapData.TILE_SIZE / 2.0;
+ 
+			if (img != null) {
+				// ⭕ 画像が正常にある場合は画像を描画
+				gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
+			} else {
+				// ⚠️ 画像読み込みに失敗している場合は「赤い円」で身代わり描画
+				gc.setFill(Color.RED);
+				gc.fillOval(red.getX(), red.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
+ 
+				// 中心点が視覚的にわかりやすいように小さな黒い点を打つ
+				gc.setFill(Color.BLACK);
+				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2,
+				            red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
+			}
+		}
 	}
 }

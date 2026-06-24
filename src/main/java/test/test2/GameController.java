@@ -94,8 +94,9 @@ public class GameController {
 				if (model.isPaused()) return;
 
 				// ゲーム状態の更新
-				model.updatePacman();  // 位置・衝突・ワープ処理
-				model.updateMouth();   // 口のアニメーション
+				//model.updatePacman();  // 位置・衝突・ワープ処理
+				//model.updateMouth();   // 口のアニメーション
+				model.update();
 				
 				// 画面描写（ステージ背景とパックマンの描画を分離して実行）
 				//Canvasの現在のリアルタイムな横幅・縦幅を取得してビューに渡す
