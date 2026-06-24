@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import test3.Main3;
 import test3.model.MapData;
 import test3.view.MapView;
 
@@ -112,5 +113,14 @@ public class GameController {
 			timer.stop();
 
 	}
+	//画面変更
+		public static void switchToGame(javafx.stage.Stage stage) {
+			try { 
+				Main3 App = new Main3();
+				App.start(stage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 }

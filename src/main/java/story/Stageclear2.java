@@ -154,6 +154,9 @@ public class Stageclear2 extends Application{
     //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
     stage.setMinWidth(800);
     stage.setMinHeight(600);
+    //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+    stage.setMinWidth(800);
+    stage.setMinHeight(600);
     //CSSを接続
     scene.getStylesheets().add(
         getClass().getResource("/css/style.css").toExternalForm()

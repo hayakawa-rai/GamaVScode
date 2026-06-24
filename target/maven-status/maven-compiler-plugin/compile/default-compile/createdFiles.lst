@@ -1,6 +1,5 @@
 story\Story1.class
 test\test2\MapView.class
-test1\Main.class
 Characters\GameMap.class
 story\Story4.class
 story\Stageclear3.class
@@ -17,7 +16,6 @@ test3\model\MapData.class
 sample\stageclear3.class
 test3\controller\GameController$1.class
 story\Stageclear1.class
-test3\Main.class
 start\Start$1.class
 story\Story3.class
 sample\story1.class

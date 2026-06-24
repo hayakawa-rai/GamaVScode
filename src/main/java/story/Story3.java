@@ -481,7 +481,7 @@ public class Story3 extends Application{
         	        Bgm.stopBGM();
 
         	        //次の画面へ
-        	        test.test2.GameController.switchToGame(stage);
+        	        test3.controller.GameController.switchToGame(stage);
         	    });
 
         	    fade.play();
