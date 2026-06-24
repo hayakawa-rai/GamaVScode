@@ -84,11 +84,16 @@ public class GameController {
 
 			@Override
 			public void handle(long now) {
-
+				
+				if (!model.isPaused()) {
 				//ゲーム状態更新
 				model.updatePacman(); //位置・衝突・ワープ処理
 				model.updateMouth(); //口のアニメーション
-				
+				if (model.getRedEnemy() != null) {
+					// 敵の move メソッドに現在のマップ配列を渡して毎フレーム動かす
+					model.getRedEnemy().move(model.getMap());
+				}
+				}
 
 				//デバックログ
 				System.out.println("LOOP");

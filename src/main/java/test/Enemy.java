@@ -8,8 +8,7 @@ import test2.model.MapData;
 public abstract class Enemy extends Character {
 
     protected javafx.scene.image.ImageView imageView;
-    protected static final int CELL_SIZE = 30; // 1マスの大きさ
-    
+
     protected MapData mapData;
 
     protected Characters.EnemyState currentState = Characters.EnemyState.SCATTER;
@@ -21,23 +20,23 @@ public abstract class Enemy extends Character {
     public Enemy(double startX, double startY, int speed) {
         super(startX, startY, speed);
     }
-    // ★ 抽象メソッドの第3引数を MapData に変更
+
     protected abstract Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData);
 
     @Override
     public void move(int[][] map) {
-        // 現在いるマスの行列インデックスを計算
-        int tileX = (int) (this.x / CELL_SIZE);
-        int tileY = (int) (this.y / CELL_SIZE);
+    	
+        int tileX = (int) (this.x / MapData.TILE_SIZE);
+        int tileY = (int) (this.y / MapData.TILE_SIZE);
 
         // 範囲外防止
         if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) {
             return;
         }
 
-        // 現在のタイルの中心ピクセル座標を計算
-        double cx = tileX * CELL_SIZE + CELL_SIZE / 2.0;
-        double cy = tileY * CELL_SIZE + CELL_SIZE / 2.0;
+   
+        double cx = tileX * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+        double cy = tileY * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
 
         // 現在のスピードの計算
         double currentSpeed = this.getSpeed();
@@ -45,7 +44,7 @@ public abstract class Enemy extends Character {
             currentSpeed = this.getSpeed() * 2; // 死亡時は爆速
         }
 
-        // タイルの中心に近づいたか判定 (パックマンの atCenter と同期)
+        // タイルの中心に近づいたか判定
         boolean atCenter = Math.abs(this.x - cx) < currentSpeed 
                         && Math.abs(this.y - cy) < currentSpeed;
 
@@ -54,7 +53,6 @@ public abstract class Enemy extends Character {
             List<Direction> validDirections = getValidDirections(map);
 
             if (!validDirections.isEmpty()) {
-                //保持している mapData を引数に渡す
                 Direction chosenDirection = decideNextDirection(validDirections, map, this.mapData);
 
                 // 中心にぴったり位置補正（軸ズレによるスタック防止）
@@ -71,23 +69,24 @@ public abstract class Enemy extends Character {
             this.x += this.direction.getDX() * currentSpeed;
             this.y += this.direction.getDY() * currentSpeed;
 
-            // 左右移動中は上下を、上下移動中は左右を中心へとマイルドに補正
-			if (this.direction.getDX() != 0) {
-				this.y += (cy - this.y) * 0.2;
-			}
-			if (this.direction.getDY() != 0) {
-				this.x += (cx - this.x) * 0.2;
-			}
+            if (this.direction.getDX() != 0) {
+                this.y += (cy - this.y) * 0.2;
+            }
+            if (this.direction.getDY() != 0) {
+                this.x += (cx - this.x) * 0.2;
+            }
         }
     }
 
-    // 三平方の定理を使って目的地に一番近い方向を選ぶ共通処理
+
+ // 三平方の定理を使って目的地に一番近い方向を選ぶ共通処理
     protected Direction getClosestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
         Direction bestDirection = Direction.NONE;
         double minDistance = Double.MAX_VALUE;
 
-        int currentCol = (int) (this.x / CELL_SIZE);
-        int currentRow = (int) (this.y / CELL_SIZE);
+        
+        int currentCol = (int) (this.x / MapData.TILE_SIZE);
+        int currentRow = (int) (this.y / MapData.TILE_SIZE);
 
         for (Direction dir : validDirections) {
             int nextCol = currentCol + (int) dir.getDX();
@@ -126,8 +125,9 @@ public abstract class Enemy extends Character {
     private boolean canmove(Direction direction, int[][] map) {
         if (direction == Direction.NONE) return false;
 
-        int currentCol = (int) (this.x / CELL_SIZE);
-        int currentRow = (int) (this.y / CELL_SIZE);
+        
+        int currentCol = (int) (this.x / MapData.TILE_SIZE);
+        int currentRow = (int) (this.y / MapData.TILE_SIZE);
 
         int nextCol = currentCol + (int) direction.getDX();
         int nextRow = currentRow + (int) direction.getDY();
