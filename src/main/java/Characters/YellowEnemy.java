@@ -7,7 +7,7 @@ import test.Enemy;
 
 public class YellowEnemy extends Enemy {
 
-	private Sengoku target; // プレイヤー
+	private Sengoku player; // プレイヤー
 	
     private static final int PREDICT_TILES = 4;
     private static final int CELL_SIZE = 24;
@@ -49,7 +49,7 @@ public class YellowEnemy extends Enemy {
             default: break;
         }
 
-        // 最も近づく方向を返す（Enemy の共通メソッド）
-        return getClosestDirection(validDirections, targetCol, targetRow);
+     // 親クラスの最短ルート計算メソッドにターゲットマスを渡して、次の一歩を決める
+     		return getClosestDirection(validDirections, targetCol, targetRow);
     }
 }*/
