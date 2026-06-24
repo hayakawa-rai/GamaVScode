@@ -36,15 +36,14 @@ public class Story1 extends Application {
         stage.setTitle("story1");
         stage.show();
     }
-<<<<<<< HEAD
+
     private Timeline blink;
     private Timeline arrowMove;
     private AudioClip jumpSound;
 
     //ストーリー終了処理を1回だけにする用
-=======
+
     
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
     private boolean isEndingStarted = false;
     private int messageIndex = 0;
     private int charIndex = 0;
