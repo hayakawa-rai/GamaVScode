@@ -16,7 +16,7 @@ public class RedEnemy extends Enemy {
 		// パックマンと同じくマスの「中心ピクセル座標」を初期位置として親に渡す
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 		      START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-		      2); // スピードは 2
+		      1); // スピードは 2
 
 		this.mapData = sampleModel; // 親クラスのフィールドに代入して保持
 

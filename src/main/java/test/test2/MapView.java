@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import test.Enemy;
+import test.GreenEnemy;
 import test.RedEnemy;
 
 public class MapView {
@@ -60,9 +61,13 @@ public class MapView {
 		
 		
 		//敵の描画メソッド　追加しました　成田
-		drawEnemy(gc);
+		// ⭕【ここを追加！】リスト内（Red, Green）のすべての敵をループで一斉に描画する
+		if (model.getEnemies() != null) {
+			for (Enemy enemy : model.getEnemies()) {
+				drawEnemyInstance(gc, enemy); // ※前々回追加した共通描画メソッド
+			}
+		}
 
-		
 		
 		// 8. グラフィックスの状態を元に戻す（これを行わないと次回呼び出し時にズレが増幅します）
 		gc.restore();
@@ -167,6 +172,41 @@ public class MapView {
 				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2,
 				            red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
 			}
+		}
+	}
+	
+	// ⭕ 空っぽだった自動生成メソッドの中身を、中心ズレ補正版の正しい描画ロジックに修正！
+	private void drawEnemyInstance(GraphicsContext gc, Enemy enemy) {
+		if (enemy == null) return;
+
+		javafx.scene.image.Image img = null;
+
+		// 敵のクラス型を判定して、それぞれの画像を取得する
+		if (enemy instanceof RedEnemy) {
+			img = ((RedEnemy) enemy).getEnemyImage();
+		} else if (enemy instanceof GreenEnemy) {
+			img = ((GreenEnemy) enemy).getEnemyImage();
+		}
+		
+		// マスの中心座標(X, Y)から半マス引いて、画像の左上基準座標を計算（70%縮小でも絶対にズレない魔法の補正）
+		double enemyLeftX = enemy.getX() - MapData.TILE_SIZE / 2.0;
+		double enemyTopY = enemy.getY() - MapData.TILE_SIZE / 2.0;
+
+		if (img != null) {
+			// ⭕ 画像が正常にある場合は中心がズレない正しい座標で画像を描画
+			gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
+		} else {
+			// ⚠️ 万が一画像読み込みに失敗している場合の身代わり描画（Redは赤、Greenは緑の円）
+			if (enemy instanceof RedEnemy) {
+				gc.setFill(javafx.scene.paint.Color.RED);
+			} else {
+				gc.setFill(javafx.scene.paint.Color.GREEN);
+			}
+			gc.fillOval(enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
+
+			// 中心点が視覚的にわかりやすいように小さな黒い点を打つ
+			gc.setFill(javafx.scene.paint.Color.BLACK);
+			gc.fillOval(enemy.getX() - 2, enemy.getY() - 2, 4, 4);
 		}
 	}
 }

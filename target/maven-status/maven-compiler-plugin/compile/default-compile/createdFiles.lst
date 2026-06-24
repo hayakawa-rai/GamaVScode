@@ -9,6 +9,10 @@ test1\controller\GameController$1.class
 Characters\Direction$1.class
 test\Sengoku.class
 sample\controller\SampleController.class
+<<<<<<< HEAD
+test\GreenEnemy.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 Items\Chii.class
 sample\stageclear2.class
 sample\practice$1.class
@@ -30,6 +34,14 @@ story\Stageclear2.class
 sample\start.class
 sample\practice.class
 test\Direction.class
+<<<<<<< HEAD
+Map.class
+=======
+<<<<<<< HEAD
+Map.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 story\Practice.class
 test\test2\TestMainapp.class
 sample\stageclear1.class
