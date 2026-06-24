@@ -4,13 +4,13 @@ package Characters;
 import java.util.List;
 
 import javafx.scene.image.Image;
-import test.test2.MapData;
+import test.test2.MapData;　(後で変更)
 
 public class GreenEnemy extends Enemy {
 
 	// スタート位置 (マップ中心 エネミーハウス内)
-	private static final int START_COL = 15;
-	private static final int START_ROW = 15;
+	private static final int START_COL = 12;
+	private static final int START_ROW = 12;
 
 	// 8 マス以上離れていたら追跡
 	private static final double BORDER = 8;
@@ -29,7 +29,7 @@ public class GreenEnemy extends Enemy {
 
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
-
+		
 		this.mapData = mapData;
 
 		// 生成時刻を記録
@@ -45,7 +45,6 @@ public class GreenEnemy extends Enemy {
 				this.normalImage = new Image(is);
 				System.out.println("⭕【成功】narinariの画像を読み込みました！");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,39 +52,34 @@ public class GreenEnemy extends Enemy {
 
 	// 画像の読み込み処理
 	public Image getEnemyImage() {
-
 		if (this.currentState == Characters.EnemyState.DEAD) {
 			return deadImage;
 		}
-
 		if (this.currentState == Characters.EnemyState.FEVER) {
 			return feverImage;
 		}
-
 		return normalImage;
 	}
 
-	// 20秒経過後に出撃
+	//20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-
 		if (!released) {
-
 			long elapsed = System.currentTimeMillis() - startTime;
 
 			// ゲーム開始から20秒は待機
 			if (elapsed < 20000) {
 				return;
 			}
-
+			
 			// 出撃
 			released = true;
 		}
-
 		super.move(map);
 	}
 
-	// 遠い → 追跡 // 近い → 左下の縄張りへ戻る
+	// 遠い → 追跡 
+	// 近い → 左下の縄張りへ戻る
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
 
@@ -98,12 +92,10 @@ public class GreenEnemy extends Enemy {
 		double pacY = mapData.getPacY();
 
 		int playerCol = (int) (pacX / MapData.TILE_SIZE);
-
 		int playerRow = (int) (pacY / MapData.TILE_SIZE);
 
 		// 自分の位置
 		int myCol = (int) (this.x / MapData.TILE_SIZE);
-
 		int myRow = (int) (this.y / MapData.TILE_SIZE);
 
 		// プレイヤーとの距離（マス単位）
@@ -111,7 +103,6 @@ public class GreenEnemy extends Enemy {
 
 		// 遠いなら追跡
 		if (distance >= BORDER) {
-
 			return getClosestDirection(validDirections, playerCol, playerRow);
 		}
 

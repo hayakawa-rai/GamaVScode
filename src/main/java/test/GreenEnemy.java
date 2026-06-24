@@ -29,7 +29,7 @@ public class GreenEnemy extends Enemy {
 
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
-
+		
 		this.mapData = mapData;
 
 		// 生成時刻を記録
@@ -45,7 +45,6 @@ public class GreenEnemy extends Enemy {
 				this.normalImage = new Image(is);
 				System.out.println("⭕【成功】narinariの画像を読み込みました！");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,39 +52,34 @@ public class GreenEnemy extends Enemy {
 
 	// 画像の読み込み処理
 	public Image getEnemyImage() {
-
 		if (this.currentState == Characters.EnemyState.DEAD) {
 			return deadImage;
 		}
-
 		if (this.currentState == Characters.EnemyState.FEVER) {
 			return feverImage;
 		}
-
 		return normalImage;
 	}
 
 	//20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-
 		if (!released) {
-
 			long elapsed = System.currentTimeMillis() - startTime;
 
 			// ゲーム開始から20秒は待機
 			if (elapsed < 20000) {
 				return;
 			}
-
+			
 			// 出撃
 			released = true;
 		}
-
 		super.move(map);
 	}
 
-	// 遠い → 追跡 // 近い → 左下の縄張りへ戻る
+	// 遠い → 追跡 
+	//　近い → 左下の縄張りへ戻る
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
 
@@ -97,22 +91,19 @@ public class GreenEnemy extends Enemy {
 		double pacX = mapData.getPacX();
 		double pacY = mapData.getPacY();
 
-		int playerCol = (int) (pacX / MapData.TILE_SIZE);
-
-		int playerRow = (int) (pacY / MapData.TILE_SIZE);
+		int targetCol = (int) (pacX / MapData.TILE_SIZE);
+		int targetRow = (int) (pacY / MapData.TILE_SIZE);
 
 		// 自分の位置
 		int myCol = (int) (this.x / MapData.TILE_SIZE);
-
 		int myRow = (int) (this.y / MapData.TILE_SIZE);
 
 		// プレイヤーとの距離（マス単位）
-		double distance = Math.sqrt(Math.pow(myCol - playerCol, 2) + Math.pow(myRow - playerRow, 2));
+		double distance = Math.sqrt(Math.pow(myCol - targetCol, 2) + Math.pow(myRow - targetRow, 2));
 
 		// 遠いなら追跡
 		if (distance >= BORDER) {
-
-			return getClosestDirection(validDirections, playerCol, playerRow);
+			return getClosestDirection(validDirections, targetCol, targetRow);
 		}
 
 		// 近いなら縄張りへ戻る
