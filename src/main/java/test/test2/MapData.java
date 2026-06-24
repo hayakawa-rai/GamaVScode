@@ -59,6 +59,9 @@ public class MapData {
 	private final List<Enemy> enemies = new ArrayList<>();
 
 	private boolean paused = false;
+	
+	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
+	private int stageNumber = 1; 
 
 	// 口パク
 	private double mouthAngle = 45;
@@ -284,6 +287,16 @@ public class MapData {
 
 	public double getPacY() {
 		return sengoku != null ? sengoku.getY() : 0;
+	}
+	
+	// ⭕ 敵クラスから現在のステージ番号を確認できるようにする
+	public int getStageNumber() {
+		return stageNumber;
+	}
+
+	// ⭕ ステージが切り替わったときに外から数値を変更できるようにする
+	public void setStageNumber(int stageNum) {
+		this.stageNumber = stageNum;
 	}
 
 }

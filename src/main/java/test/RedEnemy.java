@@ -25,14 +25,33 @@ public class RedEnemy extends Enemy {
 
 		this.mapData = sampleModel; // 親クラスのフィールドに代入して保持
 
+		// 現在のステージ番号によって、読み込む画像を切り替える
+		String imagePath = "/picture/hayakawa-udekumi.png"; // デフォルト（ステージ1用）
+		
+		if (this.mapData != null) {
+			switch (this.mapData.getStageNumber()) {
+				case 1:
+					imagePath = "/picture/hayakawa-udekumi.png"; // ステージ1の画像
+					break;
+				case 2:
+					imagePath = "/picture/hayakawa2.png";        // ステージ2の画像
+					break;
+				case 3:
+					imagePath = "/picture/narinari.png";         // ステージ3の画像
+					break;
+				default:
+					break;
+			}
+		}
+		
 		// 画像の読み込み処理
 		try {
-			java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa-udekumi.png");
+			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
-				System.err.println("❌【エラー】画像が見つかりません");
+				System.err.println("❌【エラー】画像が見つかりません: " + imagePath);
 			} else {
 				this.normalImage = new Image(is);
-				System.out.println("⭕【成功】早川さんの画像を読み込みました！");
+				System.out.println("⭕【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
