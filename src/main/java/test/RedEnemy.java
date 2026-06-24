@@ -52,8 +52,8 @@ public class RedEnemy extends Enemy {
 		if (mapData == null || validDirections.isEmpty()) return Direction.NONE;
 
 		// キーボード操作で動いている本物のパックマン座標(px)をMapDataから取得
-		double pacX = mapData.getPacX();
-		double pacY = mapData.getPacY();
+        double pacX = mapData.getPacX() + MapData.TILE_SIZE / 2.0;
+        double pacY = mapData.getPacY() + MapData.TILE_SIZE / 2.0;
 
 		// ピクセル座標から、AIが目指すべき「ターゲットのマス」を算出
 		int targetCol = (int) (pacX / MapData.TILE_SIZE);

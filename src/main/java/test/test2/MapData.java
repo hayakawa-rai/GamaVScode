@@ -8,6 +8,7 @@ import Characters.Sengoku;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
+import test.BlueEnemy;
 import test.Enemy;
 import test.GreenEnemy;
 import test.RedEnemy;
@@ -100,7 +101,7 @@ public class MapData {
 		enemies.add(new RedEnemy(this));
 		enemies.add(new GreenEnemy(this)); // 今後Map3Enemyなどもここに enemies.add(...) するだけで追加可能
 		enemies.add(new YellowEnemy(this));
-		//enemies.add(new BlueEnemy(this));
+		enemies.add(new BlueEnemy(this));
 
 		// 安全対策: リスト内の全ての敵の初期状態をセット
 		for (Enemy e : enemies) {
