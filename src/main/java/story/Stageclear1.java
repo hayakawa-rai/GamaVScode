@@ -15,13 +15,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Start;
 
-
 public class Stageclear1 extends Application{
+	
 	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
     private Stage stage;
     //javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
     @Override
     public void start(Stage stage) {
+    	
     	//受け取った変数Stageを自分のStageに保存
         this.stage = stage;
         //ウィンドウの中身を決定
@@ -30,6 +31,23 @@ public class Stageclear1 extends Application{
         stage.show();
     }
     public Scene clear() {
+   	// クリア音
+    AudioClip clearSound = new AudioClip(
+   	    getClass().getResource("/music/yay.mp3").toExternalForm()
+   	);
+   	clearSound.setVolume(0.5);
+
+   	// 0.5秒待つ
+    PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
+    	
+   	// 時間経過後に再生
+   	delay.setOnFinished(e -> {
+  	    clearSound.play();
+    });
+    	
+   	// タイマー開始
+   	delay.play();
+  
     //どこのステージをクリアしたか表示する
     Text title = new Text("STAGE1    CLEAR!");
     //フォントサイズとカラーを指定

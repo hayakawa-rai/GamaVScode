@@ -44,7 +44,7 @@
 				<version>0.0.8</version>
 				<configuration>
 
-					<mainClass>start.Start</mainClass>
+					<mainClass>story.Stageclear3</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
