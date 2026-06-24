@@ -151,10 +151,12 @@ public class MapView {
 		if (enemy instanceof RedEnemy) {
 			RedEnemy red = (RedEnemy) enemy;
 			Image img = red.getEnemyImage();
+			double enemyLeftX = red.getX() - MapData.TILE_SIZE / 2.0;
+			double enemyTopY = red.getY() - MapData.TILE_SIZE / 2.0;
 
 			if (img != null) {
 				// ⭕ 画像が正常にある場合は画像を描画
-				gc.drawImage(img, red.getX(), red.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
+				gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
 			} else {
 				// ⚠️ 画像読み込みに失敗している場合は「赤い円」で身代わり描画
 				gc.setFill(Color.RED);
