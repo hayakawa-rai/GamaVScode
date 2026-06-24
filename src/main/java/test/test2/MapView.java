@@ -68,8 +68,6 @@ public class MapView {
 
 		// 2. 全体を90%の大きさに縮小する
 		double bufferRatio = 0.9; 
-		// 2. 画面にぴったり収まる拡大率に「0.9」を掛けて、全体を90%の大きさに縮小する
-		double bufferRatio = 0.8; // ★ここを変えることでサイズを自由に調整できます（0.8なら80%）
 
 		double scale = Math.min(scaleX, scaleY) * bufferRatio;
 
