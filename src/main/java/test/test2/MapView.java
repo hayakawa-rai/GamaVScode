@@ -147,22 +147,24 @@ public class MapView {
 	private void drawEnemy(GraphicsContext gc) {
 		Enemy enemy = model.getEnemy();
 		if (enemy == null) return;
-
+ 
 		if (enemy instanceof RedEnemy) {
 			RedEnemy red = (RedEnemy) enemy;
 			Image img = red.getEnemyImage();
-
+			double enemyLeftX = red.getX() - MapData.TILE_SIZE / 2.0;
+			double enemyTopY = red.getY() - MapData.TILE_SIZE / 2.0;
+ 
 			if (img != null) {
 				// ⭕ 画像が正常にある場合は画像を描画
-				gc.drawImage(img, red.getX(), red.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
+				gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
 			} else {
 				// ⚠️ 画像読み込みに失敗している場合は「赤い円」で身代わり描画
 				gc.setFill(Color.RED);
 				gc.fillOval(red.getX(), red.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
-
+ 
 				// 中心点が視覚的にわかりやすいように小さな黒い点を打つ
 				gc.setFill(Color.BLACK);
-				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2, 
+				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2,
 				            red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
 			}
 		}

@@ -88,6 +88,11 @@ public class MapData {
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
 		//敵を生成
 		this.enemy = new RedEnemy(this);
+		
+		// 安全対策: 生成した敵クラスへ現在のMapDataインスタンスを確実に紐付ける
+		if (this.enemy != null) {
+			this.enemy.setCurrentState(Characters.EnemyState.SCATTER); // 初期状態をセット
+		}
 	}
 
 	public void togglePause() {

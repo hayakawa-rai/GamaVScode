@@ -9,7 +9,7 @@ public class RedEnemy extends Enemy {
 
 	// 開けた安全な通路からスタートさせる（壁埋まり・フリーズ防止）
 	private static final int START_COL = 12;
-	private static final int START_ROW = 1;
+	private static final int START_ROW = 12;
 
 	//引数を MapData に一本化し、正しいコンストラクタの形に直した
 	public RedEnemy(MapData sampleModel) {
@@ -22,7 +22,7 @@ public class RedEnemy extends Enemy {
 
 		// 画像の読み込み処理
 		try {
-			java.io.InputStream is = getClass().getResourceAsStream("/hayakawa-udekumi.png");
+			java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa-udekumi.png");
 			if (is == null) {
 				System.err.println("❌【エラー】画像が見つかりません");
 			} else {
