@@ -1,88 +1,115 @@
 // RedEnemy と連携してはさみうちにする BlueEnemy(青) 
-package Characters;
 /*
+package Characters;
+
+import java.util.List;
+
+import javafx.scene.image.Image;
+import test.Enemy;
+import test.RedEnemy;
+import test.test2.MapData;
 
 public class BlueEnemy extends Enemy {
 
-   private Sengoku player;
-   private RedEnemy red;
-   
-   private long startTime;
-   private static final long DELAY = 2000; // 2秒遅れて出発
+	private static final int PREDICT_TILES = 2;
+	// 出発遅延（2秒後に動き始める)
+	private static final long DELAY = 2000;
+	// エネミーハウスの初期位置（マス単位）
+	private static final int START_COL = 13;
+	private static final int START_ROW = 11;
 
-   private static final int CELL_SIZE = 24;
-   private static final int PREDICT_TILES = 2;
+	// 出発時間の記録
+	private long startTime;
+	// 赤の位置を参照
+	private RedEnemy red;
+	// プレイヤー座標取得用
+	private MapData mapData;
 
-   public BlueEnemy(double x, double y, Sengoku player, RedEnemy red) {
-       super(x, y);
-       this.player = player;
-       this.red = red;
-   }
+	public BlueEnemy(MapData mapData, RedEnemy red) {
+		// マスの中心座標を初期位置として Enemy に渡す
+		super(
+				START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+				1);
 
-// エネミーハウス右下 （仮）
-private static final int START_COL = 13;
-private static final int START_ROW = 11;
+		this.mapData = mapData;
+		this.red = red;
+		this.startTime = System.currentTimeMillis();
 
-public BlueEnemy(ImageView imageView) {
-	super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
-	this.player = player;
-    this.red = red;
-	
-	// 生成された瞬間の時間を記録
-    this.startTime = System.currentTimeMillis();
-}
+		// 画像の読み込み処理
+		try {
+			java.io.InputStream is = getClass().getResourceAsStream("/picture/■■.png");
+			if (is == null) {
+				System.err.println("❌【エラー】画像が見つかりません");
+			} else {
+				this.normalImage = new Image(is);
+				System.out.println("⭕【成功】早川さんの画像を読み込みました！");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	// MapView から現在の画像を取り出すためのゲッター
+	public Image getEnemyImage() {
+		if (this.currentState == Characters.EnemyState.DEAD)
+			return deadImage;
+		if (this.currentState == Characters.EnemyState.FEVER)
+			return feverImage;
+		return normalImage;
+	}
 
-   @Override
-   public void move(int[][] map) {
-   
-    	// 経過時間を計算
-       long elapsed = System.currentTimeMillis() - startTime;
+	@Override
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
 
-       // 2秒経つまで動かない
-       if (elapsed < DELAY) return;
+		// まだ出発時間に達していない → 動かない
+		if (System.currentTimeMillis() - startTime < DELAY) {
+			return Direction.NONE;
+		}
+		// 進める方向がない場合は停止
+		if (mapData == null || red == null || validDirections.isEmpty()) {
+			return Direction.NONE;
+		}
 
-       // プレイヤーの現在位置
-       double px = player.getX();
-       double py = player.getY();
+		// プレイヤーの中心座標
+		double pacX = mapData.getPacX();
+		double pacY = mapData.getPacY();
 
-       // プレイヤーの向きの 2 マス先
-       switch (player.getDirection()) {
-           case UP:    py -= PREDICT_TILES * CELL_SIZE; break;
-           case DOWN:  py += PREDICT_TILES * CELL_SIZE; break;
-           case LEFT:  px -= PREDICT_TILES * CELL_SIZE; break;
-           case RIGHT: px += PREDICT_TILES * CELL_SIZE; break;
-           default: break;
-       }
+		// プレイヤーの向きの2マス先
+		switch (mapData.getSengoku().getDirection()) {
+		case UP:
+			pacY -= PREDICT_TILES * MapData.TILE_SIZE;
+			break;
+		case DOWN:
+			pacY += PREDICT_TILES * MapData.TILE_SIZE;
+			break;
+		case LEFT:
+			pacX -= PREDICT_TILES * MapData.TILE_SIZE;
+			break;
+		case RIGHT:
+			pacX += PREDICT_TILES * MapData.TILE_SIZE;
+			break;
+		default:
+			break;
+		}
 
-       // RedEnemy の位置
-       double rx = red.getX();
-       double ry = red.getY();
+		// RedEnemy の位置
+		double rx = red.getX();
+		double ry = red.getY();
 
-       // ベクトル計算
-       double vx = px - rx;
-       double vy = py - ry;
+		// ベクトル計算
+		double vx = pacX - rx;
+		double vy = pacY - ry;
 
-       // 2倍した先をターゲット
-       double tx = px + vx;
-       double ty = py + vy;
+		// 2倍した先をターゲットにする
+		double tx = pacX + vx;
+		double ty = pacY + vy;
 
-       // BlueEnemy → ターゲットへの差分
-       double dx = tx - this.x;
-       double dy = ty - this.y;
+		// ピクセル → マス変換
+		int targetCol = (int) (tx / MapData.TILE_SIZE);
+		int targetRow = (int) (ty / MapData.TILE_SIZE);
 
-       // X優先 or Y優先
-       if (Math.abs(dx) > Math.abs(dy)) {
-           double nextX = this.x + Math.signum(dx) * speed;
-           if (canMove(nextX, this.y, map)) {
-               this.x = nextX;
-               return;
-           }
-       }
-
-       double nextY = this.y + Math.signum(dy) * speed;
-       if (canMove(this.x, nextY, map)) {
-           this.y = nextY;
-       }
-   }
+		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
+		return getClosestDirection(validDirections, targetCol, targetRow);
+	}
 }*/

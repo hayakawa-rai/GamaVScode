@@ -10,7 +10,7 @@ public class YellowEnemy extends Enemy {
 
 	// プレイヤーの進行方向の4マス先を狙う
 	private static final int PREDICT_TILES = 4;
-	// 出発遅延（10秒後に動き始める
+	// 出発遅延（10秒後に動き始める)
 	private static final long DELAY = 10000; 
 	// エネミーハウスの初期位置（マス単位）
 	private static final int START_COL = 13;
