@@ -1,5 +1,7 @@
-/*package Characters;
+// RedEnemy と連携してはさみうちにする BlueEnemy(青) 
 
+package Characters;
+/*
 import java.util.List;
 
 import javafx.scene.image.Image;
@@ -8,13 +10,18 @@ import test.test2.MapData;
 
 public class YellowEnemy extends Enemy {
 
+	// スタート位置(マップ中心 エネミーハウス上)
+	private static final int START_COL = 16;
+	private static final int START_ROW = 15;
+
+	// 縄張りエリアの中心（左上）（仮座標）
+	private static final int TERRITORY_COL = 3;
+	private static final int TERRITORY_ROW = 3;
+
 	// プレイヤーの進行方向の4マス先を狙う
 	private static final int PREDICT_TILES = 4;
-	// 出発遅延（10秒後に動き始める
+	// 出発遅延（10秒後に動き始める)
 	private static final long DELAY = 10000; 
-	// エネミーハウスの初期位置（マス単位）
-	private static final int START_COL = 13;
-	private static final int START_ROW = 11;
 
 	// 出発時間の記録
 	private long startTime;
@@ -64,40 +71,29 @@ public class YellowEnemy extends Enemy {
 		if (mapData == null || validDirections.isEmpty()) {
 			return Direction.NONE;
 		}
-
-		// プレイヤーの中心座標
-		double pacX = mapData.getPacX();
-		double pacY = mapData.getPacY();
 		
-		// ピクセル座標 → マス座標へ変換
-		int pCol = (int) ((pacX + MapData.TILE_SIZE / 2) / MapData.TILE_SIZE);
-		int pRow = (int) ((pacY + MapData.TILE_SIZE / 2) / MapData.TILE_SIZE);
+		// FEVER 時はランダム移動
+        if (this.currentState == EnemyState.FEVER) {
+            return getRandomDirection(validDirections);
+        }
+        
+        // DEAD 時はハウスへ帰還
+        if (this.currentState == EnemyState.DEAD) {
+            return getClosestDirection(validDirections, START_COL, START_ROW);
+        }
 
-		//現在位置
-		//プレイヤーが動いている → 4マス先を狙う
-		//プレイヤーが止まっている → 現在位置を狙う
-		int targetCol = pCol;
-		int targetRow = pRow;
+        // プレイヤーのタイル座標
+        int pacCol = (int)(mapData.getPacX() / MapData.TILE_SIZE);
+        int pacRow = (int)(mapData.getPacY() / MapData.TILE_SIZE);
 
-		// プレイヤーの向きに応じて4マス先を狙う
-		Direction SengokuDir = mapData.getSengoku().getDirection();
-		
-		switch (SengokuDir) {
-		case UP:
-			targetRow -= PREDICT_TILES;
-			break;
-		case DOWN:
-			targetRow += PREDICT_TILES;
-			break;
-		case LEFT:
-			targetCol -= PREDICT_TILES;
-			break;
-		case RIGHT:
-			targetCol += PREDICT_TILES;
-			break;
-		default:
-			break;
-		}
+        // プレイヤーの向きの4マス先
+        switch (mapData.getSengoku().getDirection()) {
+            case UP:    pacRow -= PREDICT_TILES; break;
+            case DOWN:  pacRow += PREDICT_TILES; break;
+            case LEFT:  pacCol -= PREDICT_TILES; break;
+            case RIGHT: pacCol += PREDICT_TILES; break;
+            default: break;
+        }
 
 		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);

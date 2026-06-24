@@ -158,7 +158,6 @@ public class MapView {
 			Image img = red.getEnemyImage();
 			double enemyLeftX = red.getX() - MapData.TILE_SIZE / 2.0;
 			double enemyTopY = red.getY() - MapData.TILE_SIZE / 2.0;
- 
 			if (img != null) {
 				// ⭕ 画像が正常にある場合は画像を描画
 				gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);

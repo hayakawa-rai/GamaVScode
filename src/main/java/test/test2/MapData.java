@@ -117,7 +117,7 @@ public class MapData {
 
 		//パックマンの移動処理
 		updatePacman();
-
+		
 		//敵キャラが存在すれば移動ロジックを実行
 		for (Enemy e : enemies) {
 			e.move(map);
