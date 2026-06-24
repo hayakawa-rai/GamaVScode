@@ -1,4 +1,4 @@
-// RedEnemy と連携してはさみうちにする BlueEnemy(青) 
+// Sengokuの4マス先を狙う YellowEnemy(黄) 
 
 package Characters;
 /*
@@ -98,7 +98,7 @@ public class YellowEnemy extends Enemy {
         }
 
 		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
-		return getClosestDirection(validDirections, targetCol, targetRow);
+		return getClosestDirection(validDirections, pacCol, pacRow);
 	}
 }
 */

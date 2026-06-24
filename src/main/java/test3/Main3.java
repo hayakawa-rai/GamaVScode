@@ -12,7 +12,7 @@ import test3.model.MapData;
 import test3.view.MapView;
 
 //パックマン・アプリケーションの起動クラス
-public class Main extends Application {
+public class Main3 extends Application {
 
 	//JavaFX起動時に最初に呼ばれるメソッド
 	@Override

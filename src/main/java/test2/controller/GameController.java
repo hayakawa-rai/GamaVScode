@@ -1,13 +1,13 @@
-package test1.controller;
+package test2.controller;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import test1.Main1;
-import test1.model.MapData;
-import test1.view.MapView;
+import test2.Main2;
+import test2.model.MapData;
+import test2.view.MapView;
 
 public class GameController {
 
@@ -15,7 +15,7 @@ public class GameController {
 	private final MapData model; //パックマンの位置やマップ状態を持つデータソース
 	private final MapView view; //描画処理
 	private final Canvas canvas; //描画先キャンバス
-	private final Scene scene;  //Sceneを使いまわせるようにフィールドを保持する
+	private final Scene scene; //Sceneを使いまわせるようにフィールドを保持する
 	private AnimationTimer timer; //ゲームループ(毎フレーム実行)
 
 	//ゲームコントローラーの初期化と同時にゲームをスタートする
@@ -28,8 +28,8 @@ public class GameController {
 		//キーボードの入力を登録
 		attachInput(scene);
 
-		// ★ 起動時にステージ1（ポップ）の見た目をCanvasに適用する
-		changeStage(1);
+		// ★ 起動時にステージ2の見た目をCanvasに適用する
+		changeStage(2);
 
 		//メインゲームループ(AnimationTimer)の開始
 		startLoop();
@@ -39,9 +39,9 @@ public class GameController {
 	// ★ ステージの見た目をCSSクラスで切り替えるメソッドを追加
 	public void changeStage(int stageNum) {
 		// ★ Canvasからではなく、画面全体のルート（BorderPane）からクラスを削除・追加する
-	    javafx.scene.Parent root = scene.getRoot();
-	    root.getStyleClass().removeAll("stage1", "stage2", "stage3");
-	    root.getStyleClass().add("stage" + stageNum);
+		javafx.scene.Parent root = scene.getRoot();
+		root.getStyleClass().removeAll("stage1", "stage2", "stage3");
+		root.getStyleClass().add("stage" + stageNum);
 	}
 
 	//キーボード入力処理
@@ -113,15 +113,16 @@ public class GameController {
 			timer.stop();
 
 	}
-
-
+	
 	//画面変更
 	public static void switchToGame(javafx.stage.Stage stage) {
 		try { 
-			Main1 App = new Main1();
+			Main2 App = new Main2();
 			App.start(stage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+
 }

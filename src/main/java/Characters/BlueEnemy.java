@@ -121,11 +121,8 @@ public class BlueEnemy extends Enemy {
         int targetCol = pacCol + vx;
         int targetRow = pacRow + vy;
 
-		// ピクセル → マス変換
-		int targetCol = (int) (tx / MapData.TILE_SIZE);
-		int targetRow = (int) (ty / MapData.TILE_SIZE);
-
 		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
-}*/
+}
+*/
