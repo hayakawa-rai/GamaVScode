@@ -1,11 +1,10 @@
-// Sengokuの4マス先を狙う YellowEnemy(黄) 
+// RedEnemy と連携してはさみうちにする BlueEnemy(青) 
 
-package Characters;
-/*
+package test;
+
 import java.util.List;
 
 import javafx.scene.image.Image;
-import test.Enemy;
 import test.test2.MapData;
 
 public class YellowEnemy extends Enemy {
@@ -87,6 +86,8 @@ public class YellowEnemy extends Enemy {
         // プレイヤーのタイル座標
         int pacCol = (int)(mapData.getPacX() / MapData.TILE_SIZE);
         int pacRow = (int)(mapData.getPacY() / MapData.TILE_SIZE);
+        
+        
 
         // プレイヤーの向きの4マス先
         switch (mapData.getSengoku().getDirection()) {
@@ -101,4 +102,3 @@ public class YellowEnemy extends Enemy {
 		return getClosestDirection(validDirections, pacCol, pacRow);
 	}
 }
-*/

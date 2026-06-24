@@ -1,4 +1,4 @@
-package test2;
+package test3;
 
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -7,12 +7,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import test2.controller.GameController;
-import test2.model.MapData;
-import test2.view.MapView;
+import test3.controller.GameController;
+import test3.model.MapData;
+import test3.view.MapView;
 
 //パックマン・アプリケーションの起動クラス
-public class Main extends Application {
+public class Main3 extends Application {
 
 	//JavaFX起動時に最初に呼ばれるメソッド
 	@Override
@@ -43,10 +43,10 @@ public class Main extends Application {
 		BorderPane root = new BorderPane();
 
 		//余白部分に画像貼り付け
-		String bgUrl = getClass().getResource("/picture/companyroom.jpg").toExternalForm();
+		String bgUrl = getClass().getResource("/picture/shatyoroom.jpg").toExternalForm();
 		root.setStyle("-fx-background-image: url('" + bgUrl
 				+ "'); -fx-background-size: cover; -fx-background-position: center;");
-		
+
 		root.setTop(topHud); //上段
 		root.setCenter(gameCanvas); //中央(ゲーム画面配置)
 		root.setBottom(bottomHud); //下段

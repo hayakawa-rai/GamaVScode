@@ -98,6 +98,8 @@ public class MapData {
 		enemies.clear();
 		enemies.add(new RedEnemy(this));
 		enemies.add(new GreenEnemy(this)); // 今後Map3Enemyなどもここに enemies.add(...) するだけで追加可能
+		//enemies.add(new YellowEnemy(this));
+		//enemies.add(new BlueEnemy(this));
 
 		// 安全対策: リスト内の全ての敵の初期状態をセット
 		for (Enemy e : enemies) {
@@ -117,7 +119,7 @@ public class MapData {
 
 		//パックマンの移動処理
 		updatePacman();
-
+		
 		//敵キャラが存在すれば移動ロジックを実行
 		for (Enemy e : enemies) {
 			e.move(map);
@@ -134,8 +136,8 @@ public class MapData {
 		if (paused || !sengoku.isAlive())
 			return;
 
-		int tileX = (int) (sengoku.getX() / TILE_SIZE);
-		int tileY = (int) (sengoku.getY() / TILE_SIZE);
+		int tileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int tileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		// --- ワープ抑止ロジック ---
 		boolean skipWarp = false;
@@ -230,8 +232,8 @@ public class MapData {
 
 		// ⭕ ループ処理でリスト内のどの敵に捕まったかを一斉に判定
 		for (Enemy e : enemies) {
-			double dx = pacCenterX - (e.getX() + TILE_SIZE / 2.0);
-			double dy = pacCenterY - (e.getY() + TILE_SIZE / 2.0);
+			double dx = pacCenterX - e.getX();
+			double dy = pacCenterY - e.getY();
 			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
 				String enemyName = (e instanceof RedEnemy) ? "赤敵" : "緑敵";
 				System.out.println("💥 " + enemyName + "に捕まった！ゲームオーバー！");
