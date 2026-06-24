@@ -1,90 +1,55 @@
-/* Sengokuの位置の4マス先を狙う YellowEnemy(黄) 
-//test
-
 package Characters;
+
+import java.util.List;
+
+import javafx.scene.image.ImageView;
+import test.Enemy;
 
 public class YellowEnemy extends Enemy {
 
 	private Sengoku target; // プレイヤー
-	private static final int PREDICT_TILES = 4; // 4マス先を狙う
-	private static final int CELL_SIZE = 24; // ゲームのマスサイズ
+	
+    private static final int PREDICT_TILES = 4;
+    private static final int CELL_SIZE = 24;
 
+    private long startTime;
+    private static final long DELAY = 10000; // 10秒遅れて出発
 
-private long startTime;
-private static final long DELAY = 10000; // 10秒遅れて出発
+    // エネミーハウス左上（仮）
+    private static final int START_COL = 13;
+    private static final int START_ROW = 11;
 
- エネミーハウス左上 （仮）
-private static final int START_COL = 13;
-private static final int START_ROW = 11;
-
-
-	public YellowEnemy(double x, double y, Sengoku target) {
-        super(x, y); // speed は Enemy 側で決める
-        this.target = target;
+    public YellowEnemy(ImageView imageView, Sengoku player) {
+        super(START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
+        this.player = player;
+        this.startTime = System.currentTimeMillis();
     }
 
-	public YellowEnemy(ImageView imageView) {
-		super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
-		 this.target = target;	
-			
-		// 生成された瞬間の時間を記録
-    		this.startTime = System.currentTimeMillis();
-	}
+    @Override
+    protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, Sengoku player) {
 
+        // 10秒遅延
+        if (System.currentTimeMillis() - startTime < DELAY) {
+            return Direction.NONE; 
+        }
 
-	@Override
-	public void move(int[][] map) {
+        // プレイヤーの現在セル
+        int pCol = (int) ((player.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
+        int pRow = (int) ((player.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
 
- 		//経過時間を計算
-		long elapsed = System.currentTimeMillis() - startTime;
+        int targetCol = pCol;
+        int targetRow = pRow;
 
- 		//10秒経つまで動かない
-		if (elapsed < DELAY) return;
+        // プレイヤーの向きに応じて4マス先を狙う
+        switch (player.getDirection()) {
+            case UP:    targetRow -= PREDICT_TILES; break;
+            case DOWN:  targetRow += PREDICT_TILES; break;
+            case LEFT:  targetCol -= PREDICT_TILES; break;
+            case RIGHT: targetCol += PREDICT_TILES; break;
+            default: break;
+        }
 
-		// プレイヤーの向きを確認
-		Direction dir = target.getDirection();
-
-		// プレイヤーの現在位置を取得
-		double tx = target.getX();
-		double ty = target.getY();
-
-		// 4マス先の予測位置
-		switch (dir) {
-		case UP:
-			ty -= PREDICT_TILES * CELL_SIZE;
-			break;
-		case DOWN:
-			ty += PREDICT_TILES * CELL_SIZE;
-			break;
-		case LEFT:
-			tx -= PREDICT_TILES * CELL_SIZE;
-			break;
-		case RIGHT:
-			tx += PREDICT_TILES * CELL_SIZE;
-			break;
-		default:
-			// 止まっている時は現在位置を狙う
-			break;
-		}
-
-		// 敵から見た予測位置への方向の計算
-		double dx = tx - this.x; //敵から見て、右にどれくらい離れているか
-		double dy = ty - this.y; //敵から見て、下にどれくらい離れているか
-
-		// X方向優先 or Y方向優先
-		if (Math.abs(dx) > Math.abs(dy)) {
-			this.x += Math.signum(dx) * speed; //横の距離が大きい → 横に動く
-		} else {
-			this.y += Math.signum(dy) * speed; //縦の距離が大きい → 縦に動く
-		}
-	}
-}*/
-
-/*例 
- プレイヤー → 右向き
- プレイヤー位置 → (100, 100)
-
- プレイヤーは右に進んでる
- じゃあ 4マス先は 100 + (4 * 24) = 196
- */
-//  (196, 100) を目指して動く？たぶん？*/
+        // 最も近づく方向を返す（Enemy の共通メソッド）
+        return getClosestDirection(validDirections, targetCol, targetRow);
+    }
+}
