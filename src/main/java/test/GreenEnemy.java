@@ -8,14 +8,14 @@ import test.test2.MapData;
 
 public class GreenEnemy extends Enemy {
 
-	// マップ中心 エネミーハウス内（仮座標）
+	// スタート位置 (マップ中心 エネミーハウス内)
 	private static final int START_COL = 12;
 	private static final int START_ROW = 12;
 
-	// この距離以上ならプレイヤーを追いかける（8マス）
-	private static final double BORDER = 8 * MapData.TILE_SIZE;
+	// 8 マス以上離れていたら追跡
+	private static final double BORDER = 8;
 
-	// 縄張りエリアの中心（左下）（仮座標）
+	// 縄張りエリア（左下） (仮)
 	private static final int TERRITORY_COL = 3;
 	private static final int TERRITORY_ROW = 26;
 
@@ -26,63 +26,96 @@ public class GreenEnemy extends Enemy {
 	private boolean released = false;
 
 	public GreenEnemy(MapData mapData) {
-		// ⭕ 軸ズレ・スタック防止のため、マスの「中心ピクセル座標」を計算して親に渡すように修正
-		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 
-		      START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 
-		      1); // スピードは 1
 
-		this.mapData = mapData; // 親クラスのフィールドに保持
+		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
+
+		this.mapData = mapData;
+
+		// 生成時刻を記録
 		this.startTime = System.currentTimeMillis();
 
-		// 画像の読み込み処理
+		// 画像読み込み
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream("/picture/narinari.png");
+
 			if (is == null) {
 				System.err.println("❌【エラー】画像が見つかりません");
 			} else {
 				this.normalImage = new Image(is);
 				System.out.println("⭕【成功】narinariの画像を読み込みました！");
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	// ⭕ MapView から現在の画像を取り出して中心補正描画を行うためのゲッターメソッドを追加！
+	// 画像の読み込み処理
 	public Image getEnemyImage() {
-		if (this.currentState == Characters.EnemyState.DEAD) return deadImage;
-		if (this.currentState == Characters.EnemyState.FEVER) return feverImage;
+
+		if (this.currentState == Characters.EnemyState.DEAD) {
+			return deadImage;
+		}
+
+		if (this.currentState == Characters.EnemyState.FEVER) {
+			return feverImage;
+		}
+
 		return normalImage;
 	}
-	
+
+	//20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-		// ゲーム開始から20秒間は待機
+
 		if (!released) {
+
 			long elapsed = System.currentTimeMillis() - startTime;
+
+			// ゲーム開始から20秒は待機
 			if (elapsed < 20000) {
 				return;
 			}
+
+			// 出撃
 			released = true;
 		}
+
 		super.move(map);
 	}
 
+	// 遠い → 追跡 // 近い → 左下の縄張りへ戻る
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
-		// 安全対策: 進める方向がない場合は NONE、または最初の方向を返す
-		if (mapData == null || validDirections.isEmpty())
-			return Direction.NONE;
 
-		// キーボード操作で動いている本物のパックマン座標(px)をMapDataから取得
+		if (mapData == null || validDirections.isEmpty()) {
+			return Direction.NONE;
+		}
+
+		// パックマンの位置
 		double pacX = mapData.getPacX();
 		double pacY = mapData.getPacY();
 
-		// ピクセル座標から、AIが目指すべき「ターゲットのマス」を算出
-		int targetCol = (int) (pacX / MapData.TILE_SIZE);
-		int targetRow = (int) (pacY / MapData.TILE_SIZE);
+		int playerCol = (int) (pacX / MapData.TILE_SIZE);
 
-		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、次の一歩を決める
-		return getClosestDirection(validDirections, targetCol, targetRow);
+		int playerRow = (int) (pacY / MapData.TILE_SIZE);
+
+		// 自分の位置
+		int myCol = (int) (this.x / MapData.TILE_SIZE);
+
+		int myRow = (int) (this.y / MapData.TILE_SIZE);
+
+		// プレイヤーとの距離（マス単位）
+		double distance = Math.sqrt(Math.pow(myCol - playerCol, 2) + Math.pow(myRow - playerRow, 2));
+
+		// 遠いなら追跡
+		if (distance >= BORDER) {
+
+			return getClosestDirection(validDirections, playerCol, playerRow);
+		}
+
+		// 近いなら縄張りへ戻る
+		return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 	}
 }

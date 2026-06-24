@@ -2,107 +2,121 @@
 package Characters;
 /*
 import java.util.List;
-import javafx.scene.image.ImageView;
+
+import javafx.scene.image.Image;
+import test.test2.MapData;
 
 public class GreenEnemy extends Enemy {
 
-    // スタート位置(マップ中心 エネミーハウス内)
-    private static final int START_COL = 16;
-    private static final int START_ROW = 17;
+	// スタート位置 (マップ中心 エネミーハウス内)
+	private static final int START_COL = 15;
+	private static final int START_ROW = 15;
 
-    // この距離以上ならプレイヤーを追いかける（8マス）
-    private static final double BORDER = 8 * CELL_SIZE;
+	// 8 マス以上離れていたら追跡
+	private static final double BORDER = 8;
 
-    // 縄張りエリアの中心（左下）（仮座標）
-    private static final int TERRITORY_COL = 3;
-    private static final int TERRITORY_ROW = 26;
+	// 縄張りエリア（左下） (仮)
+	private static final int TERRITORY_COL = 3;
+	private static final int TERRITORY_ROW = 26;
 
-    // 出撃待機用
-    private long startTime;
+	// 出撃待機用
+	private long startTime;
 
-    // 巣から出たか
-    private boolean released = false;
+	// 巣から出たか
+	private boolean released = false;
 
-    public GreenEnemy(ImageView imageView) {
+	public GreenEnemy(MapData mapData) {
 
-        super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
+		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
 
-        startTime = System.currentTimeMillis();
-    }
-    
-    // 画像の読み込み処理
-		try{
-			java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa-udekumi.png");
+		this.mapData = mapData;
+
+		// 生成時刻を記録
+		this.startTime = System.currentTimeMillis();
+
+		// 画像読み込み
+		try {
+			java.io.InputStream is = getClass().getResourceAsStream("/picture/narinari.png");
+
 			if (is == null) {
 				System.err.println("❌【エラー】画像が見つかりません");
 			} else {
 				this.normalImage = new Image(is);
-				System.out.println("⭕【成功】早川さんの画像を読み込みました！");
+				System.out.println("⭕【成功】narinariの画像を読み込みました！");
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	// MapView から現在の画像を取り出すためのゲッター
+	// 画像の読み込み処理
 	public Image getEnemyImage() {
-		if (this.currentState == Characters.EnemyState.DEAD)
+
+		if (this.currentState == Characters.EnemyState.DEAD) {
 			return deadImage;
-		if (this.currentState == Characters.EnemyState.FEVER)
+		}
+
+		if (this.currentState == Characters.EnemyState.FEVER) {
 			return feverImage;
+		}
+
 		return normalImage;
 	}
 
-    @Override
-    public void move(int[][] map) {
+	// 20秒経過後に出撃
+	@Override
+	public void move(int[][] map) {
 
-        // ゲーム開始から20秒間は待機
-        if (!released) {
+		if (!released) {
 
-            long elapsed =
-                    System.currentTimeMillis() - startTime;
+			long elapsed = System.currentTimeMillis() - startTime;
 
-            if (elapsed < 20000) {
-                return;
-            }
+			// ゲーム開始から20秒は待機
+			if (elapsed < 20000) {
+				return;
+			}
 
-            released = true;
-        }
+			// 出撃
+			released = true;
+		}
 
-        super.move(map);
-    }
+		super.move(map);
+	}
 
-    @Override
-    protected Direction decideNextDirection(
-            List<Direction> validDirections,
-            int[][] map,
-            Sengoku player) {
+	// 遠い → 追跡 // 近い → 左下の縄張りへ戻る
+	@Override
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
 
-        // プレイヤーとの距離を取得
-        double distance = getDistanceTo(player);
+		if (mapData == null || validDirections.isEmpty()) {
+			return Direction.NONE;
+		}
 
-        // プレイヤーが遠い場合は追跡
-        if (distance >= BORDER) {
+		// パックマンの位置
+		double pacX = mapData.getPacX();
+		double pacY = mapData.getPacY();
 
-            int playerCol =
-                    (int) ((player.getX() + CELL_SIZE / 2.0)
-                            / CELL_SIZE);
+		int playerCol = (int) (pacX / MapData.TILE_SIZE);
 
-            int playerRow =
-                    (int) ((player.getY() + CELL_SIZE / 2.0)
-                            / CELL_SIZE);
+		int playerRow = (int) (pacY / MapData.TILE_SIZE);
 
-            return getClosestDirection(
-                    validDirections,
-                    playerCol,
-                    playerRow);
-        }
+		// 自分の位置
+		int myCol = (int) (this.x / MapData.TILE_SIZE);
 
-        // プレイヤーが近い場合は縄張りへ戻る
-        return getClosestDirection(
-                validDirections,
-                TERRITORY_COL,
-                TERRITORY_ROW);
-    }
+		int myRow = (int) (this.y / MapData.TILE_SIZE);
+
+		// プレイヤーとの距離（マス単位）
+		double distance = Math.sqrt(Math.pow(myCol - playerCol, 2) + Math.pow(myRow - playerRow, 2));
+
+		// 遠いなら追跡
+		if (distance >= BORDER) {
+
+			return getClosestDirection(validDirections, playerCol, playerRow);
+		}
+
+		// 近いなら縄張りへ戻る
+		return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
+	}
 }
 */
