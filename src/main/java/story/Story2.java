@@ -528,7 +528,11 @@ public class Story2 extends Application{
         	    FadeTransition fade = new FadeTransition(Duration.seconds(1.5), fadeRect);
         	    fade.setFromValue(0);
         	    fade.setToValue(1);
-
+        	    
+        	    //サイズをウィンドウに合わせる
+        	    fadeRect.widthProperty().bind(scene.widthProperty());
+        	    fadeRect.heightProperty().bind(scene.heightProperty());
+        	    
         	    fade.setOnFinished(ev -> {
         	        //BGM停止
         	        Bgm.stopBGM();

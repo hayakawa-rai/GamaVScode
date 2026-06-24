@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import start.Bgm;
 import start.Start;
 
 public class Practice extends Application {
@@ -86,6 +87,8 @@ public class Practice extends Application {
 			// 1. 練習モードの背景アニメーションを停止
 			if (timer != null) {
 				timer.stop();
+				//BGm停止
+		        Bgm.stopBGM();
 			}
 			
 			// 2. SampleController の遷移メソッドを直接呼び出す！

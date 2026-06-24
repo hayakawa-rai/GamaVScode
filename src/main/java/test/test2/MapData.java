@@ -6,6 +6,7 @@ import Items.Chii;
 import Items.Item;
 import Items.Point;
 import test.Enemy;
+import test.RedEnemy;
 
 public class MapData {
 
@@ -83,10 +84,10 @@ public class MapData {
 			}
 		}
 	}
-
+	//コード追加　成田
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
-		
-		
+		//敵を生成
+		this.enemy = new RedEnemy(this);
 	}
 
 	public void togglePause() {
@@ -249,4 +250,13 @@ public class MapData {
 	public Enemy getEnemy() {
 		return enemy;
 	}
+	//追加項目
+	public double getPacX() {
+		return sengoku != null ? sengoku.getX() : 0;
+	}
+
+	public double getPacY() {
+		return sengoku != null ? sengoku.getY() : 0;
+	}
+	
 }

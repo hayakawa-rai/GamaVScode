@@ -1,5 +1,5 @@
-package test2.model;
-
+package stage2.model;
+/*
 public class MapData {
 
 	//マップ定義(28×31マス)
@@ -81,6 +81,9 @@ public class MapData {
 	//最後にワープした位置
 	private int lastWarpX = -1;
 	private int lastWarpY = -1;
+	
+    //赤い敵（RedEnemy）のインスタンスを保持するフィールド
+    private test.RedEnemy redEnemy;
 
 	//getters / setters
 	public int[][] getMap() {
@@ -114,6 +117,11 @@ public class MapData {
 	public boolean isBlocked() {
 		return isBlocked;
 	}
+	
+    //コンストラクタで敵を生成する
+    public MapData() {
+        this.redEnemy = new test.RedEnemy(this);
+    }
 
 	//コントローラーからの曲がり角先行入力を予約
 	public void setNextDirection(int nx, int ny) {
@@ -124,6 +132,13 @@ public class MapData {
 	public void togglePause() {
 		paused = !paused;
 	}
+	
+    //GameController や MapView から敵を取得するためのゲッター
+    public test.RedEnemy getRedEnemy() {
+        return redEnemy;
+    }
+    
+    
 
 	//更新ロジック（外部から呼ぶ)
 		public void updatePacman() {
@@ -267,3 +282,4 @@ public class MapData {
 			mouthOpening = -1;  //開ききったら次は閉じる方向へ
 	}
 }
+*/

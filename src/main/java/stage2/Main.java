@@ -1,5 +1,5 @@
-package test2;
-
+package stage2;
+/*
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -7,9 +7,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import test2.controller.GameController;
-import test2.model.MapData;
-import test2.view.MapView;
 
 //パックマン・アプリケーションの起動クラス
 public class Main extends Application {
@@ -77,3 +74,4 @@ public class Main extends Application {
 		launch(args);
 	}
 }
+*/

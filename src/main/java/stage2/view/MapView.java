@@ -1,9 +1,8 @@
-package test2.view;
-
+package stage2.view;
+/*
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
-import test2.model.MapData;
 
 public class MapView {
 
@@ -14,7 +13,7 @@ public class MapView {
 		this.model = model;
 	}
 
-	// ★ CSSの背景色からColorオブジェクトを安全に引っ張り出す正しい処理
+	//CSSの背景色からColorオブジェクトを安全に引っ張り出す正しい処理
 	private Color getColorFromCSS(GraphicsContext gc, String styleClass, Color fallbackColor) {
 		try {
 			javafx.scene.Scene scene = gc.getCanvas().getScene();
@@ -91,6 +90,28 @@ public class MapView {
 				360 - model.getMouthAngle() * 2,
 				ArcType.ROUND);
 	}
+	
+	//敵（RedEnemy）を描画する処理
+	public void drawEnemy(GraphicsContext gc) {
+	    // model (MapData) 内に RedEnemy のゲッターが用意されている前提のコードです
+	    // もし model.getRedEnemy() がなければ、ご自身のモデルの設計に合わせて書き換えてください
+	    test.RedEnemy enemy = model.getRedEnemy(); 
+	    
+	    if (enemy != null) {
+	        javafx.scene.image.Image enemyImg = enemy.getEnemyImage();
+	        
+	        if (enemyImg != null) {
+	            // パックマンと同様、中心ピクセル座標から左上基準の描画座標を算出
+	            // ※ RedEnemy側で CELL_SIZE ではなく MapData.TILE_SIZE を使っている場合は
+	            // MapData.TILE_SIZE に統一してください
+	            double drawX = enemy.getX() - MapData.TILE_SIZE / 2.0;
+	            double drawY = enemy.getY() - MapData.TILE_SIZE / 2.0;
+	            
+	            // 敵の画像を描画
+	            gc.drawImage(enemyImg, drawX, drawY, MapData.TILE_SIZE, MapData.TILE_SIZE);
+	        }
+	    }
+	}
 
 	//全体描画
 	public void draw(GraphicsContext gc) {
@@ -118,7 +139,11 @@ public class MapView {
 
 		//パックマンの描画
 		drawPacman(gc);
+		
+		//敵の描写
+		drawEnemy(gc);
 
 		gc.restore();
 	}
 }
+*/
