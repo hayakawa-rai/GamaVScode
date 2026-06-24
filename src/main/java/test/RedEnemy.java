@@ -1,3 +1,4 @@
+// 最短距離でプレイヤーを追跡する敵（赤）
 package test;
 
 import java.util.List;
@@ -7,14 +8,17 @@ import test.test2.MapData;
 
 public class RedEnemy extends Enemy {
 
-	// 開けた安全な通路からスタートさせる（壁埋まり・フリーズ防止）
+	// スタート位置（エネミーハウス付近上）
 	private static final int START_COL = 13;
-
 	private static final int START_ROW = 12;
 
+    // 縄張りエリアの中心（右上）(仮)
+    private static final int TERRITORY_COL = 24;
+    private static final int TERRITORY_ROW = 3;
+    
 	//引数を MapData に一本化し、正しいコンストラクタの形に直した
 	public RedEnemy(MapData sampleModel) {
-		// パックマンと同じくマスの「中心ピクセル座標」を初期位置として親に渡す
+		 // マスの中心座標で生成
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 		      START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 		      1); // スピードは 2
@@ -48,8 +52,8 @@ public class RedEnemy extends Enemy {
 		if (mapData == null || validDirections.isEmpty()) return Direction.NONE;
 
 		// キーボード操作で動いている本物のパックマン座標(px)をMapDataから取得
-		double pacX = mapData.getPacX();
-		double pacY = mapData.getPacY();
+        double pacX = mapData.getPacX() + MapData.TILE_SIZE / 2.0;
+        double pacY = mapData.getPacY() + MapData.TILE_SIZE / 2.0;
 
 		// ピクセル座標から、AIが目指すべき「ターゲットのマス」を算出
 		int targetCol = (int) (pacX / MapData.TILE_SIZE);

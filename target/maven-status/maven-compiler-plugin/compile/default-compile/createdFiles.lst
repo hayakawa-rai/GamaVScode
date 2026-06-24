@@ -55,7 +55,9 @@ test3\view\MapView.class
 Items\Point.class
 test\Direction$1.class
 test1\controller\GameController.class
+test\BlueEnemy.class
 start\Bgm.class
+test\BlueEnemy$1.class
 Items\Item.class
 test\YellowEnemy.class
 test1\view\MapView.class

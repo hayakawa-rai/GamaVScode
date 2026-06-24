@@ -1,4 +1,4 @@
-// Sengokuの4マス先を狙う YellowEnemy(黄) 
+// RedEnemy と連携してはさみうちにする BlueEnemy(青) 
 package test;
 
 import java.util.List;
@@ -6,39 +6,48 @@ import java.util.List;
 import javafx.scene.image.Image;
 import test.test2.MapData;
 
-public class YellowEnemy extends Enemy {
+public class BlueEnemy extends Enemy {
 
-	// スタート位置(マップ中心 エネミーハウス内)
-	private static final int START_COL = 14;
+	// スタート位置(マップ中心 エネミーハウス上)
+	private static final int START_COL = 12;
 	private static final int START_ROW = 12;
-	
-	// プレイヤーの進行方向の4マス先を狙う
-	private static final int PREDICT_TILES = 4;
 
-	// 縄張りエリア（左上）（仮座標）
-	private static final int TERRITORY_COL = 3;
-	private static final int TERRITORY_ROW = 3;
+	// プレイヤーの進行方向の2マス先を狙う
+	private static final int PREDICT_TILES = 2;
+
+	// 縄張りエリアの中心（右下）（仮座標）
+	private static final int TERRITORY_COL = 24;
+	private static final int TERRITORY_ROW = 26;
 
 	// 出発時間の記録
 	private long startTime;
-	
 	// 巣から出たか
 	private boolean released = false;
 
-	public YellowEnemy(MapData mapData) {
+	// 赤の位置を参照
+	private RedEnemy red;
 
+	public BlueEnemy(MapData mapData) {
 		// マスの中心座標を初期位置として Enemy に渡す
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
 
 		this.mapData = mapData;
-		
+
+		// RedをMapDataから探す
+		for (Enemy e : mapData.getEnemies()) {
+			if (e instanceof RedEnemy) {
+				this.red = (RedEnemy) e;
+				break;
+			}
+		}
+
 		// 生成時刻を記録
 		this.startTime = System.currentTimeMillis();
 
 		// 画像の読み込み
 		try {
-			java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa2.png");
+			java.io.InputStream is = getClass().getResourceAsStream("/picture/kagi.png");
 			if (is == null) {
 				System.err.println("❌【エラー】画像が見つかりません");
 			} else {
@@ -61,14 +70,14 @@ public class YellowEnemy extends Enemy {
 		return normalImage;
 	}
 
-	//10秒経過後に出撃
+	//2秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
 		if (!released) {
 			long elapsed = System.currentTimeMillis() - startTime;
 
 			// ゲーム開始から10秒は待機
-			if (elapsed < 10000) {
+			if (elapsed < 2000) {
 				return;
 			}
 
@@ -83,19 +92,19 @@ public class YellowEnemy extends Enemy {
 
 		// FEVER 時はランダム移動
 		//if (this.currentState == EnemyState.FEVER) {
-		//    return getRandomDirection(validDirections);
+		//   return getRandomDirection(validDirections);
 		//}
 
 		// DEAD 時はハウスへ帰還
 		//if (this.currentState == EnemyState.DEAD) {
-		//   return getClosestDirection(validDirections, START_COL, START_ROW);
+		//    return getClosestDirection(validDirections, START_COL, START_ROW);
 		//}
 
 		// プレイヤーのタイル座標
 		int pacCol = (int) (mapData.getPacX() / MapData.TILE_SIZE);
 		int pacRow = (int) (mapData.getPacY() / MapData.TILE_SIZE);
 
-		// プレイヤーの向きの4マス先
+		// プレイヤーの向きの2マス先
 		switch (mapData.getSengoku().getDirection()) {
 		case UP:
 			pacRow -= PREDICT_TILES;
@@ -113,7 +122,19 @@ public class YellowEnemy extends Enemy {
 			break;
 		}
 
-		// 親クラスの 最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
-		return getClosestDirection(validDirections, pacCol, pacRow);
+		// RedEnemy の位置
+		int redCol = (int) (red.getX() / MapData.TILE_SIZE);
+		int redRow = (int) (red.getY() / MapData.TILE_SIZE);
+
+		// ベクトル計算
+		int vx = pacCol - redCol;
+		int vy = pacRow - redRow;
+
+		// 2倍した先がターゲット
+		int targetCol = pacCol + vx;
+		int targetRow = pacRow + vy;
+
+		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
+		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 }
