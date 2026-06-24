@@ -167,6 +167,9 @@ public class Start extends Application {
         scene.getStylesheets().add(
          	    getClass().getResource("/css/style.css").toExternalForm()
         );
+        //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
         //ウィンドウの名前を設定
         stage.setTitle("スタート画面");
         //ウィンドウの中身を設定・表示
