@@ -20,7 +20,10 @@ import javafx.util.Duration;
 import start.Bgm;
 
 public class Practice extends Application {
-
+	
+	private AudioClip clickSound;
+	private AudioClip cancelSound;
+	private PauseTransition pause;
 	private Stage stage;
 	// hold the background animation so we can stop it when switching scenes
 	private AnimationTimer timer;
@@ -32,7 +35,35 @@ public class Practice extends Application {
 		stage.setTitle("練習モード");
 		stage.show();
 	}
+	private void cleanup() {
 
+	    // 背景アニメーション停止
+	    if (timer != null) {
+	        timer.stop();
+	        timer = null;
+	    }
+
+	    // 遅延処理停止
+	    if (pause != null) {
+	        pause.stop();
+	        pause = null;
+	    }
+
+	    // 効果音停止
+	    if (clickSound != null) {
+	        clickSound.stop();
+	        clickSound = null;
+	    }
+
+	    if (cancelSound != null) {
+	        cancelSound.stop();
+	        cancelSound = null;
+	    }
+
+	    // BGM停止
+	    Bgm.stopBGM();
+	}
+		
 	public Scene createScene() {
 		
 		// タイトル
@@ -64,13 +95,13 @@ public class Practice extends Application {
 		stage3.setPrefHeight(80);
 		
 		//音声読み込み
-		AudioClip clickSound = new AudioClip(
+		clickSound = new AudioClip(
 			getClass().getResource("/music/select.mp3").toExternalForm()
 		);
 		// 音量調整
 		clickSound.setVolume(0.4);
 		//音声読み込み
-		AudioClip cancelSound = new AudioClip(
+		cancelSound = new AudioClip(
 			getClass().getResource("/music/cancel.mp3").toExternalForm()
 		);
 		// 音量調整
@@ -82,17 +113,42 @@ public class Practice extends Application {
 	    	clickSound.play();
 	    	
 	    	// 0.5秒待つ
-	        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+	        pause = new PauseTransition(Duration.seconds(0.5));
 			// 1. 練習モードの背景アニメーションを停止
-			if (timer != null) {
-				timer.stop();
-				//BGm停止
-		        Bgm.stopBGM();
-			}
+	        cleanup(); 
 			
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
-			test.test2.GameController.switchToGame(stage);
+			test.test2.GameController.switchToGame1(stage);
+		});
+		
+		stage2.setOnAction(e -> {
+			//音をつける
+	    	clickSound.stop();
+	    	clickSound.play();
+	    	
+	    	// 0.5秒待つ
+	        pause = new PauseTransition(Duration.seconds(0.5));
+			// 1. 練習モードの背景アニメーションを停止
+	        cleanup(); 
+			// 2. SampleController の遷移メソッドを直接呼び出す！
+			// (※ メソッド名が switchToStart で合っているか、確認してね！)
+			test.test2.GameController.switchToGame2(stage);
+		});
+		
+		stage3.setOnAction(e -> {
+			//音をつける
+	    	clickSound.stop();
+	    	clickSound.play();
+	    	
+	    	// 0.5秒待つ
+	        pause = new PauseTransition(Duration.seconds(0.5));
+			// 1. 練習モードの背景アニメーションを停止
+	        cleanup(); 
+			
+			// 2. SampleController の遷移メソッドを直接呼び出す！
+			// (※ メソッド名が switchToStart で合っているか、確認してね！)
+			test.test2.GameController.switchToGame3(stage);
 		});
 		VBox stageButtons = new VBox(20, stage1, stage2, stage3);
 		stageButtons.setAlignment(Pos.CENTER);
@@ -109,12 +165,12 @@ public class Practice extends Application {
 	    	cancelSound.play();
 	    	
 	    	// 0.5秒待つ
-	        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+	        pause = new PauseTransition(Duration.seconds(0.5));
 
 	        // 待った後に画面遷移
 	        pause.setOnFinished(ev -> {
 	        // 背景停止
-	        timer.stop();
+	        cleanup(); 
 	        try {
 	        	// 画面遷移
 		        test.test2.GameController.switchStart(stage);

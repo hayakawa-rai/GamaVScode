@@ -1,7 +1,5 @@
-story\Story1.class
 test\test2\MapView.class
 Characters\GameMap.class
-story\Story4.class
 story\Stageclear3.class
 Characters\Character.class
 test1\controller\GameController$1.class
@@ -20,7 +18,6 @@ sample\stageclear3.class
 test3\controller\GameController$1.class
 story\Stageclear1.class
 start\Start$1.class
-story\Story3.class
 test2\Main2.class
 sample\story1.class
 sample\controller\SampleController$1.class
@@ -35,10 +32,8 @@ sample\start.class
 sample\practice.class
 test\Direction.class
 story\Practice.class
-test\test2\TestMainapp.class
 test\YellowEnemy$1.class
 sample\stageclear1.class
-test\test2\GameController.class
 test\PacmanSample.class
 story\Dialogue.class
 story\StoryUtils.class
@@ -49,7 +44,6 @@ Characters\EnemyState.class
 story\Gameover.class
 test3\controller\GameController.class
 Characters\Direction.class
-story\Story2.class
 Characters\SengokuState.class
 test\test2\GameController$1.class
 story\Practice$1.class
@@ -58,11 +52,16 @@ test1\model\MapData.class
 start\Start.class
 test2\controller\GameController.class
 sample\gameover.class
-test\SampleMainApp.class
 test2\controller\GameController$1.class
 test3\view\MapView.class
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 META-INF\maven\sample\Game\pom.properties
 test\SamplepracticeApp.class
+=======
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 Items\Point.class
 test\Direction$1.class
 test1\controller\GameController.class

@@ -29,15 +29,54 @@ public class Stageclear1 extends Application{
         stage.setTitle("stage1CLEAR");
         stage.show();
     }
+    
+    private AudioClip clearSound;
+    private AudioClip clickSound;
+    private AudioClip cancelSound;
+    private PauseTransition delay;
+    private PauseTransition pause;
+    
+    
+    private void cleanup() {
+
+        // 遅延処理
+        if (delay != null) {
+            delay.stop();
+            delay = null;
+        }
+
+        if (pause != null) {
+            pause.stop();
+            pause = null;
+        }
+
+        // 効果音停止
+        if (clearSound != null) {
+            clearSound.stop();
+            clearSound = null;
+        }
+
+        if (clickSound != null) {
+            clickSound.stop();
+            clickSound = null;
+        }
+
+        if (cancelSound != null) {
+            cancelSound.stop();
+            cancelSound = null;
+        }
+    }
+
+    
     public Scene clear() {
    	// クリア音
-    AudioClip clearSound = new AudioClip(
+    clearSound = new AudioClip(
    	    getClass().getResource("/music/yay.mp3").toExternalForm()
    	);
    	clearSound.setVolume(0.5);
 
    	// 0.5秒待つ
-    PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
+    delay = new PauseTransition(Duration.seconds(0.5));
     	
    	// 時間経過後に再生
    	delay.setOnFinished(e -> {
@@ -82,14 +121,14 @@ public class Stageclear1 extends Application{
 	buttonBox.setAlignment(Pos.CENTER);
 	
 	//音声読み込み
-	AudioClip clickSound = new AudioClip(
+	clickSound = new AudioClip(
 		getClass().getResource("/music/select.mp3").toExternalForm()
 	);
 	// 音量調整
 	clickSound.setVolume(0.4);
 	
 	//音声読み込み
-	AudioClip cancelSound = new AudioClip(
+	cancelSound = new AudioClip(
 		getClass().getResource("/music/cancel.mp3").toExternalForm()
 	);
 	// 音量調整
@@ -108,11 +147,12 @@ public class Stageclear1 extends Application{
         clickSound.play();
 
         // 0.5秒待つ
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        pause = new PauseTransition(Duration.seconds(0.5));
 
         // 待った後に画面遷移
         pause.setOnFinished(ev -> {
             try {
+            	cleanup();
             	// 画面遷移
 		        test.test2.GameController.switchStory2(stage);
             } catch (Exception ex) {
@@ -134,11 +174,13 @@ public class Stageclear1 extends Application{
     	cancelSound.play();
     	
     	// 0.5秒待つ
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        pause = new PauseTransition(Duration.seconds(0.5));
 
         // 待った後に画面遷移
         pause.setOnFinished(ev -> {
         try {
+        	cleanup();
+        	
         	// 画面遷移
 	        test.test2.GameController.switchStart(stage);
         } catch (Exception ex) {

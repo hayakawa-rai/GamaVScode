@@ -17,6 +17,27 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Start extends Application {
+	private AnimationTimer timer;
+	private AudioClip clickSound;
+	
+	private void cleanup() {
+
+	    // 背景アニメーション停止
+	    if (timer != null) {
+	        timer.stop();
+	        timer = null;
+	    }
+
+	    // 効果音停止
+	    if (clickSound != null) {
+	        clickSound.stop();
+	        clickSound = null;
+	    }
+
+	    // BGM停止
+	    Bgm.stopBGM();
+	}
+
 	
 	//javafxのApplicationにもともとあるstartを上書き
 	@Override
@@ -33,7 +54,7 @@ public class Start extends Application {
 		bg2.setLayoutX(bgImage.getWidth());
 
 		// AnimationTimer:javafxでのループ処理(handle()のみを繰り返し呼び出す)
-		AnimationTimer timer = new AnimationTimer() {
+		timer = new AnimationTimer() {
 			//Applicationにhandleというメソッドがあるため書き換え(AnimationTimerはhandl()しか呼び出せないためhandleを使用)
 			@Override
 			public void handle(long now) {
@@ -88,7 +109,7 @@ public class Start extends Application {
 
 		
 		//音声読み込み
-		AudioClip clickSound = new AudioClip(
+		clickSound = new AudioClip(
 			getClass().getResource("/music/select.mp3").toExternalForm()
 		);
 		// 音量調整
@@ -107,8 +128,8 @@ public class Start extends Application {
 		    	// 0.15秒後に画面遷移
 		    	Timeline delay = new Timeline(
 		    			new KeyFrame(Duration.millis(500), ev -> {
-		    				timer.stop();
-		    				Bgm.stopBGM();
+		    				//音と背景停止
+		    				cleanup();
 		    				//画面遷移
 		    				test.test2.GameController.startToStory(stage);
 		    	})
