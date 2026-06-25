@@ -1,4 +1,4 @@
-package stage2.view;
+package sample.stage2.view;
 /*
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
