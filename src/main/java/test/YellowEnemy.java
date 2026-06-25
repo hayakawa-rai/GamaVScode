@@ -11,7 +11,7 @@ public class YellowEnemy extends Enemy {
 	// スタート位置(マップ中心 エネミーハウス内)
 	private static final int START_COL = 14;
 	private static final int START_ROW = 12;
-	
+
 	// プレイヤーの進行方向の4マス先を狙う
 	private static final int PREDICT_TILES = 4;
 
@@ -21,7 +21,7 @@ public class YellowEnemy extends Enemy {
 
 	// 出発時間の記録
 	private long startTime;
-	
+
 	// 巣から出たか
 	private boolean released = false;
 
@@ -32,23 +32,23 @@ public class YellowEnemy extends Enemy {
 				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
 
 		this.mapData = mapData;
-		
-		//現在のステージ番号によって、読み込む画像を切り替える
+
+		// 現在のステージ番号によって、読み込む画像を切り替える
 		String imagePath = "/picture/narita_EnemyYellow.png"; // デフォルト（ステージ1用）
-		
+
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
-				case 1:
-					imagePath = "/picture/narita_EnemyYellow.png"; // ステージ1の画像
-					break;
-				case 2:
-					imagePath = "/picture/wada_EnemyYellow.png";        // ステージ2の画像
-					break;
-				case 3:
-					imagePath = "/picture/hayakawa_EnemyYellow.png";         // ステージ3の画像
-					break;
-				default:
-					break;
+			case 1:
+				imagePath = "/picture/narita_EnemyYellow.png"; // ステージ1の画像
+				break;
+			case 2:
+				imagePath = "/picture/wada_EnemyYellow.png"; // ステージ2の画像
+				break;
+			case 3:
+				imagePath = "/picture/hayakawa_EnemyYellow.png"; // ステージ3の画像
+				break;
+			default:
+				break;
 			}
 		}
 		
@@ -80,7 +80,7 @@ public class YellowEnemy extends Enemy {
 		return normalImage;
 	}
 
-	//10秒経過後に出撃
+	// 10秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
 		if (!released) {
@@ -99,40 +99,39 @@ public class YellowEnemy extends Enemy {
 
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
-
-		// FEVER 時はランダム移動
-		//if (this.currentState == EnemyState.FEVER) {
-		//    return getRandomDirection(validDirections);
-		//}
-
-		// DEAD 時はハウスへ帰還
-		//if (this.currentState == EnemyState.DEAD) {
-		//   return getClosestDirection(validDirections, START_COL, START_ROW);
-		//}
+		if (mapData == null || validDirections.isEmpty()) {
+			return Direction.NONE;
+		}
 
 		// プレイヤーのタイル座標
-		int pacCol = (int) (mapData.getPacX() / MapData.TILE_SIZE);
-		int pacRow = (int) (mapData.getPacY() / MapData.TILE_SIZE);
+		int targetCol = (int) (mapData.getPacX() / MapData.TILE_SIZE);
+		int targetRow = (int) (mapData.getPacY() / MapData.TILE_SIZE);
 
 		// プレイヤーの向きの4マス先
 		switch (mapData.getSengoku().getDirection()) {
 		case UP:
-			pacRow -= PREDICT_TILES;
+			targetRow -= PREDICT_TILES;
 			break;
 		case DOWN:
-			pacRow += PREDICT_TILES;
+			targetRow += PREDICT_TILES;
 			break;
 		case LEFT:
-			pacCol -= PREDICT_TILES;
+			targetCol -= PREDICT_TILES;
 			break;
 		case RIGHT:
-			pacCol += PREDICT_TILES;
+			targetCol += PREDICT_TILES;
 			break;
 		default:
 			break;
 		}
 
+		// 共通処理
+		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
+
+		if (special != null) {
+			return special;
+		}
 		// 親クラスの 最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
-		return getClosestDirection(validDirections, pacCol, pacRow);
+		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 }
