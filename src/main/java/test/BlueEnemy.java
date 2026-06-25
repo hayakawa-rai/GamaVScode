@@ -35,18 +35,18 @@ public class BlueEnemy extends Enemy {
 		this.mapData = mapData;
 		
 		// 現在のステージ番号によって、読み込む画像を切り替える
-		String imagePath = "/picture/hayakawa-udekumi.png"; // デフォルト（ステージ1用）
+		String imagePath = "/picture/narita_EnemyBlue.png"; // デフォルト（ステージ1用）
 		
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 				case 1:
-					imagePath = "/picture/hayakawa-udekumi.png"; // ステージ1の画像
+					imagePath = "/picture/narita_EnemyBlue.png"; // ステージ1の画像
 					break;
 				case 2:
-					imagePath = "/picture/hayakawa2.png";        // ステージ2の画像
+					imagePath = "/picture/wada_EnemyBlue.png";        // ステージ2の画像
 					break;
 				case 3:
-					imagePath = "/picture/narinari.png";         // ステージ3の画像
+					imagePath = "/picture/hayakawa_EnemyBlue.png";         // ステージ3の画像
 					break;
 				default:
 					break;
