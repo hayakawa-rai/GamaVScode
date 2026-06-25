@@ -211,7 +211,7 @@ public abstract class Enemy extends Character {
 	// FEVER状態で使用する画像をステージごとに読み込む
 	protected void loadFeverImage() {
 
-		// デフォルトはステージ1
+		// デフォルト画像（ステージ1）
 		String feverPath = "/picture/narita_EnemyFever.png";
 
 		// 現在のステージ番号に応じて画像を切り替える
@@ -234,11 +234,18 @@ public abstract class Enemy extends Character {
 		}
 
 		try {
-
+			// 指定したパスから画像を取得
 			java.io.InputStream is = getClass().getResourceAsStream(feverPath);
 
+			// 読み込み成功時
 			if (is != null) {
 				feverImage = new javafx.scene.image.Image(is);
+				System.out.println("⭕ FEVER画像読込成功: " + feverPath);
+			}
+			// 読み込み失敗時
+			else {
+
+				System.err.println("❌ FEVER画像が見つかりません: " + feverPath);
 			}
 
 		} catch (Exception e) {
