@@ -119,7 +119,7 @@ public class Practice extends Application {
 			
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
-			test.test2.GameController.switchToGame1(stage);
+			test.test2.GameController.switchToGame(stage);
 		});
 		
 		stage2.setOnAction(e -> {
