@@ -12,8 +12,10 @@ import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -314,7 +316,69 @@ public class Story4 extends Application{
         base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root);
         //rootを中身とした1000×800のウィンドウを作成
         Scene scene = new Scene(base,1000,800);
+        	
         
+        //メニュー画面追加
+        StackPane menuOverlay = new StackPane();
+
+        // 背景（うっすら暗く）
+        menuOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
+     	menuOverlay.setVisible(false);
+
+     	// 中央のかわいいパネル
+     	VBox menuBox = new VBox(20);
+     	menuBox.setAlignment(Pos.CENTER);
+
+     	// サイズを小さめにする
+     	menuBox.setMaxWidth(300);
+     	menuBox.setMaxHeight(250);
+
+     	//かわいい見た目
+     	menuBox.setStyle(
+    		"-fx-background-color: rgba(40,40,50,0.95);" +  // 少し透明
+        	"-fx-background-radius: 20;" +                  // 角丸
+         	"-fx-padding: 25;" +
+         	"-fx-border-radius: 20;" +
+         	"-fx-border-color: white;" +
+         	"-fx-border-width: 2;"
+    	);
+
+     	// ボタン
+     	Button resume = new Button("再開");
+     	Button titleBtn = new Button("タイトルへ");
+     	
+     	// ボタンをかわいく
+     	resume.getStyleClass().add("game-button2");
+     	titleBtn.getStyleClass().add("game-button2");
+
+     	// サイズ
+     	resume.setPrefWidth(180);
+     	titleBtn.setPrefWidth(180);
+
+
+     	// ボタン処理
+     	resume.setOnAction(e -> {
+         	menuOverlay.setVisible(false);
+
+         	if (timeline != null) timeline.play();
+         	if (blink != null) blink.play();
+         	if (arrowMove != null) arrowMove.play();
+     	});
+
+     	titleBtn.setOnAction(e -> {
+         	cleanup(scene,base);
+
+         	//スタート画面へ
+	        test.test2.GameController.switchStart(stage);
+     	});
+
+
+     	// 追加
+     	menuBox.getChildren().addAll(resume, titleBtn);
+     	menuOverlay.getChildren().add(menuBox);
+
+     	//最前面に追加
+     	base.getChildren().add(menuOverlay);
         
         // 背景画像をウィンドウサイズに合わせる
         bgView.fitWidthProperty().bind(scene.widthProperty());
@@ -322,19 +386,19 @@ public class Story4 extends Application{
         // 人物画像(あにき)をウィンドウサイズに合わせる(右に表示)
         anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
         anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
-        anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+        anikiView.setTranslateX(250);
         // 人物画像(なりなり)をウィンドウサイズに合わせる(右に表示)
         narinariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
         narinariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
-        narinariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+        narinariView.setTranslateX(250);
         // 人物画像(わだたく)をウィンドウサイズに合わせる(右に表示)
         wadatakuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
         wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
-        wadatakuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+        wadatakuView.setTranslateX(250);
         // 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
         sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.6));
         sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.0));
-        sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
+        sengokuView.setTranslateX(-250);
         //boxのサイズをウィンドウに合わせる
         box.widthProperty().bind(scene.widthProperty().multiply(0.9));
         box.heightProperty().bind(scene.heightProperty().multiply(0.18));
@@ -368,8 +432,25 @@ public class Story4 extends Application{
         stage.setMinWidth(800);
         stage.setMinHeight(600);
        
+        //メニュー表示処理
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+
+                // メニュー表示
+                menuOverlay.setVisible(true);
+
+                // ストーリー停止
+                if (timeline != null) timeline.pause();
+                if (blink != null) blink.pause();
+                if (arrowMove != null) arrowMove.pause();
+            }
+        });
         
-      //文字表示用のタイマーを作成、50ミリ秒ごとに処理
+        fall = new TranslateTransition(Duration.seconds(1), wadatakuView);
+        fall.setToY(100);
+        
+        
+        //文字表示用のタイマーを作成、50ミリ秒ごとに処理
         timeline = new Timeline(
         	new KeyFrame(Duration.millis(50),e->{
         		//今再生されている会話テキストのリスト番号を取得
@@ -379,8 +460,8 @@ public class Story4 extends Application{
         			//文字カウントを増やす
         			charIndex++;
         			//最初に画像を下に落とす
-        			if (messageIndex == 0) {  
-        			    fall.play();
+        			if (messageIndex == 0 && charIndex == 1) {
+        			    fall.playFromStart();
         			}
         			//誰が話しているか情報取得(話者によって話者名・テキストの色を変化)
         			String speaker = d.speaker;
@@ -542,7 +623,11 @@ public class Story4 extends Application{
         	d.sound.stop();
         	d.sound.play();
         }
-
+        
+        //CSSを接続
+        scene.getStylesheets().add(
+            getClass().getResource("/css/style.css").toExternalForm()
+        );
         //最初の文章を表示(部品のすべての処理を終えてから文字を表示するため最後に記述)
         startTyping();
         

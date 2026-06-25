@@ -56,6 +56,7 @@ public class MapData {
 
 	private Item[][] itemMap;
 	private Sengoku sengoku;
+	
 
 	// 敵のリスト管理
 	private final List<Enemy> enemies = new ArrayList<>();
