@@ -1,5 +1,10 @@
 package test1.model;
 
+import Characters.Sengoku;
+import Items.Chii;
+import Items.Item;
+import Items.Point;
+
 public class MapData {
 
 	//マップ定義(28×31マス)
@@ -42,6 +47,9 @@ public class MapData {
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},			 //■■■■■■■　　■■■■■■■■■■　　■■■■■■■
 
 	};
+	
+	private Item[][] itemMap;
+	private Sengoku sengoku;
 
 	// パックマンの状態
 	//現在のX座標(初期値は14マス目の中央)
@@ -97,6 +105,13 @@ public class MapData {
 
 	public double getMouthAngle() {
 		return mouthAngle;
+		
+	}	
+	
+	public Item getItem(int x, int y) {
+	    if (x < 0 || x >= itemMap[0].length) return null;
+	    if (y < 0 || y >= itemMap.length) return null;
+	    return itemMap[y][x];
 	}
 
 	public int getDirX() {
@@ -123,6 +138,25 @@ public class MapData {
 
 	public void togglePause() {
 		paused = !paused;
+	}
+	
+	
+	public MapData() {
+		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
+		this.itemMap = new Item[map.length][map[0].length];
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[0].length; col++) {
+				double pixelX = col * TILE_SIZE + TILE_SIZE / 2.0;
+				double pixelY = row * TILE_SIZE + TILE_SIZE / 2.0;
+
+				if (map[row][col] == 0) {
+					itemMap[row][col] = new Point(pixelX, pixelY);
+				} else if (map[row][col] == 2) {
+					itemMap[row][col] = new Chii(pixelX, pixelY);
+				}
+			}
+		}
+	
 	}
 
 	//更新ロジック（外部から呼ぶ)
@@ -250,6 +284,16 @@ public class MapData {
 				if (dirY != 0) {  // 上下移動中は、左右のズレを補正
 					pacX += (tileX * TILE_SIZE + TILE_SIZE / 2 - pacX) * 0.2;
 				}
+			}
+			
+			// アイテム取得処理（点を食べる）
+			int tileX2 = (int)(pacX / TILE_SIZE);
+			int tileY2 = (int)(pacY / TILE_SIZE);
+
+			Item item = getItem(tileX2, tileY2);
+			if (item != null) {
+			    item.onEaten(sengoku);  // スコア加算
+			    itemMap[tileY2][tileX2] = null;  // 点を消す
 			}
 		}
 

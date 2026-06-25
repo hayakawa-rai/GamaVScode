@@ -1,4 +1,4 @@
-package stage2.model;
+package sample.stage2.model;
 /*
 public class MapData {
 

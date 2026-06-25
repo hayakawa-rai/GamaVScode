@@ -8,81 +8,151 @@ public class Sengoku extends Character {
 	private Direction nextdirection = Direction.NONE;
 	private static final int CELL_SIZE = 30;
 
+	// --- ミス演出のための変数 ---
+	private final double startX;
+	private final double startY;
+	private boolean isDyingAnimation = false;
+	private int dyingTimer = 0;
+
 	public Sengoku(double x, double y, int speed) {
 		super(x, y, speed);
+		this.startX = x;
+		this.startY = y;
 	}
 
 	public void setNextDirection(Direction direction) {
 		this.nextdirection = direction;
+		if (this.direction == Direction.NONE && !isDyingAnimation) {
+			this.direction = direction;
+		}
+
 	}
 
 	@Override
 	public void move(int[][] map) {
+
+		System.out.println("x=" + this.x + " y=" + this.y
+				+ " dir=" + this.direction
+				+ " next=" + this.nextdirection
+				+ " aligned=" + isAligned()
+				+ " canMoveNext=" + canmove(nextdirection, map)
+				+ " canMoveCur=" + canmove(this.direction, map));
 		
-	    System.out.println("x=" + this.x + " y=" + this.y 
-	            + " dir=" + this.direction 
-	            + " next=" + this.nextdirection
-	            + " aligned=" + isAligned()
-	            + " canMoveNext=" + canmove(nextdirection, map)
-	            + " canMoveCur=" + canmove(this.direction, map));
-	    // 新しい方向に曲がれるか（マス境界付近のみ許可）
-	    if (isAligned() && canmove(nextdirection, map)) {
-	        this.direction = nextdirection;
-	        // 曲がる瞬間にマス境界にスナップ
-	        this.x = Math.round(this.x / CELL_SIZE) * CELL_SIZE;
-	        this.y = Math.round(this.y / CELL_SIZE) * CELL_SIZE;
-	    }
+		// 死亡アニメーション中、または死亡時は移動しない
+		if (isDyingAnimation || !isAlive()) return;
+		
+		// 新しい方向に曲がれるか（マス境界付近のみ許可）
+		if (isAligned() && canmove(nextdirection, map)) {
+			this.direction = nextdirection;
+			// 曲がる瞬間にマス境界にスナップ
+			this.x = Math.round(this.x / CELL_SIZE) * CELL_SIZE;
+			this.y = Math.round(this.y / CELL_SIZE) * CELL_SIZE;
+		}
 
-	    // 現在の方向が壁なら停止
-	    if (!canmove(this.direction, map)) {
-	        this.direction = Direction.NONE;
-	    }
+		// 現在の方向が壁なら停止
+		if (!canmove(this.direction, map)) {
+			this.direction = Direction.NONE;
+		}
 
-	    // 移動
-	    if (this.direction != Direction.NONE) {
-	        this.x += this.direction.getDX() * this.speed;
-	        this.y += this.direction.getDY() * this.speed;
-	    }
+		// 移動
+		if (this.direction != Direction.NONE) {
+			this.x += this.direction.getDX() * this.speed;
+			this.y += this.direction.getDY() * this.speed;
+		}
+	}
+	
+	//外部から状態をチェックするためのゲッタ-
+	public boolean isDyingAnimation() {
+		return isDyingAnimation;
+	}
+
+	public int getDyingTimer() {
+		return dyingTimer;
 	}
 
 	// マス境界に揃っているか（曲がれるタイミング）
 	private boolean isAligned() {
-	    return (this.x % CELL_SIZE == 0) && (this.y % CELL_SIZE == 0);
+		return (this.x % CELL_SIZE == 0) && (this.y % CELL_SIZE == 0);
 	}
 
 	private boolean canmove(Direction direction, int[][] map) {
-	    if (direction == Direction.NONE) {
-	        return false;
-	    }
+		if (direction == Direction.NONE) {
+			return false;
+		}
 
-	    // 進行方向の「先端座標」を計算する
-	    double checkX = this.x;
-	    double checkY = this.y;
+		// 進行方向の「先端座標」を計算する
+		double checkX = this.x;
+		double checkY = this.y;
 
-	    if (direction == Direction.RIGHT) {
-	        checkX = this.x + CELL_SIZE - 1 + this.speed; // 右端 + speed分先
-	    } else if (direction == Direction.LEFT) {
-	        checkX = this.x - this.speed;                  // 左端 - speed分先
-	    } else if (direction == Direction.DOWN) {
-	        checkY = this.y + CELL_SIZE - 1 + this.speed; // 下端 + speed分先
-	    } else if (direction == Direction.UP) {
-	        checkY = this.y - this.speed;                  // 上端 - speed分先
-	    }
+		if (direction == Direction.RIGHT) {
+			checkX = this.x + CELL_SIZE - 1 + this.speed; // 右端 + speed分先
+		} else if (direction == Direction.LEFT) {
+			checkX = this.x - this.speed; // 左端 - speed分先
+		} else if (direction == Direction.DOWN) {
+			checkY = this.y + CELL_SIZE - 1 + this.speed; // 下端 + speed分先
+		} else if (direction == Direction.UP) {
+			checkY = this.y - this.speed; // 上端 - speed分先
+		}
 
-	    int checkCol = (int) (checkX / CELL_SIZE);
-	    int checkRow = (int) (checkY / CELL_SIZE);
+		int checkCol = (int) (checkX / CELL_SIZE);
+		int checkRow = (int) (checkY / CELL_SIZE);
 
-	    // マップ範囲外チェック
-	    if (checkRow < 0 || checkRow >= map.length || checkCol < 0 || checkCol >= map[0].length) {
-	        return false;
-	    }
+		// マップ範囲外チェック
+		if (checkRow < 0 || checkRow >= map.length || checkCol < 0 || checkCol >= map[0].length) {
+			return false;
+		}
 
-	    return map[checkRow][checkCol] != 1;
+		return map[checkRow][checkCol] != 1;
 	}
 
 	protected void setPosition(double x, double y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	//ミスが起きたときにアニメーションを開始する
+	public void startDying() {
+		this.isDyingAnimation = true;
+		this.dyingTimer = 0;
+		this.direction = Direction.NONE;
+		this.nextdirection = Direction.NONE;
+	}
+
+	//死亡アニメーションの更新
+	public boolean updateDyingAnimation() {
+		if (!isDyingAnimation)
+			return false;
+
+		dyingTimer++;
+
+		if (dyingTimer < 60) {
+			return false;
+		} else {
+			// アニメーション終了
+			isDyingAnimation = false;
+			decreaseHp(); // ここで実際に残機を減らす
+			return true;
+		}
+	}
+	
+	//初期位置に戻すリセットメソッド
+	public void resetToStartPosition() {
+		this.x = this.startX;
+		this.y = this.startY;
+		this.direction = Direction.NONE;
+		this.nextdirection = Direction.NONE;
+		this.isDyingAnimation = false;
+		this.dyingTimer = 0;
+	}
+	
+	//残機を1つ減らすメソッド
+	public void decreaseHp() {
+		if (this.hp > 0) {
+			this.hp--;
+			if (this.hp <= 0) {
+				this.isAlive = false;
+			}
+		}
 	}
 
 	public void die() {

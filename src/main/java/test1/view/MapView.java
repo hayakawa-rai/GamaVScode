@@ -63,8 +63,7 @@ public class MapView {
 							x * MapData.TILE_SIZE,
 							y * MapData.TILE_SIZE,
 							MapData.TILE_SIZE,
-							MapData.TILE_SIZE
-					);
+							MapData.TILE_SIZE);
 				}
 			}
 		}
@@ -77,10 +76,14 @@ public class MapView {
 
 		double startAngle = 0;
 
-		if (model.getDirX() == 1) startAngle = model.getMouthAngle();
-		if (model.getDirX() == -1) startAngle = 180 + model.getMouthAngle();
-		if (model.getDirY() == -1) startAngle = 90 + model.getMouthAngle();
-		if (model.getDirY() == 1) startAngle = 270 + model.getMouthAngle();
+		if (model.getDirX() == 1)
+			startAngle = model.getMouthAngle();
+		if (model.getDirX() == -1)
+			startAngle = 180 + model.getMouthAngle();
+		if (model.getDirY() == -1)
+			startAngle = 90 + model.getMouthAngle();
+		if (model.getDirY() == 1)
+			startAngle = 270 + model.getMouthAngle();
 
 		gc.fillArc(
 				model.getPacX() - MapData.TILE_SIZE / 2,
@@ -90,6 +93,23 @@ public class MapView {
 				startAngle,
 				360 - model.getMouthAngle() * 2,
 				ArcType.ROUND);
+	}
+
+	private void drawItems(GraphicsContext gc) {
+	    for (int y = 0; y < model.getMap().length; y++) {
+	        for (int x = 0; x < model.getMap()[0].length; x++) {
+
+	            var item = model.getItem(x, y);
+	            if (item != null) {
+	                item.draw(
+	                    gc,
+	                    x * MapData.TILE_SIZE,   // ← 左上座標を渡す
+	                    y * MapData.TILE_SIZE,   // ← 左上座標を渡す
+	                    MapData.TILE_SIZE
+	                );
+	            }
+	        }
+	    }
 	}
 
 	//全体描画
@@ -115,6 +135,9 @@ public class MapView {
 
 		//壁の描画
 		drawStage(gc);
+
+		// アイテム
+		drawItems(gc);
 
 		//パックマンの描画
 		drawPacman(gc);

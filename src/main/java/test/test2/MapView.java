@@ -195,7 +195,7 @@ public class MapView {
 			img = ((BlueEnemy) enemy).getEnemyImage();
 		}
 		
-		// マスの中心座標(X, Y)から半マス引いて、画像の左上基準座標を計算（70%縮小でも絶対にズレない魔法の補正）
+		// マスの中心座標(X, Y)から半マス引いて、画像の左上基準座標を計算
 		double enemyLeftX = enemy.getX() - MapData.TILE_SIZE / 2.0;
 		double enemyTopY = enemy.getY() - MapData.TILE_SIZE / 2.0;
 

@@ -1,5 +1,10 @@
 package test2.model;
 
+import Characters.Sengoku;
+import Items.Chii;
+import Items.Item;
+import Items.Point;
+
 public class MapData {
 
 	//マップ定義(28×31マス)
@@ -9,39 +14,42 @@ public class MapData {
 	//0: 道, 1: 壁, 9: ワープ
 	private final int[][] map = {
 
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}, 			//■■■■■■■■■■■■　　　　■■■■■■■■■■■■
-			{1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1}, 			//■　　　　　　　　　　■　　　　■　　　　　　　　　　■
-			{1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1}, 			//■　■■■　■■■■　■　　　　■　■■■■　■■■　■
-			{1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1}, 			//■　■■■　■■■■　■　　　　■　■■■■　■■■　■
-			{1,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,0,1,1,0,0,0,0,0,0,0,1}, 			//■　　　　　　　■■　■■■■■■　■■　　　　　　　■
-			{1,1,1,1,0,1,1,0,1,1,0,0,0,0,0,0,0,0,1,1,0,1,1,0,1,1,1,1}, 			//■■■■　■■　■■　　　　　　　　■■　■■　■■■■
-			{1,1,1,1,0,1,1,0,1,1,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1,1}, 			//　　　■　■■　■■　■■■　■■　■■　■■　■　　　
-			{1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,1,1,0,0,0,0,0,0,0,1,1,1,1}, 			//　　　■　　　　　　　■■■　■■　　　　　　　■　　　
-			{1,1,1,1,0,1,1,1,1,1,0,1,1,0,0,1,1,0,1,1,1,1,1,0,1,1,1,1}, 			//■■■■　■■■■■　■■　　■■　■■■■■　■■■■
-			{1,0,0,0,0,1,1,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,1,0,0,0,0,1}, 			//■　　　　■■■■■　■■　■■■　■■■■■　　　　■
-			{1,0,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■■　■■　■■■　■■■■■　■■　■
-			{1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1}, 			//■　■■　　　　　　　　　　　　　　　　　　　　■■　■
-			{1,0,1,1,0,1,1,1,1,0,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■■■　　■■■　■■■■　■■　■
-			{1,0,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■　　　　　　■　■■■■　■■　■
-			{1,0,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■　　　　　　■　■■■■　■■　■
-			{9,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,9}, 			//　　　　　　　　　　■　　　　　　■　　　　　　　　　　
-			{1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■■■■■■■■　■■■■　■■　■
-			{1,0,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　　　　　　　　　　■■■■　■■　■
-			{1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■■■■■　■■　■■■■　■■　■
-			{1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■■■■■　■■　■■■■　■■　■
-			{1,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,1}, 			//■　■■　　　　　　■■　　　　■■　　　　　　■■　■
-			{1,0,0,0,0,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,0,0,0,1}, 			//■　　　　■■■■　■■　■■■■■　■■■■　　　　■
-			{1,1,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1}, 			//■■■■　■■■■　■■　■■■■■　■■■■　■■■■
-			{1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1}, 			//　　　■　　　　　　　　　　　　　　　　　　　　■　　　
-			{1,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,1}, 			//　　　■　■■　■■　■■■■■■　■■　■■　■　　　
-			{1,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,1}, 			//■■■■　■■　■■　■■■■■■　■■　■■　■■■■
-			{1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1}, 			//■　　　　　　　■■　　　　　　　　■■　　　　　　　■
-			{1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1}, 			//■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1}, 			//■　■■■　■■■■　■　　　　■　■■■■　■■■　■
-			{1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1}, 			//■　　　　　　　　　　■　　　　■　　　　　　　　　　■
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}  			//■■■■■■■■■■■■　　　　■■■■■■■■■■■■
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, //■■■■■■■■■■■■　　　　■■■■■■■■■■■■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, //■　　　　　　　　　　■　　　　■　　　　　　　　　　■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, //■　■■■　■■■■　■　　　　■　■■■■　■■■　■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, //■　■■■　■■■■　■　　　　■　■■■■　■■■　■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, //■　　　　　　　■■　■■■■■■　■■　　　　　　　■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, //■■■■　■■　■■　　　　　　　　■■　■■　■■■■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, //　　　■　■■　■■　■■■　■■　■■　■■　■　　　
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, //　　　■　　　　　　　■■■　■■　　　　　　　■　　　
+			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, //■■■■　■■■■■　■■　　■■　■■■■■　■■■■
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, //■　　　　■■■■■　■■　■■■　■■■■■　　　　■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, //■　■■　■■■■■　■■　■■■　■■■■■　■■　■
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, //■　■■　　　　　　　　　　　　　　　　　　　　■■　■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, //■　■■　■■■■　■■■　　■■■　■■■■　■■　■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, //■　■■　■■■■　■　　　　　　■　■■■■　■■　■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, //■　■■　■■■■　■　　　　　　■　■■■■　■■　■
+			{ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9 }, //　　　　　　　　　　■　　　　　　■　　　　　　　　　　
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, //■　■■　■■■■　■■■■■■■■　■■■■　■■　■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, //■　■■　■■■■　　　　　　　　　　■■■■　■■　■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, //■　■■　■■■■　■■■■■　■■　■■■■　■■　■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, //■　■■　■■■■　■■■■■　■■　■■■■　■■　■
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, //■　■■　　　　　　■■　　　　■■　　　　　　■■　■
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, //■　　　　■■■■　■■　■■■■■　■■■■　　　　■
+			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, //■■■■　■■■■　■■　■■■■■　■■■■　■■■■
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, //　　　■　　　　　　　　　　　　　　　　　　　　■　　　
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, //　　　■　■■　■■　■■■■■■　■■　■■　■　　　
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, //■■■■　■■　■■　■■■■■■　■■　■■　■■■■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, //■　　　　　　　■■　　　　　　　　■■　　　　　　　■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, //■　■■■　■■■■　■■■■■■　■■■■　■■■　■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, //■　■■■　■■■■　■　　　　■　■■■■　■■■　■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, //■　　　　　　　　　　■　　　　■　　　　　　　　　　■
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } //■■■■■■■■■■■■　　　　■■■■■■■■■■■■
 
 	};
+
+	private Item[][] itemMap;
+	private Sengoku sengoku;
 
 	// パックマンの状態
 	//現在のX座標(初期値は14マス目の中央)
@@ -61,7 +69,7 @@ public class MapData {
 
 	//移動速度
 	private static final double speed = 2.0;
-	
+
 	//一時停止フラグ
 	private boolean paused = false;
 
@@ -99,6 +107,14 @@ public class MapData {
 		return mouthAngle;
 	}
 
+	public Item getItem(int x, int y) {
+		if (x < 0 || x >= itemMap[0].length)
+			return null;
+		if (y < 0 || y >= itemMap.length)
+			return null;
+		return itemMap[y][x];
+	}
+
 	public int getDirX() {
 		return dirX;
 	}
@@ -125,145 +141,172 @@ public class MapData {
 		paused = !paused;
 	}
 
-	//更新ロジック（外部から呼ぶ)
-		public void updatePacman() {
-			if (paused) return;
+	public MapData() {
+		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
+		this.itemMap = new Item[map.length][map[0].length];
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[0].length; col++) {
+				double pixelX = col * TILE_SIZE + TILE_SIZE / 2.0;
+				double pixelY = row * TILE_SIZE + TILE_SIZE / 2.0;
 
-			//現在いるタイル位置を計算
-			int tileX = (int)(pacX / TILE_SIZE);
-			int tileY = (int)(pacY / TILE_SIZE);
-
-			// 範囲外防止
-			if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) {
-				return;
-			}
-			
-			//ワープ処理
-			if (map[tileY][tileX] == 9 && !justWarped) {
-				int targetX = tileX;
-
-				//右ワープ
-				if (dirX > 0) {
-					for (int x = 0; x < map[0].length; x++) {
-						if (map[tileY][x] == 9 && x != tileX) {
-							targetX = x;
-							break;
-						}
-					}
-				} 
-					
-				//左ワープ
-				else if (dirX < 0) {
-					for (int x = map[0].length - 1; x >= 0; x--) {
-						if (map[tileY][x] == 9 && x != tileX) {
-							targetX = x;
-							break;
-						}
-					}
-				}
-
-				// ワープ先へ移動
-				pacX = targetX * TILE_SIZE + TILE_SIZE / 2;
-				pacY = tileY * TILE_SIZE + TILE_SIZE / 2;
-
-				//ワープ直後に少しだけ進めてつまり防止
-				pacX += dirX * speed;
-				pacY += dirY * speed;
-
-				//ワープ処理完了フラグ
-				justWarped = true;
-				lastWarpX = targetX;
-				lastWarpY = tileY;
-				warpLock = true;
-				isBlocked = false; // ワープ直後はスタックを解除
-
-				return;
-			}
-
-			// ワープゾーンから完全に抜けたらフラグをリセット
-			if (justWarped) {
-				int currentTileX = (int)(pacX / TILE_SIZE);
-				int currentTileY = (int)(pacY / TILE_SIZE);
-				// ワープ先の『9』のマスから出たらワープ可能状態に戻す
-				if (currentTileX >= 0 && currentTileX < map[0].length &&
-					currentTileY >= 0 && currentTileY < map.length) {
-					if (map[currentTileY][currentTileX] != 9) {
-						justWarped = false;
-					}
-				}
-			}
-
-			// 方向転換（タイル中央でのみ）
-			double cx = tileX * TILE_SIZE + TILE_SIZE / 2;  //現在のタイルが中心X
-			double cy = tileY * TILE_SIZE + TILE_SIZE / 2;  //現在のタイルが中心Y
-
-			//1フレームの移動スピード未満の距離まで近づいたか判定
-			boolean atCenter =
-					Math.abs(pacX - cx) < speed && // 判定の閾値をspeed未満に調整
-					Math.abs(pacY - cy) < speed;
-
-			if (atCenter) {
-				//先行入力された予約方向(nextDir)の1マス先を計算
-				int nx = tileX + nextDirX;
-				int ny = tileY + nextDirY;
-				
-				//壁チェック
-				if (nx >= 0 && nx < map[0].length &&
-					ny >= 0 && ny < map.length &&
-					map[ny][nx] != 1) {
-					dirX = nextDirX;
-					dirY = nextDirY;
-				}
-			}
-
-			//壁衝突チェック
-			int nextTileX = tileX + dirX;
-			int nextTileY = tileY + dirY;
-
-			if (nextTileX >= 0 && nextTileX < map[0].length &&
-				nextTileY >= 0 && nextTileY < map.length) {
-
-				if (map[nextTileY][nextTileX] == 1) {
-					isBlocked = true;  //壁衝突フラグON
-					double centerX = tileX * TILE_SIZE + TILE_SIZE / 2;
-					double centerY = tileY * TILE_SIZE + TILE_SIZE / 2;
-					
-					//壁にめり込まないよう、タイルの中心に向けてマイルドに位置を戻す補正
-					pacX += (centerX - pacX) * 0.3;
-					pacY += (centerY - pacY) * 0.3;
-					return;  //壁があるのでこれ以上進まない(ここで処理を抜ける)
-				}
-			}
-
-			//前方に壁がなければ移動可能
-			isBlocked = false;
-
-			// 移動処理
-			pacX += dirX * speed;
-			pacY += dirY * speed;
-
-			// 軸がずれないようにする補正（ワープ直後はスキップ）
-			if (!justWarped) {
-				if (dirX != 0) {  // 左右移動中は、上下のズレを補正
-					pacY += (tileY * TILE_SIZE + TILE_SIZE / 2 - pacY) * 0.2;
-				}
-				if (dirY != 0) {  // 上下移動中は、左右のズレを補正
-					pacX += (tileX * TILE_SIZE + TILE_SIZE / 2 - pacX) * 0.2;
+				if (map[row][col] == 0) {
+					itemMap[row][col] = new Point(pixelX, pixelY);
+				} else if (map[row][col] == 2) {
+					itemMap[row][col] = new Chii(pixelX, pixelY);
 				}
 			}
 		}
 
-		//口パクアニメーション
+	}
+
+	//更新ロジック（外部から呼ぶ)
+	public void updatePacman() {
+		if (paused)
+			return;
+
+		//現在いるタイル位置を計算
+		int tileX = (int) (pacX / TILE_SIZE);
+		int tileY = (int) (pacY / TILE_SIZE);
+
+		// 範囲外防止
+		if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) {
+			return;
+		}
+
+		//ワープ処理
+		if (map[tileY][tileX] == 9 && !justWarped) {
+			int targetX = tileX;
+
+			//右ワープ
+			if (dirX > 0) {
+				for (int x = 0; x < map[0].length; x++) {
+					if (map[tileY][x] == 9 && x != tileX) {
+						targetX = x;
+						break;
+					}
+				}
+			}
+
+			//左ワープ
+			else if (dirX < 0) {
+				for (int x = map[0].length - 1; x >= 0; x--) {
+					if (map[tileY][x] == 9 && x != tileX) {
+						targetX = x;
+						break;
+					}
+				}
+			}
+
+			// ワープ先へ移動
+			pacX = targetX * TILE_SIZE + TILE_SIZE / 2;
+			pacY = tileY * TILE_SIZE + TILE_SIZE / 2;
+
+			//ワープ直後に少しだけ進めてつまり防止
+			pacX += dirX * speed;
+			pacY += dirY * speed;
+
+			//ワープ処理完了フラグ
+			justWarped = true;
+			lastWarpX = targetX;
+			lastWarpY = tileY;
+			warpLock = true;
+			isBlocked = false; // ワープ直後はスタックを解除
+
+			return;
+		}
+
+		// ワープゾーンから完全に抜けたらフラグをリセット
+		if (justWarped) {
+			int currentTileX = (int) (pacX / TILE_SIZE);
+			int currentTileY = (int) (pacY / TILE_SIZE);
+			// ワープ先の『9』のマスから出たらワープ可能状態に戻す
+			if (currentTileX >= 0 && currentTileX < map[0].length &&
+					currentTileY >= 0 && currentTileY < map.length) {
+				if (map[currentTileY][currentTileX] != 9) {
+					justWarped = false;
+				}
+			}
+		}
+
+		// 方向転換（タイル中央でのみ）
+		double cx = tileX * TILE_SIZE + TILE_SIZE / 2; //現在のタイルが中心X
+		double cy = tileY * TILE_SIZE + TILE_SIZE / 2; //現在のタイルが中心Y
+
+		//1フレームの移動スピード未満の距離まで近づいたか判定
+		boolean atCenter = Math.abs(pacX - cx) < speed && // 判定の閾値をspeed未満に調整
+				Math.abs(pacY - cy) < speed;
+
+		if (atCenter) {
+			//先行入力された予約方向(nextDir)の1マス先を計算
+			int nx = tileX + nextDirX;
+			int ny = tileY + nextDirY;
+
+			//壁チェック
+			if (nx >= 0 && nx < map[0].length &&
+					ny >= 0 && ny < map.length &&
+					map[ny][nx] != 1) {
+				dirX = nextDirX;
+				dirY = nextDirY;
+			}
+		}
+
+		//壁衝突チェック
+		int nextTileX = tileX + dirX;
+		int nextTileY = tileY + dirY;
+
+		if (nextTileX >= 0 && nextTileX < map[0].length &&
+				nextTileY >= 0 && nextTileY < map.length) {
+
+			if (map[nextTileY][nextTileX] == 1) {
+				isBlocked = true; //壁衝突フラグON
+				double centerX = tileX * TILE_SIZE + TILE_SIZE / 2;
+				double centerY = tileY * TILE_SIZE + TILE_SIZE / 2;
+
+				//壁にめり込まないよう、タイルの中心に向けてマイルドに位置を戻す補正
+				pacX += (centerX - pacX) * 0.3;
+				pacY += (centerY - pacY) * 0.3;
+				return; //壁があるのでこれ以上進まない(ここで処理を抜ける)
+			}
+		}
+
+		//前方に壁がなければ移動可能
+		isBlocked = false;
+
+		// 移動処理
+		pacX += dirX * speed;
+		pacY += dirY * speed;
+
+		// 軸がずれないようにする補正（ワープ直後はスキップ）
+		if (!justWarped) {
+			if (dirX != 0) { // 左右移動中は、上下のズレを補正
+				pacY += (tileY * TILE_SIZE + TILE_SIZE / 2 - pacY) * 0.2;
+			}
+			if (dirY != 0) { // 上下移動中は、左右のズレを補正
+				pacX += (tileX * TILE_SIZE + TILE_SIZE / 2 - pacX) * 0.2;
+			}
+		}
+		// アイテム取得処理（点を食べる）
+		int tileX2 = (int) (pacX / TILE_SIZE);
+		int tileY2 = (int) (pacY / TILE_SIZE);
+
+		Item item = getItem(tileX2, tileY2);
+		if (item != null) {
+			item.onEaten(sengoku); // スコア加算
+			itemMap[tileY2][tileX2] = null; // 点を消す
+		}
+	}
+
+	//口パクアニメーション
 	public void updateMouth() {
 		if (paused || isBlocked)
-			return;  //動いていないときは口パクしない
+			return; //動いていないときは口パクしない
 		//口の角度を変更
 		mouthAngle += mouthOpening * 2;
-		
+
 		//角度制限(10度〜45度の間を往復させる)
 		if (mouthAngle <= 10)
-			mouthOpening = +1;  //閉じきったら次は開く方向へ
+			mouthOpening = +1; //閉じきったら次は開く方向へ
 		if (mouthAngle >= 45)
-			mouthOpening = -1;  //開ききったら次は閉じる方向へ
+			mouthOpening = -1; //開ききったら次は閉じる方向へ
 	}
 }
