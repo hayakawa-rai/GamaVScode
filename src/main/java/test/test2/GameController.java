@@ -43,71 +43,78 @@ public class GameController {
 		startLoop();
 	}
 	//ステージ画面に十字キーを追加する	スマホ用のメソッド
-	public static void applyMobileControls(javafx.scene.Scene gameScene, Object model) {
-		if (model == null) return;
+		public static void applyMobileControls(javafx.scene.Scene gameScene, Object model) {
+			if (model == null) return;
 
-		// 画面のルートコンテナを取得し、StackPaneで包み込む
-		javafx.scene.Parent root = gameScene.getRoot();
-		javafx.scene.layout.StackPane baseHolder;
-		if (root instanceof javafx.scene.layout.StackPane) {
-			baseHolder = (javafx.scene.layout.StackPane) root;
-		} else {
-			baseHolder = new javafx.scene.layout.StackPane();
-			gameScene.setRoot(baseHolder);
-			baseHolder.getChildren().add(root);
-		}
-
-		// 十字キー（GridPane）を作成
-		javafx.scene.layout.GridPane dPad = new javafx.scene.layout.GridPane();
-		dPad.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
-		dPad.setPadding(new javafx.geometry.Insets(0, 0, 40, 40));
-		dPad.setHgap(10);
-		dPad.setVgap(10);
-		dPad.setStyle("-fx-background-color: transparent;");
-
-		// ボタン作成とスタイル適用
-		javafx.scene.control.Button btnUp    = new javafx.scene.control.Button("▲");
-		javafx.scene.control.Button btnDown  = new javafx.scene.control.Button("▼");
-		javafx.scene.control.Button btnLeft  = new javafx.scene.control.Button("◀");
-		javafx.scene.control.Button btnRight = new javafx.scene.control.Button("▶");
-
-		String buttonStyle = "-fx-font-size: 24px; -fx-min-width: 60px; -fx-min-height: 60px; "
-				+ "-fx-background-radius: 30px; -fx-background-color: rgba(255, 255, 255, 0.4); -fx-text-fill: white;";
-		
-		btnUp.setStyle(buttonStyle); btnDown.setStyle(buttonStyle);
-		btnLeft.setStyle(buttonStyle); btnRight.setStyle(buttonStyle);
-
-		dPad.add(btnUp,    1, 0);
-		dPad.add(btnLeft,  0, 1);
-		dPad.add(btnRight, 2, 1);
-		dPad.add(btnDown,  1, 2);
-
-		// ★ リフレクションを使って、どのパッケージの MapData からでも安全にメソッドを呼び出す共通処理
-		java.util.function.Consumer<Characters.Direction> sendDirection = (dir) -> {
-			try {
-				// 一時停止中かチェック (isPaused メソッドを実行)
-				java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
-				boolean isPaused = (boolean) isPausedMethod.invoke(model);
-				
-				if (!isPaused) {
-					// 方向をセット (setNextDirection メソッドを実行)
-					java.lang.reflect.Method setDirMethod = model.getClass().getMethod("setNextDirection", Characters.Direction.class);
-					setDirMethod.invoke(model, dir);
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace(); // メソッド名が違ったりした場合のエラーログ
+			// 画面のルートコンテナを取得し、StackPaneで包み込む
+			javafx.scene.Parent root = gameScene.getRoot();
+			javafx.scene.layout.StackPane baseHolder;
+			if (root instanceof javafx.scene.layout.StackPane) {
+				baseHolder = (javafx.scene.layout.StackPane) root;
+			} else {
+				baseHolder = new javafx.scene.layout.StackPane();
+				gameScene.setRoot(baseHolder);
+				baseHolder.getChildren().add(root);
 			}
-		};
 
-		// タップイベント（上記の共通処理を呼び出す）
-		btnUp.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.UP));
-		btnDown.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.DOWN));
-		btnLeft.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.LEFT));
-		btnRight.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.RIGHT));
+			// 十字キー（GridPane）を作成
+			javafx.scene.layout.GridPane dPad = new javafx.scene.layout.GridPane();
+			dPad.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
+			dPad.setPadding(new javafx.geometry.Insets(0, 0, 40, 40));
+			dPad.setHgap(10);
+			dPad.setVgap(10);
+			dPad.setStyle("-fx-background-color: transparent;");
 
-		// 最前面のレイヤーとして十字キーを追加
-		baseHolder.getChildren().add(dPad);
-	}
+			// ボタン作成とスタイル適用
+			javafx.scene.control.Button btnUp    = new javafx.scene.control.Button("▲");
+			javafx.scene.control.Button btnDown  = new javafx.scene.control.Button("▼");
+			javafx.scene.control.Button btnLeft  = new javafx.scene.control.Button("◀");
+			javafx.scene.control.Button btnRight = new javafx.scene.control.Button("▶");
+
+			String buttonStyle = "-fx-font-size: 24px; -fx-min-width: 60px; -fx-min-height: 60px; "
+					+ "-fx-background-radius: 30px; -fx-background-color: rgba(255, 255, 255, 0.4); -fx-text-fill: white;";
+			
+			btnUp.setStyle(buttonStyle); btnDown.setStyle(buttonStyle);
+			btnLeft.setStyle(buttonStyle); btnRight.setStyle(buttonStyle);
+
+			// ★★★ 【王道の修正】 ★★★
+			// ボタンがキーボードの「フォーカス」を持つことを完全に禁止する（クリック・タップ専用化）
+			btnUp.setFocusTraversable(false);
+			btnDown.setFocusTraversable(false);
+			btnLeft.setFocusTraversable(false);
+			btnRight.setFocusTraversable(false);
+			
+			dPad.add(btnUp,    1, 0);
+			dPad.add(btnLeft,  0, 1);
+			dPad.add(btnRight, 2, 1);
+			dPad.add(btnDown,  1, 2);
+
+			// ★ リフレクションを使って、どのパッケージの MapData からでも安全にメソッドを呼び出す共通処理
+			java.util.function.Consumer<Characters.Direction> sendDirection = (dir) -> {
+				try {
+					// 一時停止中かチェック (isPaused メソッドを実行)
+					java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
+					boolean isPaused = (boolean) isPausedMethod.invoke(model);
+					
+					if (!isPaused) {
+						// 方向をセット (setNextDirection メソッドを実行)
+						java.lang.reflect.Method setDirMethod = model.getClass().getMethod("setNextDirection", Characters.Direction.class);
+						setDirMethod.invoke(model, dir);
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace(); // メソッド名が違ったりした場合のエラーログ
+				}
+			};
+
+			// タップイベント（上記の共通処理を呼び出す）
+			btnUp.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.UP));
+			btnDown.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.DOWN));
+			btnLeft.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.LEFT));
+			btnRight.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.RIGHT));
+
+			// 最前面のレイヤーとして十字キーを追加
+			baseHolder.getChildren().add(dPad);
+		}
 	
 	// === 画面遷移用のメソッド群 ===
 	
