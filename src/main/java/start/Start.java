@@ -43,6 +43,29 @@ public class Start extends Application {
 	//javafxのApplicationにもともとあるstartを上書き
 	@Override
 	public void start(Stage stage) {
+		
+		// startメソッドの最初の方に配置
+		try {
+		    // 1. ファイルをストリームとして読み込む
+		    var fontStream = getClass().getResourceAsStream("/font/PixelMplus12-Regular.ttf");
+		    
+		    if (fontStream == null) {
+		        // コンソールにこの警告が出たら、フォントファイルの場所（パス）が間違っています
+		        System.err.println("【警告】フォントファイルが見つかりません。パスを確認してください。");
+		    } else {
+		        // 2. JavaFXにフォントを登録
+		        Font loadedFont = Font.loadFont(fontStream, 20);
+		        
+		        if (loadedFont == null) {
+		            System.err.println("【警告】フォントファイルの読み込みに失敗しました（ファイルが壊れているか形式が違います）");
+		        } else {
+		            // 成功した場合、JavaFXが認識した正確な「フォント名」をコンソールに出します
+		            System.out.println("【成功】フォントを読み込みました。名前: " + loadedFont.getName());
+		        }
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
 
 		// ★2. 画面を作る前にレトロフォントファイルを読み込む
 		// 他のリソース（pictureやmusic）と同じ並びの「font」フォルダに置くのがオススメです
