@@ -59,13 +59,6 @@ sample\gameover.class
 test\SampleMainApp.class
 test2\controller\GameController$1.class
 test3\view\MapView.class
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-META-INF\maven\sample\Game\pom.properties
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
-=======
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 test\SamplepracticeApp.class
 Items\Point.class
 test\Direction$1.class
