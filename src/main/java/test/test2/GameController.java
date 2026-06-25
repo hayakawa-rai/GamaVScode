@@ -64,7 +64,8 @@ public class GameController {
 		javafx.scene.control.Button btnDown  = new javafx.scene.control.Button("▼");
 		javafx.scene.control.Button btnLeft  = new javafx.scene.control.Button("◀");
 		javafx.scene.control.Button btnRight = new javafx.scene.control.Button("▶");
-
+		//-fx-font-size　矢印の大きさ（▲▼◀▶）　-fx-min-width　、-fx-min-height　	ボタンの横幅縦幅
+		//-fx-background-radius	円を保つためにボタンの半径
 		String buttonStyle = "-fx-font-size: 24px; -fx-min-width: 60px; -fx-min-height: 60px; "
 				+ "-fx-background-radius: 30px; -fx-background-color: rgba(255, 255, 255, 0.4); -fx-text-fill: white;";
 		
