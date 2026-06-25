@@ -33,7 +33,6 @@ public class TestMainapp extends Application {
         Canvas canvas = new Canvas(viewWidth, viewHeight);
         root.getChildren().add(canvas);
         
-        model.initEnemy(null);
       /*コメントで隠してるのが前の描写方法  
         // 先に空の ImageView を用意
         javafx.scene.image.ImageView redImageView = new javafx.scene.image.ImageView();
@@ -54,6 +53,8 @@ public class TestMainapp extends Application {
         //  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
         this.controller = new GameController(model, view, canvas, scene);
 
+        test.test2.GameController.applyMobileControls(scene, model);
+        
         stage.setTitle("JavaFX Pacman Stage MVC");
         stage.setScene(scene);
         stage.show();
