@@ -303,11 +303,11 @@ public class Story1 extends Application{
         scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
         
         StackPane menuOverlay = new StackPane();
-
+        
         // 背景（うっすら暗く）
         menuOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
      	menuOverlay.setVisible(false);
-
+     	menuOverlay.setPickOnBounds(true); 
      	// 中央のかわいいパネル
      	VBox menuBox = new VBox(20);
      	menuBox.setAlignment(Pos.CENTER);
@@ -414,7 +414,7 @@ public class Story1 extends Application{
         stage.setMinWidth(800);
         stage.setMinHeight(600);
         
-        //メニュー画面表示処理
+      //メニュー表示処理
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
 
@@ -435,6 +435,7 @@ public class Story1 extends Application{
             if (blink != null) blink.pause();
             if (arrowMove != null) arrowMove.pause();
         });
+        
         
         //文字表示用のタイマーを作成、50ミリ秒ごとに処理
         timeline = new Timeline(
@@ -486,7 +487,13 @@ public class Story1 extends Application{
         
         //クリックされたときの処理
         scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
-        	
+
+        	if (menuOverlay.isVisible()) {
+        		if (e.getTarget() == menuBtn) return;
+        		e.consume();
+        		return;
+        	}
+
         	//文字表示中ならスキップして全文表示する処理
         	if(isTyping) {
         		//タイピング停止

@@ -345,7 +345,7 @@ public class Story4 extends Application{
         // 背景（うっすら暗く）
         menuOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
      	menuOverlay.setVisible(false);
-
+     	menuOverlay.setPickOnBounds(true); 
      	// 中央のかわいいパネル
      	VBox menuBox = new VBox(20);
      	menuBox.setAlignment(Pos.CENTER);
@@ -544,7 +544,11 @@ public class Story4 extends Application{
         
         //クリックされたときの処理
         scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
-        	
+        	if (menuOverlay.isVisible()) {
+        		if (e.getTarget() == menuBtn) return;
+        		e.consume();
+        		return;
+        	}
         	//文字表示中ならスキップして全文表示する処理
         	if(isTyping) {
         		//タイピング停止
