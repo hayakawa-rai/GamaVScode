@@ -50,7 +50,7 @@ public class SampleMainApp extends Application {
         root.getChildren().add(redImageView);
         
         //  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
-        this.controller = new GameController(model, view, canvas, scene);
+        this.controller = new GameController(model, view, canvas, scene, stage);
 
         stage.setTitle("JavaFX Pacman Stage MVC");
         stage.setScene(scene);

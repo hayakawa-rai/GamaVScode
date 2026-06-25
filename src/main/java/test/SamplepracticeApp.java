@@ -48,7 +48,7 @@ public class SamplepracticeApp extends Application {
         // コントローラーを起動（ゲームループ開始
 
 		// GameController を起動
-		new GameController(model, view, canvas, scene);
+		new GameController(model, view, canvas, scene, stage);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);

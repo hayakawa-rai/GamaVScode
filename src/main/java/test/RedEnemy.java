@@ -27,25 +27,28 @@ public class RedEnemy extends Enemy {
 		// FEVER画像をステージごとに読み込む
 		loadFeverImage();
 
+		// DEAD画像を読み込む
+		loadDeadImage();
+
 		// 現在のステージ番号によって、読み込む画像を切り替える
 		String imagePath = "/picture/narita_EnemyRed.png"; // デフォルト（ステージ1用）
-		
+
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
-				case 1:
-					imagePath = "/picture/narita_EnemyRed.png"; // ステージ1の画像
-					break;
-				case 2:
-					imagePath = "/picture/wada_EnemyRed.png";        // ステージ2の画像
-					break;
-				case 3:
-					imagePath = "/picture/hayakawa_EnemyRed.png";         // ステージ3の画像
-					break;
-				default:
-					break;
+			case 1:
+				imagePath = "/picture/narita_EnemyRed.png"; // ステージ1の画像
+				break;
+			case 2:
+				imagePath = "/picture/wada_EnemyRed.png"; // ステージ2の画像
+				break;
+			case 3:
+				imagePath = "/picture/hayakawa_EnemyRed.png"; // ステージ3の画像
+				break;
+			default:
+				break;
 			}
 		}
-		
+
 		// 画像の読み込み処理
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(imagePath);

@@ -246,6 +246,52 @@ public abstract class Enemy extends Character {
 		}
 	}
 
+	// DEAD状態で使用する画像をステージごとに読み込む
+	protected void loadDeadImage() {
+
+		// デフォルトはステージ1
+		String deadPath = "/picture/narita_EnemyDead.png";
+
+		// 現在のステージ番号に応じて画像を切り替える
+		if (mapData != null) {
+
+			switch (mapData.getStageNumber()) {
+
+			case 1:
+				deadPath = "/picture/narita_EnemyDead.png";
+				break;
+
+			case 2:
+				deadPath = "/picture/wada_EnemyyDead.png";
+				break;
+
+			case 3:
+				deadPath = "/picture/hayakawa_EnemyyDead.png";
+				break;
+			}
+		}
+
+		try {
+
+			// リソースからDEAD画像を読み込む
+			java.io.InputStream is = getClass().getResourceAsStream(deadPath);
+
+			if (is != null) {
+
+				deadImage = new javafx.scene.image.Image(is);
+
+				System.out.println("⭕ DEAD画像読込成功: " + deadPath);
+
+			} else {
+
+				System.err.println("❌ DEAD画像が見つかりません: " + deadPath);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public javafx.scene.image.Image getEnemyImage() {
 
 		if (currentState == Characters.EnemyState.DEAD) {

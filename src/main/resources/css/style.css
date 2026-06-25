@@ -1,60 +1,73 @@
+@font-face {
+    font-family: "PixelMplus12";
+    src: url('../font/PixelMplus12-Regular.ttf');
+}
+
 /* ゲームボタン青ver */
 .game-button {
-    -fx-font-size:30px;
 
-    -fx-background-color: linear-gradient(rgb(126, 193, 254), rgb(68, 245, 255));
-    -fx-text-fill: rgb(0, 0, 0);
+	/* レトロフォントを指定 */
+	-fx-font-family: "PixelMplus12";
 
-    -fx-border-color: rgb(52, 153, 220);
-    -fx-border-width: 3;
+	-fx-font-size: 30px;
 
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
+	-fx-background-color: linear-gradient(rgb(126, 193, 254), rgb(68, 245, 255));
+	-fx-text-fill: rgb(0, 0, 0);
 
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 3);
-    -fx-padding: 10 20;
+	-fx-border-color: rgb(52, 153, 220);
+	-fx-border-width: 3;
+
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0, 0, 3);
+	-fx-padding: 12 20;
 }
 
 /* ホバー */
 .game-button:hover {
-    -fx-background-color: linear-gradient(#6ec6ff, #00c3ff);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+	-fx-background-color: linear-gradient(#6ec6ff, #00c3ff);
+	-fx-scale-x: 1.05;
+	-fx-scale-y: 1.05;
 }
 
 /* 押す */
 .game-button:pressed {
-    -fx-background-color: linear-gradient(#007ad9, #00a1d6);
-    -fx-scale-x: 0.95;
-    -fx-scale-y: 0.95;
+	-fx-background-color: linear-gradient(#007ad9, #00a1d6);
+	-fx-scale-x: 0.95;
+	-fx-scale-y: 0.95;
 }
 
 /*ゲームボタン黒ver*/
 .game-button2 {
-    -fx-font-size: 20px;
+	-fx-font-family: "PixelMplus12";
+	-fx-font-size: 16px;
 
-    -fx-background-color: linear-gradient(rgb(0, 0, 0), rgb(171, 166, 181));
-    -fx-text-fill: rgb(255, 255, 255);
+	-fx-font-size: 20px;
 
-    -fx-border-color: rgb(128, 128, 128);
-    -fx-border-width: 3;
+	-fx-background-color: linear-gradient(rgb(0, 0, 0), rgb(171, 166, 181));
+	-fx-text-fill: rgb(255, 255, 255);
 
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
+	-fx-border-color: rgb(128, 128, 128);
+	-fx-border-width: 3;
 
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 3);
-    -fx-padding: 10 20;
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0, 0, 3);
+	-fx-padding: 10 20;
 }
+
 /* ホバー */
 .game-button2:hover {
-    -fx-background-color: linear-gradient(rgb(128, 128, 128), rgb(192, 192, 192));
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+	-fx-background-color: linear-gradient(rgb(128, 128, 128), rgb(192, 192, 192));
+	-fx-scale-x: 1.05;
+	-fx-scale-y: 1.05;
 }
 
 /* 押す */
 .game-button2:pressed {
-    -fx-background-color: linear-gradient(rgb(95, 95, 95), rgb(128, 128, 128));
-    -fx-scale-x: 0.95;
-    -fx-scale-y: 0.95;
+	-fx-background-color: linear-gradient(rgb(95, 95, 95), rgb(128, 128, 128));
+	-fx-scale-x: 0.95;
+	-fx-scale-y: 0.95;
 }
