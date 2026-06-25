@@ -1,4 +1,4 @@
-package stage2;
+package sample.stage2;
 /*
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;

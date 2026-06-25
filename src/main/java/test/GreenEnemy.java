@@ -29,7 +29,7 @@ public class GreenEnemy extends Enemy {
 
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
-		
+
 		this.mapData = mapData;
 		
 		// 現在のステージ番号によって、読み込む画像を切り替える
@@ -79,7 +79,7 @@ public class GreenEnemy extends Enemy {
 		return normalImage;
 	}
 
-	//20秒経過後に出撃
+	// 20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
 		if (!released) {
@@ -89,15 +89,14 @@ public class GreenEnemy extends Enemy {
 			if (elapsed < 20000) {
 				return;
 			}
-			
 			// 出撃
 			released = true;
 		}
 		super.move(map);
 	}
 
-	// 遠い → 追跡 
-	//　近い → 左下の縄張りへ戻る
+	// 遠い → 追跡
+	// 近い → 左下の縄張りへ戻る
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
 
@@ -111,6 +110,13 @@ public class GreenEnemy extends Enemy {
 
 		int targetCol = (int) (pacX / MapData.TILE_SIZE);
 		int targetRow = (int) (pacY / MapData.TILE_SIZE);
+
+		// 共通処理
+		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
+
+		if (special != null) {
+			return special;
+		}
 
 		// 自分の位置
 		int myCol = (int) (this.x / MapData.TILE_SIZE);

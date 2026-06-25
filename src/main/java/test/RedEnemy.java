@@ -12,16 +12,15 @@ public class RedEnemy extends Enemy {
 	private static final int START_COL = 13;
 	private static final int START_ROW = 12;
 
-    // 縄張りエリアの中心（右上）(仮)
-    private static final int TERRITORY_COL = 24;
-    private static final int TERRITORY_ROW = 3;
-    
-	//引数を MapData に一本化し、正しいコンストラクタの形に直した
+	// 縄張りエリアの中心（右上）(仮)
+	private static final int TERRITORY_COL = 24;
+	private static final int TERRITORY_ROW = 3;
+
+	// 引数を MapData に一本化し、正しいコンストラクタの形に直した
 	public RedEnemy(MapData sampleModel) {
-		 // マスの中心座標で生成
+		// マスの中心座標で生成
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-		      START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-		      1); // スピードは 2
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1); // スピードは 2
 
 		this.mapData = sampleModel; // 親クラスのフィールドに代入して保持
 
@@ -60,25 +59,35 @@ public class RedEnemy extends Enemy {
 
 	// MapView から現在の画像を取り出すためのゲッター
 	public Image getEnemyImage() {
-		if (this.currentState == Characters.EnemyState.DEAD) return deadImage;
-		if (this.currentState == Characters.EnemyState.FEVER) return feverImage;
+		if (this.currentState == Characters.EnemyState.DEAD)
+			return deadImage;
+		if (this.currentState == Characters.EnemyState.FEVER)
+			return feverImage;
 		return normalImage;
 	}
 
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
 		// 安全対策: 進める方向がない場合は NONE、または最初の方向を返す
-		if (mapData == null || validDirections.isEmpty()) return Direction.NONE;
+		if (mapData == null || validDirections.isEmpty())
+			return Direction.NONE;
 
 		// キーボード操作で動いている本物のパックマン座標(px)をMapDataから取得
-        double pacX = mapData.getPacX() + MapData.TILE_SIZE / 2.0;
-        double pacY = mapData.getPacY() + MapData.TILE_SIZE / 2.0;
+		double pacX = mapData.getPacX() + MapData.TILE_SIZE / 2.0;
+		double pacY = mapData.getPacY() + MapData.TILE_SIZE / 2.0;
 
 		// ピクセル座標から、AIが目指すべき「ターゲットのマス」を算出
 		int targetCol = (int) (pacX / MapData.TILE_SIZE);
 		int targetRow = (int) (pacY / MapData.TILE_SIZE);
 
-		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、次の一歩を決める
+		// 共通処理
+		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
+
+		if (special != null) {
+			return special;
+		}
+
+		// 赤専用AI(最短追尾)
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 }

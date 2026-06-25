@@ -20,14 +20,15 @@ public class MapData {
 
 	// 0: 道, 1: 壁, 2: パワーエサ, 9: ワープ
 	private final int[][] map = {
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 2, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 2, 0, 0, 0, 1 },
 			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 },
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 },
-			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 },
+			{ 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0 },
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 },
 			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 },
 			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 },
 			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 },
@@ -43,29 +44,30 @@ public class MapData {
 			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 },
 			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 },
 			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 },
-			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 },
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 },
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 },
+			{ 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0 },
 			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-	};
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+
 
 	private Item[][] itemMap;
+	private Sengoku sengoku;
+
+	// 敵のリスト管理
+	private final List<Enemy> enemies = new ArrayList<>();
+	private boolean paused = false;
+
 	// 初期アイテム配置（エサ復活用）
 	private Item[][] initialItemMap;
 	// エサ復活を有効にするか？
-	private boolean enableRespawn; 
-	private Sengoku sengoku;
-	//敵のリスト管理
-	private final List<Enemy> enemies = new ArrayList<>();
+	private boolean enableRespawn;
 
-	private boolean paused = false;
-	
 	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
-	private int stageNumber = 1; 
+	private int stageNumber = 1;
 
 	// 口パク
 	private double mouthAngle = 45;
@@ -77,12 +79,15 @@ public class MapData {
 	private int lastWarpX = -1;
 	private int lastWarpY = -1;
 
-	//booleanを受け取る新しいコンストラクターを追加
+	// FEVER終了時刻
+	private long feverEndTime = 0;
+
+	// booleanを受け取る新しいコンストラクターを追加
 	public MapData(boolean paused) {
 		this(); // 上にある引数なしのコンストラクターを呼び出して初期化を行う
 		this.paused = paused; // 受け取った値をpausedフィールドにセットする
 	}
-	
+
 	public void SampleModel(boolean enableRespawn) {
 		this.enableRespawn = enableRespawn; // これで練習/ストーリーを切り替えられる（エサ復活用）
 		this.sengoku = new Sengoku(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
@@ -99,14 +104,14 @@ public class MapData {
 				}
 			}
 		}
-	    // エサ復活が有効なときだけ初期状態を保存（エサ復活用）
-	    if (enableRespawn) {
-	        this.initialItemMap = copyItemMap(itemMap);
-	    } else {
-	        this.initialItemMap = null;
-	    }
+		// エサ復活が有効なときだけ初期状態を保存（エサ復活用）
+		if (enableRespawn) {
+			this.initialItemMap = copyItemMap(itemMap);
+		} else {
+			this.initialItemMap = null;
+		}
 	}
-	
+
 	// --- itemMap をコピーする ---（エサ復活用）
 	private Item[][] copyItemMap(Item[][] src) {
 		Item[][] dst = new Item[src.length][src[0].length];
@@ -134,12 +139,12 @@ public class MapData {
 			}
 		}
 		initEnemy(null);
-		
-	    this.enableRespawn = true; 
-	    this.initialItemMap = copyItemMap(itemMap);
+
+		this.enableRespawn = true;
+		this.initialItemMap = copyItemMap(itemMap);
 	}
 
-	//コード追加　成田
+	// コード追加 成田
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
 		// ⭕ リストを一度クリアして、敵をどんどん追加する
 		enemies.clear();
@@ -160,24 +165,40 @@ public class MapData {
 		paused = !paused;
 	}
 
-	//ゲーム全体の定期更新
+	// ゲーム全体の定期更新
 
 	public void update() {
 		if (paused)
 			return;
 
-		//パックマンの移動処理
+		// パックマンの移動処理
 		updatePacman();
-		
-		//敵キャラが存在すれば移動ロジックを実行
+
+		// FEVER終了判定
+		if (feverEndTime > 0 && System.currentTimeMillis() >= feverEndTime) {
+
+			feverEndTime = 0;
+
+			for (Enemy e : enemies) {
+
+				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
+
+					e.setCurrentState(Characters.EnemyState.SCATTER);
+				}
+			}
+
+			System.out.println("FEVER終了");
+		}
+
+		// 敵キャラが存在すれば移動ロジックを実行
 		for (Enemy e : enemies) {
 			e.move(map);
 		}
 
-		//口パクの更新
+		// 口パクの更新
 		updateMouth();
 
-		//パックマンと敵の当たり判定を毎フレーム確認
+		// パックマンと敵の当たり判定を毎フレーム確認
 		checkCollision();
 	}
 
@@ -246,38 +267,57 @@ public class MapData {
 		int currentTileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		if (currentTileY >= 0 && currentTileY < map.length && currentTileX >= 0 && currentTileX < map[0].length) {
+
 			Item item = itemMap[currentTileY][currentTileX];
+
 			if (item != null) {
+
 				item.onEaten(sengoku);
+
+				// パワーエサ(2)を食べたらFEVER
+				if (map[currentTileY][currentTileX] == 2) {
+
+					System.out.println("FEVER開始！");
+
+					// ←毎回7秒にリセット
+					feverEndTime = System.currentTimeMillis() + 7000;
+
+					for (Enemy e : enemies) {
+						if (e.getCurrentState() != Characters.EnemyState.DEAD) {
+							e.setCurrentState(Characters.EnemyState.FEVER);
+						}
+					}
+				}
 				itemMap[currentTileY][currentTileX] = null;
 			}
 		}
 		// 全部食べたかチェック（エサ復活用）
 		checkAllEaten();
 	}
-	
+
 	// --- 全部食べたかチェック ---（エサ復活用）
-			private void checkAllEaten() {
-				if (!enableRespawn) return;  // ← ストーリーでは復活しない
-				
-				for (int r = 0; r < itemMap.length; r++) {
-					for (int c = 0; c < itemMap[0].length; c++) {
-						if (itemMap[r][c] != null)
-							return; // まだ残っている
-					}
-				}
-				// 全部食べた → 復活（エサ復活用）
-				resetItems();
-			}
+	private void checkAllEaten() {
+		if (!enableRespawn)
+			return; // ← ストーリーでは復活しない
 
-			// --- エサ復活 ---（エサ復活用）
-			private void resetItems() {
-				if (!enableRespawn || initialItemMap == null) return;
-				
-				this.itemMap = copyItemMap(this.initialItemMap);
-				System.out.println("ステージクリア！エサが復活しました！");
+		for (int r = 0; r < itemMap.length; r++) {
+			for (int c = 0; c < itemMap[0].length; c++) {
+				if (itemMap[r][c] != null)
+					return; // まだ残っている
 			}
+		}
+		// 全部食べた → 復活（エサ復活用）
+		resetItems();
+	}
 
+	// --- エサ復活 ---（エサ復活用）
+	private void resetItems() {
+		if (!enableRespawn || initialItemMap == null)
+			return;
+
+		this.itemMap = copyItemMap(this.initialItemMap);
+		System.out.println("ステージクリア！エサが復活しました！");
+	}
 
 	public void updateMouth() {
 		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Direction.NONE)
@@ -294,24 +334,43 @@ public class MapData {
 		sengoku.setnextdirection(dir);
 	}
 
-	//敵との当たり判定
+	// 敵との当たり判定
 
 	private void checkCollision() {
+
 		if (!sengoku.isAlive())
 			return;
 
 		double pacCenterX = sengoku.getX() + TILE_SIZE / 2.0;
+
 		double pacCenterY = sengoku.getY() + TILE_SIZE / 2.0;
+
 		double collisionThreshold = TILE_SIZE * 0.8;
 
-		// ⭕ ループ処理でリスト内のどの敵に捕まったかを一斉に判定
 		for (Enemy e : enemies) {
+
+			if (e.getCurrentState() == Characters.EnemyState.DEAD) {
+				continue;
+			}
+
 			double dx = pacCenterX - e.getX();
 			double dy = pacCenterY - e.getY();
+
 			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
-				String enemyName = (e instanceof RedEnemy) ? "赤敵" : "緑敵";
-				System.out.println("💥 " + enemyName + "に捕まった！ゲームオーバー！");
-				this.paused = true;
+
+				// FEVER中の敵は食べられる
+				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
+
+					e.setCurrentState(Characters.EnemyState.DEAD);
+					continue;
+				}
+
+				if (e.getCurrentState() == Characters.EnemyState.DEAD) {
+					continue;
+				}
+				// 通常時はゲームオーバー
+				System.out.println("💥敵に捕まった！ゲームオーバー！");
+				paused = true;
 				return;
 			}
 		}
@@ -339,15 +398,24 @@ public class MapData {
 	}
 
 	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
-		public Enemy getEnemy() { return enemies.isEmpty() ? null : enemies.get(0); }
+	public Enemy getEnemy() {
+		return enemies.isEmpty() ? null : enemies.get(0);
+	}
 
-		// ⭕ MapViewでループ描画するためのリストゲッター
-		public List<Enemy> getEnemies() { return enemies; }
+	// ⭕ MapViewでループ描画するためのリストゲッター
+	public List<Enemy> getEnemies() {
+		return enemies;
+	}
 
-		public double getPacX1() { return sengoku != null ? sengoku.getX() : 0; }
-		public double getPacY1() { return sengoku != null ? sengoku.getY() : 0; }
+	public double getPacX1() {
+		return sengoku != null ? sengoku.getX() : 0;
+	}
 
-	//追加項目
+	public double getPacY1() {
+		return sengoku != null ? sengoku.getY() : 0;
+	}
+
+	// 追加項目
 	public double getPacX() {
 		return sengoku != null ? sengoku.getX() : 0;
 	}
@@ -355,7 +423,7 @@ public class MapData {
 	public double getPacY() {
 		return sengoku != null ? sengoku.getY() : 0;
 	}
-	
+
 	// ⭕ 敵クラスから現在のステージ番号を確認できるようにする
 	public int getStageNumber() {
 		return stageNumber;
