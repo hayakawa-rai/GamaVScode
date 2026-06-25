@@ -7,7 +7,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import start.Start;
+import story.Gameover;
 import story.Practice;
+import story.Stageclear2;
 import story.Story1;
 import story.Story2;
 import story.Story3;
@@ -23,12 +25,16 @@ public class GameController {
 	private final MapView view;    // 描画処理
 	private final Canvas canvas;   // 描画先キャンバス
 	private AnimationTimer timer;  // ゲームループ(毎フレーム実行)
+	
+	// 画面遷移のためにStageを保持する変数
+		private final javafx.stage.Stage stage;
 
 	// ゲームコントローラーの初期化と同時にゲームをスタートする
-	public GameController(MapData model, MapView view, Canvas canvas, Scene scene) {
+	public GameController(MapData model, MapView view, Canvas canvas, Scene scene, javafx.stage.Stage stage) {
 		this.model = model;
 		this.view = view;
 		this.canvas = canvas;
+		this.stage = stage;
 
 		// キーボードの入力を登録
 		attachInput(scene);
@@ -37,18 +43,18 @@ public class GameController {
 		startLoop();
 	}
 	//ステージ画面に十字キーを追加する	スマホ用のメソッド
-	public static void applyMobileControls(javafx.scene.Scene gameScene, MapData model) {
-		// 画面のルートコンテナを取得
+	public static void applyMobileControls(javafx.scene.Scene gameScene, Object model) {
+		if (model == null) return;
+
+		// 画面のルートコンテナを取得し、StackPaneで包み込む
 		javafx.scene.Parent root = gameScene.getRoot();
-		
-		// もしルートが StackPane でない場合、強制的に StackPane で包み込んで重ねられるようにする
 		javafx.scene.layout.StackPane baseHolder;
 		if (root instanceof javafx.scene.layout.StackPane) {
 			baseHolder = (javafx.scene.layout.StackPane) root;
 		} else {
 			baseHolder = new javafx.scene.layout.StackPane();
 			gameScene.setRoot(baseHolder);
-			baseHolder.getChildren().add(root); // 既存の画面（マップなど）を後ろに配置
+			baseHolder.getChildren().add(root);
 		}
 
 		// 十字キー（GridPane）を作成
@@ -64,8 +70,7 @@ public class GameController {
 		javafx.scene.control.Button btnDown  = new javafx.scene.control.Button("▼");
 		javafx.scene.control.Button btnLeft  = new javafx.scene.control.Button("◀");
 		javafx.scene.control.Button btnRight = new javafx.scene.control.Button("▶");
-		//-fx-font-size　矢印の大きさ（▲▼◀▶）　-fx-min-width　、-fx-min-height　	ボタンの横幅縦幅
-		//-fx-background-radius	円を保つためにボタンの半径
+
 		String buttonStyle = "-fx-font-size: 24px; -fx-min-width: 60px; -fx-min-height: 60px; "
 				+ "-fx-background-radius: 30px; -fx-background-color: rgba(255, 255, 255, 0.4); -fx-text-fill: white;";
 		
@@ -77,11 +82,28 @@ public class GameController {
 		dPad.add(btnRight, 2, 1);
 		dPad.add(btnDown,  1, 2);
 
-		// タップイベント
-		btnUp.setOnMousePressed(e -> { if (!model.isPaused()) model.setNextDirection(Direction.UP); });
-		btnDown.setOnMousePressed(e -> { if (!model.isPaused()) model.setNextDirection(Direction.DOWN); });
-		btnLeft.setOnMousePressed(e -> { if (!model.isPaused()) model.setNextDirection(Direction.LEFT); });
-		btnRight.setOnMousePressed(e -> { if (!model.isPaused()) model.setNextDirection(Direction.RIGHT); });
+		// ★ リフレクションを使って、どのパッケージの MapData からでも安全にメソッドを呼び出す共通処理
+		java.util.function.Consumer<Characters.Direction> sendDirection = (dir) -> {
+			try {
+				// 一時停止中かチェック (isPaused メソッドを実行)
+				java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
+				boolean isPaused = (boolean) isPausedMethod.invoke(model);
+				
+				if (!isPaused) {
+					// 方向をセット (setNextDirection メソッドを実行)
+					java.lang.reflect.Method setDirMethod = model.getClass().getMethod("setNextDirection", Characters.Direction.class);
+					setDirMethod.invoke(model, dir);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace(); // メソッド名が違ったりした場合のエラーログ
+			}
+		};
+
+		// タップイベント（上記の共通処理を呼び出す）
+		btnUp.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.UP));
+		btnDown.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.DOWN));
+		btnLeft.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.LEFT));
+		btnRight.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.RIGHT));
 
 		// 最前面のレイヤーとして十字キーを追加
 		baseHolder.getChildren().add(dPad);
@@ -148,12 +170,38 @@ public class GameController {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
 		timer = new AnimationTimer() {
+			
 			@Override
 			public void handle(long now) {
 				if (model.isPaused()) return;
 
 				// ゲーム状態の更新
 				model.update();
+				
+				// ★追加：敵に捕まった（ゲームオーバー）かチェック
+				// ※model側に isGameOver() という判定メソッドがある前提です
+				if (model.isGameOver()) {
+					stop(); // ゲームループ（タイマー）を止める
+					System.out.println("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
+					
+					switchToGameover(stage); // ゲームオーバー画面へ遷移
+					return; // これ以降の処理はスキップ
+				}
+				
+				// すべてのドットを食べ終えたかチェック
+				if (model.isCleared()) {
+					stop(); // ゲームループ（タイマー）を止める
+					System.out.println("ステージクリア！次の画面へ遷移します。");
+					
+					// クリア画面（Stageclear2）に遷移させる
+					switchToStageclear2(stage); 
+					
+					// もし直接ステージ2のゲーム画面にいかせたい場合はこちら↓
+					// switchToGame2(stage);
+					
+					return; // クリアしたのでこれ以降の描画処理はスキップ
+					
+				}	
 				
 				// 画面描写（ステージ背景とパックマンの描画を分離して実行）
 				//Canvasの現在のリアルタイムな横幅・縦幅を取得してビューに渡す
@@ -165,7 +213,7 @@ public class GameController {
 			}
 		};
 
-		// タイマーを始動し、パックマンの世界を動かす
+		// タイマーを始動
 		timer.start();
 	}
 
@@ -174,6 +222,26 @@ public class GameController {
 		if (timer != null)
 			timer.stop();
 	}
+	
+	// Stageclear2画面へ変更するためのメソッド
+		public static void switchToStageclear2(javafx.stage.Stage stage) {
+			try {
+				Stageclear2 App = new Stageclear2();
+				App.start(stage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// ★追加：Gameover画面へ変更するためのメソッド
+		public static void switchToGameover(javafx.stage.Stage stage) {
+			try {
+				Gameover App = new Gameover();
+				App.start(stage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	
 	//画面変更Main1へ
 	public static void switchToGame1(javafx.stage.Stage stage) {

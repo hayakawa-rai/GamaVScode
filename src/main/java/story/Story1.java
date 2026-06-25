@@ -115,7 +115,8 @@ public class Story1 extends Application{
 
         // クリックイベント解除
         if (scene != null) {
-            scene.setOnMouseClicked(null);   
+
+            scene.setOnMouseClicked(null);   // 念のためt
         }
     }
     

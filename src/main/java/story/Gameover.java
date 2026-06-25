@@ -39,8 +39,17 @@ public class Gameover extends Application {
 		titleBox.setStyle("-fx-padding: 150px 0 40px 0;");
 
 		//いらすとや
-		Image img = new Image(Gameover.class.getResource("/irasutoya(gameover).png").toExternalForm());
-		ImageView icon = new ImageView(img);
+		ImageView icon = new ImageView();
+		try {
+			java.net.URL imgUrl = Gameover.class.getResource("/picture/irasutoya(gameover).png");
+			if (imgUrl != null) {
+				icon.setImage(new Image(imgUrl.toExternalForm()));
+			} else {
+				System.out.println("⚠️ 警告: /irasutoya(gameover).png が見つかりません。画像の表示をスキップします。");
+			}
+		} catch (Exception e) {
+			System.out.println("⚠️ 画像の読み込みに失敗しました。");
+		}
 		icon.setFitWidth(200);
 		icon.setFitHeight(200);
 
@@ -87,8 +96,17 @@ public class Gameover extends Application {
 		StackPane root = new StackPane();
 
 		//背景
-		Image bgImage = new Image(Gameover.class.getResource("/picture/gameover.jpg").toExternalForm());
-		ImageView bg = new ImageView(bgImage);
+		ImageView bg = new ImageView();
+		try {
+			java.net.URL bgUrl = Gameover.class.getResource("/picture/gameover.jpg");
+			if (bgUrl != null) {
+				bg.setImage(new Image(bgUrl.toExternalForm()));
+			} else {
+				System.out.println("⚠️ 警告: /picture/gameover.jpg が見つかりません。背景の表示をスキップします。");
+			}
+		} catch (Exception e) {
+			System.out.println("⚠️ 背景画像の読み込みに失敗しました。");
+		}
 		bg.setPreserveRatio(false);
 
 		// 白い透明レイヤー（背景を柔らかくする）
