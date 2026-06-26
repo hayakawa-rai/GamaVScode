@@ -107,6 +107,7 @@ public class MapData {
 		this.enableRespawn = enableRespawn; // これで練習/ストーリーを切り替えられる（エサ復活用）
 		this.sengoku = new Sengoku(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
+		this.remainingItems = 0;
 
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[0].length; col++) {
@@ -115,8 +116,10 @@ public class MapData {
 
 				if (map[row][col] == 0) {
 					itemMap[row][col] = new Point(pixelX, pixelY);
+					this.remainingItems++;
 				} else if (map[row][col] == 2) {
 					itemMap[row][col] = new Chii(pixelX, pixelY);
+					this.remainingItems++;
 				}
 			}
 		}
@@ -143,7 +146,7 @@ public class MapData {
 	public MapData() {
 		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
-
+		
 		for (int row = 0; row < map.length; row++) {
 
 			for (int col = 0; col < map[0].length; col++) {
@@ -353,15 +356,24 @@ public class MapData {
 							e.setCurrentState(Characters.EnemyState.FEVER);
 						}
 					}
-				}
 
-				itemMap[currentTileY][currentTileX] = null;
-				remainingItems--; // ★1個食べたのでカウントを減らす
-				System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
-			}
-		}
-		// 全部食べたかチェック（エサ復活用）
-		checkAllEaten();
+					// ★パワーエサを食べたので50点加算（メソッド名はSengokuクラスに合わせてね）
+					sengoku.addScore(50);
+				} else {
+					// ★普通のドットを食べたので10点加算
+					sengoku.addScore(10);
+				}
+			
+
+			itemMap[currentTileY][currentTileX] = null;
+			remainingItems--; // ★1個食べたのでカウントを減らす
+			System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
+		    }
+	 }
+
+	// 全部食べたかチェック（エサ復活用）
+	checkAllEaten();
+
 	}
 
 	// --- 全部食べたかチェック ---（エサ復活用）
@@ -487,6 +499,9 @@ public class MapData {
 	public boolean isPaused() {
 		return paused;
 	}
+
+	
+	
 
 	// --- getters ---
 	public int[][] getMap() {
