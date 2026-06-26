@@ -145,7 +145,7 @@ public class SampleModel {
 				int warpX = tileX;
 				int warpY = tileY;
 
-				test.Direction currentDir = sengoku.getDirection();
+				Direction currentDir = sengoku.getDirection();
 				// 横方向のワープ
 				if (currentDir != Direction.NONE) {
 					if (currentDir.getDX() != 0) {
