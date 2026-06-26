@@ -1,5 +1,5 @@
 package test.test2;
- 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,60 +13,81 @@ import test.Enemy;
 import test.GreenEnemy;
 import test.RedEnemy;
 import test.YellowEnemy;
- 
+
 public class MapData {
- 
+
 	public static final int TILE_SIZE = 30;
- 
-	// 0: 道, 1: 壁, 2: パワーエサ, 9: ワープ 
-		private final int[][] map = {
 
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}, 			//■■■■■■■■■■■■　　　　■■■■■■■■■■■■
-				{1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1}, 			//■　　　　　　　　　　■　　　　■　　　　　　　　　　■
-				{1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1}, 			//■　■■■　■■■■　■　　　　■　■■■■　■■■　■
-				{1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1}, 			//■　■■■　■■■■　■　　　　■　■■■■　■■■　■
-				{1,0,0,0,2,0,0,0,1,1,0,1,1,1,1,1,1,0,1,1,0,0,2,0,0,0,0,1}, 			//■　　　　　　　■■　■■■■■■　■■　　　　　　　■
-				{1,1,1,1,0,1,1,0,1,1,0,0,0,0,0,0,0,0,1,1,0,1,1,0,1,1,1,1}, 			//■■■■　■■　■■　　　　　　　　■■　■■　■■■■
-				{1,1,1,1,0,1,1,0,1,1,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1,1}, 			//　　　■　■■　■■　■■■　■■　■■　■■　■　　　
-				{1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,1,1,0,0,0,0,0,0,0,1,1,1,1}, 			//　　　■　　　　　　　■■■　■■　　　　　　　■　　　
-				{1,1,1,1,0,1,1,1,1,1,0,1,1,0,0,1,1,0,1,1,1,1,1,0,1,1,1,1}, 			//■■■■　■■■■■　■■　　■■　■■■■■　■■■■
-				{1,0,0,0,0,1,1,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,1,0,0,0,0,1}, 			//■　　　　■■■■■　■■　■■■　■■■■■　　　　■
-				{1,0,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■■　■■　■■■　■■■■■　■■　■
-				{1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1}, 			//■　■■　　　　　　　　　　　　　　　　　　　　■■　■
-				{1,0,1,1,0,1,1,1,1,0,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■■■　　■■■　■■■■　■■　■
-				{1,0,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■　　　　　　■　■■■■　■■　■
-				{1,0,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■　　　　　　■　■■■■　■■　■
-				{9,0,0,0,0,2,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,9}, 			//　　　　　　　　　　■　　　　　　■　　　　　　　　　　
-				{1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■■■■■■■■　■■■■　■■　■
-				{1,0,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　　　　　　　　　　■■■■　■■　■
-				{1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■■■■■　■■　■■■■　■■　■
-				{1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,0,1}, 			//■　■■　■■■■　■■■■■　■■　■■■■　■■　■
-				{1,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,1}, 			//■　■■　　　　　　■■　　　　■■　　　　　　■■　■
-				{1,0,0,0,0,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,0,0,0,1}, 			//■　　　　■■■■　■■　■■■■■　■■■■　　　　■
-				{1,1,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1}, 			//■■■■　■■■■　■■　■■■■■　■■■■　■■■■
-				{1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1}, 			//　　　■　　　　　　　　　　　　　　　　　　　　■　　　
-				{1,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,1}, 			//　　　■　■■　■■　■■■■■■　■■　■■　■　　　
-				{1,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,1}, 			//■■■■　■■　■■　■■■■■■　■■　■■　■■■■
-				{1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1}, 			//■　　　　　　　■■　　　　　　　　■■　　　　　　　■
-				{1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1}, 			//■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-				{1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1}, 			//■　■■■　■■■■　■　　　　■　■■■■　■■■　■
-				{1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1}, 			//■　　　　　　　　　　■　　　　■　　　　　　　　　　■
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}  			//■■■■■■■■■■■■　　　　■■■■■■■■■■■■
+	// 0: 道, 1: 壁, 2: パワーエサ, 9: ワープ
+	private final int[][] map = {
 
-		};
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // ■■■■■■■■■■■■
+																									// ■■■■■■■■■■■■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■ ■ ■ ■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■ ■■■ ■■■■ ■ ■
+																									// ■■■■ ■■■ ■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■ ■■■ ■■■■ ■ ■
+																									// ■■■■ ■■■ ■
+			{ 1, 0, 0, 0, 2, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 2, 0, 0, 0, 0, 1 }, // ■ ■■ ■■■■■■ ■■ ■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■ ■■ ■■ ■■
+																									// ■■■■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■ ■■ ■■ ■■■ ■■ ■■
+																									// ■■ ■
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, // ■ ■■■ ■■ ■
+			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■■■■ ■■ ■■
+																									// ■■■■■ ■■■■
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, // ■ ■■■■■ ■■ ■■■
+																									// ■■■■■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■■ ■■ ■■■
+																									// ■■■■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, // ■ ■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■■■ ■■■
+																									// ■■■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■ ■
+																									// ■■■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■ ■
+																									// ■■■■ ■■ ■
+			{ 9, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9 }, // ■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■
+																									// ■■■■■■■■ ■■■■ ■■
+																									// ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■■■■ ■■
+																									// ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■■■■■
+																									// ■■ ■■■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■■■■■
+																									// ■■ ■■■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, // ■ ■■ ■■ ■■ ■■ ■
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, // ■ ■■■■ ■■ ■■■■■
+																									// ■■■■ ■
+			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■■■ ■■
+																									// ■■■■■ ■■■■ ■■■■
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, // ■ ■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■ ■■ ■■ ■■■■■■ ■■
+																									// ■■ ■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■ ■■ ■■■■■■
+																									// ■■ ■■ ■■■■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■ ■■ ■■ ■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■ ■■■ ■■■■ ■■■■■■
+																									// ■■■■ ■■■ ■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■ ■■■ ■■■■ ■ ■
+																									// ■■■■ ■■■ ■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■ ■ ■ ■
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } // ■■■■■■■■■■■■
+																									// ■■■■■■■■■■■■
 
-
+	};
 
 	private Item[][] itemMap;
 
 	private Sengoku sengoku;
- 
+
 	// 敵のリスト管理
 
 	private final List<Enemy> enemies = new ArrayList<>();
 
 	private boolean paused = false;
- 
+
 	// 初期アイテム配置（エサ復活用）
 
 	private Item[][] initialItemMap;
@@ -74,11 +95,11 @@ public class MapData {
 	// エサ復活を有効にするか？
 
 	private boolean enableRespawn;
- 
+
 	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
 
 	private int stageNumber = 1;
- 
+
 	// 口パク
 
 	private double mouthAngle = 45;
@@ -86,7 +107,7 @@ public class MapData {
 	private int mouthOpening = -1;
 
 	private boolean isBlocked = false;
- 
+
 	// ワープ抑止
 
 	private boolean justWarped = false;
@@ -95,15 +116,14 @@ public class MapData {
 
 	private int lastWarpY = -1;
 
-	
 	// 残りアイテム数をカウントする変数
-    private int remainingItems = 0;
-    private boolean gameOver = false;
+	private int remainingItems = 0;
+	private boolean gameOver = false;
 
 	// FEVER終了時刻
 
 	private long feverEndTime = 0;
- 
+
 	// booleanを受け取る新しいコンストラクターを追加
 
 	public MapData(boolean paused) {
@@ -113,7 +133,7 @@ public class MapData {
 		this.paused = paused; // 受け取った値をpausedフィールドにセットする
 
 	}
- 
+
 	public void SampleModel(boolean enableRespawn) {
 
 		this.enableRespawn = enableRespawn; // これで練習/ストーリーを切り替えられる（エサ復活用）
@@ -129,7 +149,7 @@ public class MapData {
 				double pixelX = col * TILE_SIZE + TILE_SIZE / 2.0;
 
 				double pixelY = row * TILE_SIZE + TILE_SIZE / 2.0;
- 
+
 				if (map[row][col] == 0) {
 
 					itemMap[row][col] = new Point(pixelX, pixelY);
@@ -157,7 +177,7 @@ public class MapData {
 		}
 
 	}
- 
+
 	// --- itemMap をコピーする ---（エサ復活用）
 
 	private Item[][] copyItemMap(Item[][] src) {
@@ -177,7 +197,7 @@ public class MapData {
 		return dst;
 
 	}
- 
+
 	public MapData() {
 
 		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
@@ -209,13 +229,13 @@ public class MapData {
 		}
 
 		initEnemy(null);
- 
+
 		this.enableRespawn = true;
 
 		this.initialItemMap = copyItemMap(itemMap);
 
 	}
- 
+
 	// コード追加 成田
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
@@ -231,7 +251,7 @@ public class MapData {
 		enemies.add(new YellowEnemy(this));
 
 		enemies.add(new BlueEnemy(this));
- 
+
 		// 安全対策: リスト内の全ての敵の初期状態をセット
 
 		for (Enemy e : enemies) {
@@ -245,45 +265,45 @@ public class MapData {
 		}
 
 	}
- 
+
 	public void togglePause() {
 
 		paused = !paused;
 
 	}
- 
+
 	// ゲーム全体の定期更新
- 
+
 	public void update() {
 
 		if (paused)
 
 			return;
- 
+
 		// パックマンの移動処理
 
 		updatePacman();
- 
+
 		// FEVER終了判定
 
 		if (feverEndTime > 0 && System.currentTimeMillis() >= feverEndTime) {
- 
+
 			feverEndTime = 0;
- 
+
 			for (Enemy e : enemies) {
- 
+
 				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
- 
+
 					e.setCurrentState(Characters.EnemyState.SCATTER);
 
 				}
 
 			}
- 
+
 			System.out.println("FEVER終了");
 
 		}
- 
+
 		// 敵キャラが存在すれば移動ロジックを実行
 
 		for (Enemy e : enemies) {
@@ -291,29 +311,27 @@ public class MapData {
 			e.move(map);
 
 		}
- 
+
 		// 口パクの更新
 
 		updateMouth();
- 
+
 		// パックマンと敵の当たり判定を毎フレーム確認
 
 		checkCollision();
-		
+
 	}
 
-	
- 
 	public void updatePacman() {
 
 		if (paused || !sengoku.isAlive())
 
 			return;
- 
+
 		int tileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		int tileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
- 
+
 		// --- ワープ抑止ロジック ---
 
 		boolean skipWarp = false;
@@ -337,7 +355,7 @@ public class MapData {
 			}
 
 		}
- 
+
 		// --- ワープ処理 ---
 
 		if (!skipWarp && tileX >= 0 && tileX < map[0].length && tileY >= 0 && tileY < map.length) {
@@ -347,9 +365,9 @@ public class MapData {
 				int warpX = tileX;
 
 				int warpY = tileY;
- 
+
 				Direction currentDir = sengoku.getDirection();
- 
+
 				if (currentDir != Direction.NONE) {
 
 					if (currentDir.getDX() != 0) {
@@ -385,49 +403,49 @@ public class MapData {
 					}
 
 				}
- 
+
 				double newPacX = warpX * TILE_SIZE;
 
 				double newPacY = warpY * TILE_SIZE;
 
 				sengoku.setPosition(newPacX, newPacY);
- 
+
 				justWarped = true;
 
 				lastWarpX = warpX;
 
 				lastWarpY = warpY;
- 
+
 				return;
 
 			}
 
 		}
- 
+
 		sengoku.move(map);
- 
+
 		int currentTileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		int currentTileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
- 
+
 		if (currentTileY >= 0 && currentTileY < map.length && currentTileX >= 0 && currentTileX < map[0].length) {
- 
+
 			Item item = itemMap[currentTileY][currentTileX];
- 
+
 			if (item != null) {
- 
+
 				item.onEaten(sengoku);
- 
+
 				// パワーエサ(2)を食べたらFEVER
 
 				if (map[currentTileY][currentTileX] == 2) {
- 
+
 					System.out.println("FEVER開始！");
- 
+
 					// ←毎回7秒にリセット
 
 					feverEndTime = System.currentTimeMillis() + 7000;
- 
+
 					for (Enemy e : enemies) {
 
 						if (e.getCurrentState() != Characters.EnemyState.DEAD) {
@@ -442,9 +460,8 @@ public class MapData {
 
 				itemMap[currentTileY][currentTileX] = null;
 
-				
 				remainingItems--; // ★1個食べたのでカウントを減らす
-                System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
+				System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
 			}
 
 		}
@@ -454,7 +471,7 @@ public class MapData {
 		checkAllEaten();
 
 	}
- 
+
 	// --- 全部食べたかチェック ---（エサ復活用）
 
 	private void checkAllEaten() {
@@ -462,7 +479,7 @@ public class MapData {
 		if (!enableRespawn)
 
 			return; // ← ストーリーでは復活しない
- 
+
 		for (int r = 0; r < itemMap.length; r++) {
 
 			for (int c = 0; c < itemMap[0].length; c++) {
@@ -480,7 +497,7 @@ public class MapData {
 		resetItems();
 
 	}
- 
+
 	// --- エサ復活 ---（エサ復活用）
 
 	private void resetItems() {
@@ -488,13 +505,13 @@ public class MapData {
 		if (!enableRespawn || initialItemMap == null)
 
 			return;
- 
+
 		this.itemMap = copyItemMap(this.initialItemMap);
 
 		System.out.println("ステージクリア！エサが復活しました！");
 
 	}
- 
+
 	public void updateMouth() {
 
 		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Direction.NONE)
@@ -512,78 +529,74 @@ public class MapData {
 			mouthOpening = -1;
 
 	}
- 
+
 	public void setNextDirection(Direction dir) {
- 
+
 		sengoku.setnextdirection(dir);
 
 	}
- 
+
 	// 敵との当たり判定
- 
+
 	private void checkCollision() {
- 
+
 		if (!sengoku.isAlive())
 
 			return;
- 
+
 		double pacCenterX = sengoku.getX() + TILE_SIZE / 2.0;
- 
+
 		double pacCenterY = sengoku.getY() + TILE_SIZE / 2.0;
- 
+
 		double collisionThreshold = TILE_SIZE * 0.8;
- 
+
 		for (Enemy e : enemies) {
- 
+
 			if (e.getCurrentState() == Characters.EnemyState.DEAD) {
 
 				continue;
 
 			}
- 
+
 			double dx = pacCenterX - e.getX();
 
 			double dy = pacCenterY - e.getY();
- 
+
 			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
- 
+
 				// FEVER中の敵は食べられる
 
 				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
- 
+
 					e.setCurrentState(Characters.EnemyState.DEAD);
 
 					continue;
 
 				}
- 
+
 				if (e.getCurrentState() == Characters.EnemyState.DEAD) {
 
 					continue;
 
 				}
 
-				// 通常時はゲームオーバー
+				System.out.println("💥敵に捕まった！");
 
-				System.out.println("💥敵に捕まった！ゲームオーバー！");
-
-				paused = true;
-
-				String enemyName = (e instanceof RedEnemy) ? "赤敵" : "緑敵";
-				System.out.println("💥 " + enemyName + "に捕まった！ゲームオーバー！");
+				sengoku.takeDamage();
 				
-				//ゲームオーバーフラグをtrueにする
-				this.gameOver = true;
-				
-				this.paused = true;
+				if (sengoku.getHp() <= 0) {
+
+					this.gameOver = true;
+					this.paused = true;
+
+				} else {
+					sengoku.resetToStartPosition();
+				}
 				return;
-
 			}
-
 		}
-
 	}
- 
+
 	// --- getters ---
 
 	public int[][] getMap() {
@@ -591,31 +604,31 @@ public class MapData {
 		return map;
 
 	}
- 
+
 	public Item[][] getItemMap() {
 
 		return itemMap;
 
 	}
- 
+
 	public boolean isPaused() {
 
 		return paused;
 
 	}
- 
+
 	public double getMouthAngle() {
 
 		return mouthAngle;
 
 	}
- 
+
 	public Sengoku getSengoku() {
 
 		return sengoku;
 
 	}
- 
+
 	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
 
 	public Enemy getEnemy() {
@@ -623,7 +636,7 @@ public class MapData {
 		return enemies.isEmpty() ? null : enemies.get(0);
 
 	}
- 
+
 	// ⭕ MapViewでループ描画するためのリストゲッター
 
 	public List<Enemy> getEnemies() {
@@ -631,19 +644,19 @@ public class MapData {
 		return enemies;
 
 	}
- 
+
 	public double getPacX1() {
 
 		return sengoku != null ? sengoku.getX() : 0;
 
 	}
- 
+
 	public double getPacY1() {
 
 		return sengoku != null ? sengoku.getY() : 0;
 
 	}
- 
+
 	// 追加項目
 
 	public double getPacX() {
@@ -651,13 +664,13 @@ public class MapData {
 		return sengoku != null ? sengoku.getX() : 0;
 
 	}
- 
+
 	public double getPacY() {
 
 		return sengoku != null ? sengoku.getY() : 0;
 
 	}
- 
+
 	// ⭕ 敵クラスから現在のステージ番号を確認できるようにする
 
 	public int getStageNumber() {
@@ -665,22 +678,19 @@ public class MapData {
 		return stageNumber;
 
 	}
- 
+
 	// ⭕ ステージが切り替わったときに外から数値を変更できるようにする
 
 	public void setStageNumber(int stageNum) {
 		this.stageNumber = stageNum;
 	}
-	
+
 	public boolean isCleared() {
-        return remainingItems <= 0;
-    }
-	
+		return remainingItems <= 0;
+	}
+
 	public boolean isGameOver() {
 		return gameOver;
 	}
 
- 
 }
-
- 
