@@ -123,14 +123,6 @@ public class MapView {
 
 		drawPacman(gc, pacmanColor);
 
-<<<<<<< HEAD
-=======
-		// ⭕【ここを追加！】リスト内（Red, Green）のすべての敵をループで一斉に描画する
-
-		drawStageContent(gc, cols, rows, stageWidth, stageHeight, wallColor);
-		drawPacman(gc, pacmanColor);
-
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 		// 敵の描画メソッド
 		if (model.getEnemies() != null) {
 
@@ -138,13 +130,10 @@ public class MapView {
 
 				drawEnemyInstance(gc, enemy);
 			}
-
 		}
-
 
 		// 8. グラフィックスの状態を元に戻す
 		gc.restore();
-
 	}
 
 	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
