@@ -9,8 +9,8 @@ import test.test2.MapData;
 public class GreenEnemy extends Enemy {
 
 	// スタート位置 (マップ中心 エネミーハウス内)
-	private static final int START_COL = 12;
-	private static final int START_ROW = 12;
+	private static final int START_COL = 14;
+	private static final int START_ROW = 11;
 
 	// 8 マス以上離れていたら追跡
 	private static final double BORDER = 8;
@@ -40,20 +40,20 @@ public class GreenEnemy extends Enemy {
 
 		// 現在のステージ番号によって、読み込む画像を切り替える
 		String imagePath = "/picture/narita_EnemyGreen.png"; // デフォルト（ステージ1用）
-
+		
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
-			case 1:
-				imagePath = "/picture/narita_EnemyGreen.png"; // ステージ1の画像
-				break;
-			case 2:
-				imagePath = "/picture/wada_EnemyGreen.png"; // ステージ2の画像
-				break;
-			case 3:
-				imagePath = "/picture/hayakawa_EnemyGreen.png"; // ステージ3の画像
-				break;
-			default:
-				break;
+				case 1:
+					imagePath = "/picture/narita_EnemyGreen.png"; // ステージ1の画像
+					break;
+				case 2:
+					imagePath = "/picture/wada_EnemyGreen.png";        // ステージ2の画像
+					break;
+				case 3:
+					imagePath = "/picture/hayakawa_EnemyGreen.png";         // ステージ3の画像
+					break;
+				default:
+					break;
 			}
 		}
 
