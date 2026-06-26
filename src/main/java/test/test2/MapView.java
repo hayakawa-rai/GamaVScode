@@ -31,9 +31,7 @@ public class MapView {
 
 	// 互換コンストラクタ（引数1つ用）
 	public MapView(MapData model) {
-
 		this.model = model;
-
 	}
 
 	// 新しいコンストラクタ（引数2つ用）
@@ -48,12 +46,18 @@ public class MapView {
 		wallDummy.setVisible(false);
 		pacmanDummy.setVisible(false);
 		root.getChildren().addAll(wallDummy, pacmanDummy);
+	
+		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
+			if (newScene != null) {
+				test.test2.GameController.applyMobileControls(newScene, this.model);
+			}
+		});
 	}
 
 	/**
-	
+	 * 
 	 * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
-	
+	 * 
 	 */
 
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
@@ -83,8 +87,6 @@ public class MapView {
 		double bufferRatio = 0.9;
 
 		double scale = Math.min(scaleX, scaleY) * bufferRatio;
-
-		// 3. 小さくなった分も含めて、改めて中央に配置するための余白（オフセット）を計算
 
 		// 3. 中央に配置するための余白（オフセット）を計算
 		double offsetX = (canvasWidth - (stageWidth * scale)) / 2.0;
@@ -121,30 +123,17 @@ public class MapView {
 
 		drawPacman(gc, pacmanColor);
 
-		//敵の描画メソッド　追加しました　成田
-
-		// ⭕【ここを追加！】リスト内（Red, Green）のすべての敵をループで一斉に描画する
-
-		drawStageContent(gc, cols, rows, stageWidth, stageHeight, wallColor);
-		drawPacman(gc, pacmanColor);
-
 		// 敵の描画メソッド
 		if (model.getEnemies() != null) {
 
 			for (Enemy enemy : model.getEnemies()) {
 
-				drawEnemyInstance(gc, enemy); // ※前々回追加した共通描画メソッド
-
 				drawEnemyInstance(gc, enemy);
 			}
-
 		}
-
-		// 8. グラフィックスの状態を元に戻す（これを行わないと次回呼び出し時にズレが増幅します）
 
 		// 8. グラフィックスの状態を元に戻す
 		gc.restore();
-
 	}
 
 	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
@@ -177,15 +166,10 @@ public class MapView {
 				}
 
 				// アイテムの描画
-
 				if (item != null) {
-
 					item.draw(gc, x, y, MapData.TILE_SIZE);
-
 				}
-
 			}
-
 		}
 
 		// スコアを表示させるためのコード
@@ -208,11 +192,20 @@ public class MapView {
 
 			gc.fillText(scoreText, textX, textY);
 
+			// 残機表示
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+
+			gc.setFill(Color.RED);
+
+			String lifeText = "❤ ".repeat(sengoku.getHp());
+
+			gc.fillText(lifeText, 20, stageHeight - 20);
+
 		}
 
 	}
 
-	//内部の座標計算
+	// 内部の座標計算
 
 	public void drawPacman(GraphicsContext gc, Color pacmanColor) {
 		Sengoku sengoku = model.getSengoku();
@@ -286,7 +279,7 @@ public class MapView {
 
 	}
 
-	//追加項目
+	// 追加項目
 
 	private void drawEnemy(GraphicsContext gc) {
 

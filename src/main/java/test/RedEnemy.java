@@ -14,9 +14,7 @@ public class RedEnemy extends Enemy {
 	private static final int START_ROW = 11;
 
 	// 縄張りエリアの中心（右上）(仮)
-
 	private static final int TERRITORY_COL = 24;
-
 	private static final int TERRITORY_ROW = 3;
 
 	// 引数を MapData に一本化し、正しいコンストラクタの形に直した
