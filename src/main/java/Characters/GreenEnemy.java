@@ -4,13 +4,13 @@ package Characters;
 import java.util.List;
 
 import javafx.scene.image.Image;
-import test.test2.MapData;　(後で変更)
+import test.test2.MapData;
 
 public class GreenEnemy extends Enemy {
 
 	// スタート位置 (マップ中心 エネミーハウス内)
-	private static final int START_COL = 12;
-	private static final int START_ROW = 12;
+	private static final int START_COL = 14;
+	private static final int START_ROW = 14;
 
 	// 8 マス以上離れていたら追跡
 	private static final double BORDER = 8;
@@ -29,21 +29,45 @@ public class GreenEnemy extends Enemy {
 
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
-		
+
 		this.mapData = mapData;
+
+		// FEVER画像をステージごとに読み込む
+		loadFeverImage();
+
+		// DEAD画像を読み込む
+		loadDeadImage();
+
+		// 現在のステージ番号によって、読み込む画像を切り替える
+		String imagePath = "/picture/narita_EnemyGreen.png"; // デフォルト（ステージ1用）
+		
+		if (this.mapData != null) {
+			switch (this.mapData.getStageNumber()) {
+				case 1:
+					imagePath = "/picture/narita_EnemyGreen.png"; // ステージ1の画像
+					break;
+				case 2:
+					imagePath = "/picture/wada_EnemyGreen.png";        // ステージ2の画像
+					break;
+				case 3:
+					imagePath = "/picture/hayakawa_EnemyGreen.png";         // ステージ3の画像
+					break;
+				default:
+					break;
+			}
+		}
 
 		// 生成時刻を記録
 		this.startTime = System.currentTimeMillis();
 
 		// 画像読み込み
 		try {
-			java.io.InputStream is = getClass().getResourceAsStream("/picture/narinari.png");
-
+			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
-				System.err.println("❌【エラー】画像が見つかりません");
+				System.err.println("❌【エラー】画像が見つかりません: " + imagePath);
 			} else {
 				this.normalImage = new Image(is);
-				System.out.println("⭕【成功】narinariの画像を読み込みました！");
+				System.out.println("⭕【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,7 +85,7 @@ public class GreenEnemy extends Enemy {
 		return normalImage;
 	}
 
-	//20秒経過後に出撃
+	// 20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
 		if (!released) {
@@ -71,14 +95,13 @@ public class GreenEnemy extends Enemy {
 			if (elapsed < 20000) {
 				return;
 			}
-			
 			// 出撃
 			released = true;
 		}
 		super.move(map);
 	}
 
-	// 遠い → 追跡 
+	// 遠い → 追跡
 	// 近い → 左下の縄張りへ戻る
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
@@ -91,19 +114,26 @@ public class GreenEnemy extends Enemy {
 		double pacX = mapData.getPacX();
 		double pacY = mapData.getPacY();
 
-		int playerCol = (int) (pacX / MapData.TILE_SIZE);
-		int playerRow = (int) (pacY / MapData.TILE_SIZE);
+		int targetCol = (int) (pacX / MapData.TILE_SIZE);
+		int targetRow = (int) (pacY / MapData.TILE_SIZE);
+
+		// 共通処理
+		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
+
+		if (special != null) {
+			return special;
+		}
 
 		// 自分の位置
 		int myCol = (int) (this.x / MapData.TILE_SIZE);
 		int myRow = (int) (this.y / MapData.TILE_SIZE);
 
 		// プレイヤーとの距離（マス単位）
-		double distance = Math.sqrt(Math.pow(myCol - playerCol, 2) + Math.pow(myRow - playerRow, 2));
+		double distance = Math.sqrt(Math.pow(myCol - targetCol, 2) + Math.pow(myRow - targetRow, 2));
 
 		// 遠いなら追跡
 		if (distance >= BORDER) {
-			return getClosestDirection(validDirections, playerCol, playerRow);
+			return getClosestDirection(validDirections, targetCol, targetRow);
 		}
 
 		// 近いなら縄張りへ戻る
