@@ -69,8 +69,9 @@ public class Practice extends Application {
 		// タイトル
 		Label title = new Label("練習モード");
 		title.setStyle(
+				"-fx-font-family: 'PixelMplus12';" +
 			    "-fx-font-size: 48px;" +
-			    "-fx-font-weight: 900;" +
+			  //  "-fx-font-weight: 900;" +
 			    "-fx-text-fill: white;" +
 			    "-fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3);"
 			);
