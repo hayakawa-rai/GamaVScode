@@ -318,13 +318,34 @@ public class Story4 extends Application{
         Scene scene = new Scene(base,1000,800);
         	
         
+        //メニューボタン作成
+
+        Image menuImg = new Image(
+        	getClass().getResourceAsStream("/picture/menu.png")
+        );
+
+        ImageView menuView = new ImageView(menuImg);
+        menuView.setFitWidth(40);
+        menuView.setFitHeight(40);
+
+        Button menuBtn = new Button("");
+
+
+        menuBtn.setGraphic(menuView);
+        menuBtn.setStyle("-fx-background-color: transparent;");
+
+
+        // 右上に配置
+        StackPane.setAlignment(menuBtn, Pos.TOP_LEFT);
+        StackPane.setMargin(menuBtn, new Insets(30));
+        
         //メニュー画面追加
         StackPane menuOverlay = new StackPane();
 
         // 背景（うっすら暗く）
         menuOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
      	menuOverlay.setVisible(false);
-
+     	menuOverlay.setPickOnBounds(true); 
      	// 中央のかわいいパネル
      	VBox menuBox = new VBox(20);
      	menuBox.setAlignment(Pos.CENTER);
@@ -378,27 +399,29 @@ public class Story4 extends Application{
      	menuOverlay.getChildren().add(menuBox);
 
      	//最前面に追加
+     	base.getChildren().add(menuBtn);
      	base.getChildren().add(menuOverlay);
         
-        // 背景画像をウィンドウサイズに合わせる
+     	
+     	// 背景画像をウィンドウサイズに合わせる
         bgView.fitWidthProperty().bind(scene.widthProperty());
         bgView.fitHeightProperty().bind(scene.heightProperty());
         // 人物画像(あにき)をウィンドウサイズに合わせる(右に表示)
         anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
         anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
-        anikiView.setTranslateX(250);
+        anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(なりなり)をウィンドウサイズに合わせる(右に表示)
         narinariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
         narinariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
-        narinariView.setTranslateX(250);
+        narinariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(わだたく)をウィンドウサイズに合わせる(右に表示)
         wadatakuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
         wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
-        wadatakuView.setTranslateX(250);
+        wadatakuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
         sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.6));
         sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.0));
-        sengokuView.setTranslateX(-250);
+        sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
         //boxのサイズをウィンドウに合わせる
         box.widthProperty().bind(scene.widthProperty().multiply(0.9));
         box.heightProperty().bind(scene.heightProperty().multiply(0.18));
@@ -445,9 +468,19 @@ public class Story4 extends Application{
                 if (arrowMove != null) arrowMove.pause();
             }
         });
+        menuBtn.setOnAction(e -> {
+            menuOverlay.setVisible(true);
+
+            // ストーリー停止（ESCと同じ処理）
+            if (timeline != null) timeline.pause();
+            if (blink != null) blink.pause();
+            if (arrowMove != null) arrowMove.pause();
+        });
+        
         
         fall = new TranslateTransition(Duration.seconds(1), wadatakuView);
         fall.setToY(100);
+        
         
         
         //文字表示用のタイマーを作成、50ミリ秒ごとに処理
@@ -511,7 +544,11 @@ public class Story4 extends Application{
         
         //クリックされたときの処理
         scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
-        	
+        	if (menuOverlay.isVisible()) {
+        		if (e.getTarget() == menuBtn) return;
+        		e.consume();
+        		return;
+        	}
         	//文字表示中ならスキップして全文表示する処理
         	if(isTyping) {
         		//タイピング停止

@@ -8,16 +8,84 @@ public class Sengoku extends Character {
 	private Direction nextdirection = Direction.NONE;
 	private static final int CELL_SIZE = 30;
 
+	//初期位置を記憶する変数
+	private double startX = -1;
+	private double startY = -1;
+	//本家風ミス演出用の変数
+	private boolean isDyingAnimation = false; // 死亡アニメーション中か？
+	private int dyingTimer = 0; // アニメーション用タイマー
+
 	public Sengoku(double x, double y, int speed) {
 		super(x, y, speed);
+		this.startX = x;
+		this.startY = y;
 	}
 
 	public void setnextdirection(Direction direction) {
 		this.nextdirection = direction;
+
+		//もし今止まっている（待機状態など）なら、押された方向に即座に動き出させる
+		if (this.direction == Direction.NONE && !isDyingAnimation) {
+			this.direction = direction;
+		}
+	}
+
+	//ミスが起きたときにアニメーションを開始する
+	public void startDying() {
+		this.isDyingAnimation = true;
+		this.dyingTimer = 0;
+		this.direction = Direction.NONE;
+		this.nextdirection = Direction.NONE;
+	}
+
+	//死亡アニメーションの更新（毎フレーム呼ばれる
+	// 戻り値が true になったらアニメーション終了の合図
+	public boolean updateDyingAnimation() {
+		if (!isDyingAnimation)
+			return false;
+
+		dyingTimer++;
+
+		//約1秒経過したらアニメーションを終了し、実際に残機を減らす
+		if (dyingTimer >= 60) {
+			isDyingAnimation = false;
+			decreaseHp();
+			return true;
+		}
+		return false;
+	}
+
+	// --- 【追加】初期位置に戻すリセットメソッド ---
+	public void resetToStartPosition() {
+
+		if (startX == -1 || startY == -1) {
+			this.startX = this.x;
+			this.startY = this.y;
+		}
+		this.x = this.startX;
+		this.y = this.startY;
+		this.direction = Direction.NONE;
+		this.nextdirection = Direction.NONE;
+		this.isDyingAnimation = false;
+		this.dyingTimer = 0;
+	}
+
+	// --- 【追加】残機を1つ減らすメソッド ---
+	public void decreaseHp() {
+		if (this.hp > 0) {
+			this.hp--;
+			if (this.hp <= 0) {
+				this.isAlive = false;
+				die();
+			}
+		}
 	}
 
 	@Override
 	public void move(int[][] map) {
+		// 【追加】死亡アニメーション中、または完全ゲームオーバー時は移動しない
+		if (isDyingAnimation || !isAlive())
+			return;
 
 		double centerX = this.getX() + CELL_SIZE / 2.0;
 		double centerY = this.getY() + CELL_SIZE / 2.0;
@@ -49,7 +117,7 @@ public class Sengoku extends Character {
 				this.direction = Direction.NONE;
 			}
 
-		}else {
+		} else {
 			this.x += this.direction.getDX() * this.speed;
 			this.y += this.direction.getDY() * this.speed;
 		}
@@ -75,7 +143,6 @@ public class Sengoku extends Character {
 		}
 
 		return true;
-
 	}
 
 	private boolean canmove(Direction direction, int[][] map) {
@@ -102,16 +169,11 @@ public class Sengoku extends Character {
 	public void die() {
 		this.hp = 0;
 		this.direction = Direction.NONE;
+		this.nextdirection = Direction.NONE;
 	}
 
 	public void takeDamage() {
-		if (hp > 0) {
-			hp--;
-
-			if (hp == 0) {
-				die();
-			}
-		}
+		decreaseHp(); // 【変更】残機減少メソッドと連動
 	}
 
 	public void addScore(int point) {
@@ -130,4 +192,11 @@ public class Sengoku extends Character {
 		return this.hp > 0;
 	}
 
+	public boolean isDyingAnimation() {
+		return isDyingAnimation;
+	}
+
+	public int getDyingTimer() {
+		return dyingTimer;
+	}
 }

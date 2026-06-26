@@ -6,6 +6,7 @@ story\Stageclear3.class
 Characters\Character.class
 test1\controller\GameController$1.class
 Characters\Direction$1.class
+test\Sengoku.class
 test1\Main1.class
 test2\model\MapData.class
 sample\controller\SampleController.class
@@ -48,6 +49,7 @@ test3\controller\GameController.class
 Characters\Direction.class
 story\Story2.class
 Characters\SengokuState.class
+test\test2\GameController$1.class
 story\Practice$1.class
 test\RedEnemy.class
 test1\model\MapData.class
@@ -65,5 +67,6 @@ test\BlueEnemy.class
 start\Bgm.class
 test\BlueEnemy$1.class
 Items\Item.class
+test\YellowEnemy.class
 test1\view\MapView.class
 test2\view\MapView.class

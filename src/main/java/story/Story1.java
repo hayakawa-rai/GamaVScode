@@ -138,11 +138,11 @@ public class Story1 extends Application{
         	    new Dialogue("あにき", "先輩社員サン、ですか。",jumpSound,Color.RED),
         	    new Dialogue("あにき", "今日からここの社長は俺だ。",jumpSound,Color.RED),
         	    new Dialogue("あにき", "休憩時間以外は全て俺のものだ！！！",jumpSound,Color.RED),
-        	    new Dialogue("仙石さん", "ふざけるな。\n"+ "ここは俺たちの会社だ。",jumpSound,Color.WHITE),
+        	    new Dialogue("仙石さん", "ふざけるな。ここは俺たちの会社だ。",jumpSound,Color.WHITE),
         	    new Dialogue("仙石さん", "取り戻してやる！！",jumpSound,Color.WHITE),
         	    new Dialogue("あにき", "クク……熱いねえ",jumpSound,Color.RED),
         	    new Dialogue("あにき", "だが、まずは順番ってものがある。",jumpSound,Color.RED),
-        	    new Dialogue("あにき", "新入社員を育てるのも、\n"+ "上司の務めだろう？",jumpSound,Color.RED),
+        	    new Dialogue("あにき", "新入社員を育てるのも、上司の務めだろう？",jumpSound,Color.RED),
         	    new Dialogue("なりなり", "ここから先は通しませんよ、先輩。",jumpSound,Color.ORANGE),
         	    new Dialogue("なりなり", "自分、もう\"研修\"は終わってるんで。",jumpSound,Color.ORANGE),
         	    new Dialogue("仙石さん", "研修で覚えたのは、会社を乗っ取ることか？",jumpSound,Color.WHITE),
@@ -272,7 +272,28 @@ public class Story1 extends Application{
         root.setStyle("-fx-background-color: transparent;");
         //Borderpaneにより一番下に表示されてしまうので、下に余白を設定する
         BorderPane.setMargin(messageBox, new Insets(0, 0, 30, 0));
-    
+        
+        
+        //メニューボタン作成
+
+        Image menuImg = new Image(
+        	getClass().getResourceAsStream("/picture/menu.png")
+        );
+
+        ImageView menuView = new ImageView(menuImg);
+        menuView.setFitWidth(40);
+        menuView.setFitHeight(40);
+
+        Button menuBtn = new Button("");
+
+
+        menuBtn.setGraphic(menuView);
+        menuBtn.setStyle("-fx-background-color: transparent;");
+
+
+        // 右上に配置
+        StackPane.setAlignment(menuBtn, Pos.TOP_LEFT);
+        StackPane.setMargin(menuBtn, new Insets(30));
         
         //ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
         StackPane base = new StackPane();
@@ -282,11 +303,11 @@ public class Story1 extends Application{
         scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
         
         StackPane menuOverlay = new StackPane();
-
+        
         // 背景（うっすら暗く）
         menuOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
      	menuOverlay.setVisible(false);
-
+     	menuOverlay.setPickOnBounds(true); 
      	// 中央のかわいいパネル
      	VBox menuBox = new VBox(20);
      	menuBox.setAlignment(Pos.CENTER);
@@ -340,9 +361,10 @@ public class Story1 extends Application{
      	menuOverlay.getChildren().add(menuBox);
 
      	//最前面に追加
+     	base.getChildren().add(menuBtn);
      	base.getChildren().add(menuOverlay);
      
-  
+     	
         
      	// 背景画像をウィンドウサイズに合わせる
         bgView.fitWidthProperty().bind(scene.widthProperty());
@@ -350,15 +372,15 @@ public class Story1 extends Application{
         // 人物画像(あにき)をウィンドウサイズに合わせる(右に表示)
         anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
         anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
-        anikiView.setTranslateX(250);
+        anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(なりなり)をウィンドウサイズに合わせる(右に表示)
         narinariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
         narinariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
-        narinariView.setTranslateX(250);
+        narinariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
         sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.6));
         sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.0));
-        sengokuView.setTranslateX(-250);
+        sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
         //boxのサイズをウィンドウに合わせる
         box.widthProperty().bind(scene.widthProperty().multiply(0.9));
         box.heightProperty().bind(scene.heightProperty().multiply(0.18));
@@ -392,6 +414,7 @@ public class Story1 extends Application{
         stage.setMinWidth(800);
         stage.setMinHeight(600);
         
+      //メニュー表示処理
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
 
@@ -404,6 +427,15 @@ public class Story1 extends Application{
                 if (arrowMove != null) arrowMove.pause();
             }
         });
+        menuBtn.setOnAction(e -> {
+            menuOverlay.setVisible(true);
+
+            // ストーリー停止（ESCと同じ処理）
+            if (timeline != null) timeline.pause();
+            if (blink != null) blink.pause();
+            if (arrowMove != null) arrowMove.pause();
+        });
+        
         
         //文字表示用のタイマーを作成、50ミリ秒ごとに処理
         timeline = new Timeline(
@@ -455,7 +487,13 @@ public class Story1 extends Application{
         
         //クリックされたときの処理
         scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
-        	
+
+        	if (menuOverlay.isVisible()) {
+        		if (e.getTarget() == menuBtn) return;
+        		e.consume();
+        		return;
+        	}
+
         	//文字表示中ならスキップして全文表示する処理
         	if(isTyping) {
         		//タイピング停止
