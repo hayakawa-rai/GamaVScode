@@ -13,7 +13,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import start.Start;
 
 public class Stageclear2 extends Application{
 	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
@@ -28,7 +27,62 @@ public class Stageclear2 extends Application{
         stage.setTitle("stage2CLEAR");
         stage.show();
     }
+    
+    private AudioClip clearSound;
+    private AudioClip clickSound;
+    private AudioClip cancelSound;
+
+    private PauseTransition delay;
+    private PauseTransition pause;
+
+    private void cleanup() {
+
+        // 遅延処理止める
+        if (delay != null) {
+            delay.stop();
+            delay = null;
+        }
+
+        if (pause != null) {
+            pause.stop();
+            pause = null;
+        }
+
+        // 音止める
+        if (clearSound != null) {
+            clearSound.stop();
+            clearSound = null;
+        }
+
+        if (clickSound != null) {
+            clickSound.stop();
+            clickSound = null;
+        }
+
+        if (cancelSound != null) {
+            cancelSound.stop();
+            cancelSound = null;
+        }
+    }
+    
     public Scene clear() {
+    // クリア音
+    clearSound = new AudioClip(
+    getClass().getResource("/music/yay.mp3").toExternalForm()
+    );
+    clearSound.setVolume(0.5);
+    
+    // 0.5秒待つ
+    delay = new PauseTransition(Duration.seconds(0.5));
+        	
+    // 時間経過後に再生
+    delay.setOnFinished(e -> {
+    	clearSound.play();
+    });
+        	
+    // タイマー開始
+    delay.play();
+    
     //どこのステージをクリアしたか表示する
     Text title = new Text("STAGE2    CLEAR!");
     //フォントサイズとカラーを指定
@@ -64,14 +118,14 @@ public class Stageclear2 extends Application{
 	buttonBox.setAlignment(Pos.CENTER);
 	
 	//音声読み込み
-	AudioClip clickSound = new AudioClip(
+	clickSound = new AudioClip(
 		getClass().getResource("/music/select.mp3").toExternalForm()
 	);
 	// 音量調整
 	clickSound.setVolume(0.4);
 		
 	//音声読み込み
-	AudioClip cancelSound = new AudioClip(
+	cancelSound = new AudioClip(
 		getClass().getResource("/music/cancel.mp3").toExternalForm()
 	);
 	// 音量調整
@@ -89,13 +143,14 @@ public class Stageclear2 extends Application{
         clickSound.play();
 
         // 0.5秒待つ
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        pause = new PauseTransition(Duration.seconds(0.5));
 
         // 待った後に画面遷移
         pause.setOnFinished(ev -> {
-            Story3 story3 = new Story3();
             try {
-                story3.start(stage);
+            	cleanup();
+            	// 画面遷移
+    	        test.test2.GameController.switchStory3(stage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -115,13 +170,14 @@ public class Stageclear2 extends Application{
     	cancelSound.play();
     	
     	// 0.5秒待つ
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        pause = new PauseTransition(Duration.seconds(0.5));
 
         // 待った後に画面遷移
         pause.setOnFinished(ev -> {
-        Start titleScreen = new Start();
         try {
-            titleScreen.start(stage);
+        	cleanup();
+        	// 画面遷移
+	        test.test2.GameController.switchStart(stage);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -134,6 +190,12 @@ public class Stageclear2 extends Application{
     
     //buttonBoxを中身とした1000×800のウィンドウを作成
     Scene scene = new Scene(buttonBox, 1000, 800);
+    //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+    stage.setMinWidth(800);
+    stage.setMinHeight(600);
+    //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+    stage.setMinWidth(800);
+    stage.setMinHeight(600);
     //CSSを接続
     scene.getStylesheets().add(
         getClass().getResource("/css/style.css").toExternalForm()

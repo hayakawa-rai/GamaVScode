@@ -6,17 +6,17 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import test.controller.SampleController;
-import test.model.SampleModel;
-import test.view.SampleView;
+import test.test2.GameController;
+import test.test2.MapData;
+import test.test2.MapView;
 
 public class SampleMainApp extends Application {
     
-    private SampleController controller;
+    private GameController controller;
     
     @Override
     public void start(Stage stage) {
-        SampleController.switchToStart(stage);
+        GameController.switchToStart(stage);
     }
     
     public void starts(Stage stage) {
@@ -26,12 +26,12 @@ public class SampleMainApp extends Application {
         }
 
         // ストーリーモードはエサ復活なし
-        SampleModel model = new SampleModel(false);
-        SampleView view = new SampleView(model);
+        MapData model = new MapData(false);
+        MapView view = new MapView(model);
 
         Group root = new Group();
-        int viewWidth = model.getMap()[0].length * SampleModel.TILE_SIZE;
-        int viewHeight = model.getMap().length * SampleModel.TILE_SIZE;
+        int viewWidth = model.getMap()[0].length * MapData.TILE_SIZE;
+        int viewHeight = model.getMap().length * MapData.TILE_SIZE;
 
         Scene scene = new Scene(root, viewWidth, viewHeight, Color.BLACK);
         Canvas canvas = new Canvas(viewWidth, viewHeight);
@@ -50,7 +50,7 @@ public class SampleMainApp extends Application {
         root.getChildren().add(redImageView);
         
         //  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
-        this.controller = new SampleController(model, view, canvas, scene);
+        this.controller = new GameController(model, view, canvas, scene, stage);
 
         stage.setTitle("JavaFX Pacman Stage MVC");
         stage.setScene(scene);

@@ -1,89 +1,104 @@
-/* Sengokuの位置の4マス先を狙う YellowEnemy(黄) 
+// Sengokuの4マス先を狙う YellowEnemy(黄) 
 
 package Characters;
+/*
+import java.util.List;
+
+import javafx.scene.image.Image;
+import test.Enemy;
+import test.test2.MapData;
 
 public class YellowEnemy extends Enemy {
 
-	private Sengoku target; // プレイヤー
-	private static final int PREDICT_TILES = 4; // 4マス先を狙う
-	private static final int CELL_SIZE = 24; // ゲームのマスサイズ
+	// スタート位置(マップ中心 エネミーハウス上)
+	private static final int START_COL = 16;
+	private static final int START_ROW = 15;
 
+	// 縄張りエリアの中心（左上）（仮座標）
+	private static final int TERRITORY_COL = 3;
+	private static final int TERRITORY_ROW = 3;
 
-private long startTime;
-private static final long DELAY = 10000; // 10秒遅れて出発
+	// プレイヤーの進行方向の4マス先を狙う
+	private static final int PREDICT_TILES = 4;
+	// 出発遅延（10秒後に動き始める)
+	private static final long DELAY = 10000; 
 
- エネミーハウス左上 （仮）
-private static final int START_COL = 13;
-private static final int START_ROW = 11;
+	// 出発時間の記録
+	private long startTime;
 
+	public YellowEnemy(MapData mapData) {
 
-	public YellowEnemy(double x, double y, Sengoku target) {
-        super(x, y); // speed は Enemy 側で決める
-        this.target = target;
-    }
+		// マスの中心座標を初期位置として Enemy に渡す
+		super(
+				START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+				1);
 
-	public YellowEnemy(ImageView imageView) {
-		super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
-		 this.target = target;	
-			
-		// 生成された瞬間の時間を記録
-    		this.startTime = System.currentTimeMillis();
+		this.mapData = mapData;
+		this.startTime = System.currentTimeMillis();
+
+		// 画像の読み込み処理
+		try {
+			java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa2.png");
+			if (is == null) {
+				System.err.println("❌【エラー】画像が見つかりません");
+			} else {
+				this.normalImage = new Image(is);
+				System.out.println("⭕【成功】早川さんの画像を読み込みました！");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
+	// MapView から現在の画像を取り出すためのゲッター
+	public Image getEnemyImage() {
+		if (this.currentState == Characters.EnemyState.DEAD)
+			return deadImage;
+		if (this.currentState == Characters.EnemyState.FEVER)
+			return feverImage;
+		return normalImage;
+	}
 
 	@Override
-	public void move(int[][] map) {
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
 
- 		//経過時間を計算
-		long elapsed = System.currentTimeMillis() - startTime;
-
- 		//10秒経つまで動かない
-		if (elapsed < DELAY) return;
-
-		// プレイヤーの向きを確認
-		Direction dir = target.getDirection();
-
-		// プレイヤーの現在位置を取得
-		double tx = target.getX();
-		double ty = target.getY();
-
-		// 4マス先の予測位置
-		switch (dir) {
-		case UP:
-			ty -= PREDICT_TILES * CELL_SIZE;
-			break;
-		case DOWN:
-			ty += PREDICT_TILES * CELL_SIZE;
-			break;
-		case LEFT:
-			tx -= PREDICT_TILES * CELL_SIZE;
-			break;
-		case RIGHT:
-			tx += PREDICT_TILES * CELL_SIZE;
-			break;
-		default:
-			// 止まっている時は現在位置を狙う
-			break;
+		// まだ出発時間に達していない → 動かない
+		if (System.currentTimeMillis() - startTime < DELAY) {
+			return Direction.NONE;
 		}
-
-		// 敵から見た予測位置への方向の計算
-		double dx = tx - this.x; //敵から見て、右にどれくらい離れているか
-		double dy = ty - this.y; //敵から見て、下にどれくらい離れているか
-
-		// X方向優先 or Y方向優先
-		if (Math.abs(dx) > Math.abs(dy)) {
-			this.x += Math.signum(dx) * speed; //横の距離が大きい → 横に動く
-		} else {
-			this.y += Math.signum(dy) * speed; //縦の距離が大きい → 縦に動く
+		// 進める方向がない場合は停止
+		if (mapData == null || validDirections.isEmpty()) {
+			return Direction.NONE;
 		}
+		
+		
+		// FEVER 時はランダム移動
+        //if (this.currentState == EnemyState.FEVER) {
+        //    return getRandomDirection(validDirections);
+        //}
+        
+        // DEAD 時はハウスへ帰還
+        //if (this.currentState == EnemyState.DEAD) {
+        //   return getClosestDirection(validDirections, START_COL, START_ROW);
+        //}
+        
+
+        // プレイヤーのタイル座標
+        int pacCol = (int)(mapData.getPacX() / MapData.TILE_SIZE);
+        int pacRow = (int)(mapData.getPacY() / MapData.TILE_SIZE);
+
+        // プレイヤーの向きの4マス先
+        switch (mapData.getSengoku().getDirection()) {
+            case UP:    pacRow -= PREDICT_TILES; break;
+            case DOWN:  pacRow += PREDICT_TILES; break;
+            case LEFT:  pacCol -= PREDICT_TILES; break;
+            case RIGHT: pacCol += PREDICT_TILES; break;
+            default: break;
+        }
+
+		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
+		return getClosestDirection(validDirections, pacCol, pacRow);
 	}
-}*/
-
-/*例 
- プレイヤー → 右向き
- プレイヤー位置 → (100, 100)
-
- プレイヤーは右に進んでる
- じゃあ 4マス先は 100 + (4 * 24) = 196
- */
-//  (196, 100) を目指して動く？たぶん？*/
+}
+*/

@@ -1,31 +1,65 @@
-//最短で追いかける　RedEnemy(赤)
+// 最短距離でプレイヤーを追跡する敵（赤）
 package Characters;
 /*
 import java.util.List;
 
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import test.test2.MapData; (後で変更)
 
-// 仙石さんを最短距離で追いかける
 public class RedEnemy extends Enemy {
 
-	// マップ中心 エネミーハウス上 （仮座標）
+	// スタート位置（エネミーハウス付近上）
 	private static final int START_COL = 13;
-	private static final int START_ROW = 11;
+	private static final int START_ROW = 12;
 
-	public RedEnemy(ImageView imageView) {
-		super(imageView, START_COL * CELL_SIZE, START_ROW * CELL_SIZE, 1);
+    // 縄張りエリアの中心（右上）(仮)
+    private static final int TERRITORY_COL = 24;
+    private static final int TERRITORY_ROW = 3;
+    
+	//引数を MapData に一本化し、正しいコンストラクタの形に直した
+	public RedEnemy(MapData sampleModel) {
+		 // マスの中心座標で生成
+		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+		      START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+		      1); // スピードは 2
+
+		this.mapData = sampleModel; // 親クラスのフィールドに代入して保持
+
+		// 画像の読み込み処理
+		try {
+			java.io.InputStream is = getClass().getResourceAsStream("/picture/hayakawa-udekumi.png");
+			if (is == null) {
+				System.err.println("❌【エラー】画像が見つかりません");
+			} else {
+				this.normalImage = new Image(is);
+				System.out.println("⭕【成功】早川さんの画像を読み込みました！");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	// 次に進む方向を決定
+	// MapView から現在の画像を取り出すためのゲッター
+	public Image getEnemyImage() {
+		if (this.currentState == Characters.EnemyState.DEAD) return deadImage;
+		if (this.currentState == Characters.EnemyState.FEVER) return feverImage;
+		return normalImage;
+	}
+
 	@Override
-	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, Sengoku player) {
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
+		// 安全対策: 進める方向がない場合は NONE、または最初の方向を返す
+		if (mapData == null || validDirections.isEmpty()) return Direction.NONE;
 
-		// プレイヤーの現在マス
-		int targetCol = (int) ((player.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
+		// キーボード操作で動いている本物のパックマン座標(px)をMapDataから取得
+		double pacX = mapData.getPacX();
+		double pacY = mapData.getPacY();
 
-		int targetRow = (int) ((player.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
+		// ピクセル座標から、AIが目指すべき「ターゲットのマス」を算出
+		int targetCol = (int) (pacX / MapData.TILE_SIZE);
+		int targetRow = (int) (pacY / MapData.TILE_SIZE);
 
-		// 一番近づける方向をEnemyクラスに選ばせる
+		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 }

@@ -28,12 +28,14 @@ public class StoryUtils {
 	        new KeyFrame(Duration.millis(1000), e -> {
 	            jumpSound.stop();
 	            jumpSound.play();
+	            jumpSound.stop();
 	        },
 	            new KeyValue(charView.translateYProperty(), -90)
 	        ),
 
 	        new KeyFrame(Duration.millis(1400),
 	            new KeyValue(charView.translateYProperty(), 0)
+	            
 	        )
 	    );
 	}
@@ -73,5 +75,6 @@ public class StoryUtils {
 
 		    return arrowMove;
 		}
+		
 		
 }

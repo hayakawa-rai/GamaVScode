@@ -6,9 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import test.controller.SampleController;
-import test.model.SampleModel;
-import test.view.SampleView;
+import test.test2.GameController;
+import test.test2.MapData;
+import test.test2.MapView;
 
 public class SamplepracticeApp extends Application {
 
@@ -32,14 +32,14 @@ public class SamplepracticeApp extends Application {
     // STAGE1（ゲーム本編）へ遷移
     public void starts(Stage stage) {
     	    // STAGE1 のゲームロジック（エサ復活つき）
-        SampleModel model = new SampleModel(true);
+        MapData model = new MapData(true);
         // 描画処理（ステージ・キャラ・アイテム）
-        SampleView view = new SampleView(model);
+        MapView view = new MapView(model);
 
         Group root = new Group();
         // マップサイズに合わせてウィンドウサイズを決定
-        int viewWidth = model.getMap()[0].length * SampleModel.TILE_SIZE;
-        int viewHeight = model.getMap().length * SampleModel.TILE_SIZE;
+        int viewWidth = model.getMap()[0].length * MapData.TILE_SIZE;
+        int viewHeight = model.getMap().length * MapData.TILE_SIZE;
 
         // 画面（Scene）を作成
         Scene scene = new Scene(root, viewWidth, viewHeight, Color.BLACK);
@@ -47,8 +47,8 @@ public class SamplepracticeApp extends Application {
         root.getChildren().add(canvas);
         // コントローラーを起動（ゲームループ開始
 
-		// SampleController を起動
-		new SampleController(model, view, canvas, scene);
+		// GameController を起動
+		new GameController(model, view, canvas, scene, stage);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);

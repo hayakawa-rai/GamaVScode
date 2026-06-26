@@ -3,6 +3,7 @@ package story;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -11,8 +12,10 @@ import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -23,6 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import start.Bgm;
 
 public class Story2 extends Application{
 
@@ -38,8 +42,20 @@ public class Story2 extends Application{
         stage.setTitle("story2");
         stage.show();
     }
-	
+    private Timeline blink;
+    private Timeline arrowMove;
 
+    private AudioClip jumpSound;
+    private AudioClip cuteSound;
+    private AudioClip appearSound;
+    private AudioClip mysteriousSound;
+    private AudioClip shineSound;
+    private AudioClip damageSound;
+    private AudioClip aSound;
+    private AudioClip atacSound;
+    
+    //ストーリー終了処理を1回だけにする用
+    private boolean isEndingStarted = false;
     //今どのメッセージを表示しているかのカウント用
     private int messageIndex = 0;
     //何文字目まで表示するか(タイピング演出のためのカウンター)
@@ -67,53 +83,120 @@ public class Story2 extends Application{
         timeline.playFromStart();
     }
     
+    private void cleanup(Scene scene) {
+
+        // テキストタイピング
+        if (timeline != null) {
+            timeline.stop();
+            timeline = null;
+        }
+
+        // ジャンプ系
+        if (jumpAniki != null) {
+            jumpAniki.stop();
+            jumpAniki = null;
+        }
+        if (jumpSengoku != null) {
+            jumpSengoku.stop();
+            jumpSengoku = null;
+        }
+        if (jumpNarinari != null) {
+            jumpNarinari.stop();
+            jumpNarinari = null;
+        }
+        if (jumpWadataku != null) {
+            jumpWadataku.stop();
+            jumpWadataku = null;
+        }
+
+        // ▼アニメーション
+        if (blink != null) {
+            blink.stop();
+            blink = null;
+        }
+        if (arrowMove != null) {
+            arrowMove.stop();
+            arrowMove = null;
+        }
+
+        // 効果音（全部止める）
+        if (jumpSound != null) jumpSound.stop();
+        if (cuteSound != null) cuteSound.stop();
+        if (appearSound != null) appearSound.stop();
+        if (mysteriousSound != null) mysteriousSound.stop();
+        if (shineSound != null) shineSound.stop();
+        if (damageSound != null) damageSound.stop();
+        if (aSound != null) aSound.stop();
+        if (atacSound != null) atacSound.stop();
+
+        jumpSound = null;
+        cuteSound = null;
+        appearSound = null;
+        mysteriousSound = null;
+        shineSound = null;
+        damageSound = null;
+        aSound = null;
+        atacSound = null;
+
+        // BGM停止
+        Bgm.stopBGM();
+
+        // イベント解除
+        if (scene != null) {
+            scene.setOnMouseClicked(null);
+        }
+    }
+    
+    
     public Scene story2() {
     	
-        
+    	//BGMの再生
+    	Bgm.stopBGM();
+    	Bgm.playBGM("/music/naribgm.mp3");
         //ジャンプ音の読み込み
-        AudioClip jumpSound = new AudioClip(
+        jumpSound = new AudioClip(
         	    getClass().getResource("/music/jump06.mp3").toExternalForm()
         	);
         //音量調整
-        jumpSound.setVolume(0.3); 
+        jumpSound.setVolume(0.2); 
         //足音の読み込み
-        AudioClip cuteSound = new AudioClip(
+        cuteSound = new AudioClip(
         	    getClass().getResource("/music/footsteps.mp3").toExternalForm()
         	);
         //音量調整
         cuteSound.setVolume(0.3);
         //登場音の読み込み
-        AudioClip appearSound = new AudioClip(
+        appearSound = new AudioClip(
         	    getClass().getResource("/music/appearance.mp3").toExternalForm()
         	);
         //音量調整
         appearSound.setVolume(0.3);
         //まぬけな音の読み込み
-        AudioClip mysteriousSound = new AudioClip(
+        mysteriousSound = new AudioClip(
         	    getClass().getResource("/music/nari.mp3").toExternalForm()
         	);
         //音量調整
         mysteriousSound.setVolume(0.3);
         //輝く音の読み込み
-        AudioClip shineSound = new AudioClip(
+        shineSound = new AudioClip(
         	    getClass().getResource("/music/shine.mp3").toExternalForm()
         	);
         //音量調整
         shineSound.setVolume(0.3);
         //ダメージ音の読み込み
-        AudioClip damageSound = new AudioClip(
+        damageSound = new AudioClip(
         	    getClass().getResource("/music/damage.mp3").toExternalForm()
         	);
         //音量調整
         damageSound.setVolume(0.3);
         //ダメージ音の読み込み
-        AudioClip aSound = new AudioClip(
+        aSound = new AudioClip(
         	    getClass().getResource("/music/damage2.mp3").toExternalForm()
         	);
         //音量調整
         aSound.setVolume(0.3);
         //攻撃音の読み込み
-        AudioClip atacSound = new AudioClip(
+        atacSound = new AudioClip(
         	    getClass().getResource("/music/atac.mp3").toExternalForm()
         	);
         //音量調整
@@ -180,8 +263,8 @@ public class Story2 extends Application{
         //下に下げる
         nextMark.setTranslateY(40);
         //▼のアニメーション設定
-        Timeline blink = StoryUtils.createBlink(nextMark);
-        Timeline arrowMove = StoryUtils.createArrowMove(nextMark);
+        blink = StoryUtils.createBlink(nextMark);
+        arrowMove = StoryUtils.createArrowMove(nextMark);
         
         //会話している人の名前表示用
         Text nameText = new Text();
@@ -211,7 +294,7 @@ public class Story2 extends Application{
         
         //背景画像を読み込み
         Image bgImage = new Image(
-        		getClass().getResourceAsStream("/picture/emd-nottori.jpg")
+        		getClass().getResourceAsStream("/picture/companyroom.jpg")
         );
         //背景画像の表示
         ImageView bgView = new ImageView(bgImage);
@@ -294,7 +377,94 @@ public class Story2 extends Application{
         base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root,insertView);
         //rootを中身とした1000×800のウィンドウを作成
         Scene scene = new Scene(base,1000,800);
+        scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
         
+        
+        //メニューボタン作成
+
+        Image menuImg = new Image(
+        	getClass().getResourceAsStream("/picture/menu.png")
+        );
+
+        ImageView menuView = new ImageView(menuImg);
+        menuView.setFitWidth(40);
+        menuView.setFitHeight(40);
+
+        Button menuBtn = new Button("");
+
+
+        menuBtn.setGraphic(menuView);
+        menuBtn.setStyle("-fx-background-color: transparent;");
+
+
+        // 右上に配置
+        StackPane.setAlignment(menuBtn, Pos.TOP_LEFT);
+        StackPane.setMargin(menuBtn, new Insets(30));
+        
+        //メニュー画面追加
+        StackPane menuOverlay = new StackPane();
+
+        // 背景（うっすら暗く）
+        menuOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
+     	menuOverlay.setVisible(false);
+     	menuOverlay.setPickOnBounds(true); 
+     	// 中央のかわいいパネル
+     	VBox menuBox = new VBox(20);
+     	menuBox.setAlignment(Pos.CENTER);
+
+     	// サイズを小さめにする
+     	menuBox.setMaxWidth(300);
+     	menuBox.setMaxHeight(250);
+
+     	//かわいい見た目
+     	menuBox.setStyle(
+    		"-fx-background-color: rgba(40,40,50,0.95);" +  // 少し透明
+        	"-fx-background-radius: 20;" +                  // 角丸
+         	"-fx-padding: 25;" +
+         	"-fx-border-radius: 20;" +
+         	"-fx-border-color: white;" +
+         	"-fx-border-width: 2;"
+    	);
+
+     	// ボタン
+     	Button resume = new Button("再開");
+     	Button titleBtn = new Button("タイトルへ");
+     	
+     	// ボタンをかわいく
+     	resume.getStyleClass().add("game-button2");
+     	titleBtn.getStyleClass().add("game-button2");
+
+     	// サイズ
+     	resume.setPrefWidth(180);
+     	titleBtn.setPrefWidth(180);
+
+
+     	// ボタン処理
+     	resume.setOnAction(e -> {
+         	menuOverlay.setVisible(false);
+
+         	if (timeline != null) timeline.play();
+         	if (blink != null) blink.play();
+         	if (arrowMove != null) arrowMove.play();
+     	});
+
+     	titleBtn.setOnAction(e -> {
+         	cleanup(scene);
+
+         	//スタート画面へ
+	        test.test2.GameController.switchStart(stage);
+     	});
+
+
+     	// 追加
+     	menuBox.getChildren().addAll(resume, titleBtn);
+     	menuOverlay.getChildren().add(menuBox);
+
+     	//最前面に追加
+     	base.getChildren().add(menuBtn);
+     	base.getChildren().add(menuOverlay);
+     	
+     	
         
         // 背景画像をウィンドウサイズに合わせる
         bgView.fitWidthProperty().bind(scene.widthProperty());
@@ -329,7 +499,7 @@ public class Story2 extends Application{
         //フォントサイズも変化
         text.styleProperty().bind(
         		Bindings.format(
-        				"-fx-font-size: %.0fpx; -fx-fill: white; -fx-font-family: monospace;",
+        				"-fx-font-size: %.0fpx; -fx-font-family: monospace;",
         				scene.widthProperty().multiply(0.03)
         		)
         );
@@ -350,9 +520,31 @@ public class Story2 extends Application{
         //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
         stage.setMinWidth(800);
         stage.setMinHeight(600);
-       
         
-      //文字表示用のタイマーを作成、50ミリ秒ごとに処理
+       //メニュー表示処理
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+
+                // メニュー表示
+                menuOverlay.setVisible(true);
+
+                // ストーリー停止
+                if (timeline != null) timeline.pause();
+                if (blink != null) blink.pause();
+                if (arrowMove != null) arrowMove.pause();
+            }
+        });
+        menuBtn.setOnAction(e -> {
+            menuOverlay.setVisible(true);
+
+            // ストーリー停止（ESCと同じ処理）
+            if (timeline != null) timeline.pause();
+            if (blink != null) blink.pause();
+            if (arrowMove != null) arrowMove.pause();
+        });
+        
+        
+        //文字表示用のタイマーを作成、50ミリ秒ごとに処理
         timeline = new Timeline(
         	new KeyFrame(Duration.millis(50),e->{
         		//今再生されている会話テキストのリスト番号を取得
@@ -413,7 +605,11 @@ public class Story2 extends Application{
         
         //クリックされたときの処理
         scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e->{
-        	
+        	if (menuOverlay.isVisible()) {
+        		if (e.getTarget() == menuBtn) return;
+        		e.consume();
+        		return;
+        	}
         	//文字表示中ならスキップして全文表示する処理
         	if(isTyping) {
         		//タイピング停止
@@ -444,6 +640,9 @@ public class Story2 extends Application{
 
         	    if (messageIndex == 5) {
         	    	insertView.setVisible(false);
+        	    	//BGMの再生
+        	    	Bgm.stopBGM();
+        	    	Bgm.playBGM("/music/storybgm.mp3");
         	    }
         	   
         	    //ダメージ受けたときの横揺れ
@@ -464,7 +663,8 @@ public class Story2 extends Application{
         	            new KeyFrame(Duration.millis(300), e2 -> {
         	                sengokuView.setOpacity(1.0);
         	                // bind戻す
-        	                sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
+        	                sengokuView.setTranslateX(-250);
+        	    
         	            })
         	        );
         	        recover.play();
@@ -504,11 +704,35 @@ public class Story2 extends Application{
         	            jumpWadataku.playFromStart();
         	        }
         	    }
-        	} else {//メッセージの最後まで行った後の処理
-        		//・・・を表示をする
-        	    text.setText("・・・");
-        	    //▼を消す
+        	}  else {//メッセージの最後まで行った後の処理
+
+        	    if (isEndingStarted) return;
+        	    isEndingStarted = true;
+
         	    nextMark.setVisible(false);
+
+        	    //黒いフェード用
+        	    Rectangle fadeRect = new Rectangle(1000, 800, Color.BLACK);
+        	    fadeRect.setOpacity(0);
+        	    base.getChildren().add(fadeRect);
+
+        	    //フェードアウト
+        	    FadeTransition fade = new FadeTransition(Duration.seconds(1.5), fadeRect);
+        	    fade.setFromValue(0);
+        	    fade.setToValue(1);
+        	    
+        	    //サイズをウィンドウに合わせる
+        	    fadeRect.widthProperty().bind(scene.widthProperty());
+        	    fadeRect.heightProperty().bind(scene.heightProperty());
+        	    
+        	    fade.setOnFinished(ev -> {
+        	    	cleanup(scene); 
+        	    	base.getChildren().clear();
+        	        //次の画面へ
+        	        test.test2.GameController.switchToGame2(stage);
+        	    });
+
+        	    fade.play();
         	}
         });
 
@@ -518,6 +742,11 @@ public class Story2 extends Application{
         	d.sound.stop();
         	d.sound.play();
         }
+        
+        //CSSを接続
+        scene.getStylesheets().add(
+            getClass().getResource("/css/style.css").toExternalForm()
+        );
 
         //最初の文章を表示(部品のすべての処理を終えてから文字を表示するため最後に記述)
         startTyping();

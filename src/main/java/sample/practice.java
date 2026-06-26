@@ -67,8 +67,9 @@ public class practice extends Application {
 			
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
-			test.controller.SampleController.switchToGame(stage);
+//			stage.setScene(test1.Main1.createScene(stage));
 		});
+		
 		VBox stageButtons = new VBox(20, stage1, stage2, stage3);
 		stageButtons.setAlignment(Pos.CENTER);
 
