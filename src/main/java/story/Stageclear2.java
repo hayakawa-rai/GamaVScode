@@ -15,212 +15,190 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Stageclear2 extends Application{
-	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
-    private Stage stage;
-  //javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
-    @Override
-    public void start(Stage stage) {
-    	//受け取った変数Stageを自分のStageに保存
-        this.stage = stage;
-      //ウィンドウの中身を決定
-        stage.setScene(clear());
-        stage.setTitle("stage2CLEAR");
-        stage.show();
-    }
-    
-    private Sengoku sengoku;
+public class Stageclear2 extends Application {
 
-    public Stageclear2(Sengoku sengoku) {
-        this.sengoku = sengoku;
-    }
-    
-    private AudioClip clearSound;
-    private AudioClip clickSound;
-    private AudioClip cancelSound;
+	// ★ スコアを保持する変数
+	private int finalScore = 0;
 
-    private PauseTransition delay;
-    private PauseTransition pause;
+	// ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
+	private Stage stage;
 
-    private void cleanup() {
+	// キャラクター保持用の変数
+	private Sengoku sengoku;
 
-        // 遅延処理止める
-        if (delay != null) {
-            delay.stop();
-            delay = null;
-        }
-
-        if (pause != null) {
-            pause.stop();
-            pause = null;
-        }
-
-        // 音止める
-        if (clearSound != null) {
-            clearSound.stop();
-            clearSound = null;
-        }
-
-        if (clickSound != null) {
-            clickSound.stop();
-            clickSound = null;
-        }
-
-        if (cancelSound != null) {
-            cancelSound.stop();
-            cancelSound = null;
-        }
-    }
-    
-    public Scene clear() {
-    // クリア音
-    clearSound = new AudioClip(
-    getClass().getResource("/music/yay.mp3").toExternalForm()
-    );
-    clearSound.setVolume(0.5);
-    
-    // 0.5秒待つ
-    delay = new PauseTransition(Duration.seconds(0.5));
-        	
-    // 時間経過後に再生
-    delay.setOnFinished(e -> {
-    	clearSound.play();
-    });
-        	
-    // タイマー開始
-    delay.play();
-    
-    //どこのステージをクリアしたか表示する
-    Text title = new Text("STAGE2    CLEAR!");
-    //フォントサイズとカラーを指定
-    title.setStyle("-fx-font-size: 80px; -fx-fill: rgb(180,180,180);");
-    //獲得したアイテムを表示
-    Text text = new Text("契約書を獲得しました！！");
-    //フォントサイズとカラーを指定
-    text.setStyle("-fx-font-size: 20px; -fx-fill: gray;");
-    //獲得したアイテムの画像読み込み
-    Image image = new Image(
-    		getClass().getResource("/picture/keiyakusho.png").toExternalForm()
-    );
-    //読み込んだ画像を表示
-    ImageView imageView = new ImageView(image);
-    //画像のサイズ調整
-    imageView.setFitWidth(150); 
-    imageView.setFitHeight(150);
-
-    //横並びにする箱を設定
-    HBox textAndImage = new HBox();
-    //textと画像の間隔を設定
-    textAndImage.setSpacing(10); 
-    //中央に配置
-    textAndImage.setAlignment(Pos.CENTER);
-    //画像とtextを箱に入れる
-    textAndImage.getChildren().addAll(imageView,text);
-
-    //縦並びにする箱を設定
-    VBox buttonBox = new VBox();
-    //ボタン配置に間隔を設定
-	buttonBox.setSpacing(20);
-	//中央に配置
-	buttonBox.setAlignment(Pos.CENTER);
-	
-	//音声読み込み
-	clickSound = new AudioClip(
-		getClass().getResource("/music/select.mp3").toExternalForm()
-	);
-	// 音量調整
-	clickSound.setVolume(0.4);
-		
-	//音声読み込み
-	cancelSound = new AudioClip(
-		getClass().getResource("/music/cancel.mp3").toExternalForm()
-	);
-	// 音量調整
-	cancelSound.setVolume(0.4);
-	
-	
-	//スコア表示
-	Text scoreLabel = new Text();
-
-	if (sengoku != null) {
-	    scoreLabel.setText("SCORE: " + sengoku.getScore());
+	// ★★★ GameController の new Stageclear2() でエラーを出さないためのコンストラクタ ★★★
+	public Stageclear2() {
+		// 引数なしでインスタンス化できるように空で用意
 	}
 
-	scoreLabel.setStyle("-fx-font-size: 30px; -fx-fill:  gray;");
-	
-	
-	
-    // 次に進むボタン
-    Button next = new Button("次のステージへ");
-    //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
-    next.getStyleClass().add("game-button2");
-    next.setPrefSize(250, 80);
-    //次の画面に遷移
-    next.setOnAction(e -> {
-        // 音を再生
-    	clickSound.stop();
-        clickSound.play();
+	// 既存の引数ありコンストラクタ
+	public Stageclear2(Sengoku sengoku) {
+		this.sengoku = sengoku;
+		if (sengoku != null) {
+			this.finalScore = sengoku.getScore();
+		}
+	}
 
-        // 0.5秒待つ
-        pause = new PauseTransition(Duration.seconds(0.5));
+	// ★ GameControllerからスコアを直接受け取るためのメソッド
+	public void setScore(int score) {
+		this.finalScore = score;
+	}
 
-        // 待った後に画面遷移
-        pause.setOnFinished(ev -> {
-            try {
-            	cleanup();
-            	// 画面遷移
-    	        test.test2.GameController.switchStory3(stage);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
+	private AudioClip clearSound;
+	private AudioClip clickSound;
+	private AudioClip cancelSound;
 
-        // タイマー開始
-        pause.play();
-    });
-    // 戻るボタン
-    Button backButton = new Button("タイトルへ");
-    //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
-    backButton.getStyleClass().add("game-button2");
-    backButton.setPrefSize(250, 80);
-    //スタート画面へ戻る
-    backButton.setOnAction(e -> {
-    	cancelSound.stop();
-    	cancelSound.play();
-    	
-    	// 0.5秒待つ
-        pause = new PauseTransition(Duration.seconds(0.5));
+	private PauseTransition delay;
+	private PauseTransition pause;
 
-        // 待った後に画面遷移
-        pause.setOnFinished(ev -> {
-        try {
-        	cleanup();
-        	// 画面遷移
-	        test.test2.GameController.switchStart(stage);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    });
-        // タイマー開始
-        pause.play();
-    });
-    //titleと画像とtextをまとめたもの、ボタン2つを箱に入れる。
-    buttonBox.getChildren().addAll(title,textAndImage,scoreLabel,next, backButton);//ボタンを配置
-    
-    //buttonBoxを中身とした1000×800のウィンドウを作成
-    Scene scene = new Scene(buttonBox, 1000, 800);
-    //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-    stage.setMinWidth(800);
-    stage.setMinHeight(600);
-    //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-    stage.setMinWidth(800);
-    stage.setMinHeight(600);
-    //CSSを接続
-    scene.getStylesheets().add(
-        getClass().getResource("/css/style.css").toExternalForm()
-    );	
-    //画面に表示させたいものを返す
-    return scene;
-    	
-    }
+	// メディアやタイマーを安全に停止するクリーンアップ処理
+	private void cleanup() {
+		if (delay != null) {
+			delay.stop();
+			delay = null;
+		}
+		if (pause != null) {
+			pause.stop();
+			pause = null;
+		}
+		if (clearSound != null) {
+			clearSound.stop();
+			clearSound = null;
+		}
+		if (clickSound != null) {
+			clickSound.stop();
+			clickSound = null;
+		}
+		if (cancelSound != null) {
+			cancelSound.stop();
+			cancelSound = null;
+		}
+	}
+
+	// JavaFXのエントリーポイント
+	@Override
+	public void start(Stage stage) {
+		// 受け取った変数Stageを自分のStageに保存
+		this.stage = stage;
+		// ウィンドウの中身を決定
+		stage.setScene(clear());
+		stage.setTitle("stage2CLEAR");
+		stage.show();
+	}
+
+	// クリア画面のシーン生成
+	public Scene clear() {
+		// クリア音
+		clearSound = new AudioClip(getClass().getResource("/music/yay.mp3").toExternalForm());
+		clearSound.setVolume(0.5);
+
+		// 0.5秒待つ
+		delay = new PauseTransition(Duration.seconds(0.5));
+
+		// 時間経過後に再生
+		delay.setOnFinished(e -> {
+			clearSound.play();
+		});
+
+		// タイマー開始
+		delay.play();
+
+		// どこのステージをクリアしたか表示する
+		Text title = new Text("STAGE2    CLEAR!");
+		title.setStyle("-fx-font-size: 80px; -fx-fill: rgb(180,180,180);");
+
+		// ★★★ 獲得スコアを表示するテキスト ★★★
+		Text scoreText = new Text("SCORE: " + finalScore);
+		scoreText.setStyle("-fx-font-size: 32px; -fx-fill: #ffcc00; -fx-font-weight: bold;");
+
+		// 獲得したアイテムを表示
+		Text text = new Text("契約書を獲得しました！！");
+		text.setStyle("-fx-font-size: 20px; -fx-fill: gray;");
+		
+		// 獲得したアイテムの画像読み込み
+		Image image = new Image(getClass().getResource("/picture/keiyakusho.png").toExternalForm());
+		ImageView imageView = new ImageView(image);
+		imageView.setFitWidth(150);
+		imageView.setFitHeight(150);
+
+		// 横並びにする箱を設定
+		HBox textAndImage = new HBox();
+		textAndImage.setSpacing(10);
+		textAndImage.setAlignment(Pos.CENTER);
+		textAndImage.getChildren().addAll(imageView, text);
+
+		// 縦並びにする箱を設定
+		VBox buttonBox = new VBox();
+		buttonBox.setSpacing(20);
+		buttonBox.setAlignment(Pos.CENTER);
+
+		// 音声読み込み
+		clickSound = new AudioClip(getClass().getResource("/music/select.mp3").toExternalForm());
+		clickSound.setVolume(0.4);
+
+		cancelSound = new AudioClip(getClass().getResource("/music/cancel.mp3").toExternalForm());
+		cancelSound.setVolume(0.4);
+
+		// 次に進むボタン
+		Button next = new Button("次のステージへ");
+		next.getStyleClass().add("game-button2");
+		next.setPrefSize(250, 80);
+		next.setOnAction(e -> {
+			clickSound.stop();
+			clickSound.play();
+
+			// 0.5秒待つ
+			pause = new PauseTransition(Duration.seconds(0.5));
+
+			// 待った後に画面遷移
+			pause.setOnFinished(ev -> {
+				try {
+					cleanup();
+					test.test2.GameController.switchStory3(stage);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			});
+
+			// タイマー開始
+			pause.play();
+		});
+
+		// 戻るボタン
+		Button backButton = new Button("タイトルへ");
+		backButton.getStyleClass().add("game-button2");
+		backButton.setPrefSize(250, 80);
+		backButton.setOnAction(e -> {
+			cancelSound.stop();
+			cancelSound.play();
+
+			// 0.5秒待つ
+			pause = new PauseTransition(Duration.seconds(0.5));
+
+			// 待った後に画面遷移
+			pause.setOnFinished(ev -> {
+				try {
+					cleanup();
+					test.test2.GameController.switchStart(stage);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			});
+			// タイマー開始
+			pause.play();
+		});
+
+		// 各パーツを縦並びの箱に入れる
+		buttonBox.getChildren().addAll(title, scoreText, textAndImage, next, backButton);
+
+		// 1000×800のウィンドウを作成
+		Scene scene = new Scene(buttonBox, 1000, 800);
+		stage.setMinWidth(800);
+		stage.setMinHeight(600);
+
+		// CSSを接続
+		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		
+		return scene;
+	}
 }
