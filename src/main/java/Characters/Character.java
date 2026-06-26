@@ -1,5 +1,7 @@
 package Characters;
 
+import test.Direction;
+
 public abstract class Character {
 
 	protected double x; // 現在のX座標(左右移動)
