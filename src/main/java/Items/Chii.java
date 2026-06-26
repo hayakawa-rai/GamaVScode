@@ -10,7 +10,7 @@ import javafx.scene.shape.Circle;
 public class Chii extends Item {
     
     // 💡 ここの数値を変更するだけで、いつでも画面上の画像の大きさを変えられます！
-    private static final double IMAGE_SIZE = 30.0; 
+    private static final double IMAGE_SIZE = 37.0; 
 
     public Chii(double pixelX, double pixelY) {
         // 親クラス（Item）には、一旦何も持たないダミーのImageViewを渡しておく

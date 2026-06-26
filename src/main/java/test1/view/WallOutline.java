@@ -1,5 +1,5 @@
 
-package test.test2;
+package test1.view;
 
 import javafx.scene.canvas.GraphicsContext;
 

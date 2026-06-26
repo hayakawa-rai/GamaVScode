@@ -269,7 +269,7 @@ public class Story3 extends Application{
         
         //人物画像の読み込み(あにき)
         Image anikiImage = new Image(
-        		getClass().getResourceAsStream("/picture/hayakawa-udekumi.png")
+        		getClass().getResourceAsStream("/picture/aniki-udekumi.png")
         );
         //人物画像の表示
         ImageView anikiView = new ImageView(anikiImage);

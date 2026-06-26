@@ -254,7 +254,7 @@ public class Story4 extends Application{
         
         //人物画像の読み込み(あにき)
         Image anikiImage = new Image(
-        		getClass().getResourceAsStream("/picture/hayakawa-udekumi.png")
+        		getClass().getResourceAsStream("/picture/aniki-udekumi.png")
         );
         //人物画像の表示
         ImageView anikiView = new ImageView(anikiImage);
@@ -588,7 +588,7 @@ public class Story4 extends Application{
         	    if (messageIndex >= 2 && messageIndex <= 10) {
         	        // 差し替え画像
         	        anikiView.setImage(new Image(
-        	            getClass().getResourceAsStream("/picture/hayakawa2.png")
+        	            getClass().getResourceAsStream("/picture/aniki2.png")
         	        ));
         	        // サイズ変更
         	        anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.7));
