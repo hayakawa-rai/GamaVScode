@@ -293,6 +293,7 @@ public class MapData {
 			Item item = itemMap[currentTileY][currentTileX];
 
 			if (item != null) {
+				// ポイントをスコアに加算
 				item.onEaten(sengoku);
 
 				// パワーエサ(2)を食べたらFEVER
