@@ -1,5 +1,6 @@
 package story;
 
+import Characters.Sengoku;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -26,6 +27,12 @@ public class Stageclear2 extends Application{
         stage.setScene(clear());
         stage.setTitle("stage2CLEAR");
         stage.show();
+    }
+    
+    private Sengoku sengoku;
+
+    public Stageclear2(Sengoku sengoku) {
+        this.sengoku = sengoku;
     }
     
     private AudioClip clearSound;
@@ -131,6 +138,18 @@ public class Stageclear2 extends Application{
 	// 音量調整
 	cancelSound.setVolume(0.4);
 	
+	
+	//スコア表示
+	Text scoreLabel = new Text();
+
+	if (sengoku != null) {
+	    scoreLabel.setText("SCORE: " + sengoku.getScore());
+	}
+
+	scoreLabel.setStyle("-fx-font-size: 30px; -fx-fill:  gray;");
+	
+	
+	
     // 次に進むボタン
     Button next = new Button("次のステージへ");
     //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
@@ -186,7 +205,7 @@ public class Stageclear2 extends Application{
         pause.play();
     });
     //titleと画像とtextをまとめたもの、ボタン2つを箱に入れる。
-    buttonBox.getChildren().addAll(title,textAndImage,next, backButton);//ボタンを配置
+    buttonBox.getChildren().addAll(title,textAndImage,scoreLabel,next, backButton);//ボタンを配置
     
     //buttonBoxを中身とした1000×800のウィンドウを作成
     Scene scene = new Scene(buttonBox, 1000, 800);

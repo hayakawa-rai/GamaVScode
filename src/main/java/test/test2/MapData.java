@@ -136,7 +136,7 @@ public class MapData {
 	public MapData() {
 		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
-
+		
 		for (int row = 0; row < map.length; row++) {
 
 			for (int col = 0; col < map[0].length; col++) {
@@ -418,6 +418,9 @@ public class MapData {
 	public boolean isPaused() {
 		return paused;
 	}
+
+	
+	
 
 	// --- getters ---
 	public int[][] getMap() {

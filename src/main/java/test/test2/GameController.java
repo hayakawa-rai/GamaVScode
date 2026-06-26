@@ -1,6 +1,7 @@
 package test.test2;
 
 import Characters.Direction;
+import Characters.Sengoku;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -201,7 +202,8 @@ public class GameController {
 					System.out.println("ステージクリア！次の画面へ遷移します。");
 					
 					// クリア画面（Stageclear2）に遷移させる
-					switchToStageclear2(stage); 
+					Sengoku sengoku = model.getSengoku();
+					switchToStageclear2(stage,sengoku); 
 					
 					// もし直接ステージ2のゲーム画面にいかせたい場合はこちら↓
 					// switchToGame2(stage);
@@ -231,9 +233,9 @@ public class GameController {
 	}
 	
 	// Stageclear2画面へ変更するためのメソッド
-		public static void switchToStageclear2(javafx.stage.Stage stage) {
+		public static void switchToStageclear2(javafx.stage.Stage stage,Sengoku sengoku) {
 			try {
-				Stageclear2 App = new Stageclear2();
+				Stageclear2 App = new Stageclear2(sengoku);
 				App.start(stage);
 			} catch (Exception e) {
 				e.printStackTrace();
