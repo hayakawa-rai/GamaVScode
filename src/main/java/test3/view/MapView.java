@@ -1,6 +1,7 @@
 package test3.view;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import test3.model.MapData;
@@ -13,6 +14,17 @@ public class MapView {
 	public MapView(MapData model) {
 		this.model = model;
 	}
+	
+	// 新しいコンストラクタ（引数2つ用）
+			public MapView(MapData model, Pane root) {
+				this.model = model;
+			
+				root.sceneProperty().addListener((observable, oldScene, newScene) -> {
+					if (newScene != null) {
+						test.test2.GameController.applyMobileControls(newScene, this.model);
+					}
+				});
+			}
 
 	// CSSの背景色からColorオブジェクトを安全に引っ張り出す正しい処理
 	private Color getColorFromCSS(GraphicsContext gc, String styleClass, Color fallbackColor) {

@@ -46,6 +46,12 @@ public class MapView {
 		wallDummy.setVisible(false);
 		pacmanDummy.setVisible(false);
 		root.getChildren().addAll(wallDummy, pacmanDummy);
+	
+		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
+			if (newScene != null) {
+				test.test2.GameController.applyMobileControls(newScene, this.model);
+			}
+		});
 	}
 
 	/**
@@ -82,8 +88,6 @@ public class MapView {
 
 		double scale = Math.min(scaleX, scaleY) * bufferRatio;
 
-		// 3. 小さくなった分も含めて、改めて中央に配置するための余白（オフセット）を計算
-
 		// 3. 中央に配置するための余白（オフセット）を計算
 		double offsetX = (canvasWidth - (stageWidth * scale)) / 2.0;
 
@@ -119,6 +123,14 @@ public class MapView {
 
 		drawPacman(gc, pacmanColor);
 
+<<<<<<< HEAD
+=======
+		// ⭕【ここを追加！】リスト内（Red, Green）のすべての敵をループで一斉に描画する
+
+		drawStageContent(gc, cols, rows, stageWidth, stageHeight, wallColor);
+		drawPacman(gc, pacmanColor);
+
+>>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 		// 敵の描画メソッド
 		if (model.getEnemies() != null) {
 
@@ -129,7 +141,6 @@ public class MapView {
 
 		}
 
-		// 8. グラフィックスの状態を元に戻す（これを行わないと次回呼び出し時にズレが増幅します）
 
 		// 8. グラフィックスの状態を元に戻す
 		gc.restore();
