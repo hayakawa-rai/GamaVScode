@@ -10,7 +10,7 @@ public class BlueEnemy extends Enemy {
 
 	// スタート位置(マップ中心 エネミーハウス上)
 	private static final int START_COL = 14;
-	private static final int START_ROW = 14;
+	private static final int START_ROW = 13;
 
 	// プレイヤーの進行方向の2マス先を狙う
 	private static final int PREDICT_TILES = 2;
@@ -83,7 +83,7 @@ public class BlueEnemy extends Enemy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// 画像の読み込み処理
 	public Image getEnemyImage() {
 		if (this.currentState == Characters.EnemyState.DEAD) {
@@ -94,8 +94,6 @@ public class BlueEnemy extends Enemy {
 		}
 		return normalImage;
 	}
- 
-
 
 	// 2秒経過後に出撃
 	@Override
@@ -164,6 +162,16 @@ public class BlueEnemy extends Enemy {
 
 		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
+	}
+
+	@Override
+	public void resetToStartPosition() {
+
+		super.resetToStartPosition();
+
+		released = false;
+		startTime = System.currentTimeMillis();
+
 	}
 
 }

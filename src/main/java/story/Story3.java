@@ -341,7 +341,7 @@ public class Story3 extends Application{
         //メニューボタン作成
 
         Image menuImg = new Image(
-        	getClass().getResourceAsStream("/picture/menu.png")
+        	getClass().getResourceAsStream("/picture/menu.jpeg")
         );
 
         ImageView menuView = new ImageView(menuImg);

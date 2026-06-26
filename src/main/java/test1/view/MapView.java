@@ -63,28 +63,22 @@ public class MapView {
 		return fallbackColor;
 	}
 
-	// マップ描画（test.test2仕様：四隅に余白をつけてブロック感を出す）
+	// マップ描画
 	public void drawStage(GraphicsContext gc) {
 		int[][] map = model.getMap();
 		Color wallColor = getColorFromCSS(gc, "game-wall", Color.BLUE);
 		gc.setFill(wallColor);
 
-		for (int y = 0; y < map.length; y++) {
-			for (int x = 0; x < map[0].length; x++) {
-				if (map[y][x] == 1) {
-					// ★ test.test2 と同様に、+2の隙間と幅-4を適用して独立した正方形ブロックにする
-					gc.fillRect(
-							(x * MapData.TILE_SIZE) + 2,
-							(y * MapData.TILE_SIZE) + 2,
-							MapData.TILE_SIZE - 4,
-							MapData.TILE_SIZE - 4);
-				}
-			}
-		}
+		// WallOutline で壁を描画
+	    WallOutline outline = new WallOutline(model.getMap(), MapData.TILE_SIZE);
+	    gc.setStroke(wallColor);
+	    gc.setLineWidth(2);
+	    outline.drawOutline(gc);
+	}
 
 		// スコア表示（右下）
 		// ※ modelにgetScore()あるいはそれに類するメソッドが実装されている前提です
-		try {
+		//try {
 			// 例として model.getScore() で取得を試みます。メソッド名が異なる場合は適宜修正してください。
 			// String scoreText = "SCORE: " + model.getScore();
 			// gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
@@ -92,10 +86,10 @@ public class MapView {
 			// double textX = (map[0].length * MapData.TILE_SIZE) - 140;
 			// double textY = (map.length * MapData.TILE_SIZE) - 20;
 			// gc.fillText(scoreText, textX, textY);
-		} catch (Exception e) {
+		//} catch (Exception e) {
 			// スコアメソッドがmodelにない場合はエラーで落ちないようにスルー
-		}
-	}
+		//}
+	//}
 
 	// パックマン描画（中心座標基準・向きの修正対応）
 	public void drawPacman(GraphicsContext gc) {
