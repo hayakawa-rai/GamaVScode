@@ -10,47 +10,47 @@ import test.test2.MapData;
 public abstract class Enemy extends Character {
 
 	protected javafx.scene.image.ImageView imageView;
+
 	protected MapData mapData;
+
 	protected Characters.EnemyState currentState = Characters.EnemyState.SCATTER;
 
 	protected javafx.scene.image.Image normalImage;
+
 	protected javafx.scene.image.Image feverImage;
+
 	protected javafx.scene.image.Image deadImage;
 
-	protected final double startX;
-	protected final double startY;
-
 	public Enemy(double startX, double startY, int speed) {
+
 		super(startX, startY, speed);
 
-		this.startX = startX;
-		this.startY = startY;
 	}
 
 	protected abstract Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData);
 
 	@Override
 	public void move(int[][] map) {
-		int tileX = (int) (this.x / MapData.TILE_SIZE);
-		int tileY = (int) (this.y / MapData.TILE_SIZE);
+	    int tileX = (int) (this.x / MapData.TILE_SIZE);
+	    int tileY = (int) (this.y / MapData.TILE_SIZE);
 
-		// 範囲外防止
-		if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) {
-			return;
-		}
+	    // 範囲外防止
+	    if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) {
+	        return;
+	    }
 
-		double cx = tileX * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
-		double cy = tileY * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+	    double cx = tileX * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+	    double cy = tileY * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
 
-		int currentTileType = map[tileY][tileX]; // 今いるマスの種類を取得
+	    int currentTileType = map[tileY][tileX]; // 今いるマスの種類を取得
 
-		// ⭕ 修正：固定座標(14,14)ではなく、今いるマスが巣の床(8)なら自動で復活させる
-		if (currentState == Characters.EnemyState.DEAD) {
-			if (currentTileType == 8) {
-				currentState = Characters.EnemyState.SCATTER;
-				System.out.println(getClass().getSimpleName() + "が巣に帰還し、復活しました");
-			}
-		}
+	    // ⭕ 修正：固定座標(14,14)ではなく、今いるマスが巣の床(8)なら自動で復活させる
+	    if (currentState == Characters.EnemyState.DEAD) {
+	        if (currentTileType == 8) {
+	            currentState = Characters.EnemyState.SCATTER;
+	            System.out.println(getClass().getSimpleName() + "が巣に帰還し、復活しました");
+	        }
+	    }
 
 		// 現在のスピードの計算
 		double currentSpeed = this.getSpeed();
@@ -76,8 +76,7 @@ public abstract class Enemy extends Character {
 				int currentRow = (int) (this.y / MapData.TILE_SIZE);
 				int currentCol = (int) (this.x / MapData.TILE_SIZE);
 				// 巣の中にいる間は、ターゲットを強制的に巣のすぐ外（例: 行10、列13）にする
-				if (currentState != Characters.EnemyState.DEAD && currentRow >= 12 && currentRow <= 15
-						&& currentCol >= 12 && currentCol <= 15) {
+				if (currentState != Characters.EnemyState.DEAD &&currentRow >= 12 && currentRow <= 15 && currentCol >= 12 && currentCol <= 15) {
 					this.y = cy;
 					this.x = cx;
 					this.direction = Direction.UP;
@@ -125,33 +124,44 @@ public abstract class Enemy extends Character {
 	}
 
 	// DEAD・FEVERの共通処理
+		protected Direction handleSpecialState(List<Direction> validDirections, int targetCol, int targetRow) {
+			// ⭕ DEAD状態なら、自動的にマップ内の「7（扉）」の中から【一番近い場所】を探してそこへ帰る
+			if (currentState == Characters.EnemyState.DEAD) {
+				int[][] currentMap = mapData.getMap();
+				
+				// デフォルトのバックアップ座標
+				int bestGateCol = 14; 
+				int bestGateRow = 13;
+				double minDistanceSq = Double.MAX_VALUE;
 
-	protected Direction handleSpecialState(List<Direction> validDirections, int targetCol, int targetRow) {
-		// ⭕ DEAD状態なら、自動的にマップ内の「7（扉）」を探してそこへ帰る
-		if (currentState == Characters.EnemyState.DEAD) {
-			int[][] currentMap = mapData.getMap();
-			//扉（7）がなかった時のバグ防止。この地点にいきます。
-			int gateCol = 14;
-			int gateRow = 13;
+				// 今の自分の位置（マス単位）
+				int myCol = (int) (this.x / MapData.TILE_SIZE);
+				int myRow = (int) (this.y / MapData.TILE_SIZE);
 
-			//outerLoop	下記の二つのfor文を一気にbreakできるようにしている。
-			outerLoop: for (int r = 0; r < currentMap.length; r++) {
-				for (int c = 0; c < currentMap[r].length; c++) {
-					if (currentMap[r][c] == 7) {
-						gateRow = r;
-						gateCol = c;
-						break outerLoop;
+				// マップ全体からすべての「7」を探し、一番近いものを選択する（outerLoopとbreakは削除）
+				for (int r = 0; r < currentMap.length; r++) {
+					for (int c = 0; c < currentMap[r].length; c++) {
+						if (currentMap[r][c] == 7) {
+							// 自分の現在地からの距離を計算（三平方の定理）
+							double distSq = Math.pow(c - myCol, 2) + Math.pow(r - myRow, 2);
+							if (distSq < minDistanceSq) {
+								minDistanceSq = distSq;
+								bestGateCol = c;
+								bestGateRow = r;
+							}
+						}
 					}
 				}
+				
+				// 最も近い扉（右半分にいるときは右側の7、左半分にいるときは左側の7）に向かわせる
+				return getClosestDirection(validDirections, bestGateCol, bestGateRow);
 			}
-			return getClosestDirection(validDirections, gateCol, gateRow);
-		}
 
-		if (currentState == Characters.EnemyState.FEVER) {
-			return getFarthestDirection(validDirections, targetCol, targetRow);
+			if (currentState == Characters.EnemyState.FEVER) {
+				return getFarthestDirection(validDirections, targetCol, targetRow);
+			}
+			return null;
 		}
-		return null;
-	}
 
 	// 三平方の定理を使って目的地に一番近い方向を選ぶ共通処理
 
@@ -194,9 +204,8 @@ public abstract class Enemy extends Character {
 	}
 
 	private boolean isOppositeDirection(Direction dir1, Direction dir2) {
-		if (dir1 == Direction.NONE || dir2 == Direction.NONE)
-			return false;
-
+		if (dir1 == Direction.NONE || dir2 == Direction.NONE)	return false;
+		
 		return (dir1.getDX() + dir2.getDX() == 0) && (dir1.getDY() + dir2.getDY() == 0);
 	}
 
@@ -204,11 +213,9 @@ public abstract class Enemy extends Character {
 		List<Direction> list = new ArrayList<>();
 
 		for (Direction dir : Direction.values()) {
-			if (dir == Direction.NONE)
-				continue;
+			if (dir == Direction.NONE)	continue;
 			// 常にUターン禁止
-			if (isOppositeDirection(dir, this.direction))
-				continue;
+			if (isOppositeDirection(dir, this.direction)) continue;
 			if (canmove(dir, map)) {
 				list.add(dir);
 			}
@@ -218,8 +225,7 @@ public abstract class Enemy extends Character {
 	}
 
 	private boolean canmove(Direction direction, int[][] map) {
-		if (direction == Direction.NONE)
-			return false;
+		if (direction == Direction.NONE) return false;
 
 		int currentCol = (int) (this.x / MapData.TILE_SIZE);
 		int currentRow = (int) (this.y / MapData.TILE_SIZE);
@@ -244,7 +250,7 @@ public abstract class Enemy extends Character {
 			}
 		}
 
-		return true;
+		return true; 
 	}
 
 	// FEVER状態で使用する画像をステージごとに読み込む
@@ -279,7 +285,7 @@ public abstract class Enemy extends Character {
 				feverImage = new javafx.scene.image.Image(is);
 				System.out.println("⭕ FEVER画像読込成功: " + feverPath);
 			}
-
+			
 			// 読み込み失敗時
 			else {
 				System.err.println("❌ FEVER画像が見つかりません: " + feverPath);
@@ -323,7 +329,6 @@ public abstract class Enemy extends Character {
 			e.printStackTrace();
 		}
 	}
-
 	// ---getter---
 	public javafx.scene.image.Image getEnemyImage() {
 
@@ -337,32 +342,10 @@ public abstract class Enemy extends Character {
 
 		return normalImage;
 	}
-
-	public Characters.EnemyState getCurrentState() {
-		return currentState;
-	}
-
-	public double getX() {
-		return x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
+	public Characters.EnemyState getCurrentState() {return currentState;}
+	public double getX() {return x;}
+	public double getY() {return y;}
 	// ---setter---
-	public void setCurrentState(Characters.EnemyState state) {
-		this.currentState = state;
-	}
-
-	public void resetToStartPosition() {
-
-		this.x = startX;
-		this.y = startY;
-
-		this.direction = Direction.NONE;
-
-		this.currentState = Characters.EnemyState.SCATTER;
-	}
+	public void setCurrentState(Characters.EnemyState state) {this.currentState = state;}
 
 }
