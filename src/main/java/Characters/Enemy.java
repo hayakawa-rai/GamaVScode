@@ -1,222 +1,458 @@
+//エネミークラス
 
-/*
 package Characters;
-
+/*
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.image.ImageView;
+import test.test2.MapData;
 
 public abstract class Enemy extends Character {
 
-	protected ImageView imageView;
-	protected static final int CELL_SIZE = 24;//1マスの大きさ
-	
-	//Sengokuをフィールドとして保持
-	protected Sengoku player;
+	protected javafx.scene.image.ImageView imageView;
 
-	//[4つのモード]初期状態の「縄張りモード」からスタートする
-	protected EnemyState currentState = EnemyState.SCATTER;
+	protected MapData mapData;
 
-	//状態ごとの画像(こんな感じで書く(多分))
-	protected javafx.scene.image.Image normalImage; // 通常状態敵
-	protected javafx.scene.image.Image feverImage; // パワーアイテムを取得して逃げてる敵
-	protected javafx.scene.image.Image deadImage; // 食べられて初期地点に戻る敵
+	protected Characters.EnemyState currentState = Characters.EnemyState.SCATTER;
 
-	//コンストラクタ
-	public Enemy(ImageView imageView, double startX, double startY, int speed,Sengoku player) {
+	protected javafx.scene.image.Image normalImage;
+
+	protected javafx.scene.image.Image feverImage;
+
+	protected javafx.scene.image.Image deadImage;
+
+	public Enemy(double startX, double startY, int speed) {
+
 		super(startX, startY, speed);
-		this.imageView = imageView;
-		this.player = player;
-		//初期位置をImageViewに反映
-		this.imageView.setLayoutX(startX);
-		this.imageView.setLayoutY(startY);
+
 	}
 
+	protected abstract Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData);
 
-	//全ての敵に共通する物理移動のルール
 	@Override
+
 	public void move(int[][] map) {
-		double centerX = this.getX() + CELL_SIZE / 2.0;
-		double centerY = this.getY() + CELL_SIZE / 2.0;
 
-		int currentMeshX = (int) centerX % CELL_SIZE;
-		int currentMeshY = (int) centerY % CELL_SIZE;
-		int centerOffset = CELL_SIZE / 2;
+		int tileX = (int) (this.x / MapData.TILE_SIZE);
 
-		//マスの中心に来たら、次の進行方向を決める
-		if (Math.abs(currentMeshX - centerOffset) < this.getSpeed()
-				&& Math.abs(currentMeshY - centerOffset) < this.getSpeed()) {
+		int tileY = (int) (this.y / MapData.TILE_SIZE);
 
-			//上下左右の中で、物理的に進める方向(壁がなく、Uターンではない方向)をリストアップ
+		// 範囲外防止
+
+		if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) {
+
+			return;
+
+		}
+
+		double cx = tileX * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+
+		double cy = tileY * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+
+		if (currentState == Characters.EnemyState.DEAD) {
+
+			int col = (int) (x / MapData.TILE_SIZE);
+
+			int row = (int) (y / MapData.TILE_SIZE);
+
+			// 巣に到着
+
+			if (col == 14 && row == 14) {
+
+				currentState = Characters.EnemyState.SCATTER;
+
+				System.out.println(getClass().getSimpleName() + "復活");
+
+			}
+
+		}
+
+		// 現在のスピードの計算
+
+		double currentSpeed = this.getSpeed();
+
+		// FEVER時は半速
+
+		if (this.currentState == Characters.EnemyState.FEVER) {
+
+			currentSpeed = this.getSpeed() * 0.5;
+
+		}
+
+		// DEAD時は高速帰還
+
+		if (this.currentState == Characters.EnemyState.DEAD) {
+
+			currentSpeed = this.getSpeed() * 2;
+
+		}
+
+		// タイルの中心に近づいたか判定
+
+		boolean atCenter = Math.abs(this.x - cx) < currentSpeed && Math.abs(this.y - cy) < currentSpeed;
+
+		// 完全に停止している(NONE)か、マスの中心に到達したら方向転換
+
+		if (this.direction == Direction.NONE || atCenter) {
+
 			List<Direction> validDirections = getValidDirections(map);
 
 			if (!validDirections.isEmpty()) {
-				//具体的に進む方向は,4つのモードとプレイヤー情報を使って子クラスのAIに選ばせる
-				Direction chosenDirection = decideNextDirection(validDirections, map, player);
 
-				//位置補正
+				// 現在のタイル座標を一時的に取得（条件判定用）
+				int currentRow = (int) (this.y / MapData.TILE_SIZE);
+				int currentCol = (int) (this.x / MapData.TILE_SIZE);
 
-				int col = (int) (centerX / CELL_SIZE);
-				int row = (int) (centerY / CELL_SIZE);
-				this.x = col * CELL_SIZE;
-				this.y = row * CELL_SIZE;
+				// 巣の中にいる間は、ターゲットを強制的に巣のすぐ外（例: 行10、列13）にする
+				if (currentState != Characters.EnemyState.DEAD &&currentRow >= 11 && currentRow <= 15 && currentCol >= 12 && currentCol <= 15) {
+					this.y = cy;
+					this.x = cx;
+					this.direction = Direction.UP;
+				} else {
 
-				this.direction = chosenDirection;
+					// 巣の外にいる時だけ、ターゲットを追いかける通常のAI処理を行う
+					Direction chosenDirection = decideNextDirection(validDirections, map, this.mapData);
+
+					// 中心にぴったり位置補正（軸ズレによるスタック防止）
+					this.x = cx;
+					this.y = cy;
+					this.direction = chosenDirection;
+
+				}
+
+			} else {
+
+				this.direction = Direction.NONE;
+
 			}
 		}
 
-		//  実際の移動処理（スピード決定）
-		int currentSpeed = this.getSpeed();
+		// 決定した方向に実際に移動する処理
 
-		// 【死亡状態（DEAD）】のときは、巣に戻るために爆速（例: 普段の2倍）にする
-		if (this.currentState == EnemyState.DEAD) {
-			currentSpeed = this.getSpeed() * 2;
-		}
+		if (this.direction != Direction.NONE) {
 
-		// 移動継続チェックを行って座標を更新
-		if (canmovego(this.direction, map)) {
 			this.x += this.direction.getDX() * currentSpeed;
+
 			this.y += this.direction.getDY() * currentSpeed;
-		} else {
-			// 万が一壁にぶつかった場合の安全停止
-			int col = (int) ((this.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
-			int row = (int) ((this.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
-			this.x = col * CELL_SIZE;
-			this.y = row * CELL_SIZE;
-			this.direction = Direction.NONE;
+
+			if (this.direction.getDX() != 0) {
+
+				this.y += (cy - this.y) * 0.2;
+
+			}
+
+			if (this.direction.getDY() != 0) {
+
+				this.x += (cx - this.x) * 0.2;
+
+			}
+
 		}
-		//計算した内部座標をJavaFXのImageView（画面上の見た目）に同期
-		this.imageView.setLayoutX(this.getX());
-		this.imageView.setLayoutY(this.getY());
 
 	}
 
-	// 【抽象メソッド】4つの子クラス（各ゴーストのAI）がそれぞれの意思決定を記述する部分
+	// DEAD・FEVERの共通処理
 
-	protected abstract Direction decideNextDirection(List<Direction> validDirections, int[][] map, Sengoku player);
+	protected Direction handleSpecialState(List<Direction> validDirections, int targetCol, int targetRow) {
 
-	//【すべての敵共通】三平方の定理（直線距離の2乗）を使って、目的地に一番近い方向を1つ選ぶ
+		// DEADなら巣へ帰る
+
+		if (currentState == Characters.EnemyState.DEAD) {
+
+			return getClosestDirection(validDirections, 14, 14);
+
+		}
+
+		// FEVERなら仙石さんから逃げる
+
+		if (currentState == Characters.EnemyState.FEVER) {
+
+			return getFarthestDirection(validDirections, targetCol, targetRow);
+
+		}
+
+		return null;
+	}
+
+
+
+	// 三平方の定理を使って目的地に一番近い方向を選ぶ共通処理
 
 	protected Direction getClosestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
+
 		Direction bestDirection = Direction.NONE;
+
 		double minDistance = Double.MAX_VALUE;
 
-		// 現在の敵のマス
-		int currentCol = (int) ((this.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
-		int currentRow = (int) ((this.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
+		int currentCol = (int) (this.x / MapData.TILE_SIZE);
+
+		int currentRow = (int) (this.y / MapData.TILE_SIZE);
 
 		for (Direction dir : validDirections) {
+
 			int nextCol = currentCol + (int) dir.getDX();
+
 			int nextRow = currentRow + (int) dir.getDY();
 
-			// 三平方の定理： (x1 - x2)^2 + (y1 - y2)^2
 			double distanceSq = Math.pow(nextCol - targetCol, 2) + Math.pow(nextRow - targetRow, 2);
 
 			if (distanceSq < minDistance) {
+
 				minDistance = distanceSq;
+
 				bestDirection = dir;
+
 			}
+
 		}
-		// ベストな方向を返す（万が一なければ候補の最初の方向）
+
 		return bestDirection != Direction.NONE ? bestDirection : validDirections.get(0);
+
 	}
 
-	// --- 状態管理用のゲッターとセッター ---
-	public EnemyState getCurrentState() {
-		return currentState;
-	}
+	protected Direction getFarthestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
 
-	public void setCurrentState(EnemyState state) {
-		if(this.currentState != state) {
-		this.currentState = state;
-		//現在のモードに合わせて自動で画像を切り替える
-		updateImage();
+		Direction bestDirection = Direction.NONE;
+
+		double maxDistance = -1;
+
+		int currentCol = (int) (this.x / MapData.TILE_SIZE);
+
+		int currentRow = (int) (this.y / MapData.TILE_SIZE);
+
+		for (Direction dir : validDirections) {
+
+			int nextCol = currentCol + (int) dir.getDX();
+
+			int nextRow = currentRow + (int) dir.getDY();
+
+			double distanceSq = Math.pow(nextCol - targetCol, 2) + Math.pow(nextRow - targetRow, 2);
+
+			if (distanceSq > maxDistance) {
+
+				maxDistance = distanceSq;
+
+				bestDirection = dir;
+
+			}
+
 		}
+
+		return bestDirection != Direction.NONE ? bestDirection : validDirections.get(0);
+
 	}
 
-	// 共通：真逆の方向（Uターン）チェック
 	private boolean isOppositeDirection(Direction dir1, Direction dir2) {
+
 		if (dir1 == Direction.NONE || dir2 == Direction.NONE)
+
 			return false;
+
 		return (dir1.getDX() + dir2.getDX() == 0) && (dir1.getDY() + dir2.getDY() == 0);
+
 	}
 
-	// 共通：物理的に進める方向のリストアップ
 	private List<Direction> getValidDirections(int[][] map) {
+
 		List<Direction> list = new ArrayList<>();
+
 		for (Direction dir : Direction.values()) {
+
 			if (dir == Direction.NONE)
+
 				continue;
 
-			//死亡状態(DEAD)の時以外は、真後ろへのUターン移動は禁止
-			if (this.currentState != EnemyState.DEAD && isOppositeDirection(dir, this.direction)) {
+			// 常にUターン禁止
+
+			if (isOppositeDirection(dir, this.direction)) {
+
 				continue;
+
 			}
-			//1マス先が壁じゃなければ候補に入れる
+
 			if (canmove(dir, map)) {
+
 				list.add(dir);
+
 			}
+
 		}
+
 		return list;
+
 	}
 
-	//ドット（px）単位での移動継続チェック
-	private boolean canmovego(Direction direction, int[][] map) {
-		if (direction == Direction.NONE)
-			return false;
-
-		double centerX = this.getX() + CELL_SIZE / 2.0;
-		double centerY = this.getY() + CELL_SIZE / 2.0;
-
-		int currentMeshX = (int) centerX % CELL_SIZE;
-		int currentMeshY = (int) centerY % CELL_SIZE;
-		int centerOffset = CELL_SIZE / 2;
-
-		if (Math.abs(currentMeshX - centerOffset) < this.getSpeed()
-				&& Math.abs(currentMeshY - centerOffset) < this.getSpeed()) {
-			return canmove(direction, map);
-		}
-		return true;
-	}
-
-	//1マス先の壁チェック
 	private boolean canmove(Direction direction, int[][] map) {
+
 		if (direction == Direction.NONE)
+
 			return false;
 
-		int currentCol = (int) ((this.getX() + CELL_SIZE / 2.0) / CELL_SIZE);
-		int currentRow = (int) ((this.getY() + CELL_SIZE / 2.0) / CELL_SIZE);
+		int currentCol = (int) (this.x / MapData.TILE_SIZE);
+
+		int currentRow = (int) (this.y / MapData.TILE_SIZE);
 
 		int nextCol = currentCol + (int) direction.getDX();
+
 		int nextRow = currentRow + (int) direction.getDY();
 
-		// 通常の画面外チェック（縦31マス：map.length, 横28マス：map[0].length）
 		if (nextRow < 0 || nextRow >= map.length || nextCol < 0 || nextCol >= map[0].length) {
+
 			return false;
+
+		}
+
+		// ゴーストの巣への通常侵入禁止ルール(改良版)
+
+		if (this.currentState != Characters.EnemyState.DEAD) {
+
+			//次の移動先が「巣の内部」であるか判定
+			boolean isNextInsideNest = (nextRow >= 11 && nextRow <= 15 && nextCol >= 12 && nextCol <= 15);
+
+			//現在地が「巣の外部」であるか判定
+			boolean isCurrentOutsideNest = !(currentRow >= 11 && currentRow <= 15 && currentCol >= 12
+					&& currentCol <= 15);
+
+			//「外から中に入ろうとしたときだけ」侵入を禁止する
+			if (isCurrentOutsideNest && isNextInsideNest) {
+
+				return false;
+
+			}
+
 		}
 
 		return map[nextRow][nextCol] != 1; // 1は壁
+
 	}
 
-	// 現在の状態（currentState）に合わせて、ImageViewの画像を切り替える処理
+	// FEVER状態で使用する画像をステージごとに読み込む
+	protected void loadFeverImage() {
 
-	private void updateImage() {
-		if (this.currentState == EnemyState.DEAD) {
-			if (deadImage != null)
-				this.imageView.setImage(deadImage);
-		} else if (this.currentState == EnemyState.FEVER) {
-			if (feverImage != null)
-				this.imageView.setImage(feverImage);
-		} else {
-			// SCATTER（縄張り） や CHASE（追跡） などの通常時は通常画像
-			if (normalImage != null)
-				this.imageView.setImage(normalImage);
+		// デフォルト画像（ステージ1）
+		String feverPath = "/picture/narita_EnemyFever.png";
+
+		// 現在のステージ番号に応じて画像を切り替える
+		if (mapData != null) {
+
+			switch (mapData.getStageNumber()) {
+
+			case 1:
+				feverPath = "/picture/narita_EnemyFever.png";
+				break;
+
+			case 2:
+				feverPath = "/picture/wada_EnemyFever.png";
+				break;
+
+			case 3:
+				feverPath = "/picture/hayakawa_EnemyFever.png";
+				break;
+			}
+		}
+
+		try {
+			// 指定したパスから画像を取得
+			java.io.InputStream is = getClass().getResourceAsStream(feverPath);
+
+			// 読み込み成功時
+			if (is != null) {
+				feverImage = new javafx.scene.image.Image(is);
+				System.out.println("⭕ FEVER画像読込成功: " + feverPath);
+			}
+			// 読み込み失敗時
+			else {
+
+				System.err.println("❌ FEVER画像が見つかりません: " + feverPath);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	public ImageView getImageView() {
-		return imageView;
+	// DEAD状態で使用する画像をステージごとに読み込む
+	protected void loadDeadImage() {
+
+		// デフォルトはステージ1
+		String deadPath = "/picture/narita_EnemyDead.png";
+
+		// 現在のステージ番号に応じて画像を切り替える
+		if (mapData != null) {
+
+			switch (mapData.getStageNumber()) {
+
+			case 1:
+				deadPath = "/picture/narita_EnemyDead.png";
+				break;
+
+			case 2:
+				deadPath = "/picture/wada_EnemyyDead.png";
+				break;
+
+			case 3:
+				deadPath = "/picture/hayakawa_EnemyyDead.png";
+				break;
+			}
+		}
+
+		try {
+
+			// リソースからDEAD画像を読み込む
+			java.io.InputStream is = getClass().getResourceAsStream(deadPath);
+
+			if (is != null) {
+
+				deadImage = new javafx.scene.image.Image(is);
+
+				System.out.println("⭕ DEAD画像読込成功: " + deadPath);
+
+			} else {
+
+				System.err.println("❌ DEAD画像が見つかりません: " + deadPath);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
+	public javafx.scene.image.Image getEnemyImage() {
+
+		if (currentState == Characters.EnemyState.DEAD) {
+			return deadImage;
+		}
+
+		if (currentState == Characters.EnemyState.FEVER) {
+			return feverImage;
+		}
+
+		return normalImage;
+	}
+
+	public Characters.EnemyState getCurrentState() {
+
+		return currentState;
+
+	}
+
+	public void setCurrentState(Characters.EnemyState state) {
+
+		this.currentState = state;
+
+	}
+
+	public double getX() {
+
+		return x;
+
+	}
+
+	public double getY() {
+
+		return y;
+
+	}
+
 }
 */

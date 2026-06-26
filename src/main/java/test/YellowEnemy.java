@@ -9,8 +9,8 @@ import test.test2.MapData;
 public class YellowEnemy extends Enemy {
 
 	// スタート位置(マップ中心 エネミーハウス内)
-	private static final int START_COL = 12;
-	private static final int START_ROW = 11;
+	private static final int START_COL = 14;
+	private static final int START_ROW = 14;
 
 	// プレイヤーの進行方向の4マス先を狙う
 	private static final int PREDICT_TILES = 4;
