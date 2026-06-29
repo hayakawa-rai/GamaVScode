@@ -186,5 +186,20 @@ public class Sengoku extends Character {
 	public boolean isAlive() {
 		return this.hp > 0;
 	}
+	public void setX(double x) {
+		this.x = x;
+	}
 
+	public void setY(double y) {
+		this.y = y;
+	}
+
+	// 呼び出し側の「大文字・小文字のブレ」を吸収するためのメソッド
+	public void setnextDirection(Direction direction) {
+		this.setNextDirection(direction);
+	}
+
+	public void setnextdirection(Direction direction) {
+		this.setNextDirection(direction);
+	}
 }
