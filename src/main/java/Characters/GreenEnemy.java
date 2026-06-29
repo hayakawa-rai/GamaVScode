@@ -1,10 +1,11 @@
 // 遠くにいるときは追跡、近づくと縄張りへ戻る敵（緑）
 package Characters;
-/*
+
 import java.util.List;
 
+import common.GameConfig;
+import common.GameMap;
 import javafx.scene.image.Image;
-import test.test2.MapData;
 
 public class GreenEnemy extends Enemy {
 
@@ -22,13 +23,16 @@ public class GreenEnemy extends Enemy {
 	// 出撃待機用
 	private long startTime;
 
+	//ゲーム開始した瞬間にタイマーをスタート
+	private boolean timerStarted = false;
+
 	// 巣から出たか
 	private boolean released = false;
 
-	public GreenEnemy(MapData mapData) {
+	public GreenEnemy(GameMap mapData) {
 
-		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
+		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
+				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
 
 		this.mapData = mapData;
 
@@ -40,25 +44,22 @@ public class GreenEnemy extends Enemy {
 
 		// 現在のステージ番号によって、読み込む画像を切り替える
 		String imagePath = "/picture/narita_EnemyGreen.png"; // デフォルト（ステージ1用）
-		
+
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
-				case 1:
-					imagePath = "/picture/narita_EnemyGreen.png"; // ステージ1の画像
-					break;
-				case 2:
-					imagePath = "/picture/wada_EnemyGreen.png";        // ステージ2の画像
-					break;
-				case 3:
-					imagePath = "/picture/hayakawa_EnemyGreen.png";         // ステージ3の画像
-					break;
-				default:
-					break;
+			case 1:
+				imagePath = "/picture/narita_EnemyGreen.png"; // ステージ1の画像
+				break;
+			case 2:
+				imagePath = "/picture/wada_EnemyGreen.png"; // ステージ2の画像
+				break;
+			case 3:
+				imagePath = "/picture/hayakawa_EnemyGreen.png"; // ステージ3の画像
+				break;
+			default:
+				break;
 			}
 		}
-
-		// 生成時刻を記録
-		this.startTime = System.currentTimeMillis();
 
 		// 画像読み込み
 		try {
@@ -88,23 +89,37 @@ public class GreenEnemy extends Enemy {
 	// 20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
+
+		if (mapData.isWaitingStart()) {
+			return;
+		}
+
+		// 初回入力後にタイマー開始
+		if (!timerStarted) {
+
+			startTime = System.currentTimeMillis();
+			timerStarted = true;
+		}
+
 		if (!released) {
+
 			long elapsed = System.currentTimeMillis() - startTime;
 
-			// ゲーム開始から20秒は待機
+			// 20秒待機
 			if (elapsed < 20000) {
 				return;
 			}
-			// 出撃
+
 			released = true;
 		}
+
 		super.move(map);
 	}
 
 	// 遠い → 追跡
 	// 近い → 左下の縄張りへ戻る
 	@Override
-	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
 
 		if (mapData == null || validDirections.isEmpty()) {
 			return Direction.NONE;
@@ -114,19 +129,28 @@ public class GreenEnemy extends Enemy {
 		double pacX = mapData.getPacX();
 		double pacY = mapData.getPacY();
 
-		int targetCol = (int) (pacX / MapData.TILE_SIZE);
-		int targetRow = (int) (pacY / MapData.TILE_SIZE);
+		// 目指すべき「ターゲットのマス」を算出
+		int targetCol = (int) (pacX / GameConfig.TILE_SIZE);
+		int targetRow = (int) (pacY / GameConfig.TILE_SIZE);
+
+		// SCATTER
+		if (currentState == Characters.EnemyState.SCATTER) {
+			return getClosestDirection(
+					validDirections,
+					TERRITORY_COL,
+					TERRITORY_ROW);
+		}
 
 		// 共通処理
-		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
+		Direction special = handleSpecialState(validDirections, targetCol, targetRow, map);
 
 		if (special != null) {
 			return special;
 		}
 
 		// 自分の位置
-		int myCol = (int) (this.x / MapData.TILE_SIZE);
-		int myRow = (int) (this.y / MapData.TILE_SIZE);
+		int myCol = (int) (this.x / GameConfig.TILE_SIZE);
+		int myRow = (int) (this.y / GameConfig.TILE_SIZE);
 
 		// プレイヤーとの距離（マス単位）
 		double distance = Math.sqrt(Math.pow(myCol - targetCol, 2) + Math.pow(myRow - targetRow, 2));
@@ -139,5 +163,14 @@ public class GreenEnemy extends Enemy {
 		// 近いなら縄張りへ戻る
 		return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 	}
+
+	@Override
+	public void resetToStartPosition() {
+
+		super.resetToStartPosition();
+
+		released = false;
+		timerStarted = false;
+	}
+
 }
-*/

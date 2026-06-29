@@ -1,11 +1,11 @@
 package sample.model;
 
-import Characters.Direction;
-import Characters.Sengoku;
+import Characters.Enemy;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
-import test.Enemy;
+import sample.Direction;
+import sample.Sengoku;
 
 public class SampleModel {
 
@@ -145,7 +145,7 @@ public class SampleModel {
 				int warpX = tileX;
 				int warpY = tileY;
 
-				Characters.Direction currentDir = sengoku.getDirection();
+				sample.Direction currentDir = sengoku.getDirection();
 
 				// 横方向のワープ
 				if (currentDir != Direction.NONE) {

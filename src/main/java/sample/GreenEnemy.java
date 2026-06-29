@@ -1,6 +1,6 @@
 // 遠くにいるときは追跡、近づくと縄張りへ戻る敵（緑）
-package test;
-
+package sample;
+/*
 import java.util.List;
 
 import javafx.scene.image.Image;
@@ -22,16 +22,13 @@ public class GreenEnemy extends Enemy {
 	// 出撃待機用
 	private long startTime;
 
-	//ゲーム開始した瞬間にタイマーをスタート
-	private boolean timerStarted = false;
-
 	// 巣から出たか
 	private boolean released = false;
 
 	public GreenEnemy(MapData mapData) {
 
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 2);
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
 
 		this.mapData = mapData;
 
@@ -43,22 +40,25 @@ public class GreenEnemy extends Enemy {
 
 		// 現在のステージ番号によって、読み込む画像を切り替える
 		String imagePath = "/picture/narita_EnemyGreen.png"; // デフォルト（ステージ1用）
-
+		
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
-			case 1:
-				imagePath = "/picture/narita_EnemyGreen.png"; // ステージ1の画像
-				break;
-			case 2:
-				imagePath = "/picture/wada_EnemyGreen.png"; // ステージ2の画像
-				break;
-			case 3:
-				imagePath = "/picture/hayakawa_EnemyGreen.png"; // ステージ3の画像
-				break;
-			default:
-				break;
+				case 1:
+					imagePath = "/picture/narita_EnemyGreen.png"; // ステージ1の画像
+					break;
+				case 2:
+					imagePath = "/picture/wada_EnemyGreen.png";        // ステージ2の画像
+					break;
+				case 3:
+					imagePath = "/picture/hayakawa_EnemyGreen.png";         // ステージ3の画像
+					break;
+				default:
+					break;
 			}
 		}
+
+		// 生成時刻を記録
+		this.startTime = System.currentTimeMillis();
 
 		// 画像読み込み
 		try {
@@ -88,30 +88,16 @@ public class GreenEnemy extends Enemy {
 	// 20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-
-		if (mapData.isWaitingStart()) {
-			return;
-		}
-
-		// 初回入力後にタイマー開始
-		if (!timerStarted) {
-
-			startTime = System.currentTimeMillis();
-			timerStarted = true;
-		}
-
 		if (!released) {
-
 			long elapsed = System.currentTimeMillis() - startTime;
 
-			// 20秒待機
+			// ゲーム開始から20秒は待機
 			if (elapsed < 20000) {
 				return;
 			}
-
+			// 出撃
 			released = true;
 		}
-
 		super.move(map);
 	}
 
@@ -128,17 +114,8 @@ public class GreenEnemy extends Enemy {
 		double pacX = mapData.getPacX();
 		double pacY = mapData.getPacY();
 
-		// 目指すべき「ターゲットのマス」を算出
 		int targetCol = (int) (pacX / MapData.TILE_SIZE);
 		int targetRow = (int) (pacY / MapData.TILE_SIZE);
-
-		// SCATTER
-		if (currentState == Characters.EnemyState.SCATTER) {
-			return getClosestDirection(
-					validDirections,
-					TERRITORY_COL,
-					TERRITORY_ROW);
-		}
 
 		// 共通処理
 		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
@@ -162,14 +139,5 @@ public class GreenEnemy extends Enemy {
 		// 近いなら縄張りへ戻る
 		return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 	}
-
-	@Override
-	public void resetToStartPosition() {
-
-		super.resetToStartPosition();
-
-		released = false;
-		timerStarted = false;
-	}
-
 }
+*/

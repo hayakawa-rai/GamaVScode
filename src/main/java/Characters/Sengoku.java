@@ -1,5 +1,3 @@
-//仙石クラス
-
 package Characters;
 
 public class Sengoku extends Character {
@@ -33,9 +31,12 @@ public class Sengoku extends Character {
 	@Override
 	public void move(int[][] map) {
 
-		System.out.println("x=" + this.x + " y=" + this.y + " dir=" + this.direction + " next=" + this.nextdirection
-				+ " aligned=" + isAligned() + " canMoveNext=" + canmove(nextdirection, map) + " canMoveCur="
-				+ canmove(this.direction, map));
+		System.out.println("x=" + this.x + " y=" + this.y
+				+ " dir=" + this.direction
+				+ " next=" + this.nextdirection
+				+ " aligned=" + isAligned()
+				+ " canMoveNext=" + canmove(nextdirection, map)
+				+ " canMoveCur=" + canmove(this.direction, map));
 
 		// 死亡アニメーション中、または死亡時は移動しない
 		if (isDyingAnimation || !isAlive())
@@ -61,7 +62,7 @@ public class Sengoku extends Character {
 		}
 	}
 
-	// 外部から状態をチェックするためのゲッタ-
+	//外部から状態をチェックするためのゲッタ-
 	public boolean isDyingAnimation() {
 		return isDyingAnimation;
 	}
@@ -105,12 +106,12 @@ public class Sengoku extends Character {
 		return map[checkRow][checkCol] != 1;
 	}
 
-	protected void setPosition(double x, double y) {
+	public void setPosition(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	// ミスが起きたときにアニメーションを開始する
+	//ミスが起きたときにアニメーションを開始する
 	public void startDying() {
 		this.isDyingAnimation = true;
 		this.dyingTimer = 0;
@@ -118,7 +119,7 @@ public class Sengoku extends Character {
 		this.nextdirection = Direction.NONE;
 	}
 
-	// 死亡アニメーションの更新
+	//死亡アニメーションの更新
 	public boolean updateDyingAnimation() {
 		if (!isDyingAnimation)
 			return false;
@@ -135,7 +136,7 @@ public class Sengoku extends Character {
 		}
 	}
 
-	// 初期位置に戻すリセットメソッド
+	//初期位置に戻すリセットメソッド
 	public void resetToStartPosition() {
 		this.x = this.startX;
 		this.y = this.startY;
@@ -145,7 +146,7 @@ public class Sengoku extends Character {
 		this.dyingTimer = 0;
 	}
 
-	// 残機を1つ減らすメソッド
+	//残機を1つ減らすメソッド
 	public void decreaseHp() {
 		if (this.hp > 0) {
 			this.hp--;

@@ -1,11 +1,11 @@
 package test.test2;
 
-import Characters.Direction;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import sample.Direction;
 import start.Start;
 import story.Gameover;
 import story.Practice;
@@ -90,7 +90,7 @@ public class GameController {
 			dPad.add(btnDown,  1, 2);
 
 			// ★ リフレクションを使って、どのパッケージの MapData からでも安全にメソッドを呼び出す共通処理
-			java.util.function.Consumer<Characters.Direction> sendDirection = (dir) -> {
+			java.util.function.Consumer<sample.Direction> sendDirection = (dir) -> {
 				try {
 					// 一時停止中かチェック (isPaused メソッドを実行)
 					java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
@@ -98,7 +98,7 @@ public class GameController {
 					
 					if (!isPaused) {
 						// 方向をセット (setNextDirection メソッドを実行)
-						java.lang.reflect.Method setDirMethod = model.getClass().getMethod("setNextDirection", Characters.Direction.class);
+						java.lang.reflect.Method setDirMethod = model.getClass().getMethod("setNextDirection", sample.Direction.class);
 						setDirMethod.invoke(model, dir);
 					}
 				} catch (Exception ex) {
@@ -107,10 +107,10 @@ public class GameController {
 			};
 
 			// タップイベント（上記の共通処理を呼び出す）
-			btnUp.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.UP));
-			btnDown.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.DOWN));
-			btnLeft.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.LEFT));
-			btnRight.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.RIGHT));
+			btnUp.setOnMousePressed(e -> sendDirection.accept(sample.Direction.UP));
+			btnDown.setOnMousePressed(e -> sendDirection.accept(sample.Direction.DOWN));
+			btnLeft.setOnMousePressed(e -> sendDirection.accept(sample.Direction.LEFT));
+			btnRight.setOnMousePressed(e -> sendDirection.accept(sample.Direction.RIGHT));
 
 			// 最前面のレイヤーとして十字キーを追加
 			baseHolder.getChildren().add(dPad);

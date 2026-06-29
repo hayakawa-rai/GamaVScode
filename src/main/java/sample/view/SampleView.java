@@ -1,12 +1,12 @@
 package sample.view;
 
-import Characters.Direction;
-import Characters.Sengoku;
 import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font; // ★フォント設定のためにインポートを追加
 import javafx.scene.text.FontWeight; // ★太字にするためにインポートを追加
+import sample.Direction;
+import sample.Sengoku;
 import sample.model.SampleModel;
 
 public class SampleView {

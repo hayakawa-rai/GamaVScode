@@ -1,6 +1,5 @@
 package story;
 
-import Characters.Sengoku;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -14,6 +13,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import sample.Sengoku;
 
 public class Stageclear1 extends Application{
 	
