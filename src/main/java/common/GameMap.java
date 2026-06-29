@@ -13,4 +13,6 @@ public interface GameMap {
     boolean isWaitingStart();
     Direction getPlayerDirection();
     List<Enemy> getEnemies(); 
+    // 指定座標が壁かどうかを判定する最小限のメソッド
+    boolean isWall(int x, int y);
 }
