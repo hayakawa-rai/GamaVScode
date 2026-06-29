@@ -1,5 +1,5 @@
 package sample.controller;
-
+/*
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -104,3 +104,4 @@ public class SampleController {
         if (timer != null) timer.stop();
     }
 }
+*/

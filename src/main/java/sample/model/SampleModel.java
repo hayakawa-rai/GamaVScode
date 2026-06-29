@@ -1,5 +1,5 @@
 package sample.model;
-
+/*
 import Characters.Enemy;
 import Items.Chii;
 import Items.Item;
@@ -284,4 +284,4 @@ public class SampleModel {
 	public Enemy getEnemy() {
 		return enemy;
 	}
-}
+}*/

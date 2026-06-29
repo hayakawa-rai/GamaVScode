@@ -1,5 +1,5 @@
 package sample.view;
-
+/*
 import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -121,3 +121,4 @@ public class SampleView {
         enemyImageView.setPreserveRatio(true);
     }
 }
+*/
