@@ -25,8 +25,8 @@ public class RedEnemy extends Enemy {
 
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
 
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1); // スピードは 2
-		
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 2); // スピードは 2
+
 		this.mapData = sampleModel;
 
 		// FEVER画像をステージごとに読み込む
@@ -92,7 +92,6 @@ public class RedEnemy extends Enemy {
 
 	}
 
-
 	@Override
 
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
@@ -115,8 +114,15 @@ public class RedEnemy extends Enemy {
 
 		int targetRow = (int) (pacY / MapData.TILE_SIZE);
 
-		// 共通処理
+		// SCATTER
+		if (currentState == Characters.EnemyState.SCATTER) {
+			return getClosestDirection(
+					validDirections,
+					TERRITORY_COL,
+					TERRITORY_ROW);
+		}
 
+		// 共通処理
 		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
 
 		if (special != null) {

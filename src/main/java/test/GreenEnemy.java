@@ -22,13 +22,16 @@ public class GreenEnemy extends Enemy {
 	// 出撃待機用
 	private long startTime;
 
+	//ゲーム開始した瞬間にタイマーをスタート
+	private boolean timerStarted = false;
+
 	// 巣から出たか
 	private boolean released = false;
 
 	public GreenEnemy(MapData mapData) {
 
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 2);
 
 		this.mapData = mapData;
 
@@ -56,9 +59,6 @@ public class GreenEnemy extends Enemy {
 				break;
 			}
 		}
-
-		// 生成時刻を記録
-		this.startTime = System.currentTimeMillis();
 
 		// 画像読み込み
 		try {
@@ -88,16 +88,30 @@ public class GreenEnemy extends Enemy {
 	// 20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
+
+		if (mapData.isWaitingStart()) {
+			return;
+		}
+
+		// 初回入力後にタイマー開始
+		if (!timerStarted) {
+
+			startTime = System.currentTimeMillis();
+			timerStarted = true;
+		}
+
 		if (!released) {
+
 			long elapsed = System.currentTimeMillis() - startTime;
 
-			// ゲーム開始から20秒は待機
+			// 20秒待機
 			if (elapsed < 20000) {
 				return;
 			}
-			// 出撃
+
 			released = true;
 		}
+
 		super.move(map);
 	}
 
@@ -114,8 +128,17 @@ public class GreenEnemy extends Enemy {
 		double pacX = mapData.getPacX();
 		double pacY = mapData.getPacY();
 
+		// 目指すべき「ターゲットのマス」を算出
 		int targetCol = (int) (pacX / MapData.TILE_SIZE);
 		int targetRow = (int) (pacY / MapData.TILE_SIZE);
+
+		// SCATTER
+		if (currentState == Characters.EnemyState.SCATTER) {
+			return getClosestDirection(
+					validDirections,
+					TERRITORY_COL,
+					TERRITORY_ROW);
+		}
 
 		// 共通処理
 		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
@@ -146,7 +169,7 @@ public class GreenEnemy extends Enemy {
 		super.resetToStartPosition();
 
 		released = false;
-		startTime = System.currentTimeMillis();
+		timerStarted = false;
 	}
 
 }

@@ -57,12 +57,12 @@ public abstract class Enemy extends Character {
 
 		// FEVER時は半速
 		if (this.currentState == Characters.EnemyState.FEVER) {
-			currentSpeed = this.getSpeed() * 0.5;
+			currentSpeed = this.getSpeed() * 1;
 		}
 
 		// DEAD時は高速帰還
 		if (this.currentState == Characters.EnemyState.DEAD) {
-			currentSpeed = this.getSpeed() * 2;
+			currentSpeed = this.getSpeed() * 3;
 		}
 
 		// タイルの中心に近づいたか判定

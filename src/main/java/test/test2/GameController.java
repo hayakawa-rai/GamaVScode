@@ -197,11 +197,18 @@ public class GameController {
 				
 				// すべてのドットを食べ終えたかチェック
 				if (model.isCleared()) {
-					stop(); // ゲームループ（タイマー）を止める
+					timer.stop(); // ゲームループ（タイマー）を止める
 					System.out.println("ステージクリア！次の画面へ遷移します。");
 					
+					
+					// ★現在の最終スコアを取得する
+				    int finalScore = 0;
+				    if (model.getSengoku() != null) {
+				        finalScore = model.getSengoku().getScore();
+				    }
+				    
 					// クリア画面（Stageclear2）に遷移させる
-					switchToStageclear2(stage); 
+					switchToStageclear2(stage, finalScore); 
 					
 					// もし直接ステージ2のゲーム画面にいかせたい場合はこちら↓
 					// switchToGame2(stage);
@@ -230,10 +237,12 @@ public class GameController {
 			timer.stop();
 	}
 	
-	// Stageclear2画面へ変更するためのメソッド
-		public static void switchToStageclear2(javafx.stage.Stage stage) {
+	// Stageclear2画面へ変更するためのメソッド（引数に score を追加）
+		public static void switchToStageclear2(javafx.stage.Stage stage, int score) {
+
 			try {
 				Stageclear2 App = new Stageclear2();
+				App.setScore(score); // 受け取った score を確実に引き渡す
 				App.start(stage);
 			} catch (Exception e) {
 				e.printStackTrace();

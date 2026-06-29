@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import test1.view.WallOutline;
 import test3.model.MapData;
 
 public class MapView {
@@ -65,21 +66,11 @@ public class MapView {
 		Color wallColor = getColorFromCSS(gc, "game-wall", Color.BLUE);
 		gc.setFill(wallColor);
 
-		// 枠線（Stroke）は一切使わず、塗りつぶし（Fill）だけで描画します
-		for (int y = 0; y < map.length; y++) {
-			for (int x = 0; x < map[0].length; x++) {
-				if (map[y][x] == 1) {
-					// 縦横のサイズを「TILE_SIZEぴったり」にします。
-					// これにより、隣り合うブロック同士が完全に1本のぶっとい壁に同化します！
-					gc.fillRect(
-							x * MapData.TILE_SIZE,
-							y * MapData.TILE_SIZE,
-							MapData.TILE_SIZE,
-							MapData.TILE_SIZE
-					);
-				}
-			}
-		}
+		// WallOutline で壁を描画
+	    WallOutline outline = new WallOutline(model.getMap(), MapData.TILE_SIZE);
+	    gc.setStroke(wallColor);
+	    gc.setLineWidth(2);
+	    outline.drawOutline(gc);
 	}
 
 	//パックマン描画

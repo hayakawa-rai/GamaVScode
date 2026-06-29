@@ -22,6 +22,8 @@ public class BlueEnemy extends Enemy {
 	// 出発時間の記録
 	private long startTime;
 
+	//ゲーム開始した瞬間にタイマーをスタート
+	private boolean timerStarted = false;
 	// 巣から出たか
 	private boolean released = false;
 
@@ -31,7 +33,7 @@ public class BlueEnemy extends Enemy {
 	public BlueEnemy(MapData mapData) {
 		// マスの中心座標を初期位置として Enemy に渡す
 		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
+				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 2);
 
 		this.mapData = mapData;
 
@@ -67,9 +69,6 @@ public class BlueEnemy extends Enemy {
 			}
 		}
 
-		// 生成時刻を記録
-		this.startTime = System.currentTimeMillis();
-
 		// 画像の読み込み
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
@@ -98,18 +97,30 @@ public class BlueEnemy extends Enemy {
 	// 2秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-		if (!released) {
-			long elapsed = System.currentTimeMillis() - startTime;
 
-			// ゲーム開始から10秒は待機
+	    if (mapData.isWaitingStart()) {
+	        return;
+	    }
+
+	    // 初回入力後に初めてタイマー開始
+	    if (!timerStarted) {
+
+	        startTime = System.currentTimeMillis();
+	        timerStarted = true;
+	    }
+
+	    if (!released) {
+
+	        long elapsed = System.currentTimeMillis() - startTime;
+
 			if (elapsed < 2000) {
 				return;
 			}
 
-			// 出撃
-			released = true;
-		}
-		super.move(map);
+	        released = true;
+	    }
+
+	    super.move(map);
 	}
 
 	@Override
@@ -153,6 +164,14 @@ public class BlueEnemy extends Enemy {
 		int targetCol = pacCol + vx;
 		int targetRow = pacRow + vy;
 
+		// SCATTER
+		if (currentState == Characters.EnemyState.SCATTER) {
+			return getClosestDirection(
+					validDirections,
+					TERRITORY_COL,
+					TERRITORY_ROW);
+		}
+
 		// 共通処理
 		Direction special = handleSpecialState(validDirections, pacCol, pacRow);
 
@@ -170,8 +189,7 @@ public class BlueEnemy extends Enemy {
 		super.resetToStartPosition();
 
 		released = false;
-		startTime = System.currentTimeMillis();
-
+		timerStarted = false;
 	}
 
 }
