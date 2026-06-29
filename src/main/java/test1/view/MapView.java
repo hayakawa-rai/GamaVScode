@@ -142,6 +142,12 @@ public class MapView {
 			Color wallColor) {
 		Item[][] itemMap = model.getItemMap();
 
+		// WallOutline で壁を描画 (古田変更 問題なかったら()消してね)
+		WallOutline outline = new WallOutline(model.getMap(), MapData.TILE_SIZE);
+		gc.setStroke(wallColor);
+		gc.setLineWidth(2);
+		outline.drawOutline(gc);
+
 		for (int row = 0; row < rows; row++) {
 
 			for (int col = 0; col < cols; col++) {
@@ -153,15 +159,15 @@ public class MapView {
 				int y = row * MapData.TILE_SIZE;
 
 				Item item = itemMap[row][col];
-				
+
 				// 壁の描画 (壁の見た目変更のためコメントアウト中)
 
 				//if (tile == 1) {
 
-					//gc.setFill(Color.BLUE);
+				//gc.setFill(Color.BLUE);
 
-					//gc.setFill(wallColor);
-					//gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
+				//gc.setFill(wallColor);
+				//gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
 
 				//}
 
@@ -171,12 +177,6 @@ public class MapView {
 				}
 			}
 		}
-
-		// WallOutline で壁を描画 (古田変更 問題なかったら()消してね)
-		WallOutline outline = new WallOutline(model.getMap(), MapData.TILE_SIZE);
-		gc.setStroke(wallColor);
-		gc.setLineWidth(2);
-		outline.drawOutline(gc);
 
 		// スコアを表示させるためのコード
 
@@ -260,7 +260,6 @@ public class MapView {
 		gc.fillArc(
 
 				pacX - MapData.TILE_SIZE / 2.0,
-
 				pacY - MapData.TILE_SIZE / 2.0,
 
 				MapData.TILE_SIZE, MapData.TILE_SIZE,

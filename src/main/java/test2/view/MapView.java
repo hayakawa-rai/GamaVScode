@@ -1,10 +1,10 @@
 package test2.view;
 
+import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
-import test1.view.WallOutline;
 import test2.model.MapData;
 
 public class MapView {
@@ -80,11 +80,14 @@ public class MapView {
 
 		double startAngle = 0;
 
-		if (model.getDirX() == 1) startAngle = model.getMouthAngle();
-		if (model.getDirX() == -1) startAngle = 180 + model.getMouthAngle();
-		if (model.getDirY() == -1) startAngle = 90 + model.getMouthAngle();
-		if (model.getDirY() == 1) startAngle = 270 + model.getMouthAngle();
-
+		if (model.getSengoku() != null && model.getSengoku().getDirection() != null) {
+			Characters.Direction dir = model.getSengoku().getDirection();
+			if (dir == Characters.Direction.RIGHT) startAngle = model.getMouthAngle();
+			if (dir == Characters.Direction.LEFT)  startAngle = 180 + model.getMouthAngle();
+			if (dir == Characters.Direction.UP)    startAngle = 90 + model.getMouthAngle();
+			if (dir == Characters.Direction.DOWN)  startAngle = 270 + model.getMouthAngle();
+		}
+		
 		gc.fillArc(
 				model.getPacX() - MapData.TILE_SIZE / 2,
 				model.getPacY() - MapData.TILE_SIZE / 2,
@@ -99,9 +102,9 @@ public class MapView {
 	    for (int y = 0; y < model.getMap().length; y++) {
 	        for (int x = 0; x < model.getMap()[0].length; x++) {
 
-	            var item = model.getItem(x, y);
-	            if (item != null) {
-	                item.draw(
+	        	Item item = model.getItemMap()[y][x];
+				if (item != null) {
+					item.draw(
 	                    gc,
 	                    x * MapData.TILE_SIZE,   // ← 左上座標を渡す
 	                    y * MapData.TILE_SIZE,   // ← 左上座標を渡す

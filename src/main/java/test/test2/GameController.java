@@ -18,7 +18,7 @@ import test1.Main1;
 import test2.Main2;
 import test3.Main3;
 
-public class GameController {
+public class GameController{
 
 	// 制御コンポーネント
 	private final MapData model;   // パックマンの位置やマップ状態を持つデータソース
