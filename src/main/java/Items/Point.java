@@ -1,9 +1,9 @@
 package Items;
 
+import Characters.Sengoku;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import sample.Sengoku;
 
 public class Point extends Item {
     
