@@ -7,9 +7,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import test2.controller.GameController;
-import test2.model.MapData;
-import test2.view.MapView;
+import test1.controller.GameController;
+import test1.model.MapData;
+import test1.view.MapView;
 
 // パックマン・練習用ステージの起動クラス
 public class PracticeMain1 extends Application {

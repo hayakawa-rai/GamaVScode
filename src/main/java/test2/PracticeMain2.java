@@ -19,7 +19,7 @@ public class PracticeMain2 extends Application {
 
 		// 1. ModelとViewの作成
 		MapData model = new MapData(); 
-		model.SampleModel(true);
+		model.MapData(true);
 
 		// MapData model = new MapData(true); // trueなら練習用
 
