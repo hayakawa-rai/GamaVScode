@@ -121,7 +121,7 @@ public class MapView {
 
 		drawStageContent(gc, cols, rows, stageWidth, stageHeight, wallColor);
 
-		drawPacman(gc, pacmanColor);
+		drawPacman(gc);
 
 		// 敵の描画メソッド
 		if (model.getEnemies() != null) {
@@ -199,9 +199,51 @@ public class MapView {
 		}
 
 	}
+	
+	// MapView のフィールドに Pac-Man 画像を追加
+		private final javafx.scene.image.Image pacmanImage =
+		        new javafx.scene.image.Image(getClass().getResource("/picture/sengoku.png").toExternalForm());
+
+		public void drawPacman(GraphicsContext gc) {
+		    Sengoku sengoku = model.getSengoku();
+		    if (sengoku == null || !sengoku.isAlive()) return;
+
+		    if (pacmanImage == null) {
+		        // 画像が無い場合の代替描画
+		        gc.setFill(Color.YELLOW);
+		        gc.fillOval(
+		                sengoku.getX(),
+		                sengoku.getY(),
+		                MapData.TILE_SIZE,
+		                MapData.TILE_SIZE
+		        );
+		        return;
+		    }
+
+		    double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
+		    double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+
+		    Characters.Direction dir = sengoku.getDirection();
+		    double angle = 0;
+
+		    gc.save();
+
+		    gc.translate(pacX, pacY);
+		    gc.rotate(angle);
+
+		    gc.drawImage(
+		            pacmanImage,
+		            -MapData.TILE_SIZE / 2.0,
+		            -MapData.TILE_SIZE / 2.0,
+		            MapData.TILE_SIZE,
+		            MapData.TILE_SIZE
+		    );
+
+		    gc.restore();
+		}
 
 	// 内部の座標計算
-
+	/*
 	public void drawPacman(GraphicsContext gc, Color pacmanColor) {
 		Sengoku sengoku = model.getSengoku();
 
@@ -260,7 +302,7 @@ public class MapView {
 
 		);
 
-	}
+	}*/
 
 	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
 

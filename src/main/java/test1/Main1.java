@@ -1,5 +1,6 @@
 package test1;
 
+import control.GameController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -7,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import test1.controller.GameController;
 import test1.model.MapData;
 import test1.view.MapView;
 
@@ -88,7 +88,7 @@ public class Main1 extends Application {
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		//  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
-		this.controller = new GameController(model, view, canvas, scene, stage);
+		this.controller = new GameController(model, view, canvas, scene, stage, 1);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);

@@ -589,7 +589,4 @@ public class MapData implements GameMap {
 	public boolean isGameOver() {
 		return gameOver;
 	}
-
-
-
 }

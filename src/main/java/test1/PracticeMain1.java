@@ -1,5 +1,6 @@
 package test1;
 
+import control.GameController;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -7,7 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import test1.controller.GameController;
 import test1.model.MapData;
 import test1.view.MapView;
 
@@ -63,7 +63,7 @@ public class PracticeMain1 extends Application {
 		stage.setMaximized(true);
 
 		// 7. Controller生成とゲーム開始
-		new GameController(model, view, gameCanvas, scene, stage);
+		new GameController(model, view, gameCanvas, scene, stage, 1);
 
 		// 8. ウィンドウ表示
 		stage.show();

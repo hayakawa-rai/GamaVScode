@@ -1,7 +1,6 @@
-package test2.controller;
+package control;
 
 import Characters.Direction;
-import Characters.Sengoku;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -9,8 +8,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import start.Start;
 import story.Gameover;
-import story.Practice;
 import story.Stageclear1;
+import story.Stageclear2;
+import story.Stageclear3;
 import story.Story1;
 import story.Story2;
 import story.Story3;
@@ -18,39 +18,43 @@ import story.Story4;
 import test.test2.TestMainapp;
 import test1.Main1;
 import test2.Main2;
-import test2.model.MapData;
-import test2.view.MapView;
 import test3.Main3;
 
 public class GameController {
 
 	// 制御コンポーネント
-	private final MapData model; // パックマンの位置やマップ状態を持つデータソース
-	private final MapView view; // 描画処理
+	// 🌟 依存を無くすため、model と view は特定のパッケージではなく Object型 で保持します
+	private final Object model; // パックマンの位置やマップ状態を持つデータソース
+	private final Object view; // 描画処理
 	private final Canvas canvas; // 描画先キャンバス
 	private AnimationTimer timer; // ゲームループ(毎フレーム実行)
 
 	// 画面遷移のためにStageを保持する変数
 	private final javafx.stage.Stage stage;
 
-	// ゲームコントローラーの初期化と同時にゲームをスタートする
-	public GameController(MapData model, MapView view, Canvas canvas, Scene scene, javafx.stage.Stage stage) {
+	// ⭐ 追加：現在のステージ番号（1〜3）を記憶する変数
+	private final int stageNumber;
+
+	// ⭐ コンストラクタの最後に「int stageNumber」を追加しました
+	public GameController(Object model, Object view, Canvas canvas, Scene scene, javafx.stage.Stage stage,
+			int stageNumber) {
 		this.model = model;
 		this.view = view;
 		this.canvas = canvas;
 		this.stage = stage;
+		this.stageNumber = stageNumber; // ⭐ ステージ番号を記憶
 
 		// キーボードの入力を登録
 		attachInput(scene);
 
-		// スマホ用の十字キーコントローラーを画面に表示・適用する
+		// ⭐ 追加：スマホ用の十字キーコントローラーを画面に適用
 		applyMobileControls(scene, model);
 
 		// メインゲームループ(AnimationTimer)の開始
 		startLoop();
 	}
 
-	// ステージ画面に十字キーを追加する スマホ用のメソッド
+	//ステージ画面に十字キーを追加する	スマホ用のメソッド
 	public static void applyMobileControls(javafx.scene.Scene gameScene, Object model) {
 		if (model == null)
 			return;
@@ -133,7 +137,7 @@ public class GameController {
 	public static void switchToStart(javafx.stage.Stage stage) {
 		try {
 			// startクラスのインスタンスを作る
-			sample.start titleScreen = new sample.start();
+			start.Start titleScreen = new start.Start();
 			// ウィンドウの権利(stage)を渡して、タイトル画面を起動・上書きする！
 			titleScreen.start(stage);
 		} catch (Exception e) {
@@ -141,10 +145,10 @@ public class GameController {
 		}
 	}
 
-	public void switchTopractice(javafx.stage.Stage stage) {
+	public void switchToPractice(javafx.stage.Stage stage) {
 		try {
 			// practiceクラスのインスタンスを作る
-			sample.practice practiceScreen = new sample.practice();
+			story.Practice practiceScreen = new story.Practice();
 			// ウィンドウの権利(stage)を渡して、練習モード画面を起動・上書きする！
 			practiceScreen.start(stage);
 		} catch (Exception e) {
@@ -161,86 +165,112 @@ public class GameController {
 		}
 	}
 
-	// キーボード入力処理
+	// キーボード入力処理（🌟リフレクション化により、どのステージのModelでも動作可能）
 	private void attachInput(Scene scene) {
 		scene.setOnKeyPressed(e -> {
-			KeyCode code = e.getCode();
+			try {
+				KeyCode code = e.getCode();
 
-			// Pキーでゲームを一時停止・再開
-			if (code == KeyCode.P) {
-				model.togglePause();
-				return;
+				java.lang.reflect.Method togglePauseMethod = model.getClass().getMethod("togglePause");
+				java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
+				java.lang.reflect.Method setNextDirectionMethod = model.getClass().getMethod("setNextDirection",
+						Characters.Direction.class);
+
+				// Pキーでゲームを一時停止・再開
+				if (code == KeyCode.P) {
+					togglePauseMethod.invoke(model);
+					return;
+				}
+
+				// 一時停止中は入力を受け付けない
+				if ((boolean) isPausedMethod.invoke(model))
+					return;
+
+				// 矢印キー操作の委譲
+				if (code == KeyCode.W || code == KeyCode.UP)
+					setNextDirectionMethod.invoke(model, Direction.UP);
+				if (code == KeyCode.S || code == KeyCode.DOWN)
+					setNextDirectionMethod.invoke(model, Direction.DOWN);
+				if (code == KeyCode.A || code == KeyCode.LEFT)
+					setNextDirectionMethod.invoke(model, Direction.LEFT);
+				if (code == KeyCode.D || code == KeyCode.RIGHT)
+					setNextDirectionMethod.invoke(model, Direction.RIGHT);
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
-
-			// 一時停止中はパックマンの方向転換入力を受け付けない
-			if (model.isPaused())
-				return;
-
-			// 矢印キーでも操作できるように拡張
-			if (code == KeyCode.W || code == KeyCode.UP)
-				model.setNextDirection(Direction.UP);
-			if (code == KeyCode.S || code == KeyCode.DOWN)
-				model.setNextDirection(Direction.DOWN);
-			if (code == KeyCode.A || code == KeyCode.LEFT)
-				model.setNextDirection(Direction.LEFT);
-			if (code == KeyCode.D || code == KeyCode.RIGHT)
-				model.setNextDirection(Direction.RIGHT);
 		});
 	}
 
 	// メインゲームループ
 	private void startLoop() {
-		// キャンバスの2Dグラフィックスコンテキスト(描写機能)を取得
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
 		timer = new AnimationTimer() {
-
 			@Override
 			public void handle(long now) {
-				if (model.isPaused())
-					return;
+				try {
+					java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
+					java.lang.reflect.Method updateMethod = model.getClass().getMethod("update");
+					java.lang.reflect.Method isGameOverMethod = model.getClass().getMethod("isGameOver");
+					java.lang.reflect.Method isClearedMethod = model.getClass().getMethod("isCleared");
+					java.lang.reflect.Method getSengokuMethod = model.getClass().getMethod("getSengoku");
 
-				// ゲーム状態の更新
-				model.update();
+					if ((boolean) isPausedMethod.invoke(model))
+						return;
 
-				// ★追加：敵に捕まった（ゲームオーバー）かチェック
-				// ※model側に isGameOver() という判定メソッドがある前提です
-				if (model.isGameOver()) {
-					stop(); // ゲームループ（タイマー）を止める
-					System.out.println("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
+					// ゲーム状態の更新
+					updateMethod.invoke(model);
 
-					switchToGameover(stage); // ゲームオーバー画面へ遷移
-					return; // これ以降の処理はスキップ
-				}
-
-				// すべてのドットを食べ終えたかチェック
-				if (model.isCleared()) {
-					timer.stop(); // ゲームループ（タイマー）を止める
-					System.out.println("ステージクリア！次の画面へ遷移します。");
-
-					// ★現在の最終スコアを取得する
-					int finalScore = 0;
-					if (model.getSengoku() != null) {
-						finalScore = ((Sengoku) model.getSengoku()).getScore();
+					// 敵に捕まった（ゲームオーバー）かチェック
+					if ((boolean) isGameOverMethod.invoke(model)) {
+						stop();
+						System.out.println("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
+						switchToGameover(stage);
+						return;
 					}
 
-					// クリア画面（Stageclear1）に遷移させる
-					switchToStageclear1(stage, finalScore);
+					// すべてのドットを食べ終えたかチェック
+					if ((boolean) isClearedMethod.invoke(model)) {
+						stop();
+						System.out.println("ステージクリア！次の画面へ遷移します。");
 
-					// もし直接ステー12のゲーム画面にいかせたい場合はこちら↓
-					// switchToGame1(stage);
+						int finalScore = 0;
+						Object sengoku = getSengokuMethod.invoke(model);
+						if (sengoku != null) {
+							java.lang.reflect.Method getScoreMethod = sengoku.getClass().getMethod("getScore");
+							finalScore = (int) getScoreMethod.invoke(sengoku);
+						}
 
-					return; // クリアしたのでこれ以降の描画処理はスキップ
+						// 🌟 ステージ番号（1〜3）に応じて、遷移するクリア画面を完璧に切り替える！
+						switch (stageNumber) {
+						case 1:
+							switchToStageclear1(stage, finalScore);
+							break;
+						case 2:
+							switchToStageclear2(stage, finalScore);
+							break;
+						case 3:
+							switchToStageclear3(stage, finalScore);
+							break;
+						default:
+							switchToStageclear1(stage, finalScore);
+							break;
+						}
+						return;
+					}
 
+					double currentWidth = canvas.getWidth();
+					double currentHeight = canvas.getHeight();
+
+					// 🌟 どのパッケージの MapView からでも引数3つの draw メソッドを安全に呼び出す
+					java.lang.reflect.Method drawMethod = view.getClass().getMethod("draw", GraphicsContext.class,
+							double.class, double.class);
+					drawMethod.invoke(view, gc, currentWidth, currentHeight);
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					stop();
 				}
-
-				// 画面描写（ステージ背景とパックマンの描画を分離して実行）
-				// Canvasの現在のリアルタイムな横幅・縦幅を取得してビューに渡す
-				double currentWidth = canvas.getWidth();
-				double currentHeight = canvas.getHeight();
-
-				// 新しく統合した draw メソッドを呼び出す
-				view.draw(gc, currentHeight, currentHeight);
 			}
 		};
 
@@ -266,6 +296,29 @@ public class GameController {
 		}
 	}
 
+	// Stageclear2画面へ変更するためのメソッド（引数に score を追加）
+	public static void switchToStageclear2(javafx.stage.Stage stage, int score) {
+
+		try {
+			Stageclear2 App = new Stageclear2();
+			App.setScore(score); // 受け取った score を確実に引き渡す
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 追加：ステージ3用のクリア画面遷移
+	public static void switchToStageclear3(javafx.stage.Stage stage, int score) {
+		try {
+			Stageclear3 App = new Stageclear3();
+			App.setScore(score);
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	// ★追加：Gameover画面へ変更するためのメソッド
 	public static void switchToGameover(javafx.stage.Stage stage) {
 		try {
@@ -276,7 +329,7 @@ public class GameController {
 		}
 	}
 
-	// 画面変更Main1へ
+	//画面変更Main1へ
 	public static void switchToGame1(javafx.stage.Stage stage) {
 		try {
 			Main1 App = new Main1();
@@ -286,7 +339,7 @@ public class GameController {
 		}
 	}
 
-	// 画面変更Mani2へ
+	//画面変更Mani2へ
 	public static void switchToGame2(javafx.stage.Stage stage) {
 		try {
 			Main2 App = new Main2();
@@ -296,7 +349,7 @@ public class GameController {
 		}
 	}
 
-	// 画面変更Main3へ
+	//画面変更Main3へ
 	public static void switchToGame3(javafx.stage.Stage stage) {
 		try {
 			Main3 App = new Main3();
@@ -306,17 +359,7 @@ public class GameController {
 		}
 	}
 
-	// 画面変更start→practice
-	public static void startToPractice(javafx.stage.Stage stage) {
-		try {
-			Practice App = new Practice();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更start→story
+	//画面変更start→story
 	public static void startToStory(javafx.stage.Stage stage) {
 		try {
 			Story1 App = new Story1();
@@ -326,7 +369,7 @@ public class GameController {
 		}
 	}
 
-	// 画面変更start
+	//画面変更start
 	public static void switchStart(javafx.stage.Stage stage) {
 		try {
 			Start App = new Start();
@@ -336,7 +379,7 @@ public class GameController {
 		}
 	}
 
-	// 画面変更Story2
+	//画面変更Story2
 	public static void switchStory2(javafx.stage.Stage stage) {
 		try {
 			Story2 App = new Story2();
@@ -346,7 +389,7 @@ public class GameController {
 		}
 	}
 
-	// 画面変更Story3
+	//画面変更Story3
 	public static void switchStory3(javafx.stage.Stage stage) {
 		try {
 			Story3 App = new Story3();
@@ -356,7 +399,7 @@ public class GameController {
 		}
 	}
 
-	// 画面変更Story4
+	//画面変更Story4
 	public static void switchStory4(javafx.stage.Stage stage) {
 		try {
 			Story4 App = new Story4();
