@@ -95,9 +95,9 @@ public class MapView {
 
 		// 4. 背景の黒を画面全体に塗る（余白も含めて真っ黒にする場合）
 
-		//gc.setFill(Color.BLACK);
+		// gc.setFill(Color.BLACK);
 
-		//gc.fillRect(0, 0, canvasWidth, canvasHeight);
+		// gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
 		// 4. 【重要】画面全体の黒塗りを廃止（これで後ろの背景画像が透けます）
 		// gc.setFill(Color.BLACK);
@@ -152,7 +152,7 @@ public class MapView {
 
 			for (int col = 0; col < cols; col++) {
 
-				//int tile = model.getMap()[row][col];
+				// int tile = model.getMap()[row][col];
 
 				int x = col * MapData.TILE_SIZE;
 
@@ -162,14 +162,14 @@ public class MapView {
 
 				// 壁の描画 (壁の見た目変更のためコメントアウト中)
 
-				//if (tile == 1) {
+				// if (tile == 1) {
 
-				//gc.setFill(Color.BLUE);
+				// gc.setFill(Color.BLUE);
 
-				//gc.setFill(wallColor);
-				//gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
+				// gc.setFill(wallColor);
+				// gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
 
-				//}
+				// }
 
 				// アイテムの描画
 				if (item != null) {
@@ -178,35 +178,24 @@ public class MapView {
 			}
 		}
 
+		// グラフィックスの状態を元に戻す
+		gc.restore();
+
 		// スコアを表示させるためのコード
 
 		Sengoku sengoku = model.getSengoku();
 
 		if (sengoku != null) {
 
-			String scoreText = "SCORE: " + sengoku.getScore();
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
-			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
+			// スコア
 			gc.setFill(Color.WHITE);
+			gc.fillText("SCORE : " + sengoku.getScore(), 15, 25);
 
-			// ステージの右下に配置
-
-			double textX = stageWidth - 140;
-
-			double textY = stageHeight - 20;
-
-			gc.fillText(scoreText, textX, textY);
-
-			// 残機表示
-			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
+			// 残機
 			gc.setFill(Color.RED);
-
-			String lifeText = "❤ ".repeat(sengoku.getHp());
-
-			gc.fillText(lifeText, 20, stageHeight - 20);
-
+			gc.fillText("❤".repeat(sengoku.getHp()), 15, 50);
 		}
 
 	}
@@ -259,8 +248,7 @@ public class MapView {
 
 		gc.fillArc(
 
-				pacX - MapData.TILE_SIZE / 2.0,
-				pacY - MapData.TILE_SIZE / 2.0,
+				pacX - MapData.TILE_SIZE / 2.0, pacY - MapData.TILE_SIZE / 2.0,
 
 				MapData.TILE_SIZE, MapData.TILE_SIZE,
 
