@@ -45,7 +45,7 @@
 				<configuration>
 
 
-					<mainClass>test3.Main3</mainClass>
+					<mainClass>start.Start</mainClass>
 
 
 
