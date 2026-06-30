@@ -1,9 +1,10 @@
 package test2.model;
 
+import Characters.Direction;
+import Characters.Sengoku;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
-import sample.Sengoku;
 
 public class MapData {
 
@@ -308,5 +309,30 @@ public class MapData {
 			mouthOpening = +1; //閉じきったら次は開く方向へ
 		if (mouthAngle >= 45)
 			mouthOpening = -1; //開ききったら次は閉じる方向へ
+	}
+
+	public void setNextDirection(Direction down) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
+	public void update() {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
+	public boolean isGameOver() {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
+	}
+
+	public Sengoku getSengoku() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+	public boolean isCleared() {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
 	}
 }

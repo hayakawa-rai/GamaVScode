@@ -1,11 +1,11 @@
 package test1.controller;
 
+import Characters.Direction;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import sample.Direction;
 import start.Start;
 import story.Gameover;
 import story.Practice;
