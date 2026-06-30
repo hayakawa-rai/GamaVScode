@@ -1,6 +1,6 @@
 // Sengokuの4マス先を狙う YellowEnemy(黄) 
-package test;
-
+package sample;
+/*
 import java.util.List;
 
 import javafx.scene.image.Image;
@@ -9,7 +9,7 @@ import test.test2.MapData;
 public class YellowEnemy extends Enemy {
 
 	// スタート位置(マップ中心 エネミーハウス内)
-	private static final int START_COL = 13;
+	private static final int START_COL = 14;
 	private static final int START_ROW = 14;
 
 	// プレイヤーの進行方向の4マス先を狙う
@@ -128,14 +128,5 @@ public class YellowEnemy extends Enemy {
 		// 親クラスの 最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
-
-	@Override
-	public void resetToStartPosition() {
-
-		super.resetToStartPosition();
-
-		released = false;
-		startTime = System.currentTimeMillis();
-	}
-
 }
+*/

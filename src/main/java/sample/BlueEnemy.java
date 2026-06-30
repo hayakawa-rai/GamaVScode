@@ -1,16 +1,15 @@
 // RedEnemy と連携してはさみうちにする BlueEnemy(青) 
-package test;
-
+package sample;
+/*
 import java.util.List;
-
 import javafx.scene.image.Image;
-import test.test2.MapData;
+import test.test2.MapData; (仮)
 
 public class BlueEnemy extends Enemy {
 
 	// スタート位置(マップ中心 エネミーハウス上)
 	private static final int START_COL = 14;
-	private static final int START_ROW = 13;
+	private static final int START_ROW = 14;
 
 	// プレイヤーの進行方向の2マス先を狙う
 	private static final int PREDICT_TILES = 2;
@@ -83,7 +82,7 @@ public class BlueEnemy extends Enemy {
 			e.printStackTrace();
 		}
 	}
-
+	
 	// 画像の読み込み処理
 	public Image getEnemyImage() {
 		if (this.currentState == Characters.EnemyState.DEAD) {
@@ -94,6 +93,8 @@ public class BlueEnemy extends Enemy {
 		}
 		return normalImage;
 	}
+ 
+
 
 	// 2秒経過後に出撃
 	@Override
@@ -164,14 +165,5 @@ public class BlueEnemy extends Enemy {
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 
-	@Override
-	public void resetToStartPosition() {
-
-		super.resetToStartPosition();
-
-		released = false;
-		startTime = System.currentTimeMillis();
-
-	}
-
 }
+*/

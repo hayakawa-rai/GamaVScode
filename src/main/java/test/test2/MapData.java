@@ -3,18 +3,19 @@ package test.test2;
 import java.util.ArrayList;
 import java.util.List;
 
+import Characters.BlueEnemy;
 import Characters.Direction;
+import Characters.Enemy;
+import Characters.GreenEnemy;
+import Characters.RedEnemy;
 import Characters.Sengoku;
+import Characters.YellowEnemy;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
-import test.BlueEnemy;
-import test.Enemy;
-import test.GreenEnemy;
-import test.RedEnemy;
-import test.YellowEnemy;
+import common.GameMap;
 
-public class MapData {
+public class MapData implements GameMap {
 
 	public static final int TILE_SIZE = 30;
 
@@ -86,6 +87,13 @@ public class MapData {
 	private int remainingItems = 0;
 	private boolean gameOver = false;
 
+	// CHASE/SCATTER管理
+	private long modeStartTime = 0;
+	private boolean chaseMode = false;
+
+	// ゲーム開始待ち
+	private boolean waitingStart = true;
+
 	// FEVER終了時刻
 	private long feverEndTime = 0;
 
@@ -139,7 +147,7 @@ public class MapData {
 	public MapData() {
 		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
-		
+
 		for (int row = 0; row < map.length; row++) {
 
 			for (int col = 0; col < map[0].length; col++) {
@@ -201,9 +209,49 @@ public class MapData {
 			System.out.println("FEVER終了");
 		}
 
-		// 敵キャラが存在すれば移動ロジックを実行
-		for (Enemy e : enemies) {
-			e.move(map);
+		// CHASE/SCATTER管理
+		if (!waitingStart) {
+
+			long elapsed = System.currentTimeMillis() - modeStartTime;
+
+			if (chaseMode && elapsed >= 20000) {
+
+				chaseMode = false;
+				modeStartTime = System.currentTimeMillis();
+
+				for (Enemy e : enemies) {
+
+					if (e.getCurrentState() != Characters.EnemyState.DEAD &&
+							e.getCurrentState() != Characters.EnemyState.FEVER) {
+
+						e.setCurrentState(Characters.EnemyState.SCATTER);
+					}
+				}
+
+				System.out.println("SCATTER開始");
+			}
+
+			else if (!chaseMode && elapsed >= 7000) {
+
+				chaseMode = true;
+				modeStartTime = System.currentTimeMillis();
+
+				for (Enemy e : enemies) {
+
+					if (e.getCurrentState() != Characters.EnemyState.DEAD &&
+							e.getCurrentState() != Characters.EnemyState.FEVER) {
+
+						e.setCurrentState(Characters.EnemyState.CHASE);
+					}
+				}
+
+				System.out.println("CHASE開始");
+			}
+
+			// 敵移動
+			for (Enemy e : enemies) {
+				e.move(map);
+			}
 		}
 		// 口パクの更新
 		updateMouth();
@@ -227,9 +275,9 @@ public class MapData {
 
 				// ワープ直後は、プレイヤーの入力を上書きして強制直進（先行入力を固定）
 				if (lastWarpX == 27) {
-					sengoku.setnextdirection(Direction.LEFT);
+					sengoku.setNextDirection(Direction.LEFT);
 				} else if (lastWarpX == 0) {
-					sengoku.setnextdirection(Direction.RIGHT);
+					sengoku.setNextDirection(Direction.RIGHT);
 				}
 			} else {
 				justWarped = false;
@@ -268,7 +316,9 @@ public class MapData {
 				double newPacX = warpX * TILE_SIZE;
 				double newPacY = warpY * TILE_SIZE;
 
-				sengoku.setPosition(newPacX, newPacY);
+				sengoku.setX(newPacX);
+				sengoku.setY(newPacY);
+				
 				justWarped = true;
 				lastWarpX = warpX;
 				lastWarpY = warpY;
@@ -296,6 +346,7 @@ public class MapData {
 			Item item = itemMap[currentTileY][currentTileX];
 
 			if (item != null) {
+				// ポイントをスコアに加算
 				item.onEaten(sengoku);
 
 				// パワーエサ(2)を食べたらFEVER
@@ -316,16 +367,15 @@ public class MapData {
 					// ★普通のドットを食べたので10点加算
 					sengoku.addScore(10);
 				}
-			
 
-			itemMap[currentTileY][currentTileX] = null;
-			remainingItems--; // ★1個食べたのでカウントを減らす
-			System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
-		    }
-	 }
+				itemMap[currentTileY][currentTileX] = null;
+				remainingItems--; // ★1個食べたのでカウントを減らす
+				System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
+			}
+		}
 
-	// 全部食べたかチェック（エサ復活用）
-	checkAllEaten();
+		// 全部食べたかチェック（エサ復活用）
+		checkAllEaten();
 
 	}
 
@@ -367,9 +417,19 @@ public class MapData {
 	}
 
 	public void setNextDirection(Direction dir) {
-		sengoku.setnextdirection(dir);
-	}
 
+		sengoku.setNextDirection(dir);
+
+		// 初回入力でゲーム開始
+		if (waitingStart) {
+
+			waitingStart = false;
+
+			modeStartTime = System.currentTimeMillis();
+
+			System.out.println("ゲーム開始");
+		}
+	}
 	// 敵との当たり判定
 
 	private void checkCollision() {
@@ -413,13 +473,25 @@ public class MapData {
 
 				} else {
 
-					// 仙石を初期位置に戻す
 					sengoku.resetToStartPosition();
 
-					// 全敵を初期位置に戻す
 					for (Enemy enemy : enemies) {
 						enemy.resetToStartPosition();
 					}
+
+					for (Enemy enemy : enemies) {
+						enemy.setCurrentState(Characters.EnemyState.SCATTER);
+					}
+
+					// タイマーリセット
+					modeStartTime = 0;
+
+					// 初期状態に戻す
+					chaseMode = false;
+
+					// 再入力待ち
+					waitingStart = true;
+
 				}
 
 				return;
@@ -430,15 +502,53 @@ public class MapData {
 	public boolean isPaused() {
 		return paused;
 	}
-
 	
-	
-
-	// --- getters ---
+	@Override
 	public int[][] getMap() {
 		return map;
 	}
 
+	@Override
+	public double getPacX() {
+		return sengoku != null ? sengoku.getX() : 0;
+	}
+
+	@Override
+	public double getPacY() {
+		return sengoku != null ? sengoku.getY() : 0;
+	}
+
+	@Override
+	public int getStageNumber() {
+		return stageNumber;
+	}
+
+	@Override
+	public boolean isWaitingStart() {
+		return waitingStart;
+	}
+
+	@Override
+	public List<Enemy> getEnemies() {
+		return enemies;
+	}
+
+	// ※ common.Direction と Characters.Direction の型が合わない場合はキャストや変換を行ってください
+	@Override
+	public Characters.Direction getPlayerDirection() {
+		if (sengoku == null || sengoku.getDirection() == null) {
+			return Characters.Direction.NONE;
+		}
+
+		// Characters.Direction から 正解の test.Direction へ名前ベースで型変換
+		try {
+			return Characters.Direction.valueOf(sengoku.getDirection().name());
+		} catch (IllegalArgumentException e) {
+			return Characters.Direction.NONE;
+		}
+	}
+
+	// --- getters ---
 	public Item[][] getItemMap() {
 		return itemMap;
 	}
@@ -456,32 +566,6 @@ public class MapData {
 		return enemies.isEmpty() ? null : enemies.get(0);
 	}
 
-	// ⭕ MapViewでループ描画するためのリスト
-	public List<Enemy> getEnemies() {
-		return enemies;
-	}
-
-	public double getPacX1() {
-		return sengoku != null ? sengoku.getX() : 0;
-	}
-
-	public double getPacY1() {
-		return sengoku != null ? sengoku.getY() : 0;
-	}
-
-	public double getPacX() {
-		return sengoku != null ? sengoku.getX() : 0;
-	}
-
-	public double getPacY() {
-		return sengoku != null ? sengoku.getY() : 0;
-	}
-
-	// ⭕ 敵クラスから現在のステージ番号を確認できるようにする
-	public int getStageNumber() {
-		return stageNumber;
-	}
-
 	// ⭕ ステージが切り替わったときに外から数値を変更できるようにする
 	// --- setters ---
 	public void setStageNumber(int stageNum) {
@@ -494,6 +578,9 @@ public class MapData {
 
 	public boolean isGameOver() {
 		return gameOver;
+	}
+	public boolean isPracticeMode() {
+	    return enableRespawn;
 	}
 
 }
