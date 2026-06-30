@@ -108,95 +108,85 @@ public class MapView {
 			}
 		}
 
-		// ★ スコア・残機をステージ内に表示（gc.restore() は draw() に任せる）
+		// グラフィックスの状態を元に戻す
+		gc.restore();
+
+		// スコアを表示させるためのコード
 		Sengoku sengoku = model.getSengoku();
+
 		if (sengoku != null) {
+
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+
+			// スコア
 			gc.setFill(Color.WHITE);
 			gc.fillText("SCORE : " + sengoku.getScore(), 15, 25);
 
+			// 残機
 			gc.setFill(Color.RED);
 			gc.fillText("❤".repeat(sengoku.getHp()), 15, 50);
 		}
+
 	}
-	
+
 	// MapView のフィールドに Pac-Man 画像を追加
-	private final javafx.scene.image.Image pacmanImage =
-	        new javafx.scene.image.Image(getClass().getResource("/picture/sengoku.png").toExternalForm());
+	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
+			getClass().getResource("/picture/sengoku.png").toExternalForm());
 
 	public void drawPacman(GraphicsContext gc) {
-	    Sengoku sengoku = model.getSengoku();
-	    if (sengoku == null || !sengoku.isAlive()) return;
-
-	    if (pacmanImage == null) {
-	        // 画像が無い場合の代替描画
-	        gc.setFill(Color.YELLOW);
-	        gc.fillOval(
-	                sengoku.getX(),
-	                sengoku.getY(),
-	                MapData.TILE_SIZE,
-	                MapData.TILE_SIZE
-	        );
-	        return;
-	    }
-
-	    double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
-	    double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
-
-	    Characters.Direction dir = sengoku.getDirection();
-	    double angle = 0;
-
-	    gc.save();
-
-	    gc.translate(pacX, pacY);
-	    gc.rotate(angle);
-
-	    gc.drawImage(
-	            pacmanImage,
-	            -MapData.TILE_SIZE / 2.0,
-	            -MapData.TILE_SIZE / 2.0,
-	            MapData.TILE_SIZE,
-	            MapData.TILE_SIZE
-	    );
-
-	    gc.restore();
-	}
-
-
-
-/*public void drawPacman(GraphicsContext gc, Color pacmanColor) {
 		Sengoku sengoku = model.getSengoku();
-		if (sengoku == null || !sengoku.isAlive()) return;
+		if (sengoku == null || !sengoku.isAlive())
+			return;
 
-		gc.setFill(pacmanColor);
+		if (pacmanImage == null) {
+			// 画像が無い場合の代替描画
+			gc.setFill(Color.YELLOW);
+			gc.fillOval(sengoku.getX(), sengoku.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
+			return;
+		}
 
-		// ★ パックマンは左上基準 → 中心を求めて描画
 		double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
 		double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
 
-		double mouthAngle = model.getMouthAngle();
-		Characters.Direction currentDir = sengoku.getDirection();
+		Characters.Direction dir = sengoku.getDirection();
+		double angle = 0;
 
-		if (currentDir != null) {
-			if (currentDir.getDX() == 1)  lastBaseAngle = 0;   // 右
-			if (currentDir.getDX() == -1) lastBaseAngle = 180; // 左
-			if (currentDir.getDY() == -1) lastBaseAngle = 90;  // 上
-			if (currentDir.getDY() == 1)  lastBaseAngle = 270; // 下
-		}
+		gc.save();
 
-		double finalStartAngle = lastBaseAngle + mouthAngle;
+		gc.translate(pacX, pacY);
+		gc.rotate(angle);
 
-		// ★ 中心から TILE_SIZE/2 引いて fillArc の左上基準に変換
-		gc.fillArc(
-				pacX - MapData.TILE_SIZE / 2.0,
-				pacY - MapData.TILE_SIZE / 2.0,
-				MapData.TILE_SIZE,
-				MapData.TILE_SIZE,
-				finalStartAngle,
-				360 - mouthAngle * 2,
-				javafx.scene.shape.ArcType.ROUND
-		);
-	}*/
+		gc.drawImage(pacmanImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+				MapData.TILE_SIZE);
+
+		gc.restore();
+	}
+
+	/*
+	 * public void drawPacman(GraphicsContext gc, Color pacmanColor) { Sengoku
+	 * sengoku = model.getSengoku(); if (sengoku == null || !sengoku.isAlive())
+	 * return;
+	 * 
+	 * gc.setFill(pacmanColor);
+	 * 
+	 * // ★ パックマンは左上基準 → 中心を求めて描画 double pacX = sengoku.getX() + MapData.TILE_SIZE /
+	 * 2.0; double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+	 * 
+	 * double mouthAngle = model.getMouthAngle(); Characters.Direction currentDir =
+	 * sengoku.getDirection();
+	 * 
+	 * if (currentDir != null) { if (currentDir.getDX() == 1) lastBaseAngle = 0; //
+	 * 右 if (currentDir.getDX() == -1) lastBaseAngle = 180; // 左 if
+	 * (currentDir.getDY() == -1) lastBaseAngle = 90; // 上 if (currentDir.getDY() ==
+	 * 1) lastBaseAngle = 270; // 下 }
+	 * 
+	 * double finalStartAngle = lastBaseAngle + mouthAngle;
+	 * 
+	 * // ★ 中心から TILE_SIZE/2 引いて fillArc の左上基準に変換 gc.fillArc( pacX -
+	 * MapData.TILE_SIZE / 2.0, pacY - MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+	 * MapData.TILE_SIZE, finalStartAngle, 360 - mouthAngle * 2,
+	 * javafx.scene.shape.ArcType.ROUND ); }
+	 */
 
 	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
 		enemyImageView.setFitWidth(MapData.TILE_SIZE);
@@ -205,7 +195,8 @@ public class MapView {
 	}
 
 	private void drawEnemyInstance(GraphicsContext gc, Enemy enemy) {
-		if (enemy == null) return;
+		if (enemy == null)
+			return;
 
 		javafx.scene.image.Image img = null;
 
@@ -241,7 +232,8 @@ public class MapView {
 	}
 
 	private Color getColorFromCSS(Region node, Color defaultColor) {
-		if (node.getStyleClass().isEmpty()) return defaultColor;
+		if (node.getStyleClass().isEmpty())
+			return defaultColor;
 		try {
 			node.applyCss();
 			Background bg = node.getBackground();
