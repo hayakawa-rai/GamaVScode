@@ -262,7 +262,7 @@ public class Story4 extends Application{
         anikiView.setPreserveRatio(true);
         //人物画像の読み込み(仙石さん)
         Image sengokuImage = new Image(
-        		getClass().getResourceAsStream("/picture/sengoku.png")
+        		getClass().getResourceAsStream("/picture/sengoku(hello).png")
         );
         //人物画像の表示
         ImageView sengokuView = new ImageView(sengokuImage);
@@ -419,8 +419,9 @@ public class Story4 extends Application{
         wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
         wadatakuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
         // 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
-        sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.6));
-        sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.0));
+
+        sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+        sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
         sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
         //boxのサイズをウィンドウに合わせる
         box.widthProperty().bind(scene.widthProperty().multiply(0.9));

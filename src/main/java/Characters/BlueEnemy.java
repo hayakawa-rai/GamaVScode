@@ -1,15 +1,17 @@
 // RedEnemy と連携してはさみうちにする BlueEnemy(青) 
 package Characters;
-/*
+
 import java.util.List;
+
+import common.GameConfig;
+import common.GameMap;
 import javafx.scene.image.Image;
-import test.test2.MapData; (仮)
 
 public class BlueEnemy extends Enemy {
 
 	// スタート位置(マップ中心 エネミーハウス上)
 	private static final int START_COL = 14;
-	private static final int START_ROW = 14;
+	private static final int START_ROW = 13;
 
 	// プレイヤーの進行方向の2マス先を狙う
 	private static final int PREDICT_TILES = 2;
@@ -21,16 +23,18 @@ public class BlueEnemy extends Enemy {
 	// 出発時間の記録
 	private long startTime;
 
+	//ゲーム開始した瞬間にタイマーをスタート
+	private boolean timerStarted = false;
 	// 巣から出たか
 	private boolean released = false;
 
 	// 赤の位置を参照
 	private RedEnemy red;
 
-	public BlueEnemy(MapData mapData) {
+	public BlueEnemy(GameMap mapData) {
 		// マスの中心座標を初期位置として Enemy に渡す
-		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
+		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
+				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
 
 		this.mapData = mapData;
 
@@ -66,9 +70,6 @@ public class BlueEnemy extends Enemy {
 			}
 		}
 
-		// 生成時刻を記録
-		this.startTime = System.currentTimeMillis();
-
 		// 画像の読み込み
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
@@ -82,7 +83,7 @@ public class BlueEnemy extends Enemy {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// 画像の読み込み処理
 	public Image getEnemyImage() {
 		if (this.currentState == Characters.EnemyState.DEAD) {
@@ -93,39 +94,49 @@ public class BlueEnemy extends Enemy {
 		}
 		return normalImage;
 	}
- 
-
 
 	// 2秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-		if (!released) {
-			long elapsed = System.currentTimeMillis() - startTime;
 
-			// ゲーム開始から10秒は待機
+	    if (mapData.isWaitingStart()) {
+	        return;
+	    }
+
+	    // 初回入力後に初めてタイマー開始
+	    if (!timerStarted) {
+
+	        startTime = System.currentTimeMillis();
+	        timerStarted = true;
+	    }
+
+	    if (!released) {
+
+	        long elapsed = System.currentTimeMillis() - startTime;
+
 			if (elapsed < 2000) {
 				return;
 			}
 
-			// 出撃
-			released = true;
-		}
-		super.move(map);
+	        released = true;
+	    }
+
+	    super.move(map);
 	}
 
 	@Override
-	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
 
 		if (mapData == null || validDirections.isEmpty()) {
 			return Direction.NONE;
 		}
 
 		// プレイヤーのタイル座標
-		int pacCol = (int) (mapData.getPacX() / MapData.TILE_SIZE);
-		int pacRow = (int) (mapData.getPacY() / MapData.TILE_SIZE);
+		int pacCol = (int) (mapData.getPacX() / GameConfig.TILE_SIZE);
+		int pacRow = (int) (mapData.getPacY() / GameConfig.TILE_SIZE);
 
 		// プレイヤーの向きの2マス先
-		switch (mapData.getSengoku().getDirection()) {
+		switch (mapData.getPlayerDirection()) {
 		case UP:
 			pacRow -= PREDICT_TILES;
 			break;
@@ -143,8 +154,8 @@ public class BlueEnemy extends Enemy {
 		}
 
 		// RedEnemy の位置
-		int redCol = (int) (red.getX() / MapData.TILE_SIZE);
-		int redRow = (int) (red.getY() / MapData.TILE_SIZE);
+		int redCol = (int) (red.getX() / GameConfig.TILE_SIZE);
+		int redRow = (int) (red.getY() / GameConfig.TILE_SIZE);
 
 		// ベクトル計算
 		int vx = pacCol - redCol;
@@ -154,8 +165,16 @@ public class BlueEnemy extends Enemy {
 		int targetCol = pacCol + vx;
 		int targetRow = pacRow + vy;
 
+		// SCATTER
+		if (currentState == Characters.EnemyState.SCATTER) {
+			return getClosestDirection(
+					validDirections,
+					TERRITORY_COL,
+					TERRITORY_ROW);
+		}
+
 		// 共通処理
-		Direction special = handleSpecialState(validDirections, pacCol, pacRow);
+		Direction special = handleSpecialState(validDirections, pacCol, pacRow, map);
 
 		if (special != null) {
 			return special;
@@ -165,5 +184,13 @@ public class BlueEnemy extends Enemy {
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 
+	@Override
+	public void resetToStartPosition() {
+
+		super.resetToStartPosition();
+
+		released = false;
+		timerStarted = false;
+	}
+
 }
-*/

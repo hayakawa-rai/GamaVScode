@@ -41,17 +41,19 @@ public class Gameover extends Application {
 		//いらすとや
 		ImageView icon = new ImageView();
 		try {
-			java.net.URL imgUrl = Gameover.class.getResource("/picture/irasutoya(gameover).png");
+
+			java.net.URL imgUrl = Gameover.class.getResource("/picture/gvsengoku.png");
+
 			if (imgUrl != null) {
 				icon.setImage(new Image(imgUrl.toExternalForm()));
 			} else {
-				System.out.println("⚠️ 警告: /irasutoya(gameover).png が見つかりません。画像の表示をスキップします。");
+				System.out.println("⚠️ 警告: /sengoku(gameover).png が見つかりません。画像の表示をスキップします。");
 			}
 		} catch (Exception e) {
 			System.out.println("⚠️ 画像の読み込みに失敗しました。");
 		}
-		icon.setFitWidth(200);
-		icon.setFitHeight(200);
+		icon.setFitWidth(300);
+		icon.setFitHeight(400);
 
 		
 		//練習画面へ戻る

@@ -1,4 +1,4 @@
-package Characters;
+package sample;
 
 public interface GameMap {
     // 指定座標が壁かどうかを判定する最小限のメソッド

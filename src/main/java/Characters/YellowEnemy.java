@@ -1,15 +1,16 @@
 // Sengokuの4マス先を狙う YellowEnemy(黄) 
 package Characters;
-/*
+
 import java.util.List;
 
+import common.GameConfig;
+import common.GameMap;
 import javafx.scene.image.Image;
-import test.test2.MapData;
 
 public class YellowEnemy extends Enemy {
 
 	// スタート位置(マップ中心 エネミーハウス内)
-	private static final int START_COL = 14;
+	private static final int START_COL = 13;
 	private static final int START_ROW = 14;
 
 	// プレイヤーの進行方向の4マス先を狙う
@@ -22,14 +23,17 @@ public class YellowEnemy extends Enemy {
 	// 出発時間の記録
 	private long startTime;
 
+	//ゲーム開始した瞬間にタイマーをスタート
+	private boolean timerStarted = false;
+
 	// 巣から出たか
 	private boolean released = false;
 
-	public YellowEnemy(MapData mapData) {
+	public YellowEnemy(GameMap mapData) {
 
 		// マスの中心座標を初期位置として Enemy に渡す
-		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1);
+		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
+				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
 
 		this.mapData = mapData;
 
@@ -57,9 +61,6 @@ public class YellowEnemy extends Enemy {
 			}
 		}
 
-		// 生成時刻を記録
-		this.startTime = System.currentTimeMillis();
-
 		// 画像の読み込み
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
@@ -77,32 +78,44 @@ public class YellowEnemy extends Enemy {
 	// 10秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-		if (!released) {
-			long elapsed = System.currentTimeMillis() - startTime;
 
-			// ゲーム開始から10秒は待機
+		if (mapData.isWaitingStart()) {
+			return;
+		}
+
+		// 初回入力後にタイマー開始
+		if (!timerStarted) {
+
+			startTime = System.currentTimeMillis();
+			timerStarted = true;
+		}
+
+		if (!released) {
+
+			long elapsed = System.currentTimeMillis() - startTime;
+			//ゲーム開始から10秒後
 			if (elapsed < 10000) {
 				return;
 			}
-
-			// 出撃
+			//出撃
 			released = true;
 		}
+
 		super.move(map);
 	}
 
 	@Override
-	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
 		if (mapData == null || validDirections.isEmpty()) {
 			return Direction.NONE;
 		}
 
 		// プレイヤーのタイル座標
-		int targetCol = (int) (mapData.getPacX() / MapData.TILE_SIZE);
-		int targetRow = (int) (mapData.getPacY() / MapData.TILE_SIZE);
+		int targetCol = (int) (mapData.getPacX() / GameConfig.TILE_SIZE);
+		int targetRow = (int) (mapData.getPacY() / GameConfig.TILE_SIZE);
 
 		// プレイヤーの向きの4マス先
-		switch (mapData.getSengoku().getDirection()) {
+		switch (mapData.getPlayerDirection()) {
 		case UP:
 			targetRow -= PREDICT_TILES;
 			break;
@@ -119,8 +132,16 @@ public class YellowEnemy extends Enemy {
 			break;
 		}
 
+		// SCATTER
+		if (currentState == Characters.EnemyState.SCATTER) {
+			return getClosestDirection(
+					validDirections,
+					TERRITORY_COL,
+					TERRITORY_ROW);
+		}
+
 		// 共通処理
-		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
+		Direction special = handleSpecialState(validDirections, targetCol, targetRow, map);
 
 		if (special != null) {
 			return special;
@@ -128,5 +149,14 @@ public class YellowEnemy extends Enemy {
 		// 親クラスの 最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
+
+	@Override
+	public void resetToStartPosition() {
+
+		super.resetToStartPosition();
+
+		released = false;
+		timerStarted = false;
+	}
+
 }
-*/

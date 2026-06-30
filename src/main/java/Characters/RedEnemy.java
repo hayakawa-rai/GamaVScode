@@ -1,17 +1,18 @@
 // 最短距離でプレイヤーを追跡する敵（赤）
 
 package Characters;
-/*
+
 import java.util.List;
 
+import common.GameConfig;
+import common.GameMap;
 import javafx.scene.image.Image;
-import test.test2.MapData;
 
 public class RedEnemy extends Enemy {
 
 	// スタート位置（エネミーハウス付近上）
-	private static final int START_COL = 14;
-	private static final int START_ROW = 14;
+	private static final int START_COL = 13;
+	private static final int START_ROW = 13;
 
 	// 縄張りエリアの中心（右上）(仮)
 	private static final int TERRITORY_COL = 24;
@@ -19,14 +20,14 @@ public class RedEnemy extends Enemy {
 
 	// 引数を MapData に一本化し、正しいコンストラクタの形に直した
 
-	public RedEnemy(MapData sampleModel) {
+	public RedEnemy(GameMap sampleModel) {
 
 		// マスの中心座標で生成
 
-		super(START_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0,
+		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
 
-				START_ROW * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0, 1); // スピードは 2
-		
+				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2); // スピードは 2
+
 		this.mapData = sampleModel;
 
 		// FEVER画像をステージごとに読み込む
@@ -92,10 +93,9 @@ public class RedEnemy extends Enemy {
 
 	}
 
-
 	@Override
 
-	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, MapData mapData) {
+	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
 
 		// 安全対策: 進める方向がない場合は NONE、または最初の方向を返す
 
@@ -105,19 +105,26 @@ public class RedEnemy extends Enemy {
 
 		// キーボード操作で動いている本物のパックマン座標(px)をMapDataから取得
 
-		double pacX = mapData.getPacX() + MapData.TILE_SIZE / 2.0;
+		double pacX = mapData.getPacX() + GameConfig.TILE_SIZE / 2.0;
 
-		double pacY = mapData.getPacY() + MapData.TILE_SIZE / 2.0;
+		double pacY = mapData.getPacY() + GameConfig.TILE_SIZE / 2.0;
 
 		// ピクセル座標から、AIが目指すべき「ターゲットのマス」を算出
 
-		int targetCol = (int) (pacX / MapData.TILE_SIZE);
+		int targetCol = (int) (pacX / GameConfig.TILE_SIZE);
 
-		int targetRow = (int) (pacY / MapData.TILE_SIZE);
+		int targetRow = (int) (pacY / GameConfig.TILE_SIZE);
+
+		// SCATTER
+		if (currentState == Characters.EnemyState.SCATTER) {
+			return getClosestDirection(
+					validDirections,
+					TERRITORY_COL,
+					TERRITORY_ROW);
+		}
 
 		// 共通処理
-
-		Direction special = handleSpecialState(validDirections, targetCol, targetRow);
+		Direction special = handleSpecialState(validDirections, targetCol, targetRow, map);
 
 		if (special != null) {
 
@@ -132,4 +139,3 @@ public class RedEnemy extends Enemy {
 	}
 
 }
-*/

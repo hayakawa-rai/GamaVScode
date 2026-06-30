@@ -13,6 +13,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import sample.Sengoku;
 
 public class Stageclear3 extends Application{
 	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
@@ -34,6 +35,12 @@ public class Stageclear3 extends Application{
     private PauseTransition delay;
     private PauseTransition pause;
     
+    private Sengoku sengoku;
+
+    public Stageclear3(Sengoku sengoku) {
+        this.sengoku = sengoku;
+    }
+
     
     private void cleanup() {
 
@@ -159,6 +166,16 @@ public class Stageclear3 extends Application{
         // タイマー開始
         pause.play();
     });
+    
+    //スコア表示
+  	Text scoreLabel = new Text();
+
+  	if (sengoku != null) {
+  	    scoreLabel.setText("SCORE: " + sengoku.getScore());
+  	}
+
+  	scoreLabel.setStyle("-fx-font-size: 30px; -fx-fill:  gray;");
+    
     // 戻るボタン
     Button backButton = new Button("タイトルへ");
     //ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
