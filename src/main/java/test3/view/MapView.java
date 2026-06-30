@@ -26,8 +26,9 @@ public class MapView {
 	private final Region pacmanDummy = new Region();
 
 	// 口の向きを記憶しておく。（初期は右向き）
-
 	private double lastBaseAngle = 0;
+	// ヘッダー
+	private static final double INFO_HEIGHT = 40;
 
 	// 互換コンストラクタ（引数1つ用）
 	public MapView(MapData model) {
@@ -54,44 +55,34 @@ public class MapView {
 		});
 	}
 
-	/**
-	 * 
-	 * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
-	 * 
-	 */
+	// ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
 
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
 		// 1. まずはCanvasを一度綺麗に消す（透明にする）
 		gc.clearRect(0, 0, canvasWidth, canvasHeight);
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, canvasWidth, INFO_HEIGHT);
 
 		Color wallColor = getColorFromCSS(wallDummy, Color.BLUE);
 		Color pacmanColor = getColorFromCSS(pacmanDummy, Color.YELLOW);
 
 		// 1. ステージ本来のサイズを計算
-
 		int cols = model.getMap()[0].length;
-
 		int rows = model.getMap().length;
 
 		double stageWidth = cols * MapData.TILE_SIZE;
-
 		double stageHeight = rows * MapData.TILE_SIZE;
-
 		double scaleX = canvasWidth / stageWidth;
-
 		double scaleY = canvasHeight / stageHeight;
 
 		// 2. 全体を90%の大きさに縮小する
-
 		double bufferRatio = 0.9;
-
 		double scale = Math.min(scaleX, scaleY) * bufferRatio;
 
 		// 3. 中央に配置するための余白（オフセット）を計算
 		double offsetX = (canvasWidth - (stageWidth * scale)) / 2.0;
-
-		double offsetY = (canvasHeight - (stageHeight * scale)) / 2.0;
+		double offsetY = ((canvasHeight - INFO_HEIGHT) - (stageHeight * scale)) / 2.0 + INFO_HEIGHT;
 
 		// 4. 背景の黒を画面全体に塗る（余白も含めて真っ黒にする場合）
 
@@ -199,110 +190,91 @@ public class MapView {
 		}
 
 	}
-	
+
 	// MapView のフィールドに Pac-Man 画像を追加
-		private final javafx.scene.image.Image pacmanImage =
-		        new javafx.scene.image.Image(getClass().getResource("/picture/sengoku.png").toExternalForm());
+	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
+			getClass().getResource("/picture/sengoku.png").toExternalForm());
 
-		public void drawPacman(GraphicsContext gc) {
-		    Sengoku sengoku = model.getSengoku();
-		    if (sengoku == null || !sengoku.isAlive()) return;
-
-		    if (pacmanImage == null) {
-		        // 画像が無い場合の代替描画
-		        gc.setFill(Color.YELLOW);
-		        gc.fillOval(
-		                sengoku.getX(),
-		                sengoku.getY(),
-		                MapData.TILE_SIZE,
-		                MapData.TILE_SIZE
-		        );
-		        return;
-		    }
-
-		    double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
-		    double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
-
-		    Characters.Direction dir = sengoku.getDirection();
-		    double angle = 0;
-
-		    gc.save();
-
-		    gc.translate(pacX, pacY);
-		    gc.rotate(angle);
-
-		    gc.drawImage(
-		            pacmanImage,
-		            -MapData.TILE_SIZE / 2.0,
-		            -MapData.TILE_SIZE / 2.0,
-		            MapData.TILE_SIZE,
-		            MapData.TILE_SIZE
-		    );
-
-		    gc.restore();
-		}
-
-	// 内部の座標計算
-	/*
-	public void drawPacman(GraphicsContext gc, Color pacmanColor) {
+	public void drawPacman(GraphicsContext gc) {
 		Sengoku sengoku = model.getSengoku();
-
 		if (sengoku == null || !sengoku.isAlive())
 			return;
 
-		gc.setFill(Color.YELLOW);
-
-		gc.setFill(pacmanColor);
-
-		double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
-
-		double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
-
-		double mouthAngle = model.getMouthAngle();
-
-		Characters.Direction currentDir = sengoku.getDirection();
-
-		if (currentDir != null) {
-
-			if (currentDir.getDX() == 1)
-				lastBaseAngle = 0; // 右
-
-			if (currentDir.getDX() == -1)
-				lastBaseAngle = 180; // 左
-
-			if (currentDir.getDY() == -1)
-				lastBaseAngle = 90; // 上
-
-			if (currentDir.getDY() == 1)
-				lastBaseAngle = 270; // 下
-
-			if (currentDir.getDX() == 1)
-				lastBaseAngle = 0;
-			if (currentDir.getDX() == -1)
-				lastBaseAngle = 180;
-			if (currentDir.getDY() == -1)
-				lastBaseAngle = 90;
-			if (currentDir.getDY() == 1)
-				lastBaseAngle = 270;
+		if (pacmanImage == null) {
+			// 画像が無い場合の代替描画
+			gc.setFill(Color.YELLOW);
+			gc.fillOval(sengoku.getX(), sengoku.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
+			return;
 		}
 
-		double finalStartAngle = lastBaseAngle + mouthAngle;
+		double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
+		double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
 
-		gc.fillArc(
+		Characters.Direction dir = sengoku.getDirection();
+		double angle = 0;
 
-				pacX - MapData.TILE_SIZE / 2.0, pacY - MapData.TILE_SIZE / 2.0,
+		gc.save();
 
-				MapData.TILE_SIZE, MapData.TILE_SIZE,
+		gc.translate(pacX, pacY);
+		gc.rotate(angle);
 
-				finalStartAngle,
+		gc.drawImage(pacmanImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+				MapData.TILE_SIZE);
 
-				360 - mouthAngle * 2,
+		gc.restore();
+	}
 
-				javafx.scene.shape.ArcType.ROUND
-
-		);
-
-	}*/
+	// 内部の座標計算
+	/*
+	 * public void drawPacman(GraphicsContext gc, Color pacmanColor) { Sengoku
+	 * sengoku = model.getSengoku();
+	 * 
+	 * if (sengoku == null || !sengoku.isAlive()) return;
+	 * 
+	 * gc.setFill(Color.YELLOW);
+	 * 
+	 * gc.setFill(pacmanColor);
+	 * 
+	 * double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
+	 * 
+	 * double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+	 * 
+	 * double mouthAngle = model.getMouthAngle();
+	 * 
+	 * Characters.Direction currentDir = sengoku.getDirection();
+	 * 
+	 * if (currentDir != null) {
+	 * 
+	 * if (currentDir.getDX() == 1) lastBaseAngle = 0; // 右
+	 * 
+	 * if (currentDir.getDX() == -1) lastBaseAngle = 180; // 左
+	 * 
+	 * if (currentDir.getDY() == -1) lastBaseAngle = 90; // 上
+	 * 
+	 * if (currentDir.getDY() == 1) lastBaseAngle = 270; // 下
+	 * 
+	 * if (currentDir.getDX() == 1) lastBaseAngle = 0; if (currentDir.getDX() == -1)
+	 * lastBaseAngle = 180; if (currentDir.getDY() == -1) lastBaseAngle = 90; if
+	 * (currentDir.getDY() == 1) lastBaseAngle = 270; }
+	 * 
+	 * double finalStartAngle = lastBaseAngle + mouthAngle;
+	 * 
+	 * gc.fillArc(
+	 * 
+	 * pacX - MapData.TILE_SIZE / 2.0, pacY - MapData.TILE_SIZE / 2.0,
+	 * 
+	 * MapData.TILE_SIZE, MapData.TILE_SIZE,
+	 * 
+	 * finalStartAngle,
+	 * 
+	 * 360 - mouthAngle * 2,
+	 * 
+	 * javafx.scene.shape.ArcType.ROUND
+	 * 
+	 * );
+	 * 
+	 * }
+	 */
 
 	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
 

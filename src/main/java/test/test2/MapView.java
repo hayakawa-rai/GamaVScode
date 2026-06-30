@@ -23,6 +23,7 @@ public class MapView {
 	private final Region pacmanDummy = new Region();
 
 	private double lastBaseAngle = 0;
+	//ヘッダー
 	private static final double INFO_HEIGHT = 40;
 
 	public MapView(MapData model) {
