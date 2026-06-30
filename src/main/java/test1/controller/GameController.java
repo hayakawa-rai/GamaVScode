@@ -1,15 +1,15 @@
 package test1.controller;
 
+import Characters.Direction;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import sample.Direction;
 import start.Start;
 import story.Gameover;
 import story.Practice;
-import story.Stageclear2;
+import story.Stageclear1;
 import story.Story1;
 import story.Story2;
 import story.Story3;
@@ -93,7 +93,7 @@ public class GameController {
 			dPad.add(btnDown,  1, 2);
 
 			// ★ リフレクションを使って、どのパッケージの MapData からでも安全にメソッドを呼び出す共通処理
-			java.util.function.Consumer<sample.Direction> sendDirection = (dir) -> {
+			java.util.function.Consumer<Characters.Direction> sendDirection = (dir) -> {
 				try {
 					// 一時停止中かチェック (isPaused メソッドを実行)
 					java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
@@ -101,7 +101,7 @@ public class GameController {
 					
 					if (!isPaused) {
 						// 方向をセット (setNextDirection メソッドを実行)
-						java.lang.reflect.Method setDirMethod = model.getClass().getMethod("setNextDirection", sample.Direction.class);
+						java.lang.reflect.Method setDirMethod = model.getClass().getMethod("setNextDirection", Characters.Direction.class);
 						setDirMethod.invoke(model, dir);
 					}
 				} catch (Exception ex) {
@@ -110,10 +110,10 @@ public class GameController {
 			};
 
 			// タップイベント（上記の共通処理を呼び出す）
-			btnUp.setOnMousePressed(e -> sendDirection.accept(sample.Direction.UP));
-			btnDown.setOnMousePressed(e -> sendDirection.accept(sample.Direction.DOWN));
-			btnLeft.setOnMousePressed(e -> sendDirection.accept(sample.Direction.LEFT));
-			btnRight.setOnMousePressed(e -> sendDirection.accept(sample.Direction.RIGHT));
+			btnUp.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.UP));
+			btnDown.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.DOWN));
+			btnLeft.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.LEFT));
+			btnRight.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.RIGHT));
 
 			// 最前面のレイヤーとして十字キーを追加
 			baseHolder.getChildren().add(dPad);
@@ -210,11 +210,11 @@ public class GameController {
 				        finalScore = model.getSengoku().getScore();
 				    }
 				    
-					// クリア画面（Stageclear2）に遷移させる
-					switchToStageclear2(stage, finalScore); 
+					// クリア画面（Stageclear1）に遷移させる
+					switchToStageclear1(stage, finalScore); 
 					
-					// もし直接ステージ2のゲーム画面にいかせたい場合はこちら↓
-					// switchToGame2(stage);
+					// もし直接ステー12のゲーム画面にいかせたい場合はこちら↓
+					// switchToGame1(stage);
 					
 					return; // クリアしたのでこれ以降の描画処理はスキップ
 					
@@ -240,11 +240,11 @@ public class GameController {
 			timer.stop();
 	}
 	
-	// Stageclear2画面へ変更するためのメソッド（引数に score を追加）
-		public static void switchToStageclear2(javafx.stage.Stage stage, int score) {
+	// Stageclear1画面へ変更するためのメソッド（引数に score を追加）
+		public static void switchToStageclear1(javafx.stage.Stage stage, int score) {
 
 			try {
-				Stageclear2 App = new Stageclear2();
+				Stageclear1 App = new Stageclear1();
 				App.setScore(score); // 受け取った score を確実に引き渡す
 				App.start(stage);
 			} catch (Exception e) {

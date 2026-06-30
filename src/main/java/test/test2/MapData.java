@@ -579,5 +579,8 @@ public class MapData implements GameMap {
 	public boolean isGameOver() {
 		return gameOver;
 	}
+	public boolean isPracticeMode() {
+	    return enableRespawn;
+	}
 
 }

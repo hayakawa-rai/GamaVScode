@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Characters.BlueEnemy;
+import Characters.Direction;
 import Characters.Enemy;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
+import Characters.Sengoku;
 import Characters.YellowEnemy;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
 import common.GameMap;
-import sample.Direction;
-import sample.Sengoku;
 
 public class MapData implements GameMap {
 
@@ -23,7 +23,7 @@ public class MapData implements GameMap {
 	private final int[][] map = {
 
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},			 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1},		     //■　　　　　　　　　　　　■■　　　　　　　　　　　　■
+			{1,0,0,0,2,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,2,0,0,0,1},		     //■　　　　　　　　　　　　■■　　　　　　　　　　　　■
 			{1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1},			 //■　■■■■■　■■■■　■■　■■■■　■■■■■　■
 			{1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1},			 //■　■■■■■　■■■■　■■　■■■■　■■■■■　■
 			{1,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,1,1,1,1,0,0,0,0,0,0,0,1},			 //■　　　　　　　■■■■　■■　■■■■　　　　　　　■
@@ -34,10 +34,10 @@ public class MapData implements GameMap {
 			{9,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,1,1,1,1,0,0,0,0,0,0,0,9},			 //　　　　　　　　■■■■　■■　■■■■　　　　　　　　
 			{1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1},			 //■■■■　■■　■■■■　■■　■■■■　■■　■■■■
 			{1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1},			 //　　　■　■■　　　　　　　　　　　　　　■■　■　　　
-			{1,1,1,1,0,1,1,1,1,0,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■■■　　■■■　■■■■　■　　　
-			{1,1,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■　　　　　　■　■■■■　■　　　
-			{1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1},			 //　　　■　　　　　　■　　　　　　■　　　　　　■　　　
-			{1,1,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■　　　　　　■　■■■■　■　　　
+			{1,1,1,1,0,1,1,1,1,0,1,1,1,7,7,1,1,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■■■　　■■■　■■■■　■　　　
+			{1,1,1,1,0,1,1,1,1,0,1,8,8,8,8,8,8,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■　　　　　　■　■■■■　■　　　
+			{1,1,1,1,0,0,0,2,0,0,1,8,8,8,8,8,8,1,0,0,2,0,0,0,1,1,1,1},			 //　　　■　　　　　　■　　　　　　■　　　　　　■　　　
+			{1,1,1,1,0,1,1,1,1,0,1,8,8,8,8,8,8,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■　　　　　　■　■■■■　■　　　
 			{1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1},			 //■■■■　■■■■　■■■■■■■■　■■■■　■■■■
 			{9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},			 //　　　　　　　　　　　　　　　　　　　　　　　　　　　　
 			{1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1},			 //■■■■　■■■■■■■　■■　■■■■■■■　■■■■
@@ -51,7 +51,7 @@ public class MapData implements GameMap {
 			{1,0,1,1,1,0,1,1,1,1,0,1,1,0,0,1,1,0,1,1,1,1,0,1,1,1,0,1},			 //■　■■■　■■■■　■■　　■■　■■■■　■■■　■
 			{1,0,1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,0,1},			 //■　■■■　■　　■　■■■　■■　■　　■　■■■　■
 			{1,0,1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,0,1},			 //■　■■■　■　　■　■■■　■■　■　　■　■■■　■
-			{1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1},			 //■　　　　　■　　■　　　　　　　　■　　■　　　　　■
+			{1,0,0,2,0,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,0,0,2,0,0,1},			 //■　　　　　■　　■　　　　　　　　■　　■　　　　　■
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},			 //■■■■■■■　　■■■■■■■■■■　　■■■■■■■
 
 	};
@@ -147,9 +147,13 @@ public class MapData implements GameMap {
 	}
 
 	public MapData() {
+		//初期設定
+		this.enableRespawn = false;
 		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
+		this.remainingItems = 0;
 
+		//アイテムの配置
 		for (int row = 0; row < map.length; row++) {
 
 			for (int col = 0; col < map[0].length; col++) {
@@ -165,9 +169,12 @@ public class MapData implements GameMap {
 				}
 			}
 		}
+		//敵の初期位置
 		initEnemy(null);
-		this.enableRespawn = true;
+		
+		//アイテムが完全に配置し終わった後で、バックアップを取り、復活を有効にする
 		this.initialItemMap = copyItemMap(itemMap);
+		this.enableRespawn = true;
 	}
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
@@ -277,9 +284,9 @@ public class MapData implements GameMap {
 
 				// ワープ直後は、プレイヤーの入力を上書きして強制直進（先行入力を固定）
 				if (lastWarpX == 27) {
-					sengoku.setNextDirection(Direction.LEFT);
+					sengoku.setNextDirection(Characters.Direction.LEFT);
 				} else if (lastWarpX == 0) {
-					sengoku.setNextDirection(Direction.RIGHT);
+					sengoku.setNextDirection(Characters.Direction.RIGHT);
 				}
 			} else {
 				justWarped = false;
@@ -294,9 +301,9 @@ public class MapData implements GameMap {
 			if (map[tileY][tileX] == 9) {
 				int warpX = tileX;
 				int warpY = tileY;
-				Direction currentDir = sengoku.getDirection();
+				Characters.Direction currentDir = sengoku.getDirection();
 
-				if (currentDir != Direction.NONE) {
+				if (currentDir != Characters.Direction.NONE) {
 					if (currentDir.getDX() != 0) {
 						for (int x = 0; x < map[0].length; x++) {
 							if (map[tileY][x] == 9 && x != tileX) {
@@ -407,7 +414,7 @@ public class MapData implements GameMap {
 	}
 
 	public void updateMouth() {
-		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Direction.NONE)
+		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Characters.Direction.NONE)
 			return;
 
 		mouthAngle += mouthOpening * 2;
@@ -417,9 +424,13 @@ public class MapData implements GameMap {
 			mouthOpening = -1;
 	}
 
-	public void setNextDirection(Direction dir) {
+	public void setNextDirection(Characters.Direction dir) {
 
-		sengoku.setNextDirection(dir);
+		//sengoku.setNextDirection(dir);
+		if (sengoku != null) {
+			// 古い sample.Direction への変換をやめ、そのまま dir を渡します
+			sengoku.setNextDirection(dir); 
+		}
 
 		// 初回入力でゲーム開始
 		if (waitingStart) {

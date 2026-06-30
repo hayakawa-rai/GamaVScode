@@ -4,6 +4,7 @@ import Characters.BlueEnemy;
 import Characters.Enemy;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
+import Characters.Sengoku;
 import Characters.YellowEnemy;
 import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,7 +15,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import sample.Sengoku;
 import test1.model.MapData;
 
 public class MapView {
@@ -95,9 +95,9 @@ public class MapView {
 
 		// 4. 背景の黒を画面全体に塗る（余白も含めて真っ黒にする場合）
 
-		gc.setFill(Color.BLACK);
+		//gc.setFill(Color.BLACK);
 
-		gc.fillRect(0, 0, canvasWidth, canvasHeight);
+		//gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
 		// 4. 【重要】画面全体の黒塗りを廃止（これで後ろの背景画像が透けます）
 		// gc.setFill(Color.BLACK);
@@ -142,6 +142,12 @@ public class MapView {
 			Color wallColor) {
 		Item[][] itemMap = model.getItemMap();
 
+		// WallOutline で壁を描画 (古田変更 問題なかったら()消してね)
+		WallOutline outline = new WallOutline(model.getMap(), MapData.TILE_SIZE);
+		gc.setStroke(wallColor);
+		gc.setLineWidth(2);
+		outline.drawOutline(gc);
+
 		for (int row = 0; row < rows; row++) {
 
 			for (int col = 0; col < cols; col++) {
@@ -153,15 +159,15 @@ public class MapView {
 				int y = row * MapData.TILE_SIZE;
 
 				Item item = itemMap[row][col];
-				
+
 				// 壁の描画 (壁の見た目変更のためコメントアウト中)
 
 				//if (tile == 1) {
 
-					//gc.setFill(Color.BLUE);
+				//gc.setFill(Color.BLUE);
 
-					//gc.setFill(wallColor);
-					//gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
+				//gc.setFill(wallColor);
+				//gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
 
 				//}
 
@@ -171,12 +177,6 @@ public class MapView {
 				}
 			}
 		}
-
-		// WallOutline で壁を描画 (古田変更 問題なかったら()消してね)
-		WallOutline outline = new WallOutline(model.getMap(), MapData.TILE_SIZE);
-		gc.setStroke(wallColor);
-		gc.setLineWidth(2);
-		outline.drawOutline(gc);
 
 		// スコアを表示させるためのコード
 
@@ -229,7 +229,7 @@ public class MapView {
 
 		double mouthAngle = model.getMouthAngle();
 
-		sample.Direction currentDir = sengoku.getDirection();
+		Characters.Direction currentDir = sengoku.getDirection();
 
 		if (currentDir != null) {
 
@@ -260,7 +260,6 @@ public class MapView {
 		gc.fillArc(
 
 				pacX - MapData.TILE_SIZE / 2.0,
-
 				pacY - MapData.TILE_SIZE / 2.0,
 
 				MapData.TILE_SIZE, MapData.TILE_SIZE,
