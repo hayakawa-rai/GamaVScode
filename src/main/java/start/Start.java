@@ -187,7 +187,7 @@ public class Start extends Application {
 							// 背景停止
 							timer.stop();
 							// 画面遷移
-							test.test2.GameController.startToPractice(stage);
+							control.PracticeGameController.switchToPractice(stage);
 						}));
 				delay.play();
 			} catch (Exception ex) {

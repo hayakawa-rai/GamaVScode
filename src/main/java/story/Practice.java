@@ -120,7 +120,7 @@ public class Practice extends Application {
 			
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
-			test.test2.GameController.switchToGame(stage);
+			control.PracticeGameController.switchToPracticeGame1(stage);
 		});
 		
 		stage2.setOnAction(e -> {
@@ -134,7 +134,7 @@ public class Practice extends Application {
 	        cleanup(); 
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
-			test.test2.GameController.switchToGame2(stage);
+			control.PracticeGameController.switchToPracticeGame2(stage);
 		});
 		
 		stage3.setOnAction(e -> {
@@ -149,7 +149,7 @@ public class Practice extends Application {
 			
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
-			test.test2.GameController.switchToGame3(stage);
+			control.PracticeGameController.switchToPracticeGame3(stage);
 		});
 		VBox stageButtons = new VBox(20, stage1, stage2, stage3);
 		stageButtons.setAlignment(Pos.CENTER);
