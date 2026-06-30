@@ -23,6 +23,7 @@ public class MapView {
 	private final Region pacmanDummy = new Region();
 
 	private double lastBaseAngle = 0;
+	private static final double INFO_HEIGHT = 40;
 
 	public MapView(MapData model) {
 		this.model = model;
@@ -48,6 +49,8 @@ public class MapView {
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
 		gc.clearRect(0, 0, canvasWidth, canvasHeight);
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, canvasWidth, INFO_HEIGHT);
 
 		Color wallColor = getColorFromCSS(wallDummy, Color.BLUE);
 		Color pacmanColor = getColorFromCSS(pacmanDummy, Color.YELLOW);
@@ -63,7 +66,7 @@ public class MapView {
 		double scale = Math.min(scaleX, scaleY) * bufferRatio;
 
 		double offsetX = (canvasWidth - (stageWidth * scale)) / 2.0;
-		double offsetY = (canvasHeight - (stageHeight * scale)) / 2.0;
+		double offsetY = ((canvasHeight - INFO_HEIGHT) - (stageHeight * scale)) / 2.0 + INFO_HEIGHT;
 
 		gc.save();
 
@@ -82,8 +85,25 @@ public class MapView {
 				drawEnemyInstance(gc, enemy);
 			}
 		}
-
 		gc.restore();
+		Sengoku sengoku = model.getSengoku();
+
+		if (sengoku != null) {
+
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+
+			// スコア
+			gc.setFill(Color.WHITE);
+			gc.fillText("SCORE : " + sengoku.getScore(), 20, 28);
+
+			// ライフ
+			gc.setFill(Color.RED);
+			gc.fillText("❤".repeat(sengoku.getHp()), canvasWidth - 100, 28);
+
+			// 区切り線
+			gc.setStroke(Color.DARKGRAY);
+			gc.strokeLine(0, INFO_HEIGHT, canvasWidth, INFO_HEIGHT);
+		}
 	}
 
 	private void drawStageContent(GraphicsContext gc, int cols, int rows, double stageWidth, double stageHeight,
@@ -107,26 +127,6 @@ public class MapView {
 				}
 			}
 		}
-
-		// グラフィックスの状態を元に戻す
-		gc.restore();
-
-		// スコアを表示させるためのコード
-		Sengoku sengoku = model.getSengoku();
-
-		if (sengoku != null) {
-
-			gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-
-			// スコア
-			gc.setFill(Color.WHITE);
-			gc.fillText("SCORE : " + sengoku.getScore(), 15, 25);
-
-			// 残機
-			gc.setFill(Color.RED);
-			gc.fillText("❤".repeat(sengoku.getHp()), 15, 50);
-		}
-
 	}
 
 	// MapView のフィールドに Pac-Man 画像を追加
