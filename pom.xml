@@ -45,10 +45,12 @@
 				<configuration>
 
 
-					<mainClass>test.test2.TestMainapp</mainClass>
+					<mainClass>story.Gameover</mainClass>
 
 
 				</configuration>
+
+
 			</plugin>
 		</plugins>
 	</build>
