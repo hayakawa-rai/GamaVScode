@@ -262,7 +262,7 @@ public class Story4 extends Application{
         anikiView.setPreserveRatio(true);
         //人物画像の読み込み(仙石さん)
         Image sengokuImage = new Image(
-        		getClass().getResourceAsStream("/picture/sengoku.png")
+        		getClass().getResourceAsStream("/picture/sengoku(hello).png")
         );
         //人物画像の表示
         ImageView sengokuView = new ImageView(sengokuImage);
