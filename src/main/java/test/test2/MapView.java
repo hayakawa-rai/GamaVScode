@@ -120,7 +120,7 @@ public class MapView {
 		}
 	}
 	
-	// ★ MapView のフィールドに Pac-Man 画像を追加
+	// MapView のフィールドに Pac-Man 画像を追加
 	private final javafx.scene.image.Image pacmanImage =
 	        new javafx.scene.image.Image(getClass().getResource("/picture/sengoku.png").toExternalForm());
 
