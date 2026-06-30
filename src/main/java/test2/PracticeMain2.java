@@ -63,7 +63,7 @@ public class PracticeMain2 extends Application {
 		stage.setMaximized(true);
 
 		// 7. Controller生成とゲーム開始
-		new GameController(model, view, gameCanvas, scene);
+		new GameController(model, view, gameCanvas, scene, stage);
 
 		// 8. ウィンドウ表示
 		stage.show();

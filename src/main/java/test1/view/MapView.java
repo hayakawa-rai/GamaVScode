@@ -4,6 +4,7 @@ import Characters.BlueEnemy;
 import Characters.Enemy;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
+import Characters.Sengoku;
 import Characters.YellowEnemy;
 import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,7 +15,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import sample.Sengoku;
 import test1.model.MapData;
 
 public class MapView {
@@ -229,7 +229,7 @@ public class MapView {
 
 		double mouthAngle = model.getMouthAngle();
 
-		sample.Direction currentDir = sengoku.getDirection();
+		Characters.Direction currentDir = sengoku.getDirection();
 
 		if (currentDir != null) {
 

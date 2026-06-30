@@ -152,15 +152,15 @@ public class MapView {
 				int y = row * MapData.TILE_SIZE;
 
 				Item item = itemMap[row][col];
-				
+
 				// 壁の描画 (壁の見た目変更のためコメントアウト中)
 
 				//if (tile == 1) {
 
-					//gc.setFill(Color.BLUE);
+				//gc.setFill(Color.BLUE);
 
-					//gc.setFill(wallColor);
-					//gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
+				//gc.setFill(wallColor);
+				//gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
 
 				//}
 
@@ -177,35 +177,24 @@ public class MapView {
 		gc.setLineWidth(2);
 		outline.drawOutline(gc);
 
+		//グラフィックスの状態を元に戻す（水野変更　確認後修正するかも）
+		gc.restore();
+
 		// スコアを表示させるためのコード
 
 		Sengoku sengoku = model.getSengoku();
 
 		if (sengoku != null) {
 
-			String scoreText = "SCORE: " + sengoku.getScore();
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
-			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
+			// スコア
 			gc.setFill(Color.WHITE);
+			gc.fillText("SCORE : " + sengoku.getScore(), 15, 25);
 
-			// ステージの右下に配置
-
-			double textX = stageWidth - 140;
-
-			double textY = stageHeight - 20;
-
-			gc.fillText(scoreText, textX, textY);
-
-			// 残機表示
-			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
+			// 残機
 			gc.setFill(Color.RED);
-
-			String lifeText = "❤ ".repeat(sengoku.getHp());
-
-			gc.fillText(lifeText, 20, stageHeight - 20);
-
+			gc.fillText("❤".repeat(sengoku.getHp()), 15, 50);
 		}
 
 	}

@@ -1,9 +1,9 @@
 package test3.model;
 
+import Characters.Sengoku;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
-import sample.Sengoku;
 
 public class MapData {
 

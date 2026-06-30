@@ -68,7 +68,7 @@ public class Main2 extends Application {
 
 		//Controller生成
 		//MVCを接続しゲーム開始
-		new GameController(model, view, gameCanvas, scene);
+		new GameController(model, view, gameCanvas, scene,stage);
 
 		//ウィンドウ表示
 		stage.show();
