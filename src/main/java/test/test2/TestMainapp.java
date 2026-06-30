@@ -81,7 +81,7 @@ public class TestMainapp extends Application {
 		//  敵の ImageView を画面に登録
 		root.getChildren().add(redImageView);
 		*/
-		//敵描画呼び出し　成田
+		//敵描画呼び出し
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		//  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）

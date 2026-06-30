@@ -1,12 +1,12 @@
 package test2;
 
-import control.GameController;
+import control.PracticeGameController;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Screen;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import test2.model.MapData;
 import test2.view.MapView;
@@ -14,67 +14,79 @@ import test2.view.MapView;
 // パックマン・練習用ステージの起動クラス
 public class PracticeMain2 extends Application {
 
+	private PracticeGameController controller;
+
 	@Override
 	public void start(Stage stage) {
+		starts(stage);
+	}
 
-		// 1. ModelとViewの作成
-		MapData model = new MapData(); 
-		//model.MapData(true);
+	public void starts(Stage stage) {
+		// 多重起動を確実に防止
+		if (this.controller != null) {
+			this.controller.stop();
+		}
 
-		// MapData model = new MapData(true); // trueなら練習用
+		// ストーリーモードはエサ復活なし
+        MapData model = new MapData(false);
+        Pane root = new Pane();
 
-		MapView view = new MapView(model); 
+		MapView view = new MapView(model, root);
 
-		// 2. 画面サイズ取得
-		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-		double screenW = bounds.getWidth();
-		double screenH = bounds.getHeight();
 
-		// HUD（情報表示領域）
-		double hudHeight = 50;
+		int viewWidth = model.getMap()[0].length * MapData.TILE_SIZE;
+		int viewHeight = model.getMap().length * MapData.TILE_SIZE;
 
-		// 3. Canvas作成
-		Canvas gameCanvas = new Canvas(screenW, screenH - hudHeight * 2);
-		Canvas topHud = new Canvas(screenW, hudHeight);
-		Canvas bottomHud = new Canvas(screenW, hudHeight);
+		Scene scene = new Scene(root, viewWidth, viewHeight);
+		scene.getStylesheets().add(
+				getClass().getResource("/css/test.css").toExternalForm());
 
-		// 4. 画面レイアウト作成
-		BorderPane root = new BorderPane();
+		root.getStyleClass().add("stage1");
 
-		// 【変更点】練習用と分かりやすいように背景画像を変更（例: practice_room.jpg）
-		String bgUrl = getClass().getResource("/picture/practice_room.jpg").toExternalForm();
-		root.setStyle("-fx-background-image: url('" + bgUrl
-				+ "'); -fx-background-size: cover; -fx-background-position: center;");
-		
-		root.setTop(topHud); 
-		root.setCenter(gameCanvas); 
-		root.setBottom(bottomHud); 
+		// ★背景用Pane（CSSを効かせる対象）
+		Pane bg = new Pane();
+		bg.getStyleClass().add("game-bg");
+		bg.setPrefSize(viewWidth, viewHeight);
+		bg.setMouseTransparent(true);
 
-		// 5. シーン生成
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/css/test.css").toExternalForm());
+		try {
+			// src/main/resources/picture/companyroom.jpg から画像を読み込む
+			//Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/companyroom.jpg"));
+			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/insert.png"));
+			ImageView backgroundView = new ImageView(backgroundImage);
 
-		// 6. ウィンドウ設定
+			// 画像のサイズも、ウィンドウ（root）のサイズに完全に連動（バインド）させる
+			backgroundView.fitWidthProperty().bind(root.widthProperty());
+            backgroundView.fitHeightProperty().bind(root.heightProperty());
+            backgroundView.setPreserveRatio(false);
+
+			// 背景用Paneに画像を追加
+			bg.getChildren().add(backgroundView);
+		} catch (Exception e) {
+			System.out.println("⚠️ 背景画像の読み込みに失敗しました。パスを確認してください: " + e.getMessage());
+		}
+
+		// ★ゲーム描画Canvas
+		Canvas canvas = new Canvas();
+        canvas.widthProperty().bind(root.widthProperty());
+        canvas.heightProperty().bind(root.heightProperty());
+
+		root.getChildren().addAll(bg, canvas);
+
+		//敵描画呼び出し
+		model.initEnemy(new javafx.scene.image.ImageView());
+
+		//  準備ができたコントローラーを生成
+		this.controller = new PracticeGameController(model, view, canvas, scene, stage, 1);
+
+		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
-
-		// 【変更点】タイトルを練習用ステージに変更
-		stage.setTitle("Pacman MVC - 練習用ステージ");
-
-		stage.setMaximized(true);
-
-		// 7. Controller生成とゲーム開始
-		new GameController(model, view, gameCanvas, scene, stage, 2);
-
-		// 8. ウィンドウ表示
 		stage.show();
 
-		// キーボード入力を受け取る設定
-		gameCanvas.setFocusTraversable(true);
-		gameCanvas.requestFocus();
+		canvas.requestFocus();
 	}
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 }
-

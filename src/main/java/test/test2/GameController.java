@@ -128,8 +128,7 @@ public class GameController {
 
 	public static void switchToStart(javafx.stage.Stage stage) {
 		try {
-			// startクラスのインスタンスを作る
-			start.Start titleScreen = new start.Start();
+				start.Start titleScreen = new start.Start();
 			// ウィンドウの権利(stage)を渡して、タイトル画面を起動・上書きする！
 			titleScreen.start(stage);
 		} catch (Exception e) {

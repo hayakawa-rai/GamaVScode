@@ -5,7 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext; // 💡 Canvas描画に必須のインポート
 
 public abstract class Item {
-    // 子クラスからもアクセスできるように protected にしてあります
+    // 子クラスからもアクセスできるように pryzotected にしてあります
     protected int score;
     protected Node view;
 

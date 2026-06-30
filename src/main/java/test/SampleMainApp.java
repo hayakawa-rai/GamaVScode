@@ -16,7 +16,7 @@ public class SampleMainApp extends Application {
     
     @Override
     public void start(Stage stage) {
-        GameController.switchToStart(stage);
+        GameController.switchToGame(stage);
     }
     
     public void starts(Stage stage) {
