@@ -1,11 +1,11 @@
 package sample.controller;
-
-import Characters.Direction;
+/*
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import sample.Direction;
 import sample.model.SampleModel;
 import sample.view.SampleView;
 import test.SampleMainApp; // 👈 【修正】本番用のメインアプリをインポート
@@ -104,3 +104,4 @@ public class SampleController {
         if (timer != null) timer.stop();
     }
 }
+*/

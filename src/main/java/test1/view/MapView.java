@@ -1,6 +1,11 @@
 package test1.view;
 
+import Characters.BlueEnemy;
+import Characters.Enemy;
+import Characters.GreenEnemy;
+import Characters.RedEnemy;
 import Characters.Sengoku;
+import Characters.YellowEnemy;
 import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -10,11 +15,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import test.BlueEnemy;
-import test.Enemy;
-import test.GreenEnemy;
-import test.RedEnemy;
-import test.YellowEnemy;
 import test1.model.MapData;
 
 public class MapView {
@@ -95,9 +95,9 @@ public class MapView {
 
 		// 4. 背景の黒を画面全体に塗る（余白も含めて真っ黒にする場合）
 
-		gc.setFill(Color.BLACK);
+		//gc.setFill(Color.BLACK);
 
-		gc.fillRect(0, 0, canvasWidth, canvasHeight);
+		//gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
 		// 4. 【重要】画面全体の黒塗りを廃止（これで後ろの背景画像が透けます）
 		// gc.setFill(Color.BLACK);

@@ -2,8 +2,8 @@ package common;
 
 import java.util.List;
 
-import test.Direction;
-import test.Enemy; 
+import Characters.Direction;
+import Characters.Enemy; 
 
 public interface GameMap {
     int getStageNumber();

@@ -3,17 +3,17 @@ package test.test2;
 import java.util.ArrayList;
 import java.util.List;
 
+import Characters.BlueEnemy;
 import Characters.Direction;
+import Characters.Enemy;
+import Characters.GreenEnemy;
+import Characters.RedEnemy;
 import Characters.Sengoku;
+import Characters.YellowEnemy;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
 import common.GameMap;
-import test.BlueEnemy;
-import test.Enemy;
-import test.GreenEnemy;
-import test.RedEnemy;
-import test.YellowEnemy;
 
 public class MapData implements GameMap {
 
@@ -346,6 +346,7 @@ public class MapData implements GameMap {
 			Item item = itemMap[currentTileY][currentTileX];
 
 			if (item != null) {
+				// ポイントをスコアに加算
 				item.onEaten(sengoku);
 
 				// パワーエサ(2)を食べたらFEVER
@@ -534,16 +535,16 @@ public class MapData implements GameMap {
 
 	// ※ common.Direction と Characters.Direction の型が合わない場合はキャストや変換を行ってください
 	@Override
-	public test.Direction getPlayerDirection() {
+	public Characters.Direction getPlayerDirection() {
 		if (sengoku == null || sengoku.getDirection() == null) {
-			return test.Direction.NONE;
+			return Characters.Direction.NONE;
 		}
 
 		// Characters.Direction から 正解の test.Direction へ名前ベースで型変換
 		try {
-			return test.Direction.valueOf(sengoku.getDirection().name());
+			return Characters.Direction.valueOf(sengoku.getDirection().name());
 		} catch (IllegalArgumentException e) {
-			return test.Direction.NONE;
+			return Characters.Direction.NONE;
 		}
 	}
 

@@ -3,17 +3,17 @@ package test1.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import Characters.BlueEnemy;
 import Characters.Direction;
+import Characters.Enemy;
+import Characters.GreenEnemy;
+import Characters.RedEnemy;
 import Characters.Sengoku;
+import Characters.YellowEnemy;
 import Items.Chii;
 import Items.Item;
 import Items.Point;
 import common.GameMap;
-import test.BlueEnemy;
-import test.Enemy;
-import test.GreenEnemy;
-import test.RedEnemy;
-import test.YellowEnemy;
 
 public class MapData implements GameMap {
 
@@ -23,7 +23,7 @@ public class MapData implements GameMap {
 	private final int[][] map = {
 
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},			 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1},		     //■　　　　　　　　　　　　■■　　　　　　　　　　　　■
+			{1,0,0,0,2,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,2,0,0,0,1},		     //■　　　　　　　　　　　　■■　　　　　　　　　　　　■
 			{1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1},			 //■　■■■■■　■■■■　■■　■■■■　■■■■■　■
 			{1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1},			 //■　■■■■■　■■■■　■■　■■■■　■■■■■　■
 			{1,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,1,1,1,1,0,0,0,0,0,0,0,1},			 //■　　　　　　　■■■■　■■　■■■■　　　　　　　■
@@ -34,10 +34,10 @@ public class MapData implements GameMap {
 			{9,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,1,1,1,1,0,0,0,0,0,0,0,9},			 //　　　　　　　　■■■■　■■　■■■■　　　　　　　　
 			{1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,0,1,1,1,1},			 //■■■■　■■　■■■■　■■　■■■■　■■　■■■■
 			{1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1},			 //　　　■　■■　　　　　　　　　　　　　　■■　■　　　
-			{1,1,1,1,0,1,1,1,1,0,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■■■　　■■■　■■■■　■　　　
-			{1,1,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■　　　　　　■　■■■■　■　　　
-			{1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1},			 //　　　■　　　　　　■　　　　　　■　　　　　　■　　　
-			{1,1,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■　　　　　　■　■■■■　■　　　
+			{1,1,1,1,0,1,1,1,1,0,1,1,1,7,7,1,1,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■■■　　■■■　■■■■　■　　　
+			{1,1,1,1,0,1,1,1,1,0,1,8,8,8,8,8,8,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■　　　　　　■　■■■■　■　　　
+			{1,1,1,1,0,0,0,2,0,0,1,8,8,8,8,8,8,1,0,0,2,0,0,0,1,1,1,1},			 //　　　■　　　　　　■　　　　　　■　　　　　　■　　　
+			{1,1,1,1,0,1,1,1,1,0,1,8,8,8,8,8,8,1,0,1,1,1,1,0,1,1,1,1},			 //　　　■　■■■■　■　　　　　　■　■■■■　■　　　
 			{1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,1},			 //■■■■　■■■■　■■■■■■■■　■■■■　■■■■
 			{9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9},			 //　　　　　　　　　　　　　　　　　　　　　　　　　　　　
 			{1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1},			 //■■■■　■■■■■■■　■■　■■■■■■■　■■■■
@@ -51,7 +51,7 @@ public class MapData implements GameMap {
 			{1,0,1,1,1,0,1,1,1,1,0,1,1,0,0,1,1,0,1,1,1,1,0,1,1,1,0,1},			 //■　■■■　■■■■　■■　　■■　■■■■　■■■　■
 			{1,0,1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,0,1},			 //■　■■■　■　　■　■■■　■■　■　　■　■■■　■
 			{1,0,1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,0,1},			 //■　■■■　■　　■　■■■　■■　■　　■　■■■　■
-			{1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1},			 //■　　　　　■　　■　　　　　　　　■　　■　　　　　■
+			{1,0,0,2,0,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,0,0,2,0,0,1},			 //■　　　　　■　　■　　　　　　　　■　　■　　　　　■
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},			 //■■■■■■■　　■■■■■■■■■■　　■■■■■■■
 
 	};
@@ -147,9 +147,13 @@ public class MapData implements GameMap {
 	}
 
 	public MapData() {
+		//初期設定
+		this.enableRespawn = false;
 		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
+		this.remainingItems = 0;
 
+		//アイテムの配置
 		for (int row = 0; row < map.length; row++) {
 
 			for (int col = 0; col < map[0].length; col++) {
@@ -165,9 +169,12 @@ public class MapData implements GameMap {
 				}
 			}
 		}
+		//敵の初期位置
 		initEnemy(null);
-		this.enableRespawn = true;
+		
+		//アイテムが完全に配置し終わった後で、バックアップを取り、復活を有効にする
 		this.initialItemMap = copyItemMap(itemMap);
+		this.enableRespawn = true;
 	}
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
@@ -536,16 +543,16 @@ public class MapData implements GameMap {
 
 	// ※ common.Direction と Characters.Direction の型が合わない場合はキャストや変換を行ってください
 	@Override
-	public test.Direction getPlayerDirection() {
+	public Characters.Direction getPlayerDirection() {
 		if (sengoku == null || sengoku.getDirection() == null) {
-			return test.Direction.NONE;
+			return Characters.Direction.NONE;
 		}
 
 		// Characters.Direction から 正解の test.Direction へ名前ベースで型変換
 		try {
-			return test.Direction.valueOf(sengoku.getDirection().name());
+			return Characters.Direction.valueOf(sengoku.getDirection().name());
 		} catch (IllegalArgumentException e) {
-			return test.Direction.NONE;
+			return Characters.Direction.NONE;
 		}
 	}
 

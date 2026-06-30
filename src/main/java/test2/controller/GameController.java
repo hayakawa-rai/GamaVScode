@@ -9,7 +9,7 @@ import javafx.scene.input.KeyCode;
 import start.Start;
 import story.Gameover;
 import story.Practice;
-import story.Stageclear2;
+import story.Stageclear1;
 import story.Story1;
 import story.Story2;
 import story.Story3;
@@ -41,6 +41,9 @@ public class GameController {
 
 		// キーボードの入力を登録
 		attachInput(scene);
+	
+		//スマホ用の十字キーコントローラーを画面に表示・適用する
+		applyMobileControls(scene, model);
 
 		// メインゲームループ(AnimationTimer)の開始
 		startLoop();
@@ -210,11 +213,11 @@ public class GameController {
 				        finalScore = model.getSengoku().getScore();
 				    }
 				    
-					// クリア画面（Stageclear2）に遷移させる
-					switchToStageclear2(stage, finalScore); 
+					// クリア画面（Stageclear1）に遷移させる
+					switchToStageclear1(stage, finalScore); 
 					
-					// もし直接ステージ2のゲーム画面にいかせたい場合はこちら↓
-					// switchToGame2(stage);
+					// もし直接ステー12のゲーム画面にいかせたい場合はこちら↓
+					// switchToGame1(stage);
 					
 					return; // クリアしたのでこれ以降の描画処理はスキップ
 					
@@ -226,7 +229,7 @@ public class GameController {
 				double currentHeight = canvas.getHeight();
 				
 				// 新しく統合した draw メソッドを呼び出す
-				view.draw(gc);
+				view.draw(gc, currentWidth, currentHeight);
 			}
 		};
 
@@ -240,11 +243,11 @@ public class GameController {
 			timer.stop();
 	}
 	
-	// Stageclear2画面へ変更するためのメソッド（引数に score を追加）
-		public static void switchToStageclear2(javafx.stage.Stage stage, int score) {
+	// Stageclear1画面へ変更するためのメソッド（引数に score を追加）
+		public static void switchToStageclear1(javafx.stage.Stage stage, int score) {
 
 			try {
-				Stageclear2 App = new Stageclear2();
+				Stageclear1 App = new Stageclear1();
 				App.setScore(score); // 受け取った score を確実に引き渡す
 				App.start(stage);
 			} catch (Exception e) {
