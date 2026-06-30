@@ -669,7 +669,7 @@ public class Story3 extends Application{
         	    	cleanup(scene, base); 
         	    	base.getChildren().clear();
         	        //次の画面へ
-        	        test.test2.GameController.switchToGame3(stage);
+        	    	control.GameController.switchToGame3(stage);
         	    });
 
         	    fade.play();

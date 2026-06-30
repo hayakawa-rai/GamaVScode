@@ -729,7 +729,7 @@ public class Story2 extends Application{
         	    	cleanup(scene); 
         	    	base.getChildren().clear();
         	        //次の画面へ
-        	        test.test2.GameController.switchToGame2(stage);
+        	        control.GameController.switchToGame2(stage);
         	    });
 
         	    fade.play();

@@ -648,7 +648,7 @@ public class Story4 extends Application{
         	    	cleanup(scene, base);  
         	    	base.getChildren().clear();
         	        // 画面遷移
-        	        test.test2.GameController.switchStart(stage);
+        	        control.GameController.switchStart(stage);
         	    });
 
         	    fade.play();
