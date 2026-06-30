@@ -55,6 +55,7 @@ public class MapView {
 		});
 	}
 
+
 	// ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
@@ -124,6 +125,24 @@ public class MapView {
 
 		// 8. グラフィックスの状態を元に戻す
 		gc.restore();
+		Sengoku sengoku = model.getSengoku();
+
+		if (sengoku != null) {
+
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+
+			// スコア
+			gc.setFill(Color.WHITE);
+			gc.fillText("SCORE : " + sengoku.getScore(), 20, 28);
+
+			// ライフ
+			gc.setFill(Color.RED);
+			gc.fillText("❤".repeat(sengoku.getHp()), canvasWidth - 100, 28);
+
+			// 区切り線
+			gc.setStroke(Color.DARKGRAY);
+			gc.strokeLine(0, INFO_HEIGHT, canvasWidth, INFO_HEIGHT);
+		}
 	}
 
 	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
@@ -167,27 +186,6 @@ public class MapView {
 				}
 			}
 		}
-
-		// グラフィックスの状態を元に戻す
-		gc.restore();
-
-		// スコアを表示させるためのコード
-
-		Sengoku sengoku = model.getSengoku();
-
-		if (sengoku != null) {
-
-			gc.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-
-			// スコア
-			gc.setFill(Color.WHITE);
-			gc.fillText("SCORE : " + sengoku.getScore(), 15, 25);
-
-			// 残機
-			gc.setFill(Color.RED);
-			gc.fillText("❤".repeat(sengoku.getHp()), 15, 50);
-		}
-
 	}
 
 	// MapView のフィールドに Pac-Man 画像を追加
@@ -224,6 +222,7 @@ public class MapView {
 	}
 
 	// 内部の座標計算
+
 	/*
 	 * public void drawPacman(GraphicsContext gc, Color pacmanColor) { Sengoku
 	 * sengoku = model.getSengoku();
