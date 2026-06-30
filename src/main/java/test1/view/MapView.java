@@ -220,12 +220,12 @@ public class MapView {
 	        return;
 	    }
 
-	    double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
-	    double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+	    double pacX = sengoku.getX()+ MapData.TILE_SIZE / 2.0;
+	    double pacY = sengoku.getY()+ MapData.TILE_SIZE / 2.0;
 
 	    Characters.Direction dir = sengoku.getDirection();
 	    double angle = 0;
-
+	    
 	    gc.save();
 
 	    gc.translate(pacX, pacY);
