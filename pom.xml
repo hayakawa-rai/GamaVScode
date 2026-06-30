@@ -48,7 +48,10 @@
 					<mainClass>start.Start</mainClass>
 
 
+
 				</configuration>
+
+
 			</plugin>
 		</plugins>
 	</build>

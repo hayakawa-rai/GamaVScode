@@ -41,7 +41,9 @@ public class Gameover extends Application {
 		//いらすとや
 		ImageView icon = new ImageView();
 		try {
-			java.net.URL imgUrl = Gameover.class.getResource("/picture/sengoku(gameover).png");
+
+			java.net.URL imgUrl = Gameover.class.getResource("/picture/gvsengoku.png");
+
 			if (imgUrl != null) {
 				icon.setImage(new Image(imgUrl.toExternalForm()));
 			} else {
