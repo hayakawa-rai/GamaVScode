@@ -20,16 +20,9 @@ public class Main2 extends Application {
 
 	@Override
 	public void start(Stage stage) {
-<<<<<<< HEAD
-=======
 
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 		starts(stage);
-<<<<<<< HEAD
-=======
 
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
-		starts(stage);
 
 		// ModelとViewの作成
 		MapData model = new MapData(); // ゲームデータ(マップ・パックマン状態)
