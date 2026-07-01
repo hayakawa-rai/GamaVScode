@@ -228,6 +228,35 @@ public class MapData implements GameMap {
 	public void update() {
 		if (paused)
 			return;
+		
+		//死んだときのアニメーション
+		if (sengoku.isDyingAnimation()) {
+
+		    if (sengoku.updateDyingAnimation()) {
+
+		        if (sengoku.isAlive()) {
+
+		            sengoku.resetToStartPosition();
+
+		            for (Enemy enemy : enemies) {
+		                enemy.resetToStartPosition();
+		                enemy.setCurrentState(
+		                    Characters.EnemyState.SCATTER);
+		            }
+
+		            modeStartTime = 0;
+		            chaseMode = false;
+		            waitingStart = true;
+
+		        } else {
+
+		            gameOver = true;
+		            paused = true;
+		        }
+		    }
+
+		    return;
+		}
 
 		// パックマンの移動処理
 		updatePacman();
@@ -505,10 +534,11 @@ public class MapData implements GameMap {
 				}
 
 				System.out.println("💥敵に捕まった！");
-
+				
 				sengoku.takeDamage();
+				sengoku.startDying();
 
-				if (sengoku.getHp() <= 0) {
+				/*if (sengoku.getHp() <= 0) {
 
 					this.gameOver = true;
 					this.paused = true;
@@ -534,7 +564,7 @@ public class MapData implements GameMap {
 					// 再入力待ち
 					waitingStart = true;
 
-				}
+				}*/
 
 				return;
 			}
