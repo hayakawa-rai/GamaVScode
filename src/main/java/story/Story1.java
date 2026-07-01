@@ -299,12 +299,7 @@ public class Story1 extends Application{
         StackPane base = new StackPane();
         base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, root);
         // 現在のStage（window）から実際のサイズを取得する
-        double currentWidth = stage.getWidth();
-        double currentHeight = stage.getHeight();
-
-        // 取得したサイズで新しいSceneを作成
-        Scene scene = new Scene(base, currentWidth, currentHeight);
-        stage.setScene(scene);
+        Scene scene = new Scene(base, 1000,800);
         scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
         
         StackPane menuOverlay = new StackPane();
@@ -416,8 +411,8 @@ public class Story1 extends Application{
         	    )
         );
         //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-        stage.setMinWidth(800);
-        stage.setMinHeight(600);
+        stage.setMinWidth(1000);
+        stage.setMinHeight(800);
         
       //メニュー表示処理
         scene.setOnKeyPressed(event -> {

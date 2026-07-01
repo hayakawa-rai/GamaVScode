@@ -376,12 +376,7 @@ public class Story2 extends Application{
         StackPane base = new StackPane();
         base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root,insertView);
         // 現在のStage（window）から実際のサイズを取得する
-        double currentWidth = stage.getWidth();
-        double currentHeight = stage.getHeight();
-
-        // 取得したサイズで新しいSceneを作成
-        Scene scene = new Scene(base, currentWidth, currentHeight);
-        stage.setScene(scene);
+        Scene scene = new Scene(base, 1000,800);
         scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
         
         

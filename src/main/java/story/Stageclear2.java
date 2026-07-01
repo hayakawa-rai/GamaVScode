@@ -192,14 +192,9 @@ public class Stageclear2 extends Application {
 		buttonBox.getChildren().addAll(title, scoreText, textAndImage, next, backButton);
 
 		// 現在のStage（window）から実際のサイズを取得する
-        double currentWidth = stage.getWidth();
-        double currentHeight = stage.getHeight();
-
-        // 取得したサイズで新しいSceneを作成
-        Scene scene = new Scene(buttonBox, currentWidth, currentHeight);
-        stage.setScene(scene);
-		stage.setMinWidth(800);
-		stage.setMinHeight(600);
+		Scene scene = new Scene(buttonBox, 1000,800);
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
 
 		// CSSを接続
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
