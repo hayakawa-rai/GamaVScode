@@ -55,7 +55,6 @@ public class MapView {
 		});
 	}
 
-
 	// ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
@@ -169,7 +168,7 @@ public class MapView {
 			// PAUSEの文字から、縦に「45ピクセル」下にずらした位置に描画
 			gc.fillText("もう一度 Pキー を押すと再開します", canvasWidth / 2.0, (canvasHeight / 2.0) + 45);
 
-			//後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
+			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
 			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
 			gc.setTextBaseline(javafx.geometry.VPos.TOP);
 		}
@@ -188,13 +187,11 @@ public class MapView {
 		outline.drawOutline(gc);
 
 		for (int row = 0; row < rows; row++) {
-
 			for (int col = 0; col < cols; col++) {
 
 				// int tile = model.getMap()[row][col];
 
 				int x = col * MapData.TILE_SIZE;
-
 				int y = row * MapData.TILE_SIZE;
 
 				Item item = itemMap[row][col];
@@ -222,6 +219,9 @@ public class MapView {
 	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
 			getClass().getResource("/picture/sengoku.png").toExternalForm());
 
+	private final Image pacmanFeverImage = new Image(
+			getClass().getResource("/picture/sengoku_Fever.png").toExternalForm());
+
 	public void drawPacman(GraphicsContext gc) {
 		Sengoku sengoku = model.getSengoku();
 		if (sengoku == null || !sengoku.isAlive())
@@ -245,7 +245,27 @@ public class MapView {
 		gc.translate(pacX, pacY);
 		gc.rotate(angle);
 
-		gc.drawImage(pacmanImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+		Image currentImage = pacmanImage;
+
+		if (sengoku.isFever()) {
+			currentImage = pacmanFeverImage;
+		}
+
+		// FEVER終了3秒前は点滅
+		if (sengoku.isFever()) {
+
+			long remain = model.getFeverRemainingTime();
+
+			if (remain <= 3000) {
+
+				if ((System.currentTimeMillis() / 150) % 2 == 0) {
+					gc.restore();
+					return;
+				}
+			}
+		}
+
+		gc.drawImage(currentImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
 				MapData.TILE_SIZE);
 
 		gc.restore();

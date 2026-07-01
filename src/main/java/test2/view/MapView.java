@@ -163,7 +163,7 @@ public class MapView {
 			// PAUSEの文字から、縦に「45ピクセル」下にずらした位置に描画
 			gc.fillText("もう一度 Pキー を押すと再開します", canvasWidth / 2.0, (canvasHeight / 2.0) + 45);
 
-			//後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
+			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
 			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
 			gc.setTextBaseline(javafx.geometry.VPos.TOP);
 		}
@@ -216,6 +216,9 @@ public class MapView {
 	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
 			getClass().getResource("/picture/sengoku.png").toExternalForm());
 
+	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
+			getClass().getResource("/picture/sengoku_Fever.png").toExternalForm());
+
 	public void drawPacman(GraphicsContext gc) {
 		Sengoku sengoku = model.getSengoku();
 		if (sengoku == null || !sengoku.isAlive())
@@ -239,7 +242,28 @@ public class MapView {
 		gc.translate(pacX, pacY);
 		gc.rotate(angle);
 
-		gc.drawImage(pacmanImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+		// FEVER終了3秒前は点滅
+		if (sengoku.isFever()) {
+
+			long remain = model.getFeverRemainingTime();
+
+			if (remain <= 3000) {
+
+				if ((System.currentTimeMillis() / 150) % 2 == 0) {
+					gc.restore();
+					return;
+				}
+			}
+		}
+
+		// 使用画像を決定
+		Image currentImage = pacmanImage;
+
+		if (sengoku.isFever()) {
+			currentImage = pacmanFeverImage;
+		}
+
+		gc.drawImage(currentImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
 				MapData.TILE_SIZE);
 
 		gc.restore();
