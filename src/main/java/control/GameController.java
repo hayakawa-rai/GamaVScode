@@ -173,6 +173,16 @@ public class GameController {
 	private void startLoop() {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
+	    if (canvas.getScene() != null) {
+	        // すでに存在しているかもしれない古いバインドを念のため解除
+	        canvas.widthProperty().unbind();
+	        canvas.heightProperty().unbind();
+
+	        // 💡 ウィンドウ（Scene）の幅・高さとCanvasの幅・高さを完全にバインド（同期）させる
+	        canvas.widthProperty().bind(canvas.getScene().widthProperty());
+	        canvas.heightProperty().bind(canvas.getScene().heightProperty());
+	    }
+		
 		timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
@@ -378,6 +388,10 @@ public class GameController {
 		try {
 			Main1 App = new Main1();
 			App.start(stage);
+			
+	        //ウィンドウを「最大化」する
+			stage.setMaximized(true);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
