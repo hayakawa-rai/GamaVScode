@@ -334,8 +334,13 @@ public class Story3 extends Application{
         //ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
         StackPane base = new StackPane();
         base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root);
-        //rootを中身とした1000×800のウィンドウを作成
-        Scene scene = new Scene(base,1000,800);
+        // 現在のStage（window）から実際のサイズを取得する
+        double currentWidth = stage.getWidth();
+        double currentHeight = stage.getHeight();
+
+        // 取得したサイズで新しいSceneを作成
+        Scene scene = new Scene(base, currentWidth, currentHeight);
+        stage.setScene(scene);
         
         
         //メニューボタン作成

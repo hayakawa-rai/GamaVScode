@@ -1,6 +1,6 @@
 package test3;
 
-import control.PracticeGameController;
+import control.GameController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -14,7 +14,7 @@ import test3.view.MapView;
 // パックマン・練習用ステージの起動クラス
 public class PracticeMain3 extends Application {
 
-	private PracticeGameController controller;
+	private GameController controller;
 
 	@Override
 	public void start(Stage stage) {
@@ -77,7 +77,7 @@ public class PracticeMain3 extends Application {
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		//  準備ができたコントローラーを生成
-		this.controller = new PracticeGameController(model, view, canvas, scene, stage, 1);
+		this.controller = new GameController(model, view, canvas, scene, stage, 1);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);

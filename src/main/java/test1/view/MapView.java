@@ -25,8 +25,6 @@ public class MapView {
 	private final Region wallDummy = new Region();
 	private final Region pacmanDummy = new Region();
 
-	// 口の向きを記憶しておく。（初期は右向き）
-	private double lastBaseAngle = 0;
 	// ヘッダー
 	private static final double INFO_HEIGHT = 40;
 
