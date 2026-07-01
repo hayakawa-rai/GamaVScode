@@ -21,6 +21,7 @@ public class PracticeMain3 extends Application {
 		starts(stage);
 	}
 
+
 	public void starts(Stage stage) {
 		// 多重起動を確実に防止
 		if (this.controller != null) {

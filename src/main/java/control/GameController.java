@@ -7,7 +7,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import start.Start;
-import story.Gameover;
 import story.Stageclear1;
 import story.Stageclear2;
 import story.Stageclear3;
@@ -192,7 +191,7 @@ public class GameController {
 					if ((boolean) isGameOverMethod.invoke(model)) {
 						stop();
 						System.out.println("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
-						switchToGameover(stage);
+						switchToGameover(stage,stageNumber);
 						return;
 					}
 
@@ -320,13 +319,37 @@ public class GameController {
 	}
 
 	// Gameover画面へ変更するためのメソッド
-	public static void switchToGameover(javafx.stage.Stage stage) {
-		try {
-			Gameover App = new Gameover();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void switchToGameover(javafx.stage.Stage stage, int stageNum) {
+	    try {
+	        Runnable retryAction;
+
+	        // ステージ番号に応じて、リトライ時に実行する処理（関数）を切り替える
+	        switch (stageNum) {
+	            case 1:
+	                retryAction = () -> test1.Main1.createAndStart(stage);
+	                break;
+	            case 2:
+	                // ※もしステージ2のクラス名が PracticeMain2 なら以下のように指定
+	                retryAction = () ->test2.Main2.createAndStart(stage);
+	                break;
+	            case 3:
+	                // ※もしステージ3のクラス名が PracticeMain3 なら以下のように指定
+	                retryAction = () -> test3.Main3.createAndStart(stage);
+	                break;
+	            default:
+	                // 予期しない値の場合は、安全のためステージ1に戻す
+	                retryAction = () -> test1.Main1.createAndStart(stage);
+	                break;
+	        }
+
+	        // GameoverクラスのScene生成メソッドに、stageとリトライ処理を渡す
+	        //（Gameoverクラスのstartメソッドではなく、安全なsetSceneに切り替えます）
+	        stage.setScene(story.Gameover.create(stage, retryAction));
+	        stage.show();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	//画面変更Main1へ
