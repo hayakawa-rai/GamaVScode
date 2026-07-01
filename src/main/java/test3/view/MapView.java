@@ -18,7 +18,6 @@ import javafx.scene.text.FontWeight;
 import test3.model.MapData;
 
 public class MapView {
-
 	private final MapData model;
 
 	// CSSの色を吸い取るための「見えないダミー部品」
@@ -94,13 +93,10 @@ public class MapView {
 		// gc.fillRect(0, 0, canvasWidth, canvasHeight);
 
 		// 5. グラフィックスの状態を保存
-
 		gc.save();
 
 		// 6. 変換行列を適用（中央へ移動させてから、拡大する）
-
 		gc.translate(offsetX, offsetY);
-
 		gc.scale(scale, scale);
 
 		// ★【重要】パックマンが動く「ステージの四角い枠内だけ」を真っ黒に塗りつぶします
@@ -108,9 +104,7 @@ public class MapView {
 		gc.fillRect(0, 0, stageWidth, stageHeight);
 
 		// 7. 実際の描画処理を呼び出す
-
 		drawStageContent(gc, cols, rows, stageWidth, stageHeight, wallColor);
-
 		drawPacman(gc);
 
 		// 敵の描画メソッド
@@ -124,6 +118,7 @@ public class MapView {
 
 		// 8. グラフィックスの状態を元に戻す
 		gc.restore();
+		
 		Sengoku sengoku = model.getSengoku();
 
 		if (sengoku != null) {
@@ -187,11 +182,13 @@ public class MapView {
 		outline.drawOutline(gc);
 
 		for (int row = 0; row < rows; row++) {
+			
 			for (int col = 0; col < cols; col++) {
 
 				// int tile = model.getMap()[row][col];
 
 				int x = col * MapData.TILE_SIZE;
+				
 				int y = row * MapData.TILE_SIZE;
 
 				Item item = itemMap[row][col];
@@ -224,7 +221,16 @@ public class MapView {
 
 	public void drawPacman(GraphicsContext gc) {
 		Sengoku sengoku = model.getSengoku();
-		if (sengoku == null || !sengoku.isAlive())
+
+		if (sengoku == null)
+			return;
+
+		if (sengoku.isDyingAnimation()) {
+			drawDyingSengoku(gc, sengoku);
+			return;
+		}
+
+		if (!sengoku.isAlive())
 			return;
 
 		if (pacmanImage == null) {
@@ -245,12 +251,6 @@ public class MapView {
 		gc.translate(pacX, pacY);
 		gc.rotate(angle);
 
-		Image currentImage = pacmanImage;
-
-		if (sengoku.isFever()) {
-			currentImage = pacmanFeverImage;
-		}
-
 		// FEVER終了3秒前は点滅
 		if (sengoku.isFever()) {
 
@@ -264,6 +264,13 @@ public class MapView {
 				}
 			}
 		}
+		
+		// 使用画像を決定
+		Image currentImage = pacmanImage;
+		
+		if (sengoku.isFever()) {
+			currentImage = pacmanFeverImage;
+		}
 
 		gc.drawImage(currentImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
 				MapData.TILE_SIZE);
@@ -272,7 +279,6 @@ public class MapView {
 	}
 
 	// 内部の座標計算
-
 	/*
 	 * public void drawPacman(GraphicsContext gc, Color pacmanColor) { Sengoku
 	 * sengoku = model.getSengoku();
@@ -450,6 +456,37 @@ public class MapView {
 
 		}
 
+	}
+	
+	private void drawDyingSengoku(GraphicsContext gc, Sengoku sengoku) {
+
+	    double progress = sengoku.getDyingProgress();
+
+	    double centerX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
+	    double centerY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+
+	    double scale = 1.0 - progress;
+
+	    gc.save();
+
+	    gc.translate(centerX, centerY);
+
+	    gc.rotate(progress * 720);
+
+	    gc.scale(scale, scale);
+
+	    gc.setGlobalAlpha(1.0 - progress);
+
+	    gc.drawImage(
+	            pacmanImage,
+	            -MapData.TILE_SIZE / 2.0,
+	            -MapData.TILE_SIZE / 2.0,
+	            MapData.TILE_SIZE,
+	            MapData.TILE_SIZE);
+
+	    gc.restore();
+
+	    gc.setGlobalAlpha(1.0);
 	}
 
 	private Color getColorFromCSS(Region node, Color defaultColor) {

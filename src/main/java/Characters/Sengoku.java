@@ -111,6 +111,10 @@ public class Sengoku extends Character {
 
 	// ミスが起きたときにアニメーションを開始する
 	public void startDying() {
+		
+		//★テスト用
+	    System.out.println("死亡アニメーション開始");
+		
 		this.isDyingAnimation = true;
 		this.dyingTimer = 0;
 		this.direction = Direction.NONE;
@@ -119,19 +123,22 @@ public class Sengoku extends Character {
 
 	// 死亡アニメーションの更新
 	public boolean updateDyingAnimation() {
-		if (!isDyingAnimation)
-			return false;
 
-		dyingTimer++;
+	    if (!isDyingAnimation)
+	        return false;
 
-		if (dyingTimer < 60) {
-			return false;
-		} else {
-			// アニメーション終了
-			isDyingAnimation = false;
-			decreaseHp(); // ここで実際に残機を減らす
-			return true;
-		}
+	    dyingTimer++;
+
+	  //★テスト用
+	    System.out.println("dyingTimer=" + dyingTimer);
+
+	    if (dyingTimer < 60) {
+	        return false;
+	    }
+
+	    isDyingAnimation = false;
+
+	    return true;
 	}
 
 	// 初期位置に戻すリセットメソッド
@@ -167,6 +174,11 @@ public class Sengoku extends Character {
 				die();
 			}
 		}
+	}
+
+	//死んだときのアニメーション
+	public double getDyingProgress() {
+		return Math.min(1.0, dyingTimer / 60.0);
 	}
 
 	public void addScore(int point) {

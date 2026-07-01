@@ -242,7 +242,7 @@ public class MapView {
 
 			if (remain <= 3000) {
 
-				if ((System.currentTimeMillis() / 150) % 2 == 0) {
+				if ((remain / 150) % 2 == 0) {
 					return;
 				}
 			}

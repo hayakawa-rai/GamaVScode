@@ -221,7 +221,16 @@ public class MapView {
 
 	public void drawPacman(GraphicsContext gc) {
 		Sengoku sengoku = model.getSengoku();
-		if (sengoku == null || !sengoku.isAlive())
+
+		if (sengoku == null)
+			return;
+
+		if (sengoku.isDyingAnimation()) {
+			drawDyingSengoku(gc, sengoku);
+			return;
+		}
+
+		if (!sengoku.isAlive())
 			return;
 
 		if (pacmanImage == null) {
@@ -447,6 +456,37 @@ public class MapView {
 
 		}
 
+	}
+
+	private void drawDyingSengoku(GraphicsContext gc, Sengoku sengoku) {
+
+	    double progress = sengoku.getDyingProgress();
+
+	    double centerX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
+	    double centerY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+
+	    double scale = 1.0 - progress;
+
+	    gc.save();
+
+	    gc.translate(centerX, centerY);
+
+	    gc.rotate(progress * 720);
+
+	    gc.scale(scale, scale);
+
+	    gc.setGlobalAlpha(1.0 - progress);
+
+	    gc.drawImage(
+	            pacmanImage,
+	            -MapData.TILE_SIZE / 2.0,
+	            -MapData.TILE_SIZE / 2.0,
+	            MapData.TILE_SIZE,
+	            MapData.TILE_SIZE);
+
+	    gc.restore();
+
+	    gc.setGlobalAlpha(1.0);
 	}
 
 	private Color getColorFromCSS(Region node, Color defaultColor) {
