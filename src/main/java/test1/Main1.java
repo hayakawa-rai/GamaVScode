@@ -101,12 +101,13 @@ public class Main1 extends Application {
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
-
-		stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
-		stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
-
+		// ★追加
 		stage.show();
-
+		// ★ 一度falseにしてから再度trueにすることで、強制的に再レイアウトさせる
+		stage.setMaximized(false);
+		javafx.application.Platform.runLater(() -> {
+		    stage.setMaximized(true);
+		});
 		canvas.requestFocus();
 	}
 
