@@ -75,7 +75,7 @@ public class MapData implements GameMap {
 	private boolean enableRespawn;
 
 	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
-	private int stageNumber = 1;
+	private int stageNumber = 2;
 
 	// 口パク
 	private double mouthAngle = 45;
