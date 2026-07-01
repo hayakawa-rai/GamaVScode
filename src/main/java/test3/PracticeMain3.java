@@ -78,11 +78,15 @@ public class PracticeMain3 extends Application {
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		//  準備ができたコントローラーを生成
-		this.controller = new GameController(model, view, canvas, scene, stage, 1);
+		this.controller = new GameController(model, view, canvas, scene, stage, 3);
+		
+		view.setController(this.controller);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
 		stage.show();
+
+		view.bringButtonToFront();
 
 		canvas.requestFocus();
 	}

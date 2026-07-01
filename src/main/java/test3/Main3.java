@@ -93,10 +93,14 @@ public class Main3 extends Application {
 
 		//  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
 		this.controller = new GameController(model, view, canvas, scene, stage, 3);
+		
+		view.setController(controller);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
 		stage.show();
+
+		view.bringButtonToFront();
 
 		canvas.requestFocus();
 	}

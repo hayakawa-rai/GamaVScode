@@ -25,14 +25,25 @@ public class MapView {
 	private final Region wallDummy = new Region();
 	private final Region pacmanDummy = new Region();
 
-	// 口の向きを記憶しておく。（初期は右向き）
-	private double lastBaseAngle = 0;
 	// ヘッダー
 	private static final double INFO_HEIGHT = 40;
+
+	// ボタン変数と口の向き用変数
+	private javafx.scene.control.Button toStartButton;
+	private double lastBaseAngle = 0;
+
+	// 💡 【超重要】自分を動かしているコントローラーのインスタンスを保持する変数
+	private control.GameController myController = null;
+
+	public void setController(control.GameController controller) {
+		this.myController = controller;
+	}
 
 	// 互換コンストラクタ（引数1つ用）
 	public MapView(MapData model) {
 		this.model = model;
+		// 引数1つで呼ばれた場合も最低限ボタンの初期化だけは走らせる
+		initStartButton();
 	}
 
 	// 新しいコンストラクタ（引数2つ用）
@@ -48,17 +59,75 @@ public class MapView {
 		pacmanDummy.setVisible(false);
 		root.getChildren().addAll(wallDummy, pacmanDummy);
 
+		//ボタンを初期化する（デザイン・中央揃えバインディング・遷移イベントを一発設定）
+		initStartButton();
+
+		// 画面サイズが変わっても、ボタンの左端を常に「画面の真ん中」、高さは「真ん中+90px」に連動
+		root.widthProperty().addListener((obs, oldVal, newVal) -> {
+			toStartButton.setLayoutX(newVal.doubleValue() / 2.0);
+		});
+		root.heightProperty().addListener((obs, oldVal, newVal) -> {
+			toStartButton.setLayoutY((newVal.doubleValue() / 2.0) + 90);
+		});
+
+		// 画面（root）の子要素として登録
+		root.getChildren().add(toStartButton);
+
+		// シーンがセットされたらモバイル用コントロールを適用
 		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
 			if (newScene != null) {
 				test.test2.GameController.applyMobileControls(newScene, this.model);
 			}
 		});
+
 	}
 
+	// 画面遷移中かどうかを判定するフラグ
+	private boolean isReturningToTitle = false;
 
-	// ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
+	// ★★★ ボタンの共通設定をまとめたメソッド ★★★
+	private void initStartButton() {
+		if (toStartButton == null) {
+			toStartButton = new javafx.scene.control.Button("タイトルへ戻る");
+
+			// ボタンのデザインスタイル
+			toStartButton.setStyle(
+					"-fx-font-size: 16px; -fx-font-family: 'Meiryo'; -fx-font-weight: bold; " +
+							"-fx-background-color: #ffffff; -fx-text-fill: #333333; " +
+							"-fx-background-radius: 5px; -fx-padding: 8px 16px;");
+			toStartButton.setFocusTraversable(false);
+			toStartButton.setVisible(false);
+
+			// ボタンの横幅自動中央揃え設定
+			toStartButton.translateXProperty().bind(toStartButton.widthProperty().divide(-2.0));
+
+			// ボタンが押されたときの処理
+			toStartButton.setOnAction(e -> {
+
+				System.out.println("タイトルへ戻るボタンがクリックされました！");
+
+				toStartButton.setVisible(false);
+				isReturningToTitle = true; // 画面遷移開始フラグ
+
+				if (myController != null) {
+					myController.forceBackToTitle();
+				} else {
+					System.out.println("⚠️ myController が null のため遷移できません");
+				}
+			});
+		}
+	}
+
+	/**
+	 * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
+	 * */
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
+		//タイトル画面に戻る処理が走っていたら、以降の描画を一切行わずに終了する！
+		if (isReturningToTitle) {
+			gc.clearRect(0, 0, canvasWidth, canvasHeight);
+			return;
+		}
 		// 1. まずはCanvasを一度綺麗に消す（透明にする）
 		gc.clearRect(0, 0, canvasWidth, canvasHeight);
 		gc.setFill(Color.BLACK);
@@ -147,6 +216,17 @@ public class MapView {
 		// モデルが一時停止中（paused）だったら、画面中央にテキストを描画する
 		if (model.isPaused() && !model.isGameOver() && !model.isCleared()) {
 
+			// 一時停止中だけボタンを見せる ★★★
+			if (toStartButton != null) {
+				toStartButton.setVisible(true);
+				toStartButton.toFront(); // 最前面へ引き出す
+
+				// ボタンが表示された瞬間に、コントローラー経由で StackPane の最前面へ強制引っ越しさせる
+				if (myController != null) {
+					myController.bringTitleButtonToFront();
+				}
+			}
+
 			// 1. 画面全体を少し暗くする（半透明の黒いフィルターを重ねる）
 			gc.setFill(Color.rgb(0, 0, 0, 0.6)); // 最後の0.6が不透明度（60%）
 			gc.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -162,7 +242,7 @@ public class MapView {
 			// 4. キャンバスの真ん中（横幅 / 2, 高さ / 2）に描画
 			gc.fillText("PAUSE", canvasWidth / 2.0, canvasHeight / 2.0);
 
-			// ★★★ ここから日本語サブテキストの描画 ★★★
+			// ここから日本語サブテキストの描画 
 			gc.setFont(Font.font("Meiryo", FontWeight.BOLD, 16)); // メイリオで少し太めに
 			gc.setFill(Color.WHITE); // 白文字
 
@@ -172,6 +252,11 @@ public class MapView {
 			//後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
 			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
 			gc.setTextBaseline(javafx.geometry.VPos.TOP);
+		} else {
+			//一時停止中じゃない時はボタンを隠す
+			if (toStartButton != null) {
+				toStartButton.setVisible(false);
+			}
 		}
 	}
 
@@ -448,5 +533,17 @@ public class MapView {
 		} catch (Exception e) {
 		}
 		return defaultColor;
+	}
+
+	/**
+	 * ボタンを現在のレイアウト構造の最前面へ引き出すメソッド
+	 */
+	public void bringButtonToFront() {
+		if (toStartButton != null && toStartButton.getParent() instanceof Pane) {
+			Pane parent = (Pane) toStartButton.getParent();
+			// 一度親から外して再度追加することで、要素の重ね順を一番手前にする
+			parent.getChildren().remove(toStartButton);
+			parent.getChildren().add(toStartButton);
+		}
 	}
 }

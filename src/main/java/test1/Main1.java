@@ -13,13 +13,13 @@ import test1.view.MapView;
 
 public class Main1 extends Application {
 
-	private GameController controller;
+	private static GameController activeController;
 
 	@Override
 	public void start(Stage stage) {
 		starts(stage);
 	}
-	
+
 	public static void createAndStart(Stage stage) {
 		Main1 app = new Main1();
 		app.starts(stage);
@@ -27,8 +27,9 @@ public class Main1 extends Application {
 
 	public void starts(Stage stage) {
 		// 多重起動を確実に防止
-		if (this.controller != null) {
-			this.controller.stop();
+		if (activeController != null) {
+			activeController.stop();
+			activeController = null;
 		}
 
 		MapData model = new MapData();
@@ -58,8 +59,8 @@ public class Main1 extends Application {
 
 			// 画像のサイズも、ウィンドウ（root）のサイズに完全に連動（バインド）させる
 			backgroundView.fitWidthProperty().bind(root.widthProperty());
-            backgroundView.fitHeightProperty().bind(root.heightProperty());
-            backgroundView.setPreserveRatio(false);
+			backgroundView.fitHeightProperty().bind(root.heightProperty());
+			backgroundView.setPreserveRatio(false);
 
 			// 背景用Paneに画像を追加
 			bg.getChildren().add(backgroundView);
@@ -69,8 +70,9 @@ public class Main1 extends Application {
 
 		// ★ゲーム描画Canvas
 		Canvas canvas = new Canvas();
-        canvas.widthProperty().bind(root.widthProperty());
-        canvas.heightProperty().bind(root.heightProperty());
+		canvas.setMouseTransparent(true);
+		canvas.widthProperty().bind(root.widthProperty());
+		canvas.heightProperty().bind(root.heightProperty());
 
 		root.getChildren().addAll(bg, canvas);
 
@@ -91,12 +93,17 @@ public class Main1 extends Application {
 		//敵描画呼び出し　成田
 		model.initEnemy(new javafx.scene.image.ImageView());
 
-		//  完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
-		this.controller = new GameController(model, view, canvas, scene, stage, 1);
+		//新しいコントローラーを生成し、activeController に退避させておく
+		GameController controller = new GameController(model, view, canvas, scene, stage, 1);
+		activeController = controller;
+
+		view.setController(controller);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
 		stage.show();
+
+		view.bringButtonToFront();
 
 		canvas.requestFocus();
 	}
