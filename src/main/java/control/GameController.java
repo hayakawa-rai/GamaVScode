@@ -332,11 +332,11 @@ public class GameController {
 	                retryAction = () -> test1.Main1.createAndStart(stage);
 	                break;
 	            case 2:
-	                // ※もしステージ2のクラス名が PracticeMain2 なら以下のように指定
+	                // Main2へ
 	                retryAction = () ->test2.Main2.createAndStart(stage);
 	                break;
 	            case 3:
-	                // ※もしステージ3のクラス名が PracticeMain3 なら以下のように指定
+	                // Main3へ
 	                retryAction = () -> test3.Main3.createAndStart(stage);
 	                break;
 	            default:

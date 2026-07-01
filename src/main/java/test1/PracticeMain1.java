@@ -22,7 +22,7 @@ public class PracticeMain1 extends Application {
 	}
 	
 	public static void createAndStart(Stage stage) {
-		Main1 app = new Main1();
+		PracticeMain1 app = new PracticeMain1();
 		app.starts(stage);
 	}
 
