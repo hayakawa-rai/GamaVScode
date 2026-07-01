@@ -253,12 +253,12 @@ public class MapView {
 
 		// FEVER終了3秒前は点滅
 		if (sengoku.isFever()) {
-
+			
 			long remain = model.getFeverRemainingTime();
 
 			if (remain <= 3000) {
 
-				if ((System.currentTimeMillis() / 150) % 2 == 0) {
+				if ((remain / 150) % 2 == 0) {
 					gc.restore();
 					return;
 				}
