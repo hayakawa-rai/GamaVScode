@@ -258,9 +258,10 @@ public class MapView {
 
 			if (remain <= 3000) {
 
-				if ((System.currentTimeMillis() / 150) % 2 == 0) {
+				if ((remain / 150) % 2 == 0) {
 					gc.restore();
 					return;
+
 				}
 			}
 		}
@@ -333,9 +334,7 @@ public class MapView {
 	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
 
 		enemyImageView.setFitWidth(MapData.TILE_SIZE);
-
 		enemyImageView.setFitHeight(MapData.TILE_SIZE);
-
 		enemyImageView.setPreserveRatio(true);
 
 	}
@@ -343,7 +342,6 @@ public class MapView {
 	// 追加項目
 
 	private void drawEnemy(GraphicsContext gc) {
-
 		Enemy enemy = model.getEnemy();
 
 		if (enemy == null)
@@ -356,41 +354,29 @@ public class MapView {
 			Image img = red.getEnemyImage();
 
 			double enemyLeftX = red.getX() - MapData.TILE_SIZE / 2.0;
-
 			double enemyTopY = red.getY() - MapData.TILE_SIZE / 2.0;
 
 			if (img != null) {
 
 				// ⭕ 画像が正常にある場合は画像を描画
-
 				gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
 
 			} else {
 
 				// ⚠️ 画像読み込みに失敗している場合は「赤い円」で身代わり描画
-
 				gc.setFill(Color.RED);
-
 				gc.fillOval(red.getX(), red.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
 
 				// 中心点が視覚的にわかりやすいように小さな黒い点を打つ
-
 				gc.setFill(Color.BLACK);
-
-				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2,
-
-						red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
-
+				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2, red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
 			}
-
 		}
-
 	}
 
 	// ⭕ 空っぽだった自動生成メソッドの中身を、中心ズレ補正版の正しい描画ロジックに修正！
 
 	private void drawEnemyInstance(GraphicsContext gc, Enemy enemy) {
-
 		if (enemy == null)
 			return;
 
@@ -422,7 +408,6 @@ public class MapView {
 		// マスの中心座標(X, Y)から半マス引いて、画像の左上基準座標を計算
 
 		double enemyLeftX = enemy.getX() - MapData.TILE_SIZE / 2.0;
-
 		double enemyTopY = enemy.getY() - MapData.TILE_SIZE / 2.0;
 
 		if (img != null) {
@@ -460,33 +445,29 @@ public class MapView {
 
 	private void drawDyingSengoku(GraphicsContext gc, Sengoku sengoku) {
 
-	    double progress = sengoku.getDyingProgress();
+		double progress = sengoku.getDyingProgress();
 
-	    double centerX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
-	    double centerY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+		double centerX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
+		double centerY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
 
-	    double scale = 1.0 - progress;
+		double scale = 1.0 - progress;
 
-	    gc.save();
+		gc.save();
 
-	    gc.translate(centerX, centerY);
+		gc.translate(centerX, centerY);
 
-	    gc.rotate(progress * 720);
+		gc.rotate(progress * 720);
 
-	    gc.scale(scale, scale);
+		gc.scale(scale, scale);
 
-	    gc.setGlobalAlpha(1.0 - progress);
+		gc.setGlobalAlpha(1.0 - progress);
 
-	    gc.drawImage(
-	            pacmanImage,
-	            -MapData.TILE_SIZE / 2.0,
-	            -MapData.TILE_SIZE / 2.0,
-	            MapData.TILE_SIZE,
-	            MapData.TILE_SIZE);
+		gc.drawImage(pacmanImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+				MapData.TILE_SIZE);
 
-	    gc.restore();
+		gc.restore();
 
-	    gc.setGlobalAlpha(1.0);
+		gc.setGlobalAlpha(1.0);
 	}
 
 	private Color getColorFromCSS(Region node, Color defaultColor) {
