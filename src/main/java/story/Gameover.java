@@ -18,27 +18,35 @@ import start.Start;
 
 public class Gameover extends Application {
 
+	private int score = 0;
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 	@Override
 	public void start(Stage stage) {
-		stage.setScene(create(stage, null));
+		stage.setScene(create(stage, null, score));
 		stage.setTitle("ゲーム");
 		stage.setMaximized(true);
 		stage.show();
 	}
 
-	public static Scene create(Stage stage, Runnable retryAction) {
+	public static Scene create(Stage stage, Runnable retryAction, int score) {
 
-		//GAME OVER
+		// GAME OVER
 		Label gameOverLabel = new Label("GAME OVER");
-		
 		gameOverLabel.getStyleClass().add("gameover-title");
 
+		// スコア表示
+		Label scoreLabel = new Label("SCORE : " + score);
+		scoreLabel.setStyle("-fx-font-size: 32px;" + "-fx-font-weight: bold;" + "-fx-text-fill: white;");
 
-		VBox titleBox = new VBox(gameOverLabel);
+		VBox titleBox = new VBox(20, gameOverLabel, scoreLabel);
 		titleBox.setAlignment(Pos.CENTER);
 		titleBox.setStyle("-fx-padding: 150px 0 40px 0;");
 
-		//いらすとや
+		// いらすとや
 		ImageView icon = new ImageView();
 		try {
 
@@ -55,21 +63,20 @@ public class Gameover extends Application {
 		icon.setFitWidth(300);
 		icon.setFitHeight(400);
 
-		
-		 //直前のステージをやり直す
-	    Button retryBtn = new Button("リトライする");
-	    retryBtn.setPrefSize(300, 70);
-	    retryBtn.getStyleClass().add("gameover-button");
-	    retryBtn.setOnAction(e -> {
-	        if (retryAction != null) {
-	            // 渡された各ステージの createAndStart(stage) が実行される
-	            retryAction.run();
-	        } else {
-	            System.out.println("⚠️ リトライ処理が登録されていません。");
-	        }
-	    });
-	    
-		//タイトル画面へ戻る
+		// 直前のステージをやり直す
+		Button retryBtn = new Button("リトライする");
+		retryBtn.setPrefSize(300, 70);
+		retryBtn.getStyleClass().add("gameover-button");
+		retryBtn.setOnAction(e -> {
+			if (retryAction != null) {
+				// 渡された各ステージの createAndStart(stage) が実行される
+				retryAction.run();
+			} else {
+				System.out.println("⚠️ リトライ処理が登録されていません。");
+			}
+		});
+
+		// タイトル画面へ戻る
 		Button titleBtn = new Button("タイトルへ");
 		titleBtn.setPrefSize(300, 70);
 		titleBtn.getStyleClass().add("gameover-button");
@@ -82,22 +89,22 @@ public class Gameover extends Application {
 			}
 		});
 
-		//ボタンを縦に並べる
+		// ボタンを縦に並べる
 		VBox buttonColumn = new VBox(20, retryBtn, titleBtn);
 		buttonColumn.setAlignment(Pos.CENTER_LEFT);
 
-		//画像とボタン列を横に並べる
+		// 画像とボタン列を横に並べる
 		HBox centerBox = new HBox(40, icon, buttonColumn);
 		centerBox.setAlignment(Pos.CENTER);
 
-		//レイアウト
+		// レイアウト
 		BorderPane ui = new BorderPane();
 		ui.setTop(titleBox);
 		ui.setCenter(centerBox);
 
 		StackPane root = new StackPane();
 
-		//背景
+		// 背景
 		ImageView bg = new ImageView();
 		try {
 			java.net.URL bgUrl = Gameover.class.getResource("/picture/gameover.jpg");
@@ -115,21 +122,21 @@ public class Gameover extends Application {
 		Rectangle whiteOverlay = new Rectangle();
 		whiteOverlay.setFill(Color.rgb(255, 255, 255, 0.15));
 
-		//rootのサイズに合わせて伸縮させる
+		// rootのサイズに合わせて伸縮させる
 		bg.fitWidthProperty().bind(root.widthProperty());
 		bg.fitHeightProperty().bind(root.heightProperty());
-		
+
 		whiteOverlay.widthProperty().bind(root.widthProperty());
 		whiteOverlay.heightProperty().bind(root.heightProperty());
 
-		//rootに追加
+		// rootに追加
 		root.getChildren().addAll(bg, whiteOverlay, ui);
-		
+
 		// 現在のStage（window）から実際のサイズを取得する
-		Scene scene = new Scene(root, 1000,800);
-		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-        stage.setMinWidth(1000);
-        stage.setMinHeight(800);
+		Scene scene = new Scene(root, 1000, 800);
+		// ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
 		scene.getStylesheets().add(Gameover.class.getResource("/css/gameover.css").toExternalForm());
 
 		return scene;
@@ -139,5 +146,4 @@ public class Gameover extends Application {
 	public static void main(String[] args) {
 		launch();
 	}
-
 }

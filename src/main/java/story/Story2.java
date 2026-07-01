@@ -41,8 +41,10 @@ public class Story2 extends Application {
 		//ウィンドウの中身を決定
 		stage.setScene(story2());
 		stage.setTitle("story2");
-		// ★追加
-		stage.setMaximized(true);
+		
+		stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
+		stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
+		
 		stage.show();
 	}
 
@@ -730,5 +732,7 @@ public class Story2 extends Application {
 		startTyping();
 
 		return scene;
+		
 	}
+	
 }

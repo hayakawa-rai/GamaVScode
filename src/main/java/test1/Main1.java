@@ -107,10 +107,7 @@ public class Main1 extends Application {
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
-
-		stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
-		stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
-
+		// ★追加
 		stage.show();
 
 		view.bringButtonToFront();

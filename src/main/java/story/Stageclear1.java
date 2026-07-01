@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
@@ -40,8 +41,9 @@ public class Stageclear1 extends Application {
 		// ウィンドウの中身を決定
 		stage.setScene(clear());
 		stage.setTitle("stage1CLEAR");
-		// ★追加
+
 		stage.setMaximized(true);
+
 		stage.show();
 	}
 
@@ -129,7 +131,6 @@ public class Stageclear1 extends Application {
 		buttonBox.setSpacing(20);
 		// 中央に配置
 		buttonBox.setAlignment(Pos.CENTER);
-
 		// 音声読み込み
 		clickSound = new AudioClip(
 				getClass().getResource("/music/select.mp3").toExternalForm());
@@ -141,13 +142,6 @@ public class Stageclear1 extends Application {
 				getClass().getResource("/music/cancel.mp3").toExternalForm());
 		// 音量調整
 		cancelSound.setVolume(0.4);
-
-		// スコア表示
-		Text scoreLabel = new Text();
-
-		// ★引数で受け取った score 変数を使ってテキストを設定する形に変更
-		scoreLabel.setText("SCORE: " + this.score);
-		scoreLabel.setStyle("-fx-font-size: 30px; -fx-fill:  gray;");
 
 		// 次に進むボタン
 		Button next = new Button("次のステージへ");
@@ -178,6 +172,10 @@ public class Stageclear1 extends Application {
 			pause.play();
 		});
 
+		// ⭐ スコア表示（重複宣言を削除し、すっきり1つに統合）
+		Text scoreLabel = new Text("SCORE: " + this.score);
+		scoreLabel.setStyle("-fx-font-size: 30px; -fx-fill:  gray;");
+
 		// 戻るボタン
 		Button backButton = new Button("タイトルへ");
 		// ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
@@ -207,12 +205,14 @@ public class Stageclear1 extends Application {
 
 		// titleと画像とtextをまとめたもの、ボタン2つを箱に入れる。
 		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
-
 		// 現在のStage（window）から実際のサイズを取得する
-		Scene scene = new Scene(buttonBox, 1000, 800);
+		//Scene scene = new Scene(buttonBox, 1000, 800);
+		StackPane root = new StackPane();
+		root.getChildren().add(buttonBox);
+		Scene scene = new Scene(root);
 		// ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-		stage.setMinWidth(1000);
-		stage.setMinHeight(800);
+		//stage.setMinWidth(1000);
+		//stage.setMinHeight(800);
 		// CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());

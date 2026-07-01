@@ -41,8 +41,10 @@ public class Story4 extends Application {
 		//ウィンドウの中身を決定
 		stage.setScene(story4());
 		stage.setTitle("story4");
-		// ★追加
-		stage.setMaximized(true);
+		
+		stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
+		stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
+		
 		stage.show();
 	}
 

@@ -83,8 +83,10 @@ public class Stageclear2 extends Application {
 		// ウィンドウの中身を決定
 		stage.setScene(clear());
 		stage.setTitle("stage2CLEAR");
-		// ★追加
-		stage.setMaximized(true);
+		
+		stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
+		stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
+		
 		stage.show();
 	}
 
