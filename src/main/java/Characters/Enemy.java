@@ -1,5 +1,4 @@
 //エネミークラス
-
 package Characters;
 
 import java.util.ArrayList;
@@ -314,11 +313,11 @@ public abstract class Enemy extends Character {
 				break;
 
 			case 2:
-				deadPath = "/picture/wada_EnemyyDead.png";
+				deadPath = "/picture/wada_EnemyDead.png";
 				break;
 
 			case 3:
-				deadPath = "/picture/hayakawa_EnemyyDead.png";
+				deadPath = "/picture/hayakawa_EnemyDead.png";
 				break;
 			}
 		}
