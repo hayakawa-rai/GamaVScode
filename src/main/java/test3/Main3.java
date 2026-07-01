@@ -19,6 +19,11 @@ public class Main3 extends Application {
 	public void start(Stage stage) {
 		starts(stage);
 	}
+	
+	public static void createAndStart(Stage stage) {
+		Main3 app = new Main3();
+		app.starts(stage);
+	}
 
 	public void starts(Stage stage) {
 		// 多重起動を確実に防止

@@ -55,12 +55,8 @@ public class MapView {
 		});
 	}
 
-	/**
-	 * 
-	 * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
-	 * 
-	 */
 
+	// ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
 		// 1. まずはCanvasを一度綺麗に消す（透明にする）

@@ -334,8 +334,8 @@ public class Story3 extends Application{
         //ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
         StackPane base = new StackPane();
         base.getChildren().addAll(bgView,sengokuView,anikiView,narinariView, wadatakuView,root);
-        //rootを中身とした1000×800のウィンドウを作成
-        Scene scene = new Scene(base,1000,800);
+        // 現在のStage（window）から実際のサイズを取得する
+        Scene scene = new Scene(base, 1000,800);
         
         
         //メニューボタン作成
@@ -472,8 +472,8 @@ public class Story3 extends Application{
         	    )
         );
         //ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-        stage.setMinWidth(800);
-        stage.setMinHeight(600);
+        stage.setMinWidth(1000);
+        stage.setMinHeight(800);
        
         //メニュー表示処理
         scene.setOnKeyPressed(event -> {

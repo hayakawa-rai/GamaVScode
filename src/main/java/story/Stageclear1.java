@@ -210,11 +210,11 @@ public class Stageclear1 extends Application {
 		// titleと画像とtextをまとめたもの、ボタン2つを箱に入れる。
 		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
 		
-		// buttonBoxを中身とした1000×800のウィンドウを作成
-		Scene scene = new Scene(buttonBox, 1000, 800);
+		// 現在のStage（window）から実際のサイズを取得する
+		Scene scene = new Scene(buttonBox, 1000,800);
 		// ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-		stage.setMinWidth(800);
-		stage.setMinHeight(600);
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
 		// CSSを接続
 		scene.getStylesheets().add(
 			getClass().getResource("/css/style.css").toExternalForm()

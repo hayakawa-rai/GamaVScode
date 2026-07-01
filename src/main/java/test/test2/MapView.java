@@ -23,7 +23,7 @@ public class MapView {
 	private final Region pacmanDummy = new Region();
 
 	private double lastBaseAngle = 0;
-	//ヘッダー
+	// ヘッダー
 	private static final double INFO_HEIGHT = 40;
 
 	public MapView(MapData model) {
@@ -134,6 +134,10 @@ public class MapView {
 	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
 			getClass().getResource("/picture/sengoku.png").toExternalForm());
 
+	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
+			getClass().getResource("/picture/sengoku_Fever.png").toExternalForm());
+	
+
 	public void drawPacman(GraphicsContext gc) {
 		Sengoku sengoku = model.getSengoku();
 		if (sengoku == null || !sengoku.isAlive())
@@ -157,7 +161,28 @@ public class MapView {
 		gc.translate(pacX, pacY);
 		gc.rotate(angle);
 
-		gc.drawImage(pacmanImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+		// FEVER終了3秒前なら点滅
+		if (sengoku.isFever()) {
+
+			long remain = model.getFeverRemainingTime();
+
+			if (remain <= 3000) {
+
+				if ((System.currentTimeMillis() / 150) % 2 == 0) {
+					gc.restore();
+					return;
+				}
+			}
+		}
+
+		// 使用する画像選択
+		javafx.scene.image.Image currentImage = pacmanImage;
+
+		if (sengoku.isFever()) {
+			currentImage = pacmanFeverImage;
+		}
+
+		gc.drawImage(currentImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
 				MapData.TILE_SIZE);
 
 		gc.restore();

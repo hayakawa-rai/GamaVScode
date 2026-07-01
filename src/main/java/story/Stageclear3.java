@@ -199,9 +199,8 @@ public class Stageclear3 extends Application {
 
 		// ⭐ 画面要素の追加（scoreLabelを含めた正しい並びを1回だけ実行）
 		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
-
-		//buttonBoxを中身とした1000×800のウィンドウを作成
-		Scene scene = new Scene(buttonBox, 1000, 800);
+        // 取得したサイズで新しいSceneを作成
+        Scene scene = new Scene(buttonBox, 1000,800);
 		//ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(800);
 		stage.setMinHeight(600);
