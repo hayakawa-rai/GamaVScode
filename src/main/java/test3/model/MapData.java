@@ -125,6 +125,9 @@ public class MapData implements GameMap {
 	// ゲーム開始待ち
 	private boolean waitingStart = true;
 
+	// ポーズ開始時刻
+	private long pauseStartTime = 0;
+
 	// FEVER終了時刻
 	private long feverEndTime = 0;
 
@@ -209,7 +212,6 @@ public class MapData implements GameMap {
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
 
 		// ⭕ リストを一度クリアして、敵をどんどん追加する
-
 		enemies.clear();
 		enemies.add(new RedEnemy(this));
 		enemies.add(new GreenEnemy(this)); // 今後Map3Enemyなどもここに enemies.add(...) するだけで追加可能
@@ -225,13 +227,52 @@ public class MapData implements GameMap {
 	}
 
 	public void togglePause() {
-		paused = !paused;
+		if (!paused) {
+			paused = true;
+			pauseStartTime = System.currentTimeMillis();
+
+		} else {
+			paused = false;
+			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
+
+			if (feverEndTime > 0) {
+				feverEndTime += pauseDuration;
+			}
+		}
 	}
 
 	// ゲーム全体の定期更新
 	public void update() {
 		if (paused)
 			return;
+
+		// 死んだときのアニメーション
+		if (sengoku.isDyingAnimation()) {
+
+			if (sengoku.updateDyingAnimation()) {
+
+				if (sengoku.isAlive()) {
+
+					sengoku.resetToStartPosition();
+
+					for (Enemy enemy : enemies) {
+						enemy.resetToStartPosition();
+						enemy.setCurrentState(Characters.EnemyState.SCATTER);
+					}
+
+					modeStartTime = 0;
+					chaseMode = false;
+					waitingStart = true;
+
+				} else {
+
+					gameOver = true;
+					paused = true;
+				}
+			}
+
+			return;
+		}
 
 		// パックマンの移動処理
 		updatePacman();
@@ -511,34 +552,30 @@ public class MapData implements GameMap {
 				System.out.println("💥敵に捕まった！");
 
 				sengoku.takeDamage();
+				sengoku.startDying();
 
-				if (sengoku.getHp() <= 0) {
-
-					this.gameOver = true;
-					this.paused = true;
-
-				} else {
-
-					sengoku.resetToStartPosition();
-
-					for (Enemy enemy : enemies) {
-						enemy.resetToStartPosition();
-					}
-
-					for (Enemy enemy : enemies) {
-						enemy.setCurrentState(Characters.EnemyState.SCATTER);
-					}
-
-					// タイマーリセット
-					modeStartTime = 0;
-
-					// 初期状態に戻す
-					chaseMode = false;
-
-					// 再入力待ち
-					waitingStart = true;
-
-				}
+				/*
+				 * if (sengoku.getHp() <= 0) {
+				 * 
+				 * this.gameOver = true; this.paused = true;
+				 * 
+				 * } else {
+				 * 
+				 * sengoku.resetToStartPosition();
+				 * 
+				 * for (Enemy enemy : enemies) { enemy.resetToStartPosition(); }
+				 * 
+				 * for (Enemy enemy : enemies) {
+				 * enemy.setCurrentState(Characters.EnemyState.SCATTER); }
+				 * 
+				 * // タイマーリセット modeStartTime = 0;
+				 * 
+				 * // 初期状態に戻す chaseMode = false;
+				 * 
+				 * // 再入力待ち waitingStart = true;
+				 * 
+				 * }
+				 */
 
 				return;
 			}
@@ -608,6 +645,9 @@ public class MapData implements GameMap {
 	}
 
 	public long getFeverRemainingTime() {
+		if (paused && feverEndTime > 0) {
+			return Math.max(0, feverEndTime - pauseStartTime);
+		}
 		return Math.max(0, feverEndTime - System.currentTimeMillis());
 	}
 

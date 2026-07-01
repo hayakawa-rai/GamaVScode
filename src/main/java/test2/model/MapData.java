@@ -121,6 +121,9 @@ public class MapData implements GameMap {
 	// ゲーム開始待ち
 	private boolean waitingStart = true;
 
+	// ポーズ
+	private long pauseStartTime = 0;
+
 	// FEVER終了時刻
 	private long feverEndTime = 0;
 
@@ -221,41 +224,54 @@ public class MapData implements GameMap {
 	}
 
 	public void togglePause() {
-		paused = !paused;
+		if (!paused) {
+
+			paused = true;
+			pauseStartTime = System.currentTimeMillis();
+
+		} else {
+
+			paused = false;
+			
+			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
+
+			if (feverEndTime > 0) {
+				feverEndTime += pauseDuration;
+			}
+		}
 	}
 
 	// ゲーム全体の定期更新
 	public void update() {
 		if (paused)
 			return;
-		
-		//死んだときのアニメーション
+
+		// 死んだときのアニメーション
 		if (sengoku.isDyingAnimation()) {
 
-		    if (sengoku.updateDyingAnimation()) {
+			if (sengoku.updateDyingAnimation()) {
 
-		        if (sengoku.isAlive()) {
+				if (sengoku.isAlive()) {
 
-		            sengoku.resetToStartPosition();
+					sengoku.resetToStartPosition();
 
-		            for (Enemy enemy : enemies) {
-		                enemy.resetToStartPosition();
-		                enemy.setCurrentState(
-		                    Characters.EnemyState.SCATTER);
-		            }
+					for (Enemy enemy : enemies) {
+						enemy.resetToStartPosition();
+						enemy.setCurrentState(Characters.EnemyState.SCATTER);
+					}
 
-		            modeStartTime = 0;
-		            chaseMode = false;
-		            waitingStart = true;
+					modeStartTime = 0;
+					chaseMode = false;
+					waitingStart = true;
 
-		        } else {
+				} else {
 
-		            gameOver = true;
-		            paused = true;
-		        }
-		    }
+					gameOver = true;
+					paused = true;
+				}
+			}
 
-		    return;
+			return;
 		}
 
 		// パックマンの移動処理
@@ -534,37 +550,32 @@ public class MapData implements GameMap {
 				}
 
 				System.out.println("💥敵に捕まった！");
-				
+
 				sengoku.takeDamage();
 				sengoku.startDying();
 
-				/*if (sengoku.getHp() <= 0) {
-
-					this.gameOver = true;
-					this.paused = true;
-
-				} else {
-
-					sengoku.resetToStartPosition();
-
-					for (Enemy enemy : enemies) {
-						enemy.resetToStartPosition();
-					}
-
-					for (Enemy enemy : enemies) {
-						enemy.setCurrentState(Characters.EnemyState.SCATTER);
-					}
-
-					// タイマーリセット
-					modeStartTime = 0;
-
-					// 初期状態に戻す
-					chaseMode = false;
-
-					// 再入力待ち
-					waitingStart = true;
-
-				}*/
+				/*
+				 * if (sengoku.getHp() <= 0) {
+				 * 
+				 * this.gameOver = true; this.paused = true;
+				 * 
+				 * } else {
+				 * 
+				 * sengoku.resetToStartPosition();
+				 * 
+				 * for (Enemy enemy : enemies) { enemy.resetToStartPosition(); }
+				 * 
+				 * for (Enemy enemy : enemies) {
+				 * enemy.setCurrentState(Characters.EnemyState.SCATTER); }
+				 * 
+				 * // タイマーリセット modeStartTime = 0;
+				 * 
+				 * // 初期状態に戻す chaseMode = false;
+				 * 
+				 * // 再入力待ち waitingStart = true;
+				 * 
+				 * }
+				 */
 
 				return;
 			}
@@ -619,7 +630,7 @@ public class MapData implements GameMap {
 			return Characters.Direction.NONE;
 		}
 	}
-
+	
 	// --- getters ---
 	public Item[][] getItemMap() {
 		return itemMap;
@@ -634,7 +645,11 @@ public class MapData implements GameMap {
 	}
 
 	public long getFeverRemainingTime() {
-		return Math.max(0, feverEndTime - System.currentTimeMillis());
+
+	    if (paused && feverEndTime > 0) {
+	        return Math.max(0, feverEndTime - pauseStartTime);
+	    }
+	    return Math.max(0, feverEndTime - System.currentTimeMillis());
 	}
 
 	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
