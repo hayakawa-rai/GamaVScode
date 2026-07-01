@@ -377,7 +377,6 @@ public class GameController {
 		}
 	}
 
-<<<<<<< HEAD
 	// Gameover画面へ変更するためのメソッド
 	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice) {
 	    try {
@@ -427,12 +426,8 @@ public class GameController {
 	}
 
 
-	//画面変更Main1へ
-	public static void switchToGame1(javafx.stage.Stage stage) {
-=======
 	// Gameover画面へ変更するためのメソッド（引数4つ版に綺麗に統一！）
 	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice, int score) {
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 		try {
 			Runnable retryAction;
 
