@@ -244,6 +244,8 @@ public class Start extends Application {
 		stage.setTitle("スタート画面");
 		//ウィンドウの中身を設定・表示
 		stage.setScene(scene);
+		// ★追加
+		stage.setMaximized(true);
 		stage.show();
 	}
 

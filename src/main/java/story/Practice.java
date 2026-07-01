@@ -20,7 +20,7 @@ import javafx.util.Duration;
 import start.Bgm;
 
 public class Practice extends Application {
-	
+
 	private AudioClip clickSound;
 	private AudioClip cancelSound;
 	private PauseTransition pause;
@@ -33,50 +33,50 @@ public class Practice extends Application {
 		this.stage = stage;
 		stage.setScene(createScene());
 		stage.setTitle("練習モード");
+		// ★追加
+		stage.setMaximized(true);
 		stage.show();
 	}
+
 	private void cleanup() {
 
-	    // 背景アニメーション停止
-	    if (timer != null) {
-	        timer.stop();
-	        timer = null;
-	    }
+		// 背景アニメーション停止
+		if (timer != null) {
+			timer.stop();
+			timer = null;
+		}
 
-	    // 遅延処理停止
-	    if (pause != null) {
-	        pause.stop();
-	        pause = null;
-	    }
+		// 遅延処理停止
+		if (pause != null) {
+			pause.stop();
+			pause = null;
+		}
 
-	    // 効果音停止
-	    if (clickSound != null) {
-	        clickSound.stop();
-	        clickSound = null;
-	    }
+		// 効果音停止
+		if (clickSound != null) {
+			clickSound.stop();
+			clickSound = null;
+		}
 
-	    if (cancelSound != null) {
-	        cancelSound.stop();
-	        cancelSound = null;
-	    }
+		if (cancelSound != null) {
+			cancelSound.stop();
+			cancelSound = null;
+		}
 
-	    // BGM停止
-	    Bgm.stopBGM();
+		// BGM停止
+		Bgm.stopBGM();
 	}
-		
+
 	public Scene createScene() {
-		
+
 		// タイトル
 		Label title = new Label("練習モード");
 		title.setStyle(
 				"-fx-font-family: 'PixelMplus12';" +
-			    "-fx-font-size: 48px;" +
-			  //  "-fx-font-weight: 900;" +
-			    "-fx-text-fill: white;" +
-			    "-fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3);"
-			);
-
-
+						"-fx-font-size: 48px;" +
+						//  "-fx-font-weight: 900;" +
+						"-fx-text-fill: white;" +
+						"-fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3);");
 
 		// ステージ選択
 		Button stage1 = new Button("STAGE 1");
@@ -94,59 +94,57 @@ public class Practice extends Application {
 		stage1.setPrefHeight(80);
 		stage2.setPrefHeight(80);
 		stage3.setPrefHeight(80);
-		
+
 		//音声読み込み
 		clickSound = new AudioClip(
-			getClass().getResource("/music/select.mp3").toExternalForm()
-		);
+				getClass().getResource("/music/select.mp3").toExternalForm());
 		// 音量調整
 		clickSound.setVolume(0.4);
 		//音声読み込み
 		cancelSound = new AudioClip(
-			getClass().getResource("/music/cancel.mp3").toExternalForm()
-		);
+				getClass().getResource("/music/cancel.mp3").toExternalForm());
 		// 音量調整
 		cancelSound.setVolume(0.4);
-		
+
 		stage1.setOnAction(e -> {
 			//音をつける
-	    	clickSound.stop();
-	    	clickSound.play();
-	    	
-	    	// 0.5秒待つ
-	        pause = new PauseTransition(Duration.seconds(0.5));
+			clickSound.stop();
+			clickSound.play();
+
+			// 0.5秒待つ
+			pause = new PauseTransition(Duration.seconds(0.5));
 			// 1. 練習モードの背景アニメーションを停止
-	        cleanup(); 
-			
+			cleanup();
+
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
 			control.GameController.switchToPracticeGame1(stage);
 		});
-		
+
 		stage2.setOnAction(e -> {
 			//音をつける
-	    	clickSound.stop();
-	    	clickSound.play();
-	    	
-	    	// 0.5秒待つ
-	        pause = new PauseTransition(Duration.seconds(0.5));
+			clickSound.stop();
+			clickSound.play();
+
+			// 0.5秒待つ
+			pause = new PauseTransition(Duration.seconds(0.5));
 			// 1. 練習モードの背景アニメーションを停止
-	        cleanup(); 
+			cleanup();
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
 			control.GameController.switchToPracticeGame2(stage);
 		});
-		
+
 		stage3.setOnAction(e -> {
 			//音をつける
-	    	clickSound.stop();
-	    	clickSound.play();
-	    	
-	    	// 0.5秒待つ
-	        pause = new PauseTransition(Duration.seconds(0.5));
+			clickSound.stop();
+			clickSound.play();
+
+			// 0.5秒待つ
+			pause = new PauseTransition(Duration.seconds(0.5));
 			// 1. 練習モードの背景アニメーションを停止
-	        cleanup(); 
-			
+			cleanup();
+
 			// 2. SampleController の遷移メソッドを直接呼び出す！
 			// (※ メソッド名が switchToStart で合っているか、確認してね！)
 			control.GameController.switchToPracticeGame3(stage);
@@ -162,26 +160,26 @@ public class Practice extends Application {
 
 		// ★ master側の処理を残す
 		backButton.setOnAction(e -> {
-	    	cancelSound.stop();
-	    	cancelSound.play();
-	    	
-	    	// 0.5秒待つ
-	        pause = new PauseTransition(Duration.seconds(0.5));
+			cancelSound.stop();
+			cancelSound.play();
 
-	        // 待った後に画面遷移
-	        pause.setOnFinished(ev -> {
-	        // 背景停止
-	        cleanup(); 
-	        try {
-	        	// 画面遷移
-		        test.test2.GameController.switchStart(stage);
-	        } catch (Exception ex) {
-	            ex.printStackTrace();
-	        }
-	    });
-	        // タイマー開始
-	        pause.play();
-	    });
+			// 0.5秒待つ
+			pause = new PauseTransition(Duration.seconds(0.5));
+
+			// 待った後に画面遷移
+			pause.setOnFinished(ev -> {
+				// 背景停止
+				cleanup();
+				try {
+					// 画面遷移
+					test.test2.GameController.switchStart(stage);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			});
+			// タイマー開始
+			pause.play();
+		});
 
 		HBox backBox = new HBox(backButton);
 		backBox.setAlignment(Pos.BOTTOM_RIGHT);
@@ -230,11 +228,11 @@ public class Practice extends Application {
 		root.getChildren().addAll(bgPane, ui);
 
 		// 現在のStage（window）から実際のサイズを取得する
-		Scene scene = new Scene(root, 1000,800);
-        stage.setScene(scene);
+		Scene scene = new Scene(root, 1000, 800);
+		stage.setScene(scene);
 		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-        stage.setMinWidth(1000);
-        stage.setMinHeight(800);
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
 
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());

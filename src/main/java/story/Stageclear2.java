@@ -83,6 +83,8 @@ public class Stageclear2 extends Application {
 		// ウィンドウの中身を決定
 		stage.setScene(clear());
 		stage.setTitle("stage2CLEAR");
+		// ★追加
+		stage.setMaximized(true);
 		stage.show();
 	}
 
@@ -114,7 +116,7 @@ public class Stageclear2 extends Application {
 		// 獲得したアイテムを表示
 		Text text = new Text("契約書を獲得しました！！");
 		text.setStyle("-fx-font-size: 20px; -fx-fill: gray;");
-		
+
 		// 獲得したアイテムの画像読み込み
 		Image image = new Image(getClass().getResource("/picture/keiyakusho.png").toExternalForm());
 		ImageView imageView = new ImageView(image);
@@ -192,13 +194,13 @@ public class Stageclear2 extends Application {
 		buttonBox.getChildren().addAll(title, scoreText, textAndImage, next, backButton);
 
 		// 現在のStage（window）から実際のサイズを取得する
-		Scene scene = new Scene(buttonBox, 1000,800);
+		Scene scene = new Scene(buttonBox, 1000, 800);
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
 
 		// CSSを接続
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-		
+
 		return scene;
 	}
 }

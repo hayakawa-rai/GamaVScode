@@ -96,6 +96,8 @@ public class Main3 extends Application {
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
+		// ★追加
+		stage.setMaximized(true);
 		stage.show();
 
 		canvas.requestFocus();
