@@ -245,6 +245,35 @@ public class MapData implements GameMap {
 	public void update() {
 		if (paused)
 			return;
+		
+		//死んだときのアニメーション
+				if (sengoku.isDyingAnimation()) {
+
+				    if (sengoku.updateDyingAnimation()) {
+
+				        if (sengoku.isAlive()) {
+
+				            sengoku.resetToStartPosition();
+
+				            for (Enemy enemy : enemies) {
+				                enemy.resetToStartPosition();
+				                enemy.setCurrentState(
+				                    Characters.EnemyState.SCATTER);
+				            }
+
+				            modeStartTime = 0;
+				            chaseMode = false;
+				            waitingStart = true;
+
+				        } else {
+
+				            gameOver = true;
+				            paused = true;
+				        }
+				    }
+
+				    return;
+				}
 
 		// パックマンの移動処理
 		updatePacman();
@@ -403,8 +432,11 @@ public class MapData implements GameMap {
 
 				// パワーエサ(2)を食べたらFEVER
 				if (map[currentTileY][currentTileX] == 2) {
+					
 					System.out.println("FEVER開始！");
+					
 					sengoku.setFever(true);
+					// 毎回7秒にリセット
 					feverEndTime = System.currentTimeMillis() + 7000;
 
 					for (Enemy e : enemies) {
@@ -521,8 +553,9 @@ public class MapData implements GameMap {
 				System.out.println("💥敵に捕まった！");
 
 				sengoku.takeDamage();
+				sengoku.startDying();
 
-				if (sengoku.getHp() <= 0) {
+				/*if (sengoku.getHp() <= 0) {
 
 					this.gameOver = true;
 					this.paused = true;
@@ -548,7 +581,7 @@ public class MapData implements GameMap {
 					// 再入力待ち
 					waitingStart = true;
 
-				}
+				}*/
 
 				return;
 			}
@@ -616,6 +649,8 @@ public class MapData implements GameMap {
 	public Sengoku getSengoku() {
 		return sengoku;
 	}
+	
+	
 
 	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
 	public Enemy getEnemy() {
