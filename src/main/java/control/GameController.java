@@ -182,7 +182,11 @@ public class GameController {
 					java.lang.reflect.Method isGameOverMethod = model.getClass().getMethod("isGameOver");
 					java.lang.reflect.Method isClearedMethod = model.getClass().getMethod("isCleared");
 					java.lang.reflect.Method getSengokuMethod = model.getClass().getMethod("getSengoku");
+					
+					// 💡 練習モード用の復活メソッドを事前に取得
+			        final java.lang.reflect.Method respawnDotsMethod = model.getClass().getMethod("respawnDots");
 
+					
 					// 💡 一時停止フラグをここで変数に保存
 					boolean isPaused = (boolean) isPausedMethod.invoke(model);
 
@@ -201,33 +205,30 @@ public class GameController {
 						}
 
 						// すべてのドットを食べ終えたかチェック
-						if ((boolean) isClearedMethod.invoke(model)) {
-							stop();
-							System.out.println("ステージクリア！次の画面へ遷移します。");
+						if ((boolean) isClearedMethod.invoke(model)) {                            if (isPractice) {
+                            // 💡 練習モード：画面遷移せず、エサを復活させてループを継続
+                            respawnDotsMethod.invoke(model);
+                        } else {
+                            // 💡 本番モード：タイマーを止めて各ステージのクリア画面へ遷移
+                            stop();
+                            System.out.println("🏁 本番モード：ステージクリア！次の画面へ。");
 
-							int finalScore = 0;
-							Object sengoku = getSengokuMethod.invoke(model);
-							if (sengoku != null) {
-								java.lang.reflect.Method getScoreMethod = sengoku.getClass().getMethod("getScore");
-								finalScore = (int) getScoreMethod.invoke(sengoku);
-							}
+                            int finalScore = 0;
+                            Object sengoku = getSengokuMethod.invoke(model);
+                            if (sengoku != null) {
+                                java.lang.reflect.Method getScoreMethod = sengoku.getClass().getMethod("getScore");
+                                finalScore = (int) getScoreMethod.invoke(sengoku);
+                            }
 
-							switch (stageNumber) {
-							case 1:
-								switchToStageclear1(stage, finalScore);
-								break;
-							case 2:
-								switchToStageclear2(stage, finalScore);
-								break;
-							case 3:
-								switchToStageclear3(stage, finalScore);
-								break;
-							default:
-								switchToStageclear1(stage, finalScore);
-								break;
-							}
-							return;
-						}
+                            switch (stageNumber) {
+                                case 1: switchToStageclear1(stage, finalScore); break;
+                                case 2: switchToStageclear2(stage, finalScore); break;
+                                case 3: switchToStageclear3(stage, finalScore); break;
+                                default: switchToStageclear1(stage, finalScore); break;
+                            }
+                            return;
+                        }
+                    }
 					}
 
 					// 💡 描画処理（draw）は if (!isPaused) の外側に置くことで、一時停止中も常に実行される！

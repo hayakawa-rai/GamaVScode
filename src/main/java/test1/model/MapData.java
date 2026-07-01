@@ -89,6 +89,9 @@ public class MapData implements GameMap {
 
 	// 初期アイテム配置（エサ復活用）
 	private Item[][] initialItemMap;
+	
+	//クラスのフィールド（メンバ変数）に、最大数を記憶する変数を追加
+	private int totalItems; 
 
 	// エサ復活を有効にするか？
 	private boolean enableRespawn;
@@ -116,9 +119,6 @@ public class MapData implements GameMap {
 
 	// ゲーム開始待ち
 	private boolean waitingStart = true;
-
-	// ポーズ
-	private long pauseStartTime = 0;
 
 	// FEVER終了時刻
 	private long feverEndTime = 0;
@@ -199,6 +199,9 @@ public class MapData implements GameMap {
 		// アイテムが完全に配置し終わった後で、バックアップを取り、復活を有効にする
 		this.initialItemMap = copyItemMap(itemMap);
 		this.enableRespawn = true;
+		
+	    // 最初に配置し終わった時の総数を記憶しておく
+	    this.totalItems = this.remainingItems; 
 	}
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
@@ -220,25 +223,7 @@ public class MapData implements GameMap {
 	}
 
 	public void togglePause() {
-
-		if (!paused) {
-
-			// ポーズ開始
-			paused = true;
-			pauseStartTime = System.currentTimeMillis();
-
-		} else {
-
-			// ポーズ解除
-			paused = false;
-
-			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
-
-			// FEVERタイマーを停止した分だけ後ろへずらす
-			if (feverEndTime > 0) {
-				feverEndTime += pauseDuration;
-			}
-		}
+		paused = !paused;
 	}
 
 	// ゲーム全体の定期更新
@@ -459,13 +444,13 @@ public class MapData implements GameMap {
 		}
 
 		// 全部食べたかチェック（エサ復活用）
-		checkAllEaten();
+		//checkAllEaten();
 
 	}
 
 	// --- 全部食べたかチェック ---（エサ復活用）
 
-	private void checkAllEaten() {
+	/*private void checkAllEaten() {
 		if (!enableRespawn)
 			return; // ← ストーリーでは復活しない
 
@@ -487,6 +472,18 @@ public class MapData implements GameMap {
 
 		this.itemMap = copyItemMap(this.initialItemMap);
 		System.out.println("ステージクリア！エサが復活しました！");
+	}*/
+	
+	public void respawnDots() {
+	    if (this.initialItemMap != null) {
+	        // 1. マップのアイテム配置を初期状態にコピー
+	        this.itemMap = copyItemMap(this.initialItemMap);
+	        
+	        // 2. 残りアイテム数を初期の総数にリセット（これで isCleared() が false に戻る）
+	        this.remainingItems = this.totalItems;
+	        
+	        System.out.println("【練習モード】エサが再配置され、残りカウントが " + this.remainingItems + " にリセットされました。");
+	    }
 	}
 
 	public void updateMouth() {
@@ -542,6 +539,8 @@ public class MapData implements GameMap {
 			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
 				// FEVER中の敵は食べられる
 				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
+					// 💡 敵を倒したのでスコアを加算（例: 200点）
+					sengoku.addScore(200); 
 					e.setCurrentState(Characters.EnemyState.DEAD);
 					continue;
 				}
@@ -668,9 +667,6 @@ public class MapData implements GameMap {
 	}
 
 	public long getFeverRemainingTime() {
-		if (paused && feverEndTime > 0) {
-			return Math.max(0, feverEndTime - pauseStartTime);
-		}
 		return Math.max(0, feverEndTime - System.currentTimeMillis());
 	}
 
