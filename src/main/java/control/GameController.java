@@ -374,7 +374,7 @@ public class GameController {
 	        }
 
 	        // Gameoverクラスへ、判別済みのリトライ処理を渡す
-	        stage.setScene(story.Gameover.create(stage, retryAction));
+	    //    stage.setScene(story.Gameover.create(stage, retryAction));
 	        stage.show();
 
 	    } catch (Exception e) {
