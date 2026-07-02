@@ -221,9 +221,25 @@ public class MapData implements GameMap {
 			}
 		}
 	}
-
+	
+	
+	private long pauseStartTime = 0;
+	
 	public void togglePause() {
-		paused = !paused;
+		
+		if(!paused) {
+			
+			paused = true;
+			pauseStartTime = System.currentTimeMillis();
+		}else {
+			paused = false;
+			
+			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
+			
+			if(feverEndTime > 0) {
+				feverEndTime += pauseDuration;
+			}
+		}
 	}
 
 	// ゲーム全体の定期更新
@@ -667,6 +683,11 @@ public class MapData implements GameMap {
 	}
 
 	public long getFeverRemainingTime() {
+		
+		if(paused && feverEndTime > 0) {
+			return Math.max(0, feverEndTime - pauseStartTime);
+		}
+		
 		return Math.max(0, feverEndTime - System.currentTimeMillis());
 	}
 
