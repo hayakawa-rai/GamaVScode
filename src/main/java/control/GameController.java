@@ -246,7 +246,7 @@ public class GameController {
 							}
 
 							// 綺麗に一本化したゲームオーバー遷移を呼び出す（スコアも引き渡す）
-							switchToGameover(stage, stageNumber, isPractice, finalScore);
+							switchToGameover(stage, stageNumber, isPractice);
 							return;
 						}
 
@@ -377,7 +377,6 @@ public class GameController {
 		}
 	}
 
-<<<<<<< HEAD
 	// Gameover画面へ変更するためのメソッド
 	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice) {
 	    try {
@@ -426,52 +425,6 @@ public class GameController {
 	    }
 	}
 
-
-	//画面変更Main1へ
-	public static void switchToGame1(javafx.stage.Stage stage) {
-=======
-	// Gameover画面へ変更するためのメソッド（引数4つ版に綺麗に統一！）
-	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice, int score) {
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
-		try {
-			Runnable retryAction;
-
-			// ステージ番号 と 練習モードフラグ に応じて、リトライ時に起動するクラスを完全に切り替える
-			switch (stageNum) {
-			case 1:
-				if (isPractice) {
-					retryAction = () -> test1.PracticeMain1.createAndStart(stage); // 練習モード1へ
-				} else {
-					retryAction = () -> test1.Main1.createAndStart(stage); // 本番モード1へ
-				}
-				break;
-			case 2:
-				if (isPractice) {
-					retryAction = () -> test2.PracticeMain2.createAndStart(stage); // 練習モード2へ
-				} else {
-					retryAction = () -> test2.Main2.createAndStart(stage); // 本番モード2へ
-				}
-				break;
-			case 3:
-				if (isPractice) {
-					retryAction = () -> test3.PracticeMain3.createAndStart(stage); // 練習モード3へ
-				} else {
-					retryAction = () -> test3.Main3.createAndStart(stage); // 本番モード3へ
-				}
-				break;
-			default:
-				retryAction = () -> test1.Main1.createAndStart(stage);
-				break;
-			}
-
-			// Gameoverクラスに、stageと組み立てた適切なリトライ処理、そしてスコアを渡す！
-			stage.setScene(story.Gameover.create(stage, retryAction, score));
-			stage.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	// 画面変更Main1へ
 	public static void switchToGame1(javafx.stage.Stage stage) {
