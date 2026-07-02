@@ -35,7 +35,7 @@ public class RedEnemy extends Enemy {
 		loadDeadImage();
 
 		// 通常時に使用する画像パス
-		String imagePath = "/picture/narita_EnemyRed.png";
+		String imagePath = "/picture/nari_EnemyRed.png";
 
 		// ステージごとに画像を切り替える
 		if (this.mapData != null) {
@@ -43,17 +43,17 @@ public class RedEnemy extends Enemy {
 			case 1:
 
 				// ステージ1の画像
-				imagePath = "/picture/narita_EnemyRed.png";
+				imagePath = "/picture/nari_EnemyRed.png";
 				break;
 			case 2:
 
 				// ステージ2の画像
-				imagePath = "/picture/wada_EnemyRed.png";
+				imagePath = "/picture/taku_EnemyRed.png";
 				break;
 			case 3:
 
 				// ステージ3の画像
-				imagePath = "/picture/hayakawa_EnemyRed.png";
+				imagePath = "/picture/aniki_EnemyRed.png";
 				break;
 			default:
 			}

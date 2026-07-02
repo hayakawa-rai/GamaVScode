@@ -1,6 +1,6 @@
 package Items;
 
-import Characters.Sengoku;
+import Characters.Syujinkou;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext; // 💡 Canvas描画に必須のインポート
 
@@ -19,7 +19,7 @@ public abstract class Item {
     }
     
     // 食べた時の処理（子クラスでそれぞれ中身を実装する）
-    public abstract void onEaten(Sengoku player);
+    public abstract void onEaten(Syujinkou player);
     
     // 自分自身を画面（Canvas）に描画する命令
     public abstract void draw(GraphicsContext gc, double x, double y, double tileSize);

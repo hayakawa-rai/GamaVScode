@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font; // ★フォント設定のためにインポートを追加
 import javafx.scene.text.FontWeight; // ★太字にするためにインポートを追加
 import sample.Direction;
-import sample.Sengoku;
+import sample.syujinkou;
 import sample.model.SampleModel;
 
 public class SampleView {
@@ -56,10 +56,10 @@ public class SampleView {
         } // 👈 【バグ修正】2重ループの閉じカッコを正しい位置へ移動させました！
 
         // 2. スコアを表示するためのコード（マップ描画の外側で1回だけ実行）
-        Sengoku sengoku = model.getSengoku();
-        if (sengoku != null) {
+        syujinkou syujinkou = model.getsyujinkou();
+        if (syujinkou != null) {
             // スコア用のテキストを作成
-            String scoreText = "SCORE: " + sengoku.getScore();
+            String scoreText = "SCORE: " + syujinkou.getScore();
             
             // 文字のデザインを設定 (フォント名, 太さ, サイズ)
             gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
@@ -77,21 +77,21 @@ public class SampleView {
     } // 👈 drawStage メソッドの正しい閉じカッコ
 
     public void drawPacman(GraphicsContext gc) {
-        Sengoku sengoku = model.getSengoku();
+        syujinkou syujinkou = model.getsyujinkou();
         
         // 生存していないなら描画をスキップ
-        if (sengoku == null || !sengoku.isAlive()) return;
+        if (syujinkou == null || !syujinkou.isAlive()) return;
 
         gc.setFill(Color.YELLOW);
         
-        // Sengokuの左上座標(x, y)から、描画用の中心点(pacX, pacY)を計算する
-        double pacX = sengoku.getX() + SampleModel.TILE_SIZE / 2.0;
-        double pacY = sengoku.getY() + SampleModel.TILE_SIZE / 2.0;
+        // syujinkouの左上座標(x, y)から、描画用の中心点(pacX, pacY)を計算する
+        double pacX = syujinkou.getX() + SampleModel.TILE_SIZE / 2.0;
+        double pacY = syujinkou.getY() + SampleModel.TILE_SIZE / 2.0;
         
         double mouthAngle = model.getMouthAngle();
 
-        // Sengokuの移動方向（getDirection()）に基づいて口の向き（角度）を計算する
-        Direction currentDir = sengoku.getDirection();
+        // syujinkouの移動方向（getDirection()）に基づいて口の向き（角度）を計算する
+        Direction currentDir = syujinkou.getDirection();
 
         if (currentDir != null) {
             // Direction Enum の getDX(), getDY() から向きを判定

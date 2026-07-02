@@ -4,7 +4,7 @@ import Characters.BlueEnemy;
 import Characters.Enemy;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
-import Characters.Sengoku;
+import Characters.Syujinkou;
 import Characters.YellowEnemy;
 import Items.Item;
 import javafx.scene.canvas.GraphicsContext;
@@ -129,9 +129,9 @@ public class MapView {
 
 		// 8. グラフィックスの状態を元に戻す
 		gc.restore();
-		Sengoku sengoku = model.getSengoku();
+		Syujinkou syujinkou = model.getsyujinkou();
 
-		if (sengoku != null) {
+		if (syujinkou != null) {
 			
 			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
 			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
@@ -141,11 +141,11 @@ public class MapView {
 
 			// スコア
 			gc.setFill(Color.WHITE);
-			gc.fillText("SCORE : " + sengoku.getScore(), 20, 12);
+			gc.fillText("SCORE : " + syujinkou.getScore(), 20, 12);
 
 			// ライフ
 			gc.setFill(Color.RED);
-			gc.fillText("❤".repeat(sengoku.getHp()), canvasWidth - 100, 12);
+			gc.fillText("❤".repeat(syujinkou.getHp()), canvasWidth - 100, 12);
 
 			// 区切り線
 			gc.setStroke(Color.DARKGRAY);
@@ -223,13 +223,13 @@ public class MapView {
 	//MapViewのフィールドにPac-man画像を追加
 	
 	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
-			getClass().getResource("/picture/sengoku.png").toExternalForm());
+			getClass().getResource("/picture/syujinkou.png").toExternalForm());
 	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
-			getClass().getResource("/picture/sengoku_Fever.png").toExternalForm());
+			getClass().getResource("/picture/syujinkou_Fever.png").toExternalForm());
 
 	/**
 	 * プレイヤー（戦国）を描画する。
-	 * 死亡アニメーション中は drawDyingSengoku に処理を委譲して回転・縮小・フェードアウト演出を行い、
+	 * 死亡アニメーション中は drawDyingsyujinkou に処理を委譲して回転・縮小・フェードアウト演出を行い、
 	 * 死亡している（isAlive()がfalse）場合は何も描画しない。
 	 * FEVER中は専用画像に切り替え、FEVER終了間際（残り3秒以内）は一定間隔で点滅させる。
 	 * 画像が読み込めていない場合は代わりに黄色い円を描画する。
@@ -237,29 +237,29 @@ public class MapView {
 	 * gc 描画先のGraphicsContext
 	 */
 	public void drawPacman(GraphicsContext gc) {
-		Sengoku sengoku = model.getSengoku();
+		Syujinkou syujinkou = model.getsyujinkou();
 
-		if (sengoku == null)
+		if (syujinkou == null)
 			return;
 		
-		if(sengoku.isDyingAnimation()) {
-			drawDyingSengoku(gc,sengoku);
+		if(syujinkou.isDyingAnimation()) {
+			drawDyingsyujinkou(gc,syujinkou);
 			return;
 		}
 		
-		if(!sengoku.isAlive())
+		if(!syujinkou.isAlive())
 			return;
 
 		if (pacmanImage == null) {
 			gc.setFill(Color.YELLOW);
-			gc.fillOval(sengoku.getX(), sengoku.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
+			gc.fillOval(syujinkou.getX(), syujinkou.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
 			return;
 		}
 
-		double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
-		double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+		double pacX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
+		double pacY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
 		
-		Characters.Direction dir = sengoku.getDirection();
+		Characters.Direction dir = syujinkou.getDirection();
 		double angle = 0;
 		
 		gc.save();
@@ -268,7 +268,7 @@ public class MapView {
 		gc.rotate(angle);
 
 		//FEVER終了時は点滅
-		if(sengoku.isFever()) {
+		if(syujinkou.isFever()) {
 			
 			long remain = model.getFeverRemainingTime();
 				
@@ -285,7 +285,7 @@ public class MapView {
 		
 		Image currentImage = pacmanImage;
 
-		if (sengoku.isFever()) {
+		if (syujinkou.isFever()) {
 			currentImage = pacmanFeverImage;
 
 		}
@@ -386,13 +386,13 @@ public class MapView {
 	 * 縮小・フェードアウトさせるアニメーションを行う。
 	 *
 	 * gc      描画先のGraphicsContext
-	 * sengoku 死亡アニメーション中のプレイヤー
+	 * syujinkou 死亡アニメーション中のプレイヤー
 	 */
-	private void drawDyingSengoku(GraphicsContext gc, Sengoku sengoku) {
-		double progress = sengoku.getDyingProgress();
+	private void drawDyingsyujinkou(GraphicsContext gc, Syujinkou syujinkou) {
+		double progress = syujinkou.getDyingProgress();
 
-		double centerX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
-		double centerY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
+		double centerX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
+		double centerY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
 
 		double scale = 1.0 - progress;
 

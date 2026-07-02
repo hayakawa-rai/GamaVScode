@@ -13,7 +13,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import sample.Sengoku;
+import sample.Syujinkou;
 
 public class Stageclear2 extends Application {
 
@@ -24,7 +24,7 @@ public class Stageclear2 extends Application {
 	private Stage stage;
 
 	// キャラクター保持用の変数
-	private Sengoku sengoku;
+	private Syujinkou syujinkou;
 
 	// ★★★ GameController の new Stageclear2() でエラーを出さないためのコンストラクタ ★★★
 	public Stageclear2() {
@@ -32,10 +32,10 @@ public class Stageclear2 extends Application {
 	}
 
 	// 既存の引数ありコンストラクタ
-	public Stageclear2(Sengoku sengoku) {
-		this.sengoku = sengoku;
-		if (sengoku != null) {
-			this.finalScore = sengoku.getScore();
+	public Stageclear2(Syujinkou syujinkou) {
+		this.syujinkou = syujinkou;
+		if (syujinkou != null) {
+			this.finalScore = syujinkou.getScore();
 		}
 	}
 

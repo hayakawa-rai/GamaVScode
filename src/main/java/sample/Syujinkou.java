@@ -2,7 +2,7 @@
 
 package sample;
 
-public class Sengoku extends Character {
+public class Syujinkou extends Character {
 
 	private int hp = 3;
 	private int score = 0;
@@ -16,7 +16,7 @@ public class Sengoku extends Character {
 	private boolean isDyingAnimation = false;
 	private int dyingTimer = 0;
 
-	public Sengoku(double x, double y, int speed) {
+	public Syujinkou(double x, double y, int speed) {
 		super(x, y, speed);
 		this.startX = x;
 		this.startY = y;

@@ -215,7 +215,7 @@ public class GameController {
 					java.lang.reflect.Method updateMethod = model.getClass().getMethod("update");
 					java.lang.reflect.Method isGameOverMethod = model.getClass().getMethod("isGameOver");
 					java.lang.reflect.Method isClearedMethod = model.getClass().getMethod("isCleared");
-					java.lang.reflect.Method getSengokuMethod = model.getClass().getMethod("getSengoku");
+					java.lang.reflect.Method getsyujinkouMethod = model.getClass().getMethod("getsyujinkou");
 
 					// 💡 練習モード用の復活メソッドを事前に取得
 					final java.lang.reflect.Method respawnDotsMethod = model.getClass().getMethod("respawnDots");
@@ -236,10 +236,10 @@ public class GameController {
 							// スコアを安全に取得する処理
 							int finalScore = 0;
 							try {
-								Object sengoku = getSengokuMethod.invoke(model);
-								if (sengoku != null) {
-									java.lang.reflect.Method getScoreMethod = sengoku.getClass().getMethod("getScore");
-									finalScore = (int) getScoreMethod.invoke(sengoku);
+								Object syujinkou = getsyujinkouMethod.invoke(model);
+								if (syujinkou != null) {
+									java.lang.reflect.Method getScoreMethod = syujinkou.getClass().getMethod("getScore");
+									finalScore = (int) getScoreMethod.invoke(syujinkou);
 								}
 							} catch (Exception e) {
 								// メソッドがない場合は0のまま進む
@@ -261,10 +261,10 @@ public class GameController {
 								System.out.println("🏁 本番モード：ステージクリア！次の画面へ。");
 
 								int finalScore = 0;
-								Object sengoku = getSengokuMethod.invoke(model);
-								if (sengoku != null) {
-									java.lang.reflect.Method getScoreMethod = sengoku.getClass().getMethod("getScore");
-									finalScore = (int) getScoreMethod.invoke(sengoku);
+								Object syujinkou = getsyujinkouMethod.invoke(model);
+								if (syujinkou != null) {
+									java.lang.reflect.Method getScoreMethod = syujinkou.getClass().getMethod("getScore");
+									finalScore = (int) getScoreMethod.invoke(syujinkou);
 								}
 
 								switch (stageNumber) {

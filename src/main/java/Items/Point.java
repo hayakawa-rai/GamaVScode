@@ -1,6 +1,6 @@
 package Items;
 
-import Characters.Sengoku;
+import Characters.Syujinkou;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -14,7 +14,7 @@ public class Point extends Item {
     }
 
     @Override
-    public void onEaten(Sengoku player) {
+    public void onEaten(Syujinkou player) {
 
     		// プレイヤーのスコアを加算
         player.addScore(this.score);

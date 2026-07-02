@@ -40,18 +40,18 @@ public class BlueEnemy extends Enemy {
 		loadDeadImage();
 
 		// 現在のステージ番号によって、読み込む画像を切り替える
-		String imagePath = "/picture/narita_EnemyBlue.png"; // デフォルト（ステージ1用）
+		String imagePath = "/picture/nari_EnemyBlue.png"; // デフォルト（ステージ1用）
 
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-				imagePath = "/picture/narita_EnemyBlue.png"; // ステージ1の画像
+				imagePath = "/picture/nari_EnemyBlue.png"; // ステージ1の画像
 				break;
 			case 2:
-				imagePath = "/picture/wada_EnemyBlue.png"; // ステージ2の画像
+				imagePath = "/picture/taku_EnemyBlue.png"; // ステージ2の画像
 				break;
 			case 3:
-				imagePath = "/picture/hayakawa_EnemyBlue.png"; // ステージ3の画像
+				imagePath = "/picture/aniki_EnemyBlue.png"; // ステージ3の画像
 				break;
 			default:
 				break;
@@ -125,7 +125,7 @@ public class BlueEnemy extends Enemy {
 		int pacRow = (int) (mapData.getPacY() / MapData.TILE_SIZE);
 
 		// プレイヤーの向きの2マス先
-		switch (mapData.getSengoku().getDirection()) {
+		switch (mapData.getsyujinkou().getDirection()) {
 		case UP:
 			pacRow -= PREDICT_TILES;
 			break;

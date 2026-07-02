@@ -165,7 +165,7 @@ public class story1 extends Application{
         
         //人物画像の読み込み
         Image charImage = new Image(
-        		getClass().getResourceAsStream("/picture/hayakawa-udekumi.png")
+        		getClass().getResourceAsStream("/picture/aniki-udekumi.png")
         );
         //人物画像の表示
         ImageView charView = new ImageView(charImage);

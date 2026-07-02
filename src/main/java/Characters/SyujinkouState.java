@@ -1,6 +1,6 @@
 package Characters;
 
-public enum SengokuState {
+public enum SyujinkouState {
 	
 	//通常状態(速度倍率1.0)
 	NORMAL(1.0),
@@ -12,7 +12,7 @@ public enum SengokuState {
 	private final double speedMultiplier;
 	
 	//コンストラクタ
-	SengokuState(double speedMultiplier){
+	SyujinkouState(double speedMultiplier){
 		this.speedMultiplier = speedMultiplier;
 	}
 	

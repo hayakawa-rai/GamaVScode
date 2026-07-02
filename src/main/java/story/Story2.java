@@ -74,9 +74,9 @@ public class Story2 extends Application {
 	private Timeline timeline;
 	//ジャンプアクションをフィールドで管理
 	private Timeline jumpAniki;
-	private Timeline jumpSengoku;
-	private Timeline jumpNarinari;
-	private Timeline jumpWadataku;
+	private Timeline jumpsyujinkou;
+	private Timeline jumpnari;
+	private Timeline jumptaku;
 
 	//新しいメッセージを表示するための準備用メソッド
 	private void startTyping() {
@@ -102,17 +102,17 @@ public class Story2 extends Application {
 			jumpAniki.stop();
 			jumpAniki = null;
 		}
-		if (jumpSengoku != null) {
-			jumpSengoku.stop();
-			jumpSengoku = null;
+		if (jumpsyujinkou != null) {
+			jumpsyujinkou.stop();
+			jumpsyujinkou = null;
 		}
-		if (jumpNarinari != null) {
-			jumpNarinari.stop();
-			jumpNarinari = null;
+		if (jumpnari != null) {
+			jumpnari.stop();
+			jumpnari = null;
 		}
-		if (jumpWadataku != null) {
-			jumpWadataku.stop();
-			jumpWadataku = null;
+		if (jumptaku != null) {
+			jumptaku.stop();
+			jumptaku = null;
 		}
 
 		// ▼アニメーション
@@ -309,30 +309,30 @@ public class Story2 extends Application {
 		//縦横比率を維持
 		anikiView.setPreserveRatio(true);
 		//人物画像の読み込み(仙石さん)
-		Image sengokuImage = new Image(
-				getClass().getResourceAsStream("/picture/sengoku(hello).png"));
+		Image syujinkouImage = new Image(
+				getClass().getResourceAsStream("/picture/syujinkou(hello).png"));
 		//人物画像の表示
-		ImageView sengokuView = new ImageView(sengokuImage);
+		ImageView syujinkouView = new ImageView(syujinkouImage);
 		//縦横比率を維持
-		sengokuView.setPreserveRatio(true);
+		syujinkouView.setPreserveRatio(true);
 		//人物画像の読み込み(なりなり)
-		Image narinariImage = new Image(
-				getClass().getResourceAsStream("/picture/narinari.png"));
+		Image nariImage = new Image(
+				getClass().getResourceAsStream("/picture/nari.png"));
 		//人物画像の表示
-		ImageView narinariView = new ImageView(narinariImage);
+		ImageView nariView = new ImageView(nariImage);
 		//縦横比率を維持
-		narinariView.setPreserveRatio(true);
+		nariView.setPreserveRatio(true);
 		//人物画像の読み込み(わだたく)
-		Image wadatakuImage = new Image(
-				getClass().getResourceAsStream("/picture/wadataku.png"));
+		Image takuImage = new Image(
+				getClass().getResourceAsStream("/picture/taku.png"));
 		//人物画像の表示
-		ImageView wadatakuView = new ImageView(wadatakuImage);
+		ImageView takuView = new ImageView(takuImage);
 		//縦横比率を維持
-		wadatakuView.setPreserveRatio(true);
+		takuView.setPreserveRatio(true);
 		//最初どの画像を表示するか設定
-		narinariView.setVisible(false);
+		nariView.setVisible(false);
 		anikiView.setVisible(true);
-		wadatakuView.setVisible(false);
+		takuView.setVisible(false);
 
 		//挿絵画像の読み込み
 		Image insertImage = new Image(
@@ -363,7 +363,7 @@ public class Story2 extends Application {
 
 		//ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
 		StackPane base = new StackPane();
-		base.getChildren().addAll(bgView, sengokuView, anikiView, narinariView, wadatakuView, root, insertView);
+		base.getChildren().addAll(bgView, syujinkouView, anikiView, nariView, takuView, root, insertView);
 		// 現在のStage（window）から実際のサイズを取得する
 		Scene scene = new Scene(base, 1000, 800);
 		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
@@ -457,17 +457,17 @@ public class Story2 extends Application {
 		anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
 		anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(なりなり)をウィンドウサイズに合わせる(右に表示)
-		narinariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
-		narinariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
-		narinariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+		nariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
+		nariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
+		nariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(わだたく)をウィンドウサイズに合わせる(右に表示)
-		wadatakuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
-		wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
-		wadatakuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+		takuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+		takuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
+		takuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
-		sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.34));
-		sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.4));
-		sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
+		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.34));
+		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(1.4));
+		syujinkouView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
 		//差し込み用の画像を調整
 		insertView.fitWidthProperty().bind(scene.widthProperty());
 		insertView.fitHeightProperty().bind(scene.heightProperty());
@@ -542,24 +542,24 @@ public class Story2 extends Application {
 						if (speaker.equals("あにき")) {
 							//あにきの画像を表示・なりなりの画像を非表示
 							anikiView.setVisible(true);
-							narinariView.setVisible(false);
-							wadatakuView.setVisible(false);
+							nariView.setVisible(false);
+							takuView.setVisible(false);
 						} else if (speaker.equals("仙石さん")) {
 						} else if (speaker.equals("なりなり")) {
 							//あにきの画像を非表示・なりなりの画像を表示
 							anikiView.setVisible(false);
-							narinariView.setVisible(true);
-							wadatakuView.setVisible(false);
+							nariView.setVisible(true);
+							takuView.setVisible(false);
 						} else if (speaker.equals("わだたく")) {
 							//登場するまで画像非表示
 							if (messageIndex < 10) {
-								wadatakuView.setVisible(false);
+								takuView.setVisible(false);
 							} else {
-								wadatakuView.setVisible(true);
+								takuView.setVisible(true);
 							}
 							//あにきとなりなりの画像を非表示
 							anikiView.setVisible(false);
-							narinariView.setVisible(false);
+							nariView.setVisible(false);
 						}
 
 						//表示しているメッセージに対して1文ずつ表示する文字数を増やしていく処理
@@ -629,12 +629,12 @@ public class Story2 extends Application {
 				//ダメージ受けたときの横揺れ
 				if (messageIndex == 18) {
 
-					sengokuView.setOpacity(0.5);
+					syujinkouView.setOpacity(0.5);
 
 					// bind一旦外す
-					sengokuView.translateXProperty().unbind();
+					syujinkouView.translateXProperty().unbind();
 
-					TranslateTransition shake = new TranslateTransition(Duration.millis(100), sengokuView);
+					TranslateTransition shake = new TranslateTransition(Duration.millis(100), syujinkouView);
 					shake.setByX(20);
 					shake.setCycleCount(6);
 					shake.setAutoReverse(true);
@@ -642,9 +642,9 @@ public class Story2 extends Application {
 
 					Timeline recover = new Timeline(
 							new KeyFrame(Duration.millis(300), e2 -> {
-								sengokuView.setOpacity(1.0);
+								syujinkouView.setOpacity(1.0);
 								// bind戻す
-								sengokuView.setTranslateX(-250);
+								syujinkouView.setTranslateX(-250);
 
 							}));
 					recover.play();
@@ -673,15 +673,15 @@ public class Story2 extends Application {
 						jumpAniki.playFromStart();
 
 					} else if (speaker.equals("仙石さん")) {
-						jumpSengoku = StoryUtils.createJumpAnimation(sengokuView, d.sound);
-						jumpSengoku.playFromStart();
+						jumpsyujinkou = StoryUtils.createJumpAnimation(syujinkouView, d.sound);
+						jumpsyujinkou.playFromStart();
 
 					} else if (speaker.equals("なりなり")) {
-						jumpNarinari = StoryUtils.createJumpAnimation(narinariView, d.sound);
-						jumpNarinari.playFromStart();
+						jumpnari = StoryUtils.createJumpAnimation(nariView, d.sound);
+						jumpnari.playFromStart();
 					} else if (speaker.equals("わだたく")) {
-						jumpWadataku = StoryUtils.createJumpAnimation(wadatakuView, d.sound);
-						jumpWadataku.playFromStart();
+						jumptaku = StoryUtils.createJumpAnimation(takuView, d.sound);
+						jumptaku.playFromStart();
 					}
 				}
 			} else {//メッセージの最後まで行った後の処理

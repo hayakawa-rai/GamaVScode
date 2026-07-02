@@ -5,7 +5,7 @@ import Items.Chii;
 import Items.Item;
 import Items.Point;
 import sample.Direction;
-import sample.Sengoku;
+import sample.syujinkou;
 
 public class SampleModel {
 
@@ -41,7 +41,7 @@ public class SampleModel {
 	// エサ復活を有効にするか？
 	private boolean enableRespawn; 
 	// パックマンの状態
-	private final Sengoku sengoku;
+	private final syujinkou syujinkou;
 	private Enemy enemy;
 	private boolean paused = false;
 
@@ -57,7 +57,7 @@ public class SampleModel {
 
 	public SampleModel(boolean enableRespawn) {
 		this.enableRespawn = enableRespawn; // これで練習/ストーリーを切り替えられる（エサ復活用）
-		this.sengoku = new Sengoku(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
+		this.syujinkou = new syujinkou(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[0].length; col++) {
@@ -120,17 +120,17 @@ public class SampleModel {
 	}
 
 	public void updatePacman() {
-		if (paused || !sengoku.isAlive())
+		if (paused || !syujinkou.isAlive())
 			return;
 
-		int tileX = (int) (sengoku.getX() / TILE_SIZE);
-		int tileY = (int) (sengoku.getY() / TILE_SIZE);
+		int tileX = (int) (syujinkou.getX() / TILE_SIZE);
+		int tileY = (int) (syujinkou.getY() / TILE_SIZE);
 
 		// --- ワープ抑止ロジック ---
 		boolean skipWarp = false;
 		if (justWarped) {
 			if (tileX == lastWarpX && tileY == lastWarpY) {
-				sengoku.move(map);
+				syujinkou.move(map);
 				return;
 			} else {
 				justWarped = false;
@@ -145,7 +145,7 @@ public class SampleModel {
 				int warpX = tileX;
 				int warpY = tileY;
 
-				sample.Direction currentDir = sengoku.getDirection();
+				sample.Direction currentDir = syujinkou.getDirection();
 
 				// 横方向のワープ
 				if (currentDir != Direction.NONE) {
@@ -170,7 +170,7 @@ public class SampleModel {
 
 				double newPacX = warpX * TILE_SIZE;
 				double newPacY = warpY * TILE_SIZE;
-				sengoku.setPosition(newPacX, newPacY);
+				syujinkou.setPosition(newPacX, newPacY);
 
 				justWarped = true;
 				lastWarpX = warpX;
@@ -180,15 +180,15 @@ public class SampleModel {
 			}
 		}
 
-		sengoku.move(map);
+		syujinkou.move(map);
 
-		int currentTileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
-		int currentTileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int currentTileX = (int) ((syujinkou.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int currentTileY = (int) ((syujinkou.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		if (currentTileY >= 0 && currentTileY < map.length && currentTileX >= 0 && currentTileX < map[0].length) {
 			Item item = itemMap[currentTileY][currentTileX];
 			if (item != null) {
-				item.onEaten(sengoku);
+				item.onEaten(syujinkou);
 				itemMap[currentTileY][currentTileX] = null;
 			}
 		}
@@ -223,7 +223,7 @@ public class SampleModel {
 
 
 	public void updateMouth() {
-		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Direction.NONE)
+		if (paused || !syujinkou.isAlive() || syujinkou.getDirection() == Direction.NONE)
 			return;
 		mouthAngle += mouthOpening * 2;
 		if (mouthAngle <= 10)
@@ -234,17 +234,17 @@ public class SampleModel {
 
 	public void setNextDirection(Direction dir) {
 
-		sengoku.setnextdirection(dir);
+		syujinkou.setnextdirection(dir);
 	}
 
 	//敵との当たり判定
 
 	private void checkCollision() {
-		if (enemy == null || !sengoku.isAlive())
+		if (enemy == null || !syujinkou.isAlive())
 			return;
 
-		double pacCenterX = sengoku.getX() + TILE_SIZE / 2.0;
-		double pacCenterY = sengoku.getY() + TILE_SIZE / 2.0;
+		double pacCenterX = syujinkou.getX() + TILE_SIZE / 2.0;
+		double pacCenterY = syujinkou.getY() + TILE_SIZE / 2.0;
 		double enemyCenterX = enemy.getX() + TILE_SIZE / 2.0;
 		double enemyCenterY = enemy.getY() + TILE_SIZE / 2.0;
 
@@ -277,8 +277,8 @@ public class SampleModel {
 		return mouthAngle;
 	}
 
-	public Sengoku getSengoku() {
-		return sengoku;
+	public syujinkou getsyujinkou() {
+		return syujinkou;
 	}
 
 	public Enemy getEnemy() {

@@ -21,7 +21,7 @@ public abstract class Character {
 		this.direction = Direction.NONE;
 	}
 
-	// 速さデフォルトを 1 にして、Sengoku の呼び出しと互換性を持たせる
+	// 速さデフォルトを 1 にして、syujinkou の呼び出しと互換性を持たせる
 	public Character(double x, double y) {
 		this(x, y, 1);
 	}

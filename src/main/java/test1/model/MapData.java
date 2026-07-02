@@ -7,7 +7,7 @@ import Characters.BlueEnemy;
 import Characters.Enemy;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
-import Characters.Sengoku;
+import Characters.Syujinkou;
 import Characters.YellowEnemy;
 import Items.Chii;
 import Items.Item;
@@ -81,7 +81,7 @@ public class MapData implements GameMap {
 	private Item[][] itemMap;
 
 	//プレイヤーのキャラクターオブジェクト
-	private Sengoku sengoku;
+	private Syujinkou syujinkou;
 
 	// 敵のリスト管理
 	private final List<Enemy> enemies = new ArrayList<>();
@@ -142,7 +142,7 @@ public class MapData implements GameMap {
 	 */
 	public void SampleModel(boolean enableRespawn) {
 		this.enableRespawn = enableRespawn; // これで練習/ストーリーを切り替えられる（エサ復活用）
-		this.sengoku = new Sengoku(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
+		this.syujinkou = new Syujinkou(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
 		this.remainingItems = 0;
 
@@ -193,7 +193,7 @@ public class MapData implements GameMap {
 	public MapData() {
 		// 初期設定
 		this.enableRespawn = false;
-		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
+		this.syujinkou = new Syujinkou(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
 		this.remainingItems = 0;
 
@@ -300,13 +300,13 @@ public class MapData implements GameMap {
 			return;
 
 		// 死んだときのアニメーション
-		if (sengoku.isDyingAnimation()) {
+		if (syujinkou.isDyingAnimation()) {
 
-			if (sengoku.updateDyingAnimation()) {
+			if (syujinkou.updateDyingAnimation()) {
 
-				if (sengoku.isAlive()) {
+				if (syujinkou.isAlive()) {
 
-					sengoku.resetToStartPosition();
+					syujinkou.resetToStartPosition();
 
 					for (Enemy enemy : enemies) {
 						enemy.resetToStartPosition();
@@ -333,7 +333,7 @@ public class MapData implements GameMap {
 		// FEVER終了判定
 		if (feverEndTime > 0 && System.currentTimeMillis() >= feverEndTime) {
 			feverEndTime = 0;
-			sengoku.setFever(false);
+			syujinkou.setFever(false);
 
 			for (Enemy e : enemies) {
 				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
@@ -400,12 +400,12 @@ public class MapData implements GameMap {
 	 * 一時停止中、またはプレイヤーが死亡している場合は何もしない。
 	 */
 	public void updatePacman() {
-		if (paused || !sengoku.isAlive())
+		if (paused || !syujinkou.isAlive())
 			return;
 
 		// 追加箇所 移動先のタイルを予測検出し、壁(1), 扉(7), 巣(8)への進入を防ぐ
-		int tileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
-		int tileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int tileX = (int) ((syujinkou.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int tileY = (int) ((syujinkou.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		// --- ワープ抑止ロジック ---
 		boolean skipWarp = false;
@@ -415,9 +415,9 @@ public class MapData implements GameMap {
 
 				// ワープ直後は、プレイヤーの入力を上書きして強制直進（先行入力を固定）
 				if (lastWarpX == 27) {
-					sengoku.setNextDirection(Characters.Direction.LEFT);
+					syujinkou.setNextDirection(Characters.Direction.LEFT);
 				} else if (lastWarpX == 0) {
-					sengoku.setNextDirection(Characters.Direction.RIGHT);
+					syujinkou.setNextDirection(Characters.Direction.RIGHT);
 				}
 			} else {
 				justWarped = false;
@@ -432,7 +432,7 @@ public class MapData implements GameMap {
 			if (map[tileY][tileX] == 9) {
 				int warpX = tileX;
 				int warpY = tileY;
-				Characters.Direction currentDir = sengoku.getDirection();
+				Characters.Direction currentDir = syujinkou.getDirection();
 
 				if (currentDir != Characters.Direction.NONE) {
 					if (currentDir.getDX() != 0) {
@@ -456,8 +456,8 @@ public class MapData implements GameMap {
 				double newPacX = warpX * TILE_SIZE;
 				double newPacY = warpY * TILE_SIZE;
 
-				sengoku.setX(newPacX);
-				sengoku.setY(newPacY);
+				syujinkou.setX(newPacX);
+				syujinkou.setY(newPacY);
 
 				justWarped = true;
 				lastWarpX = warpX;
@@ -477,23 +477,23 @@ public class MapData implements GameMap {
 			}
 		}
 
-		sengoku.move(moveMap);
+		syujinkou.move(moveMap);
 
-		int currentTileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
-		int currentTileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int currentTileX = (int) ((syujinkou.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int currentTileY = (int) ((syujinkou.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		if (currentTileY >= 0 && currentTileY < map.length && currentTileX >= 0 && currentTileX < map[0].length) {
 			Item item = itemMap[currentTileY][currentTileX];
 
 			if (item != null) {
-				item.onEaten(sengoku);
+				item.onEaten(syujinkou);
 
 				// パワーエサ(2)を食べたらFEVER
 				if (map[currentTileY][currentTileX] == 2) {
 
 					System.out.println("FEVER開始！");
 
-					sengoku.setFever(true);
+					syujinkou.setFever(true);
 					// 毎回7秒にリセット
 					feverEndTime = System.currentTimeMillis() + 7000;
 
@@ -503,11 +503,11 @@ public class MapData implements GameMap {
 						}
 					}
 
-					// ★パワーエサを食べたので50点加算（メソッド名はSengokuクラスに合わせてね）
-					sengoku.addScore(50);
+					// ★パワーエサを食べたので50点加算（メソッド名はsyujinkouクラスに合わせてね）
+					syujinkou.addScore(50);
 				} else {
 					// ★普通のドットを食べたので10点加算
-					sengoku.addScore(10);
+					syujinkou.addScore(10);
 				}
 
 				itemMap[currentTileY][currentTileX] = null;
@@ -557,7 +557,7 @@ public class MapData implements GameMap {
 	}
 
 	/*public void updateMouth() {
-		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Characters.Direction.NONE)
+		if (paused || !syujinkou.isAlive() || syujinkou.getDirection() == Characters.Direction.NONE)
 			return;
 
 		mouthAngle += mouthOpening * 2;
@@ -577,10 +577,10 @@ public class MapData implements GameMap {
 	 */
 	public void setNextDirection(Characters.Direction dir) {
 
-		// sengoku.setNextDirection(dir);
-		if (sengoku != null) {
+		// syujinkou.setNextDirection(dir);
+		if (syujinkou != null) {
 			// 古い sample.Direction への変換をやめ、そのまま dir を渡します
-			sengoku.setNextDirection(dir);
+			syujinkou.setNextDirection(dir);
 		}
 
 		// 初回入力でゲーム開始
@@ -605,11 +605,11 @@ public class MapData implements GameMap {
 	 */
 	private void checkCollision() {
 
-		if (!sengoku.isAlive())
+		if (!syujinkou.isAlive())
 			return;
 
-		double pacCenterX = sengoku.getX() + TILE_SIZE / 2.0;
-		double pacCenterY = sengoku.getY() + TILE_SIZE / 2.0;
+		double pacCenterX = syujinkou.getX() + TILE_SIZE / 2.0;
+		double pacCenterY = syujinkou.getY() + TILE_SIZE / 2.0;
 		double collisionThreshold = TILE_SIZE * 0.8;
 
 		for (Enemy e : enemies) {
@@ -626,7 +626,7 @@ public class MapData implements GameMap {
 				// FEVER中の敵は食べられる
 				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
 					// 💡 敵を倒したのでスコアを加算（例: 200点）
-					sengoku.addScore(200);
+					syujinkou.addScore(200);
 					e.setCurrentState(Characters.EnemyState.DEAD);
 					continue;
 				}
@@ -637,17 +637,17 @@ public class MapData implements GameMap {
 
 				System.out.println("💥敵に捕まった！");
 
-				sengoku.takeDamage();
-				sengoku.startDying();
+				syujinkou.takeDamage();
+				syujinkou.startDying();
 
 				/*
-				 * if (sengoku.getHp() <= 0) {
+				 * if (syujinkou.getHp() <= 0) {
 				 * 
 				 * this.gameOver = true; this.paused = true;
 				 * 
 				 * } else {
 				 * 
-				 * sengoku.resetToStartPosition();
+				 * syujinkou.resetToStartPosition();
 				 * 
 				 * for (Enemy enemy : enemies) { enemy.resetToStartPosition(); }
 				 * 
@@ -676,15 +676,15 @@ public class MapData implements GameMap {
 	public int[][] getMap() {
 		return map;
 	}
-	//プレイヤーの現在のX座標(ピクセル)を返す。sengokuがnullの場合は0を返す。
+	//プレイヤーの現在のX座標(ピクセル)を返す。syujinkouがnullの場合は0を返す。
 	@Override
 	public double getPacX() {
-		return sengoku != null ? sengoku.getX() : 0;
+		return syujinkou != null ? syujinkou.getX() : 0;
 	}
-	//プレイヤーの現在のY座標(ピクセル)を返す。sengokuがnullの場合は0を返す。
+	//プレイヤーの現在のY座標(ピクセル)を返す。syujinkouがnullの場合は0を返す。
 	@Override
 	public double getPacY() {
-		return sengoku != null ? sengoku.getY() : 0;
+		return syujinkou != null ? syujinkou.getY() : 0;
 	}
 	//現在のステージ番号(1～3)を返す。
 	@Override
@@ -705,18 +705,18 @@ public class MapData implements GameMap {
 	// ※ common.Direction と Characters.Direction の型が合わない場合はキャストや変換を行ってください
 	/**
 	 * プレイヤーの現在の移動方向を取得する。
-	 * sengoku、またはsengokuの方向がnullの場合はDirection.NONEを返す。
+	 * syujinkou、またはsyujinkouの方向がnullの場合はDirection.NONEを返す。
 	 * 名前ベースでCharacters.Directionへの変換を試み、失敗した場合もNONEを返す。
 	 */
 	@Override
 	public Characters.Direction getPlayerDirection() {
-		if (sengoku == null || sengoku.getDirection() == null) {
+		if (syujinkou == null || syujinkou.getDirection() == null) {
 			return Characters.Direction.NONE;
 		}
 
 		// Characters.Direction から 正解の test.Direction へ名前ベースで型変換
 		try {
-			return Characters.Direction.valueOf(sengoku.getDirection().name());
+			return Characters.Direction.valueOf(syujinkou.getDirection().name());
 		} catch (IllegalArgumentException e) {
 			return Characters.Direction.NONE;
 		}
@@ -733,8 +733,8 @@ public class MapData implements GameMap {
 	}
 	*/
 	//プレイヤーのキャラクターオブジェを返す。
-	public Sengoku getSengoku() {
-		return sengoku;
+	public Syujinkou getsyujinkou() {
+		return syujinkou;
 	}
 
 	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す

@@ -8,7 +8,7 @@ import Characters.Direction;
 import Characters.Enemy;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
-import Characters.Sengoku;
+import Characters.Syujinkou;
 import Characters.YellowEnemy;
 import Items.Chii;
 import Items.Item;
@@ -79,7 +79,7 @@ public class MapData implements GameMap {
 
 	private Item[][] itemMap;
 
-	private Sengoku sengoku;
+	private Syujinkou syujinkou;
 
 	// 敵のリスト管理
 
@@ -129,7 +129,7 @@ public class MapData implements GameMap {
 
 	public void SampleModel(boolean enableRespawn) {
 		this.enableRespawn = enableRespawn; // これで練習/ストーリーを切り替えられる（エサ復活用）
-		this.sengoku = new Sengoku(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
+		this.syujinkou = new Syujinkou(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
 		this.remainingItems = 0;
 
@@ -168,7 +168,7 @@ public class MapData implements GameMap {
 	}
 
 	public MapData() {
-		this.sengoku = new Sengoku(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
+		this.syujinkou = new Syujinkou(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
 
 		for (int row = 0; row < map.length; row++) {
@@ -227,7 +227,7 @@ public class MapData implements GameMap {
 			feverEndTime = 0;
 
 			// ★仙石さんを通常状態へ戻す
-			sengoku.setFever(false);
+			syujinkou.setFever(false);
 
 			for (Enemy e : enemies) {
 
@@ -290,12 +290,12 @@ public class MapData implements GameMap {
 	}
 
 	public void updatePacman() {
-		if (paused || !sengoku.isAlive())
+		if (paused || !syujinkou.isAlive())
 			return;
 
 		// 追加箇所 移動先のタイルを予測検出し、壁(1), 扉(7), 巣(8)への進入を防ぐ
-		int tileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
-		int tileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int tileX = (int) ((syujinkou.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int tileY = (int) ((syujinkou.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		// --- ワープ抑止ロジック ---
 		boolean skipWarp = false;
@@ -305,9 +305,9 @@ public class MapData implements GameMap {
 
 				// ワープ直後は、プレイヤーの入力を上書きして強制直進（先行入力を固定）
 				if (lastWarpX == 27) {
-					sengoku.setNextDirection(Direction.LEFT);
+					syujinkou.setNextDirection(Direction.LEFT);
 				} else if (lastWarpX == 0) {
-					sengoku.setNextDirection(Direction.RIGHT);
+					syujinkou.setNextDirection(Direction.RIGHT);
 				}
 			} else {
 				justWarped = false;
@@ -322,7 +322,7 @@ public class MapData implements GameMap {
 			if (map[tileY][tileX] == 9) {
 				int warpX = tileX;
 				int warpY = tileY;
-				Direction currentDir = sengoku.getDirection();
+				Direction currentDir = syujinkou.getDirection();
 
 				if (currentDir != Direction.NONE) {
 					if (currentDir.getDX() != 0) {
@@ -346,8 +346,8 @@ public class MapData implements GameMap {
 				double newPacX = warpX * TILE_SIZE;
 				double newPacY = warpY * TILE_SIZE;
 
-				sengoku.setX(newPacX);
-				sengoku.setY(newPacY);
+				syujinkou.setX(newPacX);
+				syujinkou.setY(newPacY);
 
 				justWarped = true;
 				lastWarpX = warpX;
@@ -367,17 +367,17 @@ public class MapData implements GameMap {
 			}
 		}
 
-		sengoku.move(moveMap);
+		syujinkou.move(moveMap);
 
-		int currentTileX = (int) ((sengoku.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
-		int currentTileY = (int) ((sengoku.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int currentTileX = (int) ((syujinkou.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
+		int currentTileY = (int) ((syujinkou.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
 
 		if (currentTileY >= 0 && currentTileY < map.length && currentTileX >= 0 && currentTileX < map[0].length) {
 			Item item = itemMap[currentTileY][currentTileX];
 
 			if (item != null) {
 				// ポイントをスコアに加算
-				item.onEaten(sengoku);
+				item.onEaten(syujinkou);
 
 				// パワーエサ(2)を食べたらFEVER
 				if (map[currentTileY][currentTileX] == 2) {
@@ -385,7 +385,7 @@ public class MapData implements GameMap {
 					System.out.println("FEVER開始！");
 
 					// ★仙石さんをFEVER状態にする
-					sengoku.setFever(true);
+					syujinkou.setFever(true);
 
 					// FEVER時間
 					feverEndTime = System.currentTimeMillis() + 7000;
@@ -397,10 +397,10 @@ public class MapData implements GameMap {
 						}
 					}
 					// ★パワーエサを食べたので50点加算
-					sengoku.addScore(50);
+					syujinkou.addScore(50);
 				} else {
 					// ★普通のドットを食べたので10点加算
-					sengoku.addScore(10);
+					syujinkou.addScore(10);
 				}
 
 				itemMap[currentTileY][currentTileX] = null;
@@ -441,7 +441,7 @@ public class MapData implements GameMap {
 	}
 
 	public void updateMouth() {
-		if (paused || !sengoku.isAlive() || sengoku.getDirection() == Direction.NONE)
+		if (paused || !syujinkou.isAlive() || syujinkou.getDirection() == Direction.NONE)
 			return;
 
 		mouthAngle += mouthOpening * 2;
@@ -453,7 +453,7 @@ public class MapData implements GameMap {
 
 	public void setNextDirection(Direction dir) {
 
-		sengoku.setNextDirection(dir);
+		syujinkou.setNextDirection(dir);
 
 		// 初回入力でゲーム開始
 		if (waitingStart) {
@@ -469,11 +469,11 @@ public class MapData implements GameMap {
 
 	private void checkCollision() {
 
-		if (!sengoku.isAlive())
+		if (!syujinkou.isAlive())
 			return;
 
-		double pacCenterX = sengoku.getX() + TILE_SIZE / 2.0;
-		double pacCenterY = sengoku.getY() + TILE_SIZE / 2.0;
+		double pacCenterX = syujinkou.getX() + TILE_SIZE / 2.0;
+		double pacCenterY = syujinkou.getY() + TILE_SIZE / 2.0;
 		double collisionThreshold = TILE_SIZE * 0.8;
 
 		for (Enemy e : enemies) {
@@ -499,16 +499,16 @@ public class MapData implements GameMap {
 
 				System.out.println("💥敵に捕まった！");
 
-				sengoku.takeDamage();
+				syujinkou.takeDamage();
 
-				if (sengoku.getHp() <= 0) {
+				if (syujinkou.getHp() <= 0) {
 
 					this.gameOver = true;
 					this.paused = true;
 
 				} else {
 
-					sengoku.resetToStartPosition();
+					syujinkou.resetToStartPosition();
 
 					for (Enemy enemy : enemies) {
 						enemy.resetToStartPosition();
@@ -545,12 +545,12 @@ public class MapData implements GameMap {
 
 	@Override
 	public double getPacX() {
-		return sengoku != null ? sengoku.getX() : 0;
+		return syujinkou != null ? syujinkou.getX() : 0;
 	}
 
 	@Override
 	public double getPacY() {
-		return sengoku != null ? sengoku.getY() : 0;
+		return syujinkou != null ? syujinkou.getY() : 0;
 	}
 
 	@Override
@@ -571,13 +571,13 @@ public class MapData implements GameMap {
 	// ※ common.Direction と Characters.Direction の型が合わない場合はキャストや変換を行ってください
 	@Override
 	public Characters.Direction getPlayerDirection() {
-		if (sengoku == null || sengoku.getDirection() == null) {
+		if (syujinkou == null || syujinkou.getDirection() == null) {
 			return Characters.Direction.NONE;
 		}
 
 		// Characters.Direction から 正解の test.Direction へ名前ベースで型変換
 		try {
-			return Characters.Direction.valueOf(sengoku.getDirection().name());
+			return Characters.Direction.valueOf(syujinkou.getDirection().name());
 		} catch (IllegalArgumentException e) {
 			return Characters.Direction.NONE;
 		}
@@ -592,8 +592,8 @@ public class MapData implements GameMap {
 		return mouthAngle;
 	}
 
-	public Sengoku getSengoku() {
-		return sengoku;
+	public Syujinkou getsyujinkou() {
+		return syujinkou;
 	}
 
 	public long getFeverRemainingTime() {

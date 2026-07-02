@@ -1,6 +1,6 @@
 package Items;
 
-import Characters.Sengoku;
+import Characters.Syujinkou;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,7 +18,7 @@ public class Chii extends Item {
 
 		try {
 			// 画像ファイルを読み込む
-			Image img = new Image(Chii.class.getResourceAsStream("/picture/ogawa_Item.png"));
+			Image img = new Image(Chii.class.getResourceAsStream("/picture/Chii_Item.png"));
 			ImageView iv = new ImageView(img);
 
 			// 縦横比を維持
@@ -43,7 +43,7 @@ public class Chii extends Item {
 	}
 
 	@Override
-	public void onEaten(Sengoku player) {
+	public void onEaten(Syujinkou player) {
 		player.addScore(this.score);
 	}
 

@@ -215,8 +215,8 @@ public class GameController {
 
 					// ★現在の最終スコアを取得する
 					int finalScore = 0;
-					if (model.getSengoku() != null) {
-						finalScore = model.getSengoku().getScore();
+					if (model.getsyujinkou() != null) {
+						finalScore = model.getsyujinkou().getScore();
 					}
 
 					// クリア画面（Stageclear2）に遷移させる

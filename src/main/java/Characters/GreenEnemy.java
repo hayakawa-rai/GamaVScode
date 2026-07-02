@@ -48,23 +48,23 @@ public class GreenEnemy extends Enemy {
 
 		// 現在のステージ番号によって、読み込む画像を切り替える
 		// デフォルト（ステージ1用）
-		String imagePath = "/picture/narita_EnemyGreen.png";
+		String imagePath = "/picture/nari_EnemyGreen.png";
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
 
 				// ステージ1の画像
-				imagePath = "/picture/narita_EnemyGreen.png";
+				imagePath = "/picture/nari_EnemyGreen.png";
 				break;
 			case 2:
 
 				// ステージ2の画像
-				imagePath = "/picture/wada_EnemyGreen.png";
+				imagePath = "/picture/taku_EnemyGreen.png";
 				break;
 			case 3:
 
 				// ステージ3の画像
-				imagePath = "/picture/hayakawa_EnemyGreen.png";
+				imagePath = "/picture/aniki_EnemyGreen.png";
 				break;
 			default:
 				break;

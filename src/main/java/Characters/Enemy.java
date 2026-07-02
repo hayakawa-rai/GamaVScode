@@ -321,21 +321,21 @@ public abstract class Enemy extends Character {
 	protected void loadFeverImage() {
 
 		// デフォルト画像（ステージ1）
-		String feverPath = "/picture/narita_EnemyFever.png";
+		String feverPath = "/picture/nari_EnemyFever.png";
 
 		// 現在のステージ番号に応じて画像を切り替える
 		if (mapData != null) {
 			switch (mapData.getStageNumber()) {
 			case 1:
-				feverPath = "/picture/narita_EnemyFever.png";
+				feverPath = "/picture/nari_EnemyFever.png";
 				break;
 
 			case 2:
-				feverPath = "/picture/wada_EnemyFever.png";
+				feverPath = "/picture/taku_EnemyFever.png";
 				break;
 
 			case 3:
-				feverPath = "/picture/hayakawa_EnemyFever.png";
+				feverPath = "/picture/aniki_EnemyFever.png";
 				break;
 			}
 		}
@@ -362,21 +362,21 @@ public abstract class Enemy extends Character {
 	protected void loadDeadImage() {
 
 		// デフォルトはステージ1
-		String deadPath = "/picture/narita_EnemyDead.png";
+		String deadPath = "/picture/nari_EnemyDead.png";
 
 		// 現在のステージ番号に応じて画像を切り替える
 		if (mapData != null) {
 			switch (mapData.getStageNumber()) {
 			case 1:
-				deadPath = "/picture/narita_EnemyDead.png";
+				deadPath = "/picture/nari_EnemyDead.png";
 				break;
 
 			case 2:
-				deadPath = "/picture/wada_EnemyDead.png";
+				deadPath = "/picture/taku_EnemyDead.png";
 				break;
 
 			case 3:
-				deadPath = "/picture/hayakawa_EnemyDead.png";
+				deadPath = "/picture/aniki_EnemyDead.png";
 				break;
 			}
 		}
