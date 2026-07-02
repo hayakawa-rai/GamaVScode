@@ -246,7 +246,7 @@ public class GameController {
 							}
 
 							// 綺麗に一本化したゲームオーバー遷移を呼び出す（スコアも引き渡す）
-							switchToGameover(stage, stageNumber, isPractice);
+							switchToGameover(stage, stageNumber, isPractice,finalScore);
 							return;
 						}
 
