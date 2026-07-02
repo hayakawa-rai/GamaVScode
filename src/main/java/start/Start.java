@@ -261,20 +261,10 @@ public class Start extends Application {
 		//ウィンドウの中身を設定・表示
 		stage.setScene(scene);
 		WindowUtil.fillScreen(stage);
-		// 💡 描画エンジンのスケールキャッシュをリセットするため、一度隠してから再表示する
+		//リセットするため、一度隠してから再表示する
 		stage.hide();
 		stage.show();
 
-		// 💡 デバッグ用：スケール値を出力
-		javafx.application.Platform.runLater(() -> {
-		    System.out.println("=== Start画面 ===");
-		    System.out.println("outputScaleX=" + stage.getOutputScaleX());
-		    System.out.println("outputScaleY=" + stage.getOutputScaleY());
-		    System.out.println("renderScaleX=" + stage.getRenderScaleX());
-		    System.out.println("renderScaleY=" + stage.getRenderScaleY());
-		    System.out.println("width=" + stage.getWidth() + " height=" + stage.getHeight());
-		    System.out.println("x=" + stage.getX() + " y=" + stage.getY());
-		});
 	}
 
 	//launchをmainで呼び出すことでjavafxのアプリが起動

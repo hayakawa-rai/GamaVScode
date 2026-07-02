@@ -39,21 +39,10 @@ public class Story1 extends Application {
 		//受け取った変数Stageを自分のStageに保存
 		this.stage = stage;
 		//ウィンドウの中身を決定
-
 		stage.setScene(story());
 		stage.setTitle("story1");
+		//画面の強制再設定
 		WindowUtil.fillScreen(stage);
-		// 💡 描画エンジンのスケールキャッシュをリセットするため、一度隠してから再表示する
-		stage.hide();
-		stage.show();
-
-		javafx.application.Platform.runLater(() -> {
-		    System.out.println("outputScaleX=" + stage.getOutputScaleX());
-		    System.out.println("outputScaleY=" + stage.getOutputScaleY());
-		    System.out.println("renderScaleX=" + stage.getRenderScaleX());
-		    System.out.println("renderScaleY=" + stage.getRenderScaleY());
-		    System.out.println("width=" + stage.getWidth() + " height=" + stage.getHeight());
-		});
 
 	}
 

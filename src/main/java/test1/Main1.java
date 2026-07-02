@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import test1.model.MapData;
 import test1.view.MapView;
+import util.WindowUtil;
 
 public class Main1 extends Application {
 
@@ -74,9 +75,6 @@ public class Main1 extends Application {
 
 		// ★ゲーム描画Canvas
 		Canvas canvas = new Canvas();
-		
-		canvas.widthProperty().bind(root.widthProperty());
-		canvas.heightProperty().bind(root.heightProperty());
 
 		root.getChildren().addAll(bg, canvas);
 
@@ -102,13 +100,8 @@ public class Main1 extends Application {
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
-		// ★追加
-		stage.show();
-
-		stage.setMaximized(false);
-		javafx.application.Platform.runLater(() ->{
-			stage.setMaximized(true);
-		});
+		//画面の強制再設定
+		WindowUtil.fillScreen(stage);
 		canvas.requestFocus();
 
 	}

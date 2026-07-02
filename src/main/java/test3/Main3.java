@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import test3.model.MapData;
 import test3.view.MapView;
+import util.WindowUtil;
 
 public class Main3 extends Application {
 
@@ -74,7 +75,7 @@ public class Main3 extends Application {
 
 		// ★ゲーム描画Canvas
 		Canvas canvas = new Canvas();
-		
+
 		canvas.widthProperty().bind(root.widthProperty());
 		canvas.heightProperty().bind(root.heightProperty());
 
@@ -98,21 +99,15 @@ public class Main3 extends Application {
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		//完璧に準備ができた最後にコントローラーを1回だけ生成
-		this.controller  = new GameController(model, view, canvas, scene, stage, 3, false);
+		this.controller = new GameController(model, view, canvas, scene, stage, 3, false);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
-		// ★追加
-		stage.show();
-
-		stage.setMaximized(false);
-		javafx.application.Platform.runLater(() ->{
-			stage.setMaximized(true);
-		});
+		//画面の強制再設定
+		WindowUtil.fillScreen(stage);
 		canvas.requestFocus();
 
 	}
-		
 
 	public static void main(String[] args) {
 		launch(args);
