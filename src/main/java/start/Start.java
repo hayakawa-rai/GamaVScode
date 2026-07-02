@@ -224,9 +224,11 @@ public class Start extends Application {
 				// 他のボタンに合わせて0.5秒後にアプリを閉じる
 				Timeline delay = new Timeline(
 					new KeyFrame(Duration.millis(500), ev -> {
-					// 背景アニメーションやBGMを安全に停止
-					cleanup();
-					// JavaFXアプリを終了する
+
+						// 背景アニメーションやBGMを安全に停止
+						cleanup();
+
+						// JavaFXアプリを終了する
 					Platform.exit();
 					}));
 				delay.play();
@@ -251,8 +253,10 @@ public class Start extends Application {
 		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
 		stage.setMinWidth(800);
 		stage.setMinHeight(600);
+
 		//ウィンドウの名前を設定
 		stage.setTitle("スタート画面");
+
 		//ウィンドウの中身を設定・表示
 		stage.setScene(scene);
 		stage.setMaximized(true);

@@ -44,7 +44,7 @@ public abstract class Enemy extends Character {
 
 		int currentTileType = map[tileY][tileX]; // 今いるマスの種類を取得
 
-		// ⭕ 修正：固定座標(14,14)ではなく、今いるマスが巣の床(8)なら自動で復活させる
+		// 修正：固定座標(14,14)ではなく、今いるマスが巣の床(8)なら自動で復活させる
 		if (currentState == Characters.EnemyState.DEAD) {
 			if (currentTileType == 8) {
 				currentState = Characters.EnemyState.SCATTER;
@@ -72,10 +72,12 @@ public abstract class Enemy extends Character {
 		if (this.direction == Direction.NONE || atCenter) {
 			List<Direction> validDirections = getValidDirections(map);
 			if (!validDirections.isEmpty()) {
+				
 				// 現在のタイル座標を一時的に取得（条件判定用）
 				int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
 				int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
-				// 巣の中にいる間は、ターゲットを強制的に巣のすぐ外（例: 行10、列13）にする
+				
+				// 巣の中にいる間は、ターゲットを強制的に巣のすぐ外に移動する
 				if (currentState != Characters.EnemyState.DEAD && currentRow >= 12 && currentRow <= 15
 						&& currentCol >= 12 && currentCol <= 15) {
 					this.y = cy;
@@ -90,43 +92,30 @@ public abstract class Enemy extends Character {
 					this.x = cx;
 					this.y = cy;
 					this.direction = chosenDirection;
-
 				}
 
 			} else {
-
 				this.direction = Direction.NONE;
-
 			}
 		}
 
 		// 決定した方向に実際に移動する処理
-
 		if (this.direction != Direction.NONE) {
-
 			this.x += this.direction.getDX() * currentSpeed;
-
 			this.y += this.direction.getDY() * currentSpeed;
-
 			if (this.direction.getDX() != 0) {
-
 				this.y += (cy - this.y) * 0.2;
-
 			}
-
 			if (this.direction.getDY() != 0) {
-
 				this.x += (cx - this.x) * 0.2;
-
 			}
-
 		}
-
 	}
 
 	// DEAD・FEVERの共通処理
 	protected Direction handleSpecialState(List<Direction> validDirections, int targetCol, int targetRow, int[][] map) {
-		// ⭕ DEAD状態なら、自動的にマップ内の「7（扉）」の中から【一番近い場所】を探してそこへ帰る
+		
+		// DEAD状態なら、自動的にマップ内の「7（扉）」の中から【一番近い場所】を探してそこへ帰る
 		if (currentState == Characters.EnemyState.DEAD) {
 			int[][] currentMap = map;
 
@@ -143,6 +132,7 @@ public abstract class Enemy extends Character {
 			for (int r = 0; r < currentMap.length; r++) {
 				for (int c = 0; c < currentMap[r].length; c++) {
 					if (currentMap[r][c] == 7) {
+						
 						// 自分の現在地からの距離を計算（三平方の定理）
 						double distSq = Math.pow(c - myCol, 2) + Math.pow(r - myRow, 2);
 						if (distSq < minDistanceSq) {
@@ -165,7 +155,6 @@ public abstract class Enemy extends Character {
 	}
 
 	// 三平方の定理を使って目的地に一番近い方向を選ぶ共通処理
-
 	protected Direction getClosestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
 		Direction bestDirection = Direction.NONE;
 		double minDistance = Double.MAX_VALUE;
@@ -247,7 +236,7 @@ public abstract class Enemy extends Character {
 		int currentTileType = map[currentRow][currentCol];
 		int nextTileType = map[nextRow][nextCol];
 
-		// ⭕ 通常状態の敵の「巣（扉含む）」への侵入制限
+		// 通常状態の敵の「巣（扉含む）」への侵入制限
 		if (this.currentState != Characters.EnemyState.DEAD) {
 			// 外(8以外)から、扉(7)や床(8)に入ろうとしたら通行不可
 			if (currentTileType != 8 && (nextTileType == 7 || nextTileType == 8)) {
@@ -282,6 +271,7 @@ public abstract class Enemy extends Character {
 		}
 
 		try {
+			
 			// 指定したパスから画像を取得
 			java.io.InputStream is = getClass().getResourceAsStream(feverPath);
 
@@ -302,6 +292,7 @@ public abstract class Enemy extends Character {
 
 	// DEAD状態で使用する画像をステージごとに読み込む
 	protected void loadDeadImage() {
+
 		// デフォルトはステージ1
 		String deadPath = "/picture/narita_EnemyDead.png";
 
@@ -321,6 +312,7 @@ public abstract class Enemy extends Character {
 				break;
 			}
 		}
+
 		// リソースからDEAD画像を読み込む
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(deadPath);
@@ -367,12 +359,9 @@ public abstract class Enemy extends Character {
 	}
 
 	public void resetToStartPosition() {
-
 		this.x = startX;
 		this.y = startY;
-
 		this.direction = Direction.NONE;
-
 		this.currentState = Characters.EnemyState.SCATTER;
 	}
 

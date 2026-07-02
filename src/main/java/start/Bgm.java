@@ -8,7 +8,8 @@ public class Bgm   {
     private static MediaPlayer bgmPlayer;
 
     public static void playBGM(String path) {
-        if (bgmPlayer != null) return; // すでに再生中なら何もしない
+    		// すでに再生中なら何もしない
+        if (bgmPlayer != null) return;
 
         Media bgm = new Media(
             Bgm.class.getResource(path).toExternalForm()

@@ -16,7 +16,7 @@ public enum SengokuState {
 		this.speedMultiplier = speedMultiplier;
 	}
 	
-	//ゲッターメソッド
+	//ゲッター
 	public double getSpeedMultiplier() {
 		
 		return speedMultiplier;

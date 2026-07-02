@@ -30,10 +30,8 @@ public class GreenEnemy extends Enemy {
 	private boolean released = false;
 
 	public GreenEnemy(GameMap mapData) {
-
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
-				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
-
+			START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
 		this.mapData = mapData;
 
 		// FEVER画像をステージごとに読み込む
@@ -43,18 +41,24 @@ public class GreenEnemy extends Enemy {
 		loadDeadImage();
 
 		// 現在のステージ番号によって、読み込む画像を切り替える
-		String imagePath = "/picture/narita_EnemyGreen.png"; // デフォルト（ステージ1用）
-
+		// デフォルト（ステージ1用）
+		String imagePath = "/picture/narita_EnemyGreen.png";
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-				imagePath = "/picture/narita_EnemyGreen.png"; // ステージ1の画像
+				
+				// ステージ1の画像
+				imagePath = "/picture/narita_EnemyGreen.png";
 				break;
 			case 2:
-				imagePath = "/picture/wada_EnemyGreen.png"; // ステージ2の画像
+				
+				// ステージ2の画像
+				imagePath = "/picture/wada_EnemyGreen.png";
 				break;
 			case 3:
-				imagePath = "/picture/hayakawa_EnemyGreen.png"; // ステージ3の画像
+				
+				// ステージ3の画像
+				imagePath = "/picture/hayakawa_EnemyGreen.png";
 				break;
 			default:
 				break;
@@ -65,10 +69,10 @@ public class GreenEnemy extends Enemy {
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
-				System.err.println("❌【エラー】画像が見つかりません: " + imagePath);
+				System.err.println("【エラー】画像が見つかりません: " + imagePath);
 			} else {
 				this.normalImage = new Image(is);
-				System.out.println("⭕【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
+				System.out.println("【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,7 +93,6 @@ public class GreenEnemy extends Enemy {
 	// 20秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-
 		if (mapData.isWaitingStart()) {
 			return;
 		}
@@ -102,17 +105,14 @@ public class GreenEnemy extends Enemy {
 		}
 
 		if (!released) {
-
 			long elapsed = System.currentTimeMillis() - startTime;
 
 			// 20秒待機
 			if (elapsed < 20000) {
 				return;
 			}
-
 			released = true;
 		}
-
 		super.move(map);
 	}
 
@@ -120,7 +120,6 @@ public class GreenEnemy extends Enemy {
 	// 近い → 左下の縄張りへ戻る
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
-
 		if (mapData == null || validDirections.isEmpty()) {
 			return Direction.NONE;
 		}
@@ -133,7 +132,7 @@ public class GreenEnemy extends Enemy {
 		int targetCol = (int) (pacX / GameConfig.TILE_SIZE);
 		int targetRow = (int) (pacY / GameConfig.TILE_SIZE);
 
-		// SCATTER
+		// 縄張りモード
 		if (currentState == Characters.EnemyState.SCATTER) {
 			return getClosestDirection(
 					validDirections,
@@ -143,7 +142,6 @@ public class GreenEnemy extends Enemy {
 
 		// 共通処理
 		Direction special = handleSpecialState(validDirections, targetCol, targetRow, map);
-
 		if (special != null) {
 			return special;
 		}
@@ -166,9 +164,7 @@ public class GreenEnemy extends Enemy {
 
 	@Override
 	public void resetToStartPosition() {
-
 		super.resetToStartPosition();
-
 		released = false;
 		timerStarted = false;
 	}
