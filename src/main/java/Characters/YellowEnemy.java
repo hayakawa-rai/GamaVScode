@@ -99,8 +99,8 @@ public class YellowEnemy extends Enemy {
 
 			long elapsed = System.currentTimeMillis() - startTime;
 			
-			//ゲーム開始から10秒後
-			if (elapsed < 10000) {
+			//ゲーム開始から6秒後
+			if (elapsed < 6000) {
 				return;
 			}
 			
@@ -156,6 +156,7 @@ public class YellowEnemy extends Enemy {
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 
+	//プレイヤーが被弾時に元の場所、出撃時間をリセット
 	@Override
 	public void resetToStartPosition() {
 		super.resetToStartPosition();

@@ -98,8 +98,8 @@ public class GreenEnemy extends Enemy {
 		if (!released) {
 			long elapsed = System.currentTimeMillis() - startTime;
 
-			// 20秒待機
-			if (elapsed < 20000) {
+			// 10秒待機
+			if (elapsed < 10000) {
 				return;
 			}
 			released = true;
@@ -153,6 +153,7 @@ public class GreenEnemy extends Enemy {
 		return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 	}
 
+	//プレイヤーが被弾時に元の場所、出撃時間をリセット
 	@Override
 	public void resetToStartPosition() {
 		super.resetToStartPosition();

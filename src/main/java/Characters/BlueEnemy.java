@@ -177,7 +177,8 @@ public class BlueEnemy extends Enemy {
 		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
-
+	
+	//プレイヤーが被弾時に元の場所、出撃時間をリセット
 	@Override
 	public void resetToStartPosition() {
 		super.resetToStartPosition();

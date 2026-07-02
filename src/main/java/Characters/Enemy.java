@@ -278,12 +278,12 @@ public abstract class Enemy extends Character {
 			// 読み込み成功時
 			if (is != null) {
 				feverImage = new javafx.scene.image.Image(is);
-				System.out.println("⭕ FEVER画像読込成功: " + feverPath);
+				System.out.println("FEVER画像読込成功: " + feverPath);
 			}
 
 			// 読み込み失敗時
 			else {
-				System.err.println("❌ FEVER画像が見つかりません: " + feverPath);
+				System.err.println("FEVER画像が見つかりません: " + feverPath);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -318,9 +318,9 @@ public abstract class Enemy extends Character {
 			java.io.InputStream is = getClass().getResourceAsStream(deadPath);
 			if (is != null) {
 				deadImage = new javafx.scene.image.Image(is);
-				System.out.println("⭕ DEAD画像読込成功: " + deadPath);
+				System.out.println("DEAD画像読込成功: " + deadPath);
 			} else {
-				System.err.println("❌ DEAD画像が見つかりません: " + deadPath);
+				System.err.println("DEAD画像が見つかりません: " + deadPath);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -357,7 +357,8 @@ public abstract class Enemy extends Character {
 	public void setCurrentState(Characters.EnemyState state) {
 		this.currentState = state;
 	}
-
+	
+	//プレイヤーが被弾時に元の場所、出撃時間をリセット
 	public void resetToStartPosition() {
 		this.x = startX;
 		this.y = startY;
