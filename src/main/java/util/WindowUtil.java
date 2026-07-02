@@ -2,7 +2,7 @@ package util;
 
 import javafx.stage.Stage;
 
-//フルスクリーンver.
+//フルスクリーンver.(これは遷移するときにがくがくする)
 public class WindowUtil {
 
     public static void fillScreen(Stage stage) {
