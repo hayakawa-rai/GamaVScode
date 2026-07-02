@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 
 public class GreenEnemy extends Enemy {
 
-	// スタート位置 (マップ中心 エネミーハウス内)
+	// スタート位置(マップ中心 エネミーハウス内)
 	private static final int START_COL = 14;
 	private static final int START_ROW = 14;
 
@@ -20,7 +20,7 @@ public class GreenEnemy extends Enemy {
 	private static final int TERRITORY_COL = 3;
 	private static final int TERRITORY_ROW = 26;
 
-	// 出撃待機用
+	// 出発時間の記録
 	private long startTime;
 
 	//ゲーム開始した瞬間にタイマーをスタート
@@ -30,6 +30,8 @@ public class GreenEnemy extends Enemy {
 	private boolean released = false;
 
 	public GreenEnemy(GameMap mapData) {
+		
+		// マスの中心座標を初期位置として Enemy に渡す
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
 			START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
 		this.mapData = mapData;

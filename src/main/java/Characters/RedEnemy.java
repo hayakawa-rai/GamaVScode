@@ -20,12 +20,9 @@ public class RedEnemy extends Enemy {
 
 	public RedEnemy(GameMap sampleModel) {
 
-		// マスの中心座標で生成
-
+		// マスの中心座標を初期位置として Enemy に渡す
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
-
-				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2); // スピードは 2
-
+				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
 		this.mapData = sampleModel;
 
 		// FEVER画像をステージごとに読み込む
@@ -58,7 +55,7 @@ public class RedEnemy extends Enemy {
 			}
 		}
 
-		// 画像の読み込み処理
+		// 画像の読み込み
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
