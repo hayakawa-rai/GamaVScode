@@ -367,8 +367,8 @@ public class Story1 extends Application {
 		narinariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
 		narinariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
-		sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.36));
-		sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.0));
+		sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.34));
+		sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.4));
 		sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
 		//boxのサイズをウィンドウに合わせる
 		box.widthProperty().bind(scene.widthProperty().multiply(0.9));

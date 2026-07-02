@@ -465,8 +465,8 @@ public class Story2 extends Application {
 		wadatakuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
 		wadatakuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
-		sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.38));
-		sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.05));
+		sengokuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.34));
+		sengokuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.4));
 		sengokuView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
 		//差し込み用の画像を調整
 		insertView.fitWidthProperty().bind(scene.widthProperty());
