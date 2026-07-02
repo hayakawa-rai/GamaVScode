@@ -14,40 +14,43 @@ public class RedEnemy extends Enemy {
 	private static final int START_COL = 13;
 	private static final int START_ROW = 13;
 
-	// 縄張りエリアの中心（右上）(仮)
+	// SCATTER状態で向かう縄張り（右上）
 	private static final int TERRITORY_COL = 24;
 	private static final int TERRITORY_ROW = 3;
 
 	public RedEnemy(GameMap sampleModel) {
 
-		// マスの中心座標を初期位置として Enemy に渡す
+		// マスの中心座標を初期位置として親クラスへ渡す
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
 				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
+
+		// ステージ情報を保存
 		this.mapData = sampleModel;
 
-		// FEVER画像をステージごとに読み込む
+		// FEVER状態用画像を読み込む
 		loadFeverImage();
 
-		// DEAD画像を読み込む
+		// DEAD状態用画像を読み込む
 		loadDeadImage();
 
-		// 現在のステージ番号によって、読み込む画像を切り替える
-		// デフォルト（ステージ1用）
+		// 通常時に使用する画像パス
 		String imagePath = "/picture/narita_EnemyRed.png";
+
+		// ステージごとに画像を切り替える
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-				
+
 				// ステージ1の画像
 				imagePath = "/picture/narita_EnemyRed.png";
 				break;
 			case 2:
-				
+
 				// ステージ2の画像
 				imagePath = "/picture/wada_EnemyRed.png";
 				break;
 			case 3:
-				
+
 				// ステージ3の画像
 				imagePath = "/picture/hayakawa_EnemyRed.png";
 				break;
@@ -73,33 +76,31 @@ public class RedEnemy extends Enemy {
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
 
-		// 進める方向がない場合は NONE、または最初の方向を返す
+		// 移動可能な方向がない場合は停止、または最初の方向を返す
 		if (mapData == null || validDirections.isEmpty())
 			return Direction.NONE;
 
-		// キーボード操作で動いている本物のパックマン座標(px)をMapDataから取得
+		// プレイヤーの現在位置を取得
 		double pacX = mapData.getPacX() + GameConfig.TILE_SIZE / 2.0;
 		double pacY = mapData.getPacY() + GameConfig.TILE_SIZE / 2.0;
 
-		// ピクセル座標から、AIが目指すべき「ターゲットのマス」を算出
+		// プレイヤーの位置をタイル座標へ変換
 		int targetCol = (int) (pacX / GameConfig.TILE_SIZE);
 		int targetRow = (int) (pacY / GameConfig.TILE_SIZE);
 
 		// 縄張りモード
 		if (currentState == Characters.EnemyState.SCATTER) {
-			return getClosestDirection(
-					validDirections,
-					TERRITORY_COL,
-					TERRITORY_ROW);
+			return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 		}
 
-		// 共通処理
+		// FEVER・DEAD状態の共通処理
 		Direction special = handleSpecialState(validDirections, targetCol, targetRow, map);
 		if (special != null) {
 			return special;
 		}
 
-		// 赤専用AI(最短追尾)
+		// 赤エネミー固有AI
+		// プレイヤーへ最短距離で接近する
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 }
