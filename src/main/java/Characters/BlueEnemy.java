@@ -1,6 +1,6 @@
-//BlueEnemy（青）
-//RedEnemyと連携してプレイヤーをはさみうちにする敵
-//プレイヤーの進行方向の先を予測し、RedEnemyとの位置関係から追跡地点を決定する
+//　BlueEnemy（青）
+//　RedEnemyと連携してプレイヤーをはさみうちにする敵
+//　プレイヤーの進行方向の先を予測し、RedEnemyとの位置関係から追跡地点を決定する
 
 package Characters;
 
@@ -202,7 +202,7 @@ public class BlueEnemy extends Enemy {
 		timerStarted = false;
 	}
 
-	// ポーズ解除時に出撃タイマーを補正する
+	// ポーズ中の時間を出撃タイマーへ反映する
 	@Override
 	public void resumeTimer() {
 
