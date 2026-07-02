@@ -34,27 +34,34 @@ public class YellowEnemy extends Enemy {
 		// マスの中心座標を初期位置として Enemy に渡す
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
 				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
-
 		this.mapData = mapData;
-
+		
+		// FEVER画像をステージごとに読み込む
 		loadFeverImage();
 
 		// DEAD画像を読み込む
 		loadDeadImage();
 
 		// 現在のステージ番号によって、読み込む画像を切り替える
-		String imagePath = "/picture/narita_EnemyYellow.png"; // デフォルト（ステージ1用）
+		// デフォルト（ステージ1用）
+		String imagePath = "/picture/narita_EnemyYellow.png";
 
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-				imagePath = "/picture/narita_EnemyYellow.png"; // ステージ1の画像
+				
+				// ステージ1の画像
+				imagePath = "/picture/narita_EnemyYellow.png";
 				break;
 			case 2:
-				imagePath = "/picture/wada_EnemyYellow.png"; // ステージ2の画像
+				
+				// ステージ2の画像
+				imagePath = "/picture/wada_EnemyYellow.png";
 				break;
 			case 3:
-				imagePath = "/picture/hayakawa_EnemyYellow.png"; // ステージ3の画像
+				
+				// ステージ3の画像
+				imagePath = "/picture/hayakawa_EnemyYellow.png";
 				break;
 			default:
 				break;
@@ -65,10 +72,10 @@ public class YellowEnemy extends Enemy {
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
-				System.err.println("❌【エラー】画像が見つかりません: " + imagePath);
+				System.err.println("【エラー】画像が見つかりません: " + imagePath);
 			} else {
 				this.normalImage = new Image(is);
-				System.out.println("⭕【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
+				System.out.println("【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,22 +92,21 @@ public class YellowEnemy extends Enemy {
 
 		// 初回入力後にタイマー開始
 		if (!timerStarted) {
-
 			startTime = System.currentTimeMillis();
 			timerStarted = true;
 		}
-
 		if (!released) {
 
 			long elapsed = System.currentTimeMillis() - startTime;
-			//ゲーム開始から10秒後
-			if (elapsed < 10000) {
+			
+			//ゲーム開始から6秒後
+			if (elapsed < 6000) {
 				return;
 			}
+			
 			//出撃
 			released = true;
 		}
-
 		super.move(map);
 	}
 
@@ -132,7 +138,7 @@ public class YellowEnemy extends Enemy {
 			break;
 		}
 
-		// SCATTER
+		// 縄張りモード
 		if (currentState == Characters.EnemyState.SCATTER) {
 			return getClosestDirection(
 					validDirections,
@@ -142,19 +148,18 @@ public class YellowEnemy extends Enemy {
 
 		// 共通処理
 		Direction special = handleSpecialState(validDirections, targetCol, targetRow, map);
-
 		if (special != null) {
 			return special;
 		}
+		
 		// 親クラスの 最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 
+	//プレイヤーが被弾時に元の場所、出撃時間をリセット
 	@Override
 	public void resetToStartPosition() {
-
 		super.resetToStartPosition();
-
 		released = false;
 		timerStarted = false;
 	}

@@ -79,6 +79,8 @@ public class GameController {
 		dPad.setVgap(10);
 		dPad.setStyle("-fx-background-color: transparent;");
 
+		dPad.setPickOnBounds(false);
+
 		// ボタン作成とスタイル適用
 		javafx.scene.control.Button btnUp = new javafx.scene.control.Button("▲");
 		javafx.scene.control.Button btnDown = new javafx.scene.control.Button("▼");
@@ -130,6 +132,29 @@ public class GameController {
 
 		// 最前面のレイヤーとして十字キーを追加
 		baseHolder.getChildren().add(dPad);
+
+		try {
+			// rootがPaneクラス（またはその子クラス）の場合だけキャストして処理する
+			if (root instanceof javafx.scene.layout.Pane) {
+				javafx.scene.layout.Pane rootPane = (javafx.scene.layout.Pane) root;
+
+				// rootPaneから「タイトルへ戻る」ボタンを探す
+				for (javafx.scene.Node node : rootPane.getChildren()) {
+					if (node instanceof javafx.scene.control.Button
+							&& "タイトルへ戻る".equals(((javafx.scene.control.Button) node).getText())) {
+
+						// 発見したら、安全に最前面のベースホルダー（baseHolder）へ引っ越しさせる
+						javafx.application.Platform.runLater(() -> {
+							rootPane.getChildren().remove(node); // 元の背景レイヤーから削除
+							baseHolder.getChildren().add(node); // 最前面のレイヤーへ追加！
+						});
+						break; // 見つかったのでループを抜ける
+					}
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace(); // 万が一エラーが出た場合はログに出力
+		}
 	}
 
 	// キーボード入力処理（🌟リフレクション化により、どのステージのModelでも動作可能）
@@ -205,24 +230,23 @@ public class GameController {
 
 						// 敵に捕まった（ゲームオーバー）かチェック
 						if ((boolean) isGameOverMethod.invoke(model)) {
-
 							stop();
-
 							System.out.println("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
 
+							// スコアを安全に取得する処理
 							int finalScore = 0;
-
-							Object sengoku = getSengokuMethod.invoke(model);
-
-							if (sengoku != null) {
-
-								java.lang.reflect.Method getScoreMethod = sengoku.getClass().getMethod("getScore");
-
-								finalScore = (int) getScoreMethod.invoke(sengoku);
+							try {
+								Object sengoku = getSengokuMethod.invoke(model);
+								if (sengoku != null) {
+									java.lang.reflect.Method getScoreMethod = sengoku.getClass().getMethod("getScore");
+									finalScore = (int) getScoreMethod.invoke(sengoku);
+								}
+							} catch (Exception e) {
+								// メソッドがない場合は0のまま進む
 							}
 
-							switchToGameover(stage, stageNumber, isPractice, finalScore);
-
+							// 綺麗に一本化したゲームオーバー遷移を呼び出す（スコアも引き渡す）
+							switchToGameover(stage, stageNumber, isPractice);
 							return;
 						}
 
@@ -322,7 +346,6 @@ public class GameController {
 
 	// Stageclear1画面へ変更するためのメソッド（引数に score を追加）
 	public static void switchToStageclear1(javafx.stage.Stage stage, int score) {
-
 		try {
 			Stageclear1 App = new Stageclear1();
 			App.setScore(score); // 受け取った score を確実に引き渡す
@@ -334,7 +357,6 @@ public class GameController {
 
 	// Stageclear2画面へ変更するためのメソッド（引数に score を追加）
 	public static void switchToStageclear2(javafx.stage.Stage stage, int score) {
-
 		try {
 			Stageclear2 App = new Stageclear2();
 			App.setScore(score); // 受け取った score を確実に引き渡す
@@ -356,46 +378,89 @@ public class GameController {
 	}
 
 	// Gameover画面へ変更するためのメソッド
-	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice, int score) {
+	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice) {
+	    try {
+	        Runnable retryAction;
 
+	        if (isPractice) {
+	            // 🟢 練習モードから来た場合のリトライ先（PracticeMain系）
+	            switch (stageNum) {
+	                case 1:
+	                    retryAction = () -> test1.PracticeMain1.createAndStart(stage);
+	                    break;
+	                case 2:
+	                    retryAction = () -> test2.PracticeMain2.createAndStart(stage);
+	                    break;
+	                case 3:
+	                    retryAction = () -> test3.PracticeMain3.createAndStart(stage);
+	                    break;
+	                default:
+	                    retryAction = () -> test1.PracticeMain1.createAndStart(stage);
+	                    break;
+	            }
+	        } else {
+	            // 🔴 本番モードから来た場合のリトライ先（Main系）
+	            switch (stageNum) {
+	                case 1:
+	                    retryAction = () -> test1.Main1.createAndStart(stage);
+	                    break;
+	                case 2:
+	                    retryAction = () -> test2.Main2.createAndStart(stage);
+	                    break;
+	                case 3:
+	                    retryAction = () -> test3.Main3.createAndStart(stage);
+	                    break;
+	                default:
+	                    retryAction = () -> test1.Main1.createAndStart(stage);
+	                    break;
+	            }
+	        }
+
+	        // Gameoverクラスへ、判別済みのリトライ処理を渡す
+	    //    stage.setScene(story.Gameover.create(stage, retryAction));
+	        stage.show();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
+
+	// Gameover画面へ変更するためのメソッド（引数4つ版に綺麗に統一！）
+	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice, int score) {
 		try {
 			Runnable retryAction;
 
-			if (isPractice) {
-				// 🟢 練習モードから来た場合のリトライ先（PracticeMain系）
-				switch (stageNum) {
-				case 1:
-					retryAction = () -> test1.PracticeMain1.createAndStart(stage);
-					break;
-				case 2:
-					retryAction = () -> test2.PracticeMain2.createAndStart(stage);
-					break;
-				case 3:
-					retryAction = () -> test3.PracticeMain3.createAndStart(stage);
-					break;
-				default:
-					retryAction = () -> test1.PracticeMain1.createAndStart(stage);
-					break;
+			// ステージ番号 と 練習モードフラグ に応じて、リトライ時に起動するクラスを完全に切り替える
+			switch (stageNum) {
+			case 1:
+				if (isPractice) {
+					retryAction = () -> test1.PracticeMain1.createAndStart(stage); // 練習モード1へ
+				} else {
+					retryAction = () -> test1.Main1.createAndStart(stage); // 本番モード1へ
 				}
-			} else {
-				// 🔴 本番モードから来た場合のリトライ先（Main系）
-				switch (stageNum) {
-				case 1:
-					retryAction = () -> test1.Main1.createAndStart(stage);
-					break;
-				case 2:
-					retryAction = () -> test2.Main2.createAndStart(stage);
-					break;
-				case 3:
-					retryAction = () -> test3.Main3.createAndStart(stage);
-					break;
-				default:
-					retryAction = () -> test1.Main1.createAndStart(stage);
-					break;
+				break;
+			case 2:
+				if (isPractice) {
+					retryAction = () -> test2.PracticeMain2.createAndStart(stage); // 練習モード2へ
+				} else {
+					retryAction = () -> test2.Main2.createAndStart(stage); // 本番モード2へ
 				}
+				break;
+			case 3:
+				if (isPractice) {
+					retryAction = () -> test3.PracticeMain3.createAndStart(stage); // 練習モード3へ
+				} else {
+					retryAction = () -> test3.Main3.createAndStart(stage); // 本番モード3へ
+				}
+				break;
+			default:
+				retryAction = () -> test1.Main1.createAndStart(stage);
+				break;
 			}
 
-			// Gameoverクラスへ、判別済みのリトライ処理を渡す
+			// Gameoverクラスに、stageと組み立てた適切なリトライ処理、そしてスコアを渡す！
 			stage.setScene(story.Gameover.create(stage, retryAction, score));
 			stage.show();
 
@@ -515,6 +580,64 @@ public class GameController {
 			App.start(stage);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	// 既存の処理を一切壊さず、外部（MapView）から安全にループを停止させてタイトルへ戻るための専用メソッド
+	public void forceBackToTitle() {
+		try {
+			System.out.println("① forceBackToTitle開始");
+
+			stop();
+			System.out.println("② timer停止");
+
+			switchStart(this.stage);
+			System.out.println("③ switchStart完了");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 画面内の「タイトルへ戻る」ボタンを、確実に最前面レイヤー(baseHolder)へ引っ越しさせるメソッド
+	 */
+	public void bringTitleButtonToFront() {
+		try {
+			javafx.scene.Parent root = this.stage.getScene().getRoot();
+			if (root instanceof javafx.scene.layout.StackPane) {
+				javafx.scene.layout.StackPane baseHolder = (javafx.scene.layout.StackPane) root;
+
+				// baseHolderの最初の要素（元のメイン画面）を取得
+				if (!baseHolder.getChildren().isEmpty()
+						&& baseHolder.getChildren().get(0) instanceof javafx.scene.layout.Pane) {
+					javafx.scene.layout.Pane rootPane = (javafx.scene.layout.Pane) baseHolder.getChildren().get(0);
+
+					// rootPaneからボタンを探す
+					for (javafx.scene.Node node : rootPane.getChildren()) {
+						if (node instanceof javafx.scene.control.Button
+								&& "タイトルへ戻る".equals(((javafx.scene.control.Button) node).getText())) {
+
+							// 最前面へ引っ越し
+							javafx.application.Platform.runLater(() -> {
+								rootPane.getChildren().remove(node);
+								baseHolder.getChildren().add(node);
+
+								// ボタンの重ね合わせの基準を中央（Pos.CENTER）にし、そこから下にずらします
+								javafx.scene.layout.StackPane.setAlignment(node, javafx.geometry.Pos.CENTER);
+
+								node.setTranslateY(100);
+
+								node.setTranslateX(150);
+							});
+							System.out.println("✨ タイトル戻るボタンを最前面レイヤーに引っ越しさせました！");
+							break;
+						}
+					}
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 

@@ -1,37 +1,48 @@
 package Characters;
 
 public abstract class Character {
-
-	protected double x; // 現在のX座標(左右移動)
-	protected double y; // 現在のY座標（上下位置）
-	protected int speed; // 移動速度
-	protected Direction direction; // キャラクターが現在向いている方向
+	// 現在のX座標（左右位置）
+	protected double x;
+	// 現在のY座標（上下位置）
+	protected double y;
+	// 移動速度
+	protected int speed;
+	// キャラクターが現在向いている方向
+	protected Direction direction;
 
 	public Character(double x, double y, int speed) {
-		this.x = x; // 初期X座標
-		this.y = y; // 初期Y座標
-		this.speed = speed; // 初期移動速度
-		this.direction = Direction.NONE; // 初期状態では停止
+		// 初期X座標
+		this.x = x;
+		// 初期Y座標
+		this.y = y;
+		// 初期移動速度
+		this.speed = speed;
+		// 初期状態では停止
+		this.direction = Direction.NONE;
 	}
 
-	// 追加のコンストラクタ：速さデフォルトを 1 にして、Sengoku の呼び出しと互換性を持たせる
+	// 速さデフォルトを 1 にして、Sengoku の呼び出しと互換性を持たせる
 	public Character(double x, double y) {
 		this(x, y, 1);
 	}
 
-	public double getX() {  //子クラスからx座標の情報をGET
+	// 子クラスからx座標の情報を取得
+	public double getX() {
 		return x;
 	}
-
-	public double getY() {  //子クラスからy座標の情報をGET
+	
+	// 子クラスからy座標の情報を取得
+	public double getY() {
 		return y;
 	}
 
-	public int getSpeed() {  //子クラスから速度の情報をGET
+	// 子クラスから速度の情報を取得
+	public int getSpeed() {
 		return speed;
 	}
 
-	public Direction getDirection() {  //子クラスから向いている方向の情報をGET
+	// 子クラスから向いている方向の情報を取得
+	public Direction getDirection() {
 		return direction;
 	}
 

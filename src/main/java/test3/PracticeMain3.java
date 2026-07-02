@@ -26,7 +26,6 @@ public class PracticeMain3 extends Application {
 		app.starts(stage);
 	}
 
-
 	public void starts(Stage stage) {
 		// 多重起動を確実に防止
 		if (this.controller != null) {
@@ -57,7 +56,7 @@ public class PracticeMain3 extends Application {
 
 		try {
 			// src/main/resources/picture/companyroom.jpg から画像を読み込む
-			//Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/shatyoroom.jpg"));
+			//Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/emd-nottori.jpg"));
 			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/insert.png"));
 			ImageView backgroundView = new ImageView(backgroundImage);
 
@@ -85,6 +84,7 @@ public class PracticeMain3 extends Application {
 		//  準備ができたコントローラーを生成
 		this.controller = new GameController(model, view, canvas, scene, stage, 3, true);
 
+		
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
 		stage.show();

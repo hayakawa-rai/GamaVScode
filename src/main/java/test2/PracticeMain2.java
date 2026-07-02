@@ -26,7 +26,6 @@ public class PracticeMain2 extends Application {
 		app.starts(stage);
 	}
 
-
 	public void starts(Stage stage) {
 		// 多重起動を確実に防止
 		if (this.controller != null) {
@@ -37,7 +36,7 @@ public class PracticeMain2 extends Application {
         MapData model = new MapData(false);
         Pane root = new Pane();
 
-		MapView view = new MapView(model, root);
+		MapView view = new MapView(model,root);
 
 
 		int viewWidth = model.getMap()[0].length * MapData.TILE_SIZE;
@@ -57,7 +56,7 @@ public class PracticeMain2 extends Application {
 
 		try {
 			// src/main/resources/picture/companyroom.jpg から画像を読み込む
-			//Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/companyroom.jpg"));
+			//Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/emd-nottori.jpg"));
 			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/insert.png"));
 			ImageView backgroundView = new ImageView(backgroundImage);
 
@@ -85,6 +84,7 @@ public class PracticeMain2 extends Application {
 		//  準備ができたコントローラーを生成
 		this.controller = new GameController(model, view, canvas, scene, stage, 2, true);
 
+		
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
 		stage.show();

@@ -19,12 +19,12 @@ public class Main2 extends Application {
 	public void start(Stage stage) {
 		starts(stage);
 	}
-	
+
 	public static void createAndStart(Stage stage) {
 		Main2 app = new Main2();
 		app.starts(stage);
 	}
-	
+
 	public void starts(Stage stage) {
 		// 多重起動を確実に防止
 		if (this.controller != null) {
@@ -39,21 +39,26 @@ public class Main2 extends Application {
 		int viewWidth = model.getMap()[0].length * MapData.TILE_SIZE;
 		int viewHeight = model.getMap().length * MapData.TILE_SIZE;
 
-		Scene scene = new Scene(root, viewWidth, viewHeight);
+		//Scene scene = new Scene(root, viewWidth, viewHeight);
+		Scene scene = new Scene(root);
 		scene.getStylesheets().add(
 				getClass().getResource("/css/test.css").toExternalForm());
 
-		root.getStyleClass().add("stage2");
+		root.getStyleClass().add("stage1");
 
 		// ★背景用Pane（CSSを効かせる対象）
 		Pane bg = new Pane();
 		bg.getStyleClass().add("game-bg");
-		bg.setPrefSize(viewWidth, viewHeight);
+		//bg.setPrefSize(viewWidth, viewHeight);
+
+		bg.prefWidthProperty().bind(scene.widthProperty());
+		bg.prefHeightProperty().bind(scene.heightProperty());
+
 		bg.setMouseTransparent(true);
 
 		try {
 			// src/main/resources/picture/companyroom.jpg から画像を読み込む
-			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/companyroom.jpg"));
+			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/emd-nottori.jpg"));
 			ImageView backgroundView = new ImageView(backgroundImage);
 
 			// 画像のサイズも、ウィンドウ（root）のサイズに完全に連動（バインド）させる
@@ -69,6 +74,7 @@ public class Main2 extends Application {
 
 		// ★ゲーム描画Canvas
 		Canvas canvas = new Canvas();
+		
 		canvas.widthProperty().bind(root.widthProperty());
 		canvas.heightProperty().bind(root.heightProperty());
 
@@ -91,17 +97,22 @@ public class Main2 extends Application {
 		//敵描画呼び出し　成田
 		model.initEnemy(new javafx.scene.image.ImageView());
 
-		// 完璧に準備ができた【最後】にコントローラーを1回だけ生成（重複は削除！）
-		this.controller = new GameController(model, view, canvas, scene, stage, 2, false);
+		//完璧に準備ができた最後にコントローラーを1回だけ生成
+		this.controller  = new GameController(model, view, canvas, scene, stage, 2, false);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
 		// ★追加
-		stage.setMaximized(true);
 		stage.show();
 
+		stage.setMaximized(false);
+		javafx.application.Platform.runLater(() ->{
+			stage.setMaximized(true);
+		});
 		canvas.requestFocus();
+
 	}
+		
 
 	public static void main(String[] args) {
 		launch(args);
