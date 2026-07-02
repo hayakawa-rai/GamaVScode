@@ -23,7 +23,7 @@ public class BlueEnemy extends Enemy {
 	// 出発時間の記録
 	private long startTime;
 
-	//ゲーム開始した瞬間にタイマーをスタート
+	// ゲーム開始した瞬間にタイマーをスタート
 	private boolean timerStarted = false;
 	// 巣から出たか
 	private boolean released = false;
@@ -37,7 +37,7 @@ public class BlueEnemy extends Enemy {
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
 				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
 		this.mapData = mapData;
-		
+
 		// FEVER画像をステージごとに読み込む
 		loadFeverImage();
 
@@ -51,17 +51,17 @@ public class BlueEnemy extends Enemy {
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-				
+
 				// ステージ1の画像
 				imagePath = "/picture/narita_EnemyBlue.png";
 				break;
 			case 2:
-				
+
 				// ステージ2の画像
 				imagePath = "/picture/wada_EnemyBlue.png";
 				break;
 			case 3:
-				
+
 				// ステージ3の画像
 				imagePath = "/picture/hayakawa_EnemyBlue.png";
 				break;
@@ -92,30 +92,29 @@ public class BlueEnemy extends Enemy {
 		}
 	}
 
-
 	// 2秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-	    if (mapData.isWaitingStart()) {
-	        return;
-	    }
+		if (mapData.isWaitingStart()) {
+			return;
+		}
 
-	    // 初回入力後に初めてタイマー開始
-	    if (!timerStarted) {
-	        startTime = System.currentTimeMillis();
-	        timerStarted = true;
-	    }
+		// 初回入力後に初めてタイマー開始
+		if (!timerStarted) {
+			startTime = System.currentTimeMillis();
+			timerStarted = true;
+		}
 
-	    if (!released) {
-	        long elapsed = System.currentTimeMillis() - startTime;
+		if (!released) {
+			long elapsed = System.currentTimeMillis() - startTime;
 			if (elapsed < 2000) {
 				return;
 			}
 
-	        released = true;
-	    }
+			released = true;
+		}
 
-	    super.move(map);
+		super.move(map);
 	}
 
 	@Override
@@ -161,10 +160,7 @@ public class BlueEnemy extends Enemy {
 
 		// 縄張りモード
 		if (currentState == Characters.EnemyState.SCATTER) {
-			return getClosestDirection(
-					validDirections,
-					TERRITORY_COL,
-					TERRITORY_ROW);
+			return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 		}
 
 		// 共通処理
@@ -177,8 +173,8 @@ public class BlueEnemy extends Enemy {
 		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
-	
-	//プレイヤーが被弾時に元の場所、出撃時間をリセット
+
+	// プレイヤーが被弾時に元の場所、出撃時間をリセット
 	@Override
 	public void resetToStartPosition() {
 		super.resetToStartPosition();
@@ -186,4 +182,14 @@ public class BlueEnemy extends Enemy {
 		timerStarted = false;
 	}
 
+	@Override
+	public void resumeTimer() {
+
+		if (timerStarted && !released) {
+
+			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
+
+			startTime += pauseDuration;
+		}
+	}
 }

@@ -230,6 +230,11 @@ public class MapData implements GameMap {
 
 			paused = true;
 			pauseStartTime = System.currentTimeMillis();
+
+			for (Enemy e : enemies) {
+				e.pauseTimer();
+			}
+
 		} else {
 			paused = false;
 
@@ -242,6 +247,11 @@ public class MapData implements GameMap {
 			// CHASE/SCATTERタイマー停止
 			if (modeStartTime > 0) {
 				modeStartTime += pauseDuration;
+			}
+
+			for (Enemy e : enemies) {
+				e.resumeTimer();
+
 			}
 		}
 	}

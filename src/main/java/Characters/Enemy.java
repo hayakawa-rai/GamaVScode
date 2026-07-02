@@ -16,7 +16,8 @@ public abstract class Enemy extends Character {
 	protected javafx.scene.image.Image normalImage;
 	protected javafx.scene.image.Image feverImage;
 	protected javafx.scene.image.Image deadImage;
-	
+
+	//ポーズ時間
 	protected long pauseStartTime = 0;
 
 	protected final double startX;
@@ -27,6 +28,13 @@ public abstract class Enemy extends Character {
 
 		this.startX = startX;
 		this.startY = startY;
+	}
+
+	public void pauseTimer() {
+		pauseStartTime = System.currentTimeMillis();
+	}
+
+	public void resumeTimer() {
 	}
 
 	protected abstract Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData);
@@ -74,11 +82,11 @@ public abstract class Enemy extends Character {
 		if (this.direction == Direction.NONE || atCenter) {
 			List<Direction> validDirections = getValidDirections(map);
 			if (!validDirections.isEmpty()) {
-				
+
 				// 現在のタイル座標を一時的に取得（条件判定用）
 				int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
 				int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
-				
+
 				// 巣の中にいる間は、ターゲットを強制的に巣のすぐ外に移動する
 				if (currentState != Characters.EnemyState.DEAD && currentRow >= 12 && currentRow <= 15
 						&& currentCol >= 12 && currentCol <= 15) {
@@ -116,7 +124,7 @@ public abstract class Enemy extends Character {
 
 	// DEAD・FEVERの共通処理
 	protected Direction handleSpecialState(List<Direction> validDirections, int targetCol, int targetRow, int[][] map) {
-		
+
 		// DEAD状態なら、自動的にマップ内の「7（扉）」の中から【一番近い場所】を探してそこへ帰る
 		if (currentState == Characters.EnemyState.DEAD) {
 			int[][] currentMap = map;
@@ -134,7 +142,7 @@ public abstract class Enemy extends Character {
 			for (int r = 0; r < currentMap.length; r++) {
 				for (int c = 0; c < currentMap[r].length; c++) {
 					if (currentMap[r][c] == 7) {
-						
+
 						// 自分の現在地からの距離を計算（三平方の定理）
 						double distSq = Math.pow(c - myCol, 2) + Math.pow(r - myRow, 2);
 						if (distSq < minDistanceSq) {
@@ -273,7 +281,7 @@ public abstract class Enemy extends Character {
 		}
 
 		try {
-			
+
 			// 指定したパスから画像を取得
 			java.io.InputStream is = getClass().getResourceAsStream(feverPath);
 
@@ -359,8 +367,8 @@ public abstract class Enemy extends Character {
 	public void setCurrentState(Characters.EnemyState state) {
 		this.currentState = state;
 	}
-	
-	//プレイヤーが被弾時に元の場所、出撃時間をリセット
+
+	// プレイヤーが被弾時に元の場所、出撃時間をリセット
 	public void resetToStartPosition() {
 		this.x = startX;
 		this.y = startY;
