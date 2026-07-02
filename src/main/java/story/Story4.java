@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Bgm;
+import util.WindowUtil;
 
 public class Story4 extends Application {
 
@@ -41,11 +42,9 @@ public class Story4 extends Application {
 		//ウィンドウの中身を決定
 		stage.setScene(story4());
 		stage.setTitle("story4");
-		
-		stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
-		stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
-		
-		stage.show();
+		//画面の強制再設定
+		WindowUtil.fillScreen(stage);
+
 	}
 
 	private Timeline blink;

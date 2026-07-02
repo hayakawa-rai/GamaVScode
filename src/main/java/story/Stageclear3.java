@@ -13,6 +13,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import util.WindowUtil;
 
 public class Stageclear3 extends Application {
 	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
@@ -26,11 +27,9 @@ public class Stageclear3 extends Application {
 		//ウィンドウの中身を決定
 		stage.setScene(clear());
 		stage.setTitle("stage3CLEAR");
-		
-		stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
-		stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
-		
-		stage.show();
+		//画面の強制再設定
+		WindowUtil.fillScreen(stage);
+
 	}
 
 	private AudioClip clearSound;

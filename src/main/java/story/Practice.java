@@ -18,6 +18,7 @@ import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Bgm;
+import util.WindowUtil;
 
 public class Practice extends Application {
 
@@ -33,9 +34,9 @@ public class Practice extends Application {
 		this.stage = stage;
 		stage.setScene(createScene());
 		stage.setTitle("練習モード");
-		// ★追加
-		stage.setMaximized(true);
-		stage.show();
+		//画面の強制再設定
+		WindowUtil.fillScreen(stage);
+
 	}
 
 	private void cleanup() {

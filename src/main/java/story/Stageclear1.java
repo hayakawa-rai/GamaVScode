@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import test.test2.GameController;
+import util.WindowUtil;
 
 public class Stageclear1 extends Application {
 
@@ -41,10 +42,9 @@ public class Stageclear1 extends Application {
 		// ウィンドウの中身を決定
 		stage.setScene(clear());
 		stage.setTitle("stage1CLEAR");
+		//画面の強制再設定
+		WindowUtil.fillScreen(stage);
 
-		stage.setMaximized(true);
-
-		stage.show();
 	}
 
 	private AudioClip clearSound;
