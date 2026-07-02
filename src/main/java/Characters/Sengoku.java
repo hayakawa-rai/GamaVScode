@@ -10,7 +10,7 @@ public class Sengoku extends Character {
 	private Direction nextdirection = Direction.NONE;
 	private static final int CELL_SIZE = 30;
 
-	// --- ミス演出のための変数 ---
+	// ミス演出のための変数
 	private final double startX;
 	private final double startY;
 	private boolean isDyingAnimation = false;
@@ -84,13 +84,21 @@ public class Sengoku extends Character {
 		double checkY = this.y;
 
 		if (direction == Direction.RIGHT) {
-			checkX = this.x + CELL_SIZE - 1 + this.speed; // 右端 + speed分先
+			
+			// 右端 + speed分先
+			checkX = this.x + CELL_SIZE - 1 + this.speed;
 		} else if (direction == Direction.LEFT) {
-			checkX = this.x - this.speed; // 左端 - speed分先
+			
+			// 左端 - speed分先
+			checkX = this.x - this.speed;
 		} else if (direction == Direction.DOWN) {
-			checkY = this.y + CELL_SIZE - 1 + this.speed; // 下端 + speed分先
+			
+			// 下端 + speed分先
+			checkY = this.y + CELL_SIZE - 1 + this.speed;
 		} else if (direction == Direction.UP) {
-			checkY = this.y - this.speed; // 上端 - speed分先
+			
+			// 上端 - speed分先
+			checkY = this.y - this.speed;
 		}
 
 		int checkCol = (int) (checkX / CELL_SIZE);
@@ -100,7 +108,6 @@ public class Sengoku extends Character {
 		if (checkRow < 0 || checkRow >= map.length || checkCol < 0 || checkCol >= map[0].length) {
 			return false;
 		}
-
 		return map[checkRow][checkCol] != 1;
 	}
 
@@ -112,7 +119,7 @@ public class Sengoku extends Character {
 	// ミスが起きたときにアニメーションを開始する
 	public void startDying() {
 		
-		//★テスト用
+		// テスト用
 	    System.out.println("死亡アニメーション開始");
 		
 		this.isDyingAnimation = true;
@@ -129,7 +136,7 @@ public class Sengoku extends Character {
 
 	    dyingTimer++;
 
-	  //★テスト用
+	  //テスト用
 	    System.out.println("dyingTimer=" + dyingTimer);
 
 	    if (dyingTimer < 60) {

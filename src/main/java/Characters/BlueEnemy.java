@@ -32,30 +32,38 @@ public class BlueEnemy extends Enemy {
 	private RedEnemy red;
 
 	public BlueEnemy(GameMap mapData) {
+
 		// マスの中心座標を初期位置として Enemy に渡す
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
 				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
-
 		this.mapData = mapData;
-
+		
+		// FEVER画像をステージごとに読み込む
 		loadFeverImage();
 
 		// DEAD画像を読み込む
 		loadDeadImage();
 
 		// 現在のステージ番号によって、読み込む画像を切り替える
-		String imagePath = "/picture/narita_EnemyBlue.png"; // デフォルト（ステージ1用）
+		// デフォルト（ステージ1用）
+		String imagePath = "/picture/narita_EnemyBlue.png";
 
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-				imagePath = "/picture/narita_EnemyBlue.png"; // ステージ1の画像
+				
+				// ステージ1の画像
+				imagePath = "/picture/narita_EnemyBlue.png";
 				break;
 			case 2:
-				imagePath = "/picture/wada_EnemyBlue.png"; // ステージ2の画像
+				
+				// ステージ2の画像
+				imagePath = "/picture/wada_EnemyBlue.png";
 				break;
 			case 3:
-				imagePath = "/picture/hayakawa_EnemyBlue.png"; // ステージ3の画像
+				
+				// ステージ3の画像
+				imagePath = "/picture/hayakawa_EnemyBlue.png";
 				break;
 			default:
 				break;
@@ -74,46 +82,32 @@ public class BlueEnemy extends Enemy {
 		try {
 			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
-				System.err.println("❌【エラー】画像が見つかりません: " + imagePath);
+				System.err.println("【エラー】画像が見つかりません: " + imagePath);
 			} else {
 				this.normalImage = new Image(is);
-				System.out.println("⭕【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
+				System.out.println("【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	// 画像の読み込み処理
-	public Image getEnemyImage() {
-		if (this.currentState == Characters.EnemyState.DEAD) {
-			return deadImage;
-		}
-		if (this.currentState == Characters.EnemyState.FEVER) {
-			return feverImage;
-		}
-		return normalImage;
-	}
 
 	// 2秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-
 	    if (mapData.isWaitingStart()) {
 	        return;
 	    }
 
 	    // 初回入力後に初めてタイマー開始
 	    if (!timerStarted) {
-
 	        startTime = System.currentTimeMillis();
 	        timerStarted = true;
 	    }
 
 	    if (!released) {
-
 	        long elapsed = System.currentTimeMillis() - startTime;
-
 			if (elapsed < 2000) {
 				return;
 			}
@@ -165,7 +159,7 @@ public class BlueEnemy extends Enemy {
 		int targetCol = pacCol + vx;
 		int targetRow = pacRow + vy;
 
-		// SCATTER
+		// 縄張りモード
 		if (currentState == Characters.EnemyState.SCATTER) {
 			return getClosestDirection(
 					validDirections,
@@ -183,12 +177,11 @@ public class BlueEnemy extends Enemy {
 		// 親クラスの最短ルート計算メソッドにターゲットマスを渡して、最短ルートで次の一歩を決める
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
-
+	
+	//プレイヤーが被弾時に元の場所、出撃時間をリセット
 	@Override
 	public void resetToStartPosition() {
-
 		super.resetToStartPosition();
-
 		released = false;
 		timerStarted = false;
 	}

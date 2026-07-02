@@ -67,14 +67,12 @@ public class Start extends Application {
 		    e.printStackTrace();
 		}
 
-		// ★2. 画面を作る前にレトロフォントファイルを読み込む
-		// 他のリソース（pictureやmusic）と同じ並びの「font」フォルダに置くのがオススメです
+		// 2. 画面を作る前にレトロフォントファイルを読み込む
 		try {
 			Font.loadFont(getClass().getResourceAsStream("/font/PixelMplus12-Regular.ttf"), 20);
 		} catch (Exception e) {
 			System.err.println("フォントの読み込みに失敗しました: " + e.getMessage());
 		}
-
 
 		//背景用の画像を読み込み
 		Image bgImage = new Image(
@@ -134,90 +132,105 @@ public class Start extends Application {
 
 		//縦に並べるための箱を作成
 		VBox buttonBox = new VBox();
-		//buttonBoxによる配置の間隔を設定
+		// buttonBoxによる配置の間隔を設定
 		buttonBox.setSpacing(20);
-		//中央に設定
+		// 中央に設定
 		buttonBox.setAlignment(Pos.CENTER);
-		//BGMの再生
+		// BGMの再生
 		Bgm.playBGM("/music/startbgm.mp3");
 
-		//音声読み込み
+		// 音声読み込み
 		clickSound = new AudioClip(
 				getClass().getResource("/music/select.mp3").toExternalForm());
 		// 音量調整
 		clickSound.setVolume(0.4);
 
-		//ストーリーモードへ飛ぶボタンを作成
+		// ストーリーモードへ飛ぶボタンを作成
 		Button btn1 = new Button("▶ストーリー");
 		btn1.setPrefSize(300, 100);
+
 		//btn1にCSSのgame-buttonを付与
 		btn1.getStyleClass().add("game-button");
 		btn1.setOnAction(e -> {
 			try {
+				
 				// 音を鳴らす
 				clickSound.stop();
 				clickSound.play();
+				
 				// 0.15秒後に画面遷移
 				Timeline delay = new Timeline(
-						new KeyFrame(Duration.millis(500), ev -> {
-							//音と背景停止
-							cleanup();
-							//画面遷移
-							test.test2.GameController.startToStory(stage);
-						}));
+					new KeyFrame(Duration.millis(500), ev -> {
+
+						//音と背景停止
+						cleanup();
+
+						//画面遷移
+						test.test2.GameController.startToStory(stage);
+					}));
 				delay.play();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		});
+
 		//練習モードへ飛ぶボタン作成
 		Button btn2 = new Button("⚔練習モード");
 		btn2.setPrefSize(300, 100);
+
 		//setOnAction:クリックしたときに実行する処理を記述
 		//(e->:クリックされたら実行される処理を書いていくという記号)
 		btn2.setOnAction(e -> {
 			try {
+
 				// 音を鳴らす
 				clickSound.stop();
 				clickSound.play();
 
 				// 0.15秒後に画面遷移
 				Timeline delay = new Timeline(
-						new KeyFrame(Duration.millis(500), ev -> {
-							// 背景停止
-							timer.stop();
-							// 画面遷移
-							control.GameController.switchToPractice(stage);
-						}));
+					new KeyFrame(Duration.millis(500), ev -> {
+
+					// 背景停止
+					timer.stop();
+
+					// 画面遷移
+					control.GameController.switchToPractice(stage);
+					}));
 				delay.play();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		});
+
 		//btn2にCSSのgame-buttonを付与
 		btn2.getStyleClass().add("game-button");
 
 		//無限モードへ飛ぶボタン作成
 		Button btn3 = new Button("🔚ゲーム終了");
 		btn3.setPrefSize(300, 100);
+
 		//btn3にCSSのgame-buttonを付与
 		btn3.getStyleClass().add("game-button");
 
 		// クリックしたときにアプリを終了する処理
 		btn3.setOnAction(e -> {
 			try {
+
 				// 効果音を鳴らす
 				clickSound.stop();
 				clickSound.play();
 
 				// 他のボタンに合わせて0.5秒後にアプリを閉じる
 				Timeline delay = new Timeline(
-						new KeyFrame(Duration.millis(500), ev -> {
-							// 背景アニメーションやBGMを安全に停止
-							cleanup();
-							// JavaFXアプリを終了する
-							Platform.exit();
-						}));
+					new KeyFrame(Duration.millis(500), ev -> {
+
+						// 背景アニメーションやBGMを安全に停止
+						cleanup();
+
+						// JavaFXアプリを終了する
+					Platform.exit();
+					}));
 				delay.play();
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -229,7 +242,7 @@ public class Start extends Application {
 
 		//titleの画像と3個のボタンが入った箱を縦に並ぶ箱に入れる
 		ui.getChildren().addAll(imageView, buttonBox);
-		//下から背景、uiの箱に入れたものの順でレイヤー構造のrootに入れる
+		//下から背景、UIの箱に入れたものの順でレイヤー構造のrootに入れる
 		root.getChildren().addAll(bgPane, ui);
 
 		//rootを中身とした1000×800のウィンドウを作成
@@ -240,11 +253,12 @@ public class Start extends Application {
 		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
 		stage.setMinWidth(800);
 		stage.setMinHeight(600);
+
 		//ウィンドウの名前を設定
 		stage.setTitle("スタート画面");
+
 		//ウィンドウの中身を設定・表示
 		stage.setScene(scene);
-		// ★追加
 		stage.setMaximized(true);
 		stage.show();
 	}
