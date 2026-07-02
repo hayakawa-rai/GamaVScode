@@ -28,27 +28,9 @@ public class MapView {
 	// ヘッダー
 	private static final double INFO_HEIGHT = 40;
 
-	// ボタン変数と口の向き用変数
-	private javafx.scene.control.Button toStartButton;
-
-	// 💡 【超重要】自分を動かしているコントローラーのインスタンスを保持する変数
-	private control.GameController myController = null;
-
-	// MapView のフィールドに Pac-Man 画像を追加
-	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
-			getClass().getResource("/picture/sengoku.png").toExternalForm());
-	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
-			getClass().getResource("/picture/sengoku_Fever.png").toExternalForm());
-
-	public void setController(control.GameController controller) {
-		this.myController = controller;
-	}
-
 	// 互換コンストラクタ（引数1つ用）
 	public MapView(MapData model) {
 		this.model = model;
-		// 引数1つで呼ばれた場合も最低限ボタンの初期化だけは走らせる
-		initStartButton();
 	}
 
 	// 新しいコンストラクタ（引数2つ用）
@@ -64,21 +46,6 @@ public class MapView {
 		pacmanDummy.setVisible(false);
 		root.getChildren().addAll(wallDummy, pacmanDummy);
 
-		// ボタンを初期化する（デザイン・中央揃えバインディング・遷移イベントを一発設定）
-		initStartButton();
-
-		// 画面サイズが変わっても、ボタンの左端を常に「画面の真ん中」、高さは「真ん中+90px」に連動
-		root.widthProperty().addListener((obs, oldVal, newVal) -> {
-			toStartButton.setLayoutX(newVal.doubleValue() / 2.0);
-		});
-		root.heightProperty().addListener((obs, oldVal, newVal) -> {
-			toStartButton.setLayoutY((newVal.doubleValue() / 2.0) + 90);
-		});
-
-		// 画面（root）の子要素として登録
-		root.getChildren().add(toStartButton);
-
-		// シーンがセットされたらモバイル用コントロールを適用
 		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
 			if (newScene != null) {
 				test.test2.GameController.applyMobileControls(newScene, this.model);
@@ -86,51 +53,11 @@ public class MapView {
 		});
 	}
 
-	// 画面遷移中かどうかを判定するフラグ
-	private boolean isReturningToTitle = false;
-
-	// ★★★ ボタンの共通設定をまとめたメソッド ★★★
-	private void initStartButton() {
-		if (toStartButton == null) {
-			toStartButton = new javafx.scene.control.Button("タイトルへ戻る");
-
-			// ボタンのデザインスタイル
-			toStartButton.setStyle(
-					"-fx-font-size: 16px; -fx-font-family: 'Meiryo'; -fx-font-weight: bold; " +
-							"-fx-background-color: #ffffff; -fx-text-fill: #333333; " +
-							"-fx-background-radius: 5px; -fx-padding: 8px 16px;");
-			toStartButton.setFocusTraversable(false);
-			toStartButton.setVisible(false);
-
-			// ボタンの横幅自動中央揃え設定
-			toStartButton.translateXProperty().bind(toStartButton.widthProperty().divide(-2.0));
-
-			// ボタンが押されたときの処理
-			toStartButton.setOnAction(e -> {
-				System.out.println("タイトルへ戻るボタンがクリックされました！");
-
-				toStartButton.setVisible(false);
-				isReturningToTitle = true; // 画面遷移開始フラグ
-
-				if (myController != null) {
-					myController.forceBackToTitle();
-				} else {
-					System.out.println("⚠️ myController が null のため遷移できません");
-				}
-			});
-		}
-	}
-
 	/**
 	 * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
 	 */
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
-		// タイトル画面に戻る処理が走っていたら、以降の描画を一切行わずに終了する！
-		if (isReturningToTitle) {
-			gc.clearRect(0, 0, canvasWidth, canvasHeight);
-			return;
-		}
 
 		// 1. まずはCanvasを一度綺麗に消す（透明にする）
 		gc.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -138,6 +65,7 @@ public class MapView {
 		gc.fillRect(0, 0, canvasWidth, INFO_HEIGHT);
 
 		Color wallColor = getColorFromCSS(wallDummy, Color.BLUE);
+		Color pacmanColor = getColorFromCSS(pacmanDummy,Color.YELLOW);
 
 		// 1. ステージ本来のサイズを計算
 		int cols = model.getMap()[0].length;
@@ -201,17 +129,6 @@ public class MapView {
 		// モデルが一時停止中（paused）だったら、画面中央にテキストを描画する
 		if (model.isPaused() && !model.isGameOver() && !model.isCleared()) {
 
-			// 一時停止中だけボタンを見せる ★★★
-			if (toStartButton != null) {
-				toStartButton.setVisible(true);
-				toStartButton.toFront(); // 最前面へ引き出す
-
-				// ボタンが表示された瞬間に、コントローラー経由で StackPane の最前面へ強制引っ越しさせる
-				if (myController != null) {
-					myController.bringTitleButtonToFront();
-				}
-			}
-
 			// 1. 画面全体を少し暗くする（半透明の黒いフィルターを重ねる）
 			gc.setFill(Color.rgb(0, 0, 0, 0.6)); // 最後の0.6が不透明度（60%）
 			gc.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -237,11 +154,6 @@ public class MapView {
 			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
 			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
 			gc.setTextBaseline(javafx.geometry.VPos.TOP);
-		} else {
-			// 一時停止中じゃない時はボタンを隠す
-			if (toStartButton != null) {
-				toStartButton.setVisible(false);
-			}
 		}
 	}
 
@@ -270,11 +182,26 @@ public class MapView {
 			}
 		}
 	}
+	
+	//MapViewのフィールドにPac-man画像を追加
+	
+	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
+			getClass().getResource("/picture/sengoku.png").toExternalForm());
+	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
+			getClass().getResource("/picture/sengoku_Fever.png").toExternalForm());
 
 	public void drawPacman(GraphicsContext gc) {
 		Sengoku sengoku = model.getSengoku();
 
 		if (sengoku == null)
+			return;
+		
+		if(sengoku.isDyingAnimation()) {
+			drawDyingSengoku(gc,sengoku);
+			return;
+		}
+		
+		if(!sengoku.isAlive())
 			return;
 
 		if (pacmanImage == null) {
@@ -285,11 +212,39 @@ public class MapView {
 
 		double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
 		double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
-		gc.save();
 		
+		Characters.Direction dir = sengoku.getDirection();
+		double angle = 0;
+		
+		gc.save();
+
 		gc.translate(pacX, pacY);
-		gc.rotate(0);
-		gc.drawImage(pacmanImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+		gc.rotate(angle);
+
+		//FEVER終了時は点滅
+		if(sengoku.isFever()) {
+			
+			long remain = model.getFeverRemainingTime();
+				
+			if(remain <= 3000) {
+			
+				if((System.currentTimeMillis() / 150) % 2 == 0) {
+					gc.restore();
+					return;
+				}
+			}
+		}
+		
+		//使用画像を指定
+		
+		Image currentImage = pacmanImage;
+
+		if (sengoku.isFever()) {
+			currentImage = pacmanFeverImage;
+
+		}
+
+		gc.drawImage(currentImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
 				MapData.TILE_SIZE);
 		gc.restore();
 	}
@@ -400,16 +355,5 @@ public class MapView {
 		} catch (Exception e) {
 		}
 		return defaultColor;
-	}
-
-	/**
-	 * ボタンを現在のレイアウト構造の最前面へ引き出すメソッド
-	 */
-	public void bringButtonToFront() {
-		if (toStartButton != null && toStartButton.getParent() instanceof Pane) {
-			Pane parent = (Pane) toStartButton.getParent();
-			parent.getChildren().remove(toStartButton);
-			parent.getChildren().add(toStartButton);
-		}
 	}
 }

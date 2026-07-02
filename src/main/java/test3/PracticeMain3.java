@@ -8,8 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import test3.model.MapData;
-import test3.view.MapView;
+import test1.model.MapData;
+import test1.view.MapView;
 
 // パックマン・練習用ステージの起動クラス
 public class PracticeMain3 extends Application {
@@ -25,7 +25,6 @@ public class PracticeMain3 extends Application {
 		PracticeMain3 app = new PracticeMain3();
 		app.starts(stage);
 	}
-
 
 	public void starts(Stage stage) {
 		// 多重起動を確実に防止
@@ -57,7 +56,7 @@ public class PracticeMain3 extends Application {
 
 		try {
 			// src/main/resources/picture/companyroom.jpg から画像を読み込む
-			//Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/shatyoroom.jpg"));
+			//Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/emd-nottori.jpg"));
 			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/insert.png"));
 			ImageView backgroundView = new ImageView(backgroundImage);
 
@@ -83,15 +82,12 @@ public class PracticeMain3 extends Application {
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		//  準備ができたコントローラーを生成
-		this.controller = new GameController(model, view, canvas, scene, stage, 3, false);
-		
-		view.setController(this.controller);
+		this.controller = new GameController(model, view, canvas, scene, stage, 3, true);
 
+		
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
 		stage.show();
-
-		view.bringButtonToFront();
 
 		canvas.requestFocus();
 	}

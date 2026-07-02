@@ -15,9 +15,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import test2.model.MapData;
+import test1.model.MapData;
 
 public class MapView {
+
 	private final MapData model;
 
 	// CSSの色を吸い取るための「見えないダミー部品」
@@ -27,22 +28,9 @@ public class MapView {
 	// ヘッダー
 	private static final double INFO_HEIGHT = 40;
 
-	// ボタン変数と口の向き用変数
-	private javafx.scene.control.Button toStartButton;
-	private double lastBaseAngle = 0;
-
-	// 💡 【超重要】自分を動かしているコントローラーのインスタンスを保持する変数
-	private control.GameController myController = null;
-
-	public void setController(control.GameController controller) {
-		this.myController = controller;
-	}
-
 	// 互換コンストラクタ（引数1つ用）
 	public MapView(MapData model) {
 		this.model = model;
-		// 引数1つで呼ばれた場合も最低限ボタンの初期化だけは走らせる
-		initStartButton();
 	}
 
 	// 新しいコンストラクタ（引数2つ用）
@@ -58,73 +46,18 @@ public class MapView {
 		pacmanDummy.setVisible(false);
 		root.getChildren().addAll(wallDummy, pacmanDummy);
 
-		//ボタンを初期化する（デザイン・中央揃えバインディング・遷移イベントを一発設定）
-		initStartButton();
-
-		// 画面サイズが変わっても、ボタンの左端を常に「画面の真ん中」、高さは「真ん中+90px」に連動
-		root.widthProperty().addListener((obs, oldVal, newVal) -> {
-			toStartButton.setLayoutX(newVal.doubleValue() / 2.0);
-		});
-		root.heightProperty().addListener((obs, oldVal, newVal) -> {
-			toStartButton.setLayoutY((newVal.doubleValue() / 2.0) + 90);
-		});
-
-		// 画面（root）の子要素として登録
-		root.getChildren().add(toStartButton);
-
-		// シーンがセットされたらモバイル用コントロールを適用
 		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
 			if (newScene != null) {
 				test.test2.GameController.applyMobileControls(newScene, this.model);
 			}
 		});
-
 	}
 
-	// 画面遷移中かどうかを判定するフラグ
-	private boolean isReturningToTitle = false;
-
-	// ★★★ ボタンの共通設定をまとめたメソッド ★★★
-	private void initStartButton() {
-		if (toStartButton == null) {
-			toStartButton = new javafx.scene.control.Button("タイトルへ戻る");
-
-			// ボタンのデザインスタイル
-			toStartButton.setStyle(
-					"-fx-font-size: 16px; -fx-font-family: 'Meiryo'; -fx-font-weight: bold; " +
-							"-fx-background-color: #ffffff; -fx-text-fill: #333333; " +
-							"-fx-background-radius: 5px; -fx-padding: 8px 16px;");
-			toStartButton.setFocusTraversable(false);
-			toStartButton.setVisible(false);
-
-			// ボタンの横幅自動中央揃え設定
-			toStartButton.translateXProperty().bind(toStartButton.widthProperty().divide(-2.0));
-
-			// ボタンが押されたときの処理
-			toStartButton.setOnAction(e -> {
-
-				System.out.println("タイトルへ戻るボタンがクリックされました！");
-
-				toStartButton.setVisible(false);
-				isReturningToTitle = true; // 画面遷移開始フラグ
-
-				if (myController != null) {
-					myController.forceBackToTitle();
-				} else {
-					System.out.println("⚠️ myController が null のため遷移できません");
-				}
-			});
-		}
-	}
-
-	// ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
+	/**
+	 * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
+	 */
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
-		//タイトル画面に戻る処理が走っていたら、以降の描画を一切行わずに終了する！
-		if (isReturningToTitle) {
-			gc.clearRect(0, 0, canvasWidth, canvasHeight);
-			return;
-		}
 
 		// 1. まずはCanvasを一度綺麗に消す（透明にする）
 		gc.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -132,7 +65,7 @@ public class MapView {
 		gc.fillRect(0, 0, canvasWidth, INFO_HEIGHT);
 
 		Color wallColor = getColorFromCSS(wallDummy, Color.BLUE);
-		Color pacmanColor = getColorFromCSS(pacmanDummy, Color.YELLOW);
+		Color pacmanColor = getColorFromCSS(pacmanDummy,Color.YELLOW);
 
 		// 1. ステージ本来のサイズを計算
 		int cols = model.getMap()[0].length;
@@ -151,16 +84,6 @@ public class MapView {
 		double offsetX = (canvasWidth - (stageWidth * scale)) / 2.0;
 		double offsetY = ((canvasHeight - INFO_HEIGHT) - (stageHeight * scale)) / 2.0 + INFO_HEIGHT;
 
-		// 4. 背景の黒を画面全体に塗る（余白も含めて真っ黒にする場合）
-
-		// gc.setFill(Color.BLACK);
-
-		// gc.fillRect(0, 0, canvasWidth, canvasHeight);
-
-		// 4. 【重要】画面全体の黒塗りを廃止（これで後ろの背景画像が透けます）
-		// gc.setFill(Color.BLACK);
-		// gc.fillRect(0, 0, canvasWidth, canvasHeight);
-
 		// 5. グラフィックスの状態を保存
 		gc.save();
 
@@ -178,20 +101,16 @@ public class MapView {
 
 		// 敵の描画メソッド
 		if (model.getEnemies() != null) {
-
 			for (Enemy enemy : model.getEnemies()) {
-
 				drawEnemyInstance(gc, enemy);
 			}
 		}
 
 		// 8. グラフィックスの状態を元に戻す
 		gc.restore();
-
 		Sengoku sengoku = model.getSengoku();
 
 		if (sengoku != null) {
-
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
 			// スコア
@@ -209,17 +128,6 @@ public class MapView {
 
 		// モデルが一時停止中（paused）だったら、画面中央にテキストを描画する
 		if (model.isPaused() && !model.isGameOver() && !model.isCleared()) {
-
-			// 一時停止中だけボタンを見せる ★★★
-			if (toStartButton != null) {
-				toStartButton.setVisible(true);
-				toStartButton.toFront(); // 最前面へ引き出す
-
-				// ボタンが表示された瞬間に、コントローラー経由で StackPane の最前面へ強制引っ越しさせる
-				if (myController != null) {
-					myController.bringTitleButtonToFront();
-				}
-			}
 
 			// 1. 画面全体を少し暗くする（半透明の黒いフィルターを重ねる）
 			gc.setFill(Color.rgb(0, 0, 0, 0.6)); // 最後の0.6が不透明度（60%）
@@ -246,47 +154,26 @@ public class MapView {
 			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
 			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
 			gc.setTextBaseline(javafx.geometry.VPos.TOP);
-		} else {
-			//一時停止中じゃない時はボタンを隠す
-			if (toStartButton != null) {
-				toStartButton.setVisible(false);
-			}
 		}
 	}
-	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
 
+	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
 	private void drawStageContent(GraphicsContext gc, int cols, int rows, double stageWidth, double stageHeight,
 			Color wallColor) {
 		Item[][] itemMap = model.getItemMap();
 
-		// WallOutline で壁を描画 (古田変更 問題なかったら()消してね)
+		// WallOutline で壁を描画
 		WallOutline outline = new WallOutline(model.getMap(), MapData.TILE_SIZE);
 		gc.setStroke(wallColor);
 		gc.setLineWidth(2);
 		outline.drawOutline(gc);
 
+		// ★ アイテムを描画
 		for (int row = 0; row < rows; row++) {
-
 			for (int col = 0; col < cols; col++) {
-
-				// int tile = model.getMap()[row][col];
-
 				int x = col * MapData.TILE_SIZE;
-
 				int y = row * MapData.TILE_SIZE;
-
 				Item item = itemMap[row][col];
-
-				// 壁の描画 (壁の見た目変更のためコメントアウト中)
-
-				// if (tile == 1) {
-
-				// gc.setFill(Color.BLUE);
-
-				// gc.setFill(wallColor);
-				// gc.fillRect(x + 2, y + 2, MapData.TILE_SIZE - 4, MapData.TILE_SIZE - 4);
-
-				// }
 
 				// アイテムの描画
 				if (item != null) {
@@ -295,11 +182,11 @@ public class MapView {
 			}
 		}
 	}
-
-	// MapView のフィールドに Pac-Man 画像を追加
+	
+	//MapViewのフィールドにPac-man画像を追加
+	
 	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
 			getClass().getResource("/picture/sengoku.png").toExternalForm());
-
 	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
 			getClass().getResource("/picture/sengoku_Fever.png").toExternalForm());
 
@@ -308,17 +195,16 @@ public class MapView {
 
 		if (sengoku == null)
 			return;
-
-		if (sengoku.isDyingAnimation()) {
-			drawDyingSengoku(gc, sengoku);
+		
+		if(sengoku.isDyingAnimation()) {
+			drawDyingSengoku(gc,sengoku);
 			return;
 		}
-
-		if (!sengoku.isAlive())
+		
+		if(!sengoku.isAlive())
 			return;
 
 		if (pacmanImage == null) {
-			// 画像が無い場合の代替描画
 			gc.setFill(Color.YELLOW);
 			gc.fillOval(sengoku.getX(), sengoku.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
 			return;
@@ -326,139 +212,70 @@ public class MapView {
 
 		double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
 		double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
-
+		
 		Characters.Direction dir = sengoku.getDirection();
 		double angle = 0;
-
+		
 		gc.save();
 
 		gc.translate(pacX, pacY);
 		gc.rotate(angle);
 
-		// FEVER終了3秒前は点滅
-		if (sengoku.isFever()) {
-
+		//FEVER終了時は点滅
+		if(sengoku.isFever()) {
+			
 			long remain = model.getFeverRemainingTime();
-
-			if (remain <= 3000) {
-
-				if ((remain / 150) % 2 == 0) {
+				
+			if(remain <= 3000) {
+			
+				if((System.currentTimeMillis() / 150) % 2 == 0) {
 					gc.restore();
 					return;
-
 				}
 			}
 		}
-
-		// 使用画像を決定
+		
+		//使用画像を指定
+		
 		Image currentImage = pacmanImage;
 
 		if (sengoku.isFever()) {
 			currentImage = pacmanFeverImage;
+
 		}
 
 		gc.drawImage(currentImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
 				MapData.TILE_SIZE);
-
 		gc.restore();
 	}
 
-	// 内部の座標計算
-	/*
-	 * public void drawPacman(GraphicsContext gc, Color pacmanColor) { Sengoku
-	 * sengoku = model.getSengoku();
-	 * 
-	 * if (sengoku == null || !sengoku.isAlive()) return;
-	 * 
-	 * gc.setFill(Color.YELLOW);
-	 * 
-	 * gc.setFill(pacmanColor);
-	 * 
-	 * double pacX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
-	 * 
-	 * double pacY = sengoku.getY() + MapData.TILE_SIZE / 2.0;
-	 * 
-	 * double mouthAngle = model.getMouthAngle();
-	 * 
-	 * Characters.Direction currentDir = sengoku.getDirection();
-	 * 
-	 * if (currentDir != null) {
-	 * 
-	 * if (currentDir.getDX() == 1) lastBaseAngle = 0; // 右
-	 * 
-	 * if (currentDir.getDX() == -1) lastBaseAngle = 180; // 左
-	 * 
-	 * if (currentDir.getDY() == -1) lastBaseAngle = 90; // 上
-	 * 
-	 * if (currentDir.getDY() == 1) lastBaseAngle = 270; // 下
-	 * 
-	 * if (currentDir.getDX() == 1) lastBaseAngle = 0; if (currentDir.getDX() == -1)
-	 * lastBaseAngle = 180; if (currentDir.getDY() == -1) lastBaseAngle = 90; if
-	 * (currentDir.getDY() == 1) lastBaseAngle = 270; }
-	 * 
-	 * double finalStartAngle = lastBaseAngle + mouthAngle;
-	 * 
-	 * gc.fillArc(
-	 * 
-	 * pacX - MapData.TILE_SIZE / 2.0, pacY - MapData.TILE_SIZE / 2.0,
-	 * 
-	 * MapData.TILE_SIZE, MapData.TILE_SIZE,
-	 * 
-	 * finalStartAngle,
-	 * 
-	 * 360 - mouthAngle * 2,
-	 * 
-	 * javafx.scene.shape.ArcType.ROUND
-	 * 
-	 * );
-	 * 
-	 * }
-	 */
-
 	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
-
 		enemyImageView.setFitWidth(MapData.TILE_SIZE);
 		enemyImageView.setFitHeight(MapData.TILE_SIZE);
 		enemyImageView.setPreserveRatio(true);
-
 	}
-
-	// 追加項目
 
 	private void drawEnemy(GraphicsContext gc) {
 		Enemy enemy = model.getEnemy();
-
 		if (enemy == null)
 			return;
 
 		if (enemy instanceof RedEnemy) {
-
 			RedEnemy red = (RedEnemy) enemy;
-
 			Image img = red.getEnemyImage();
-
 			double enemyLeftX = red.getX() - MapData.TILE_SIZE / 2.0;
 			double enemyTopY = red.getY() - MapData.TILE_SIZE / 2.0;
 
 			if (img != null) {
-
-				// ⭕ 画像が正常にある場合は画像を描画
 				gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
-
 			} else {
-
-				// ⚠️ 画像読み込みに失敗している場合は「赤い円」で身代わり描画
 				gc.setFill(Color.RED);
 				gc.fillOval(red.getX(), red.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
-
-				// 中心点が視覚的にわかりやすいように小さな黒い点を打つ
 				gc.setFill(Color.BLACK);
 				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2, red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
 			}
 		}
 	}
-
-	// ⭕ 空っぽだった自動生成メソッドの中身を、中心ズレ補正版の正しい描画ロジックに修正！
 
 	private void drawEnemyInstance(GraphicsContext gc, Enemy enemy) {
 		if (enemy == null)
@@ -466,69 +283,38 @@ public class MapView {
 
 		javafx.scene.image.Image img = null;
 
-		// 敵のクラス型を判定して、それぞれの画像を取得する
-
 		if (enemy instanceof RedEnemy) {
-
 			img = ((RedEnemy) enemy).getEnemyImage();
-
 		} else if (enemy instanceof GreenEnemy) {
-
 			img = ((GreenEnemy) enemy).getEnemyImage();
-
-			// ⭕ 黄色の画像を取得
-
 		} else if (enemy instanceof YellowEnemy) {
 			img = ((YellowEnemy) enemy).getEnemyImage();
-
 		} else if (enemy instanceof BlueEnemy) {
-
-			// ⭕ 青の画像を取得
-
 			img = ((BlueEnemy) enemy).getEnemyImage();
-
 		}
-
-		// マスの中心座標(X, Y)から半マス引いて、画像の左上基準座標を計算
 
 		double enemyLeftX = enemy.getX() - MapData.TILE_SIZE / 2.0;
 		double enemyTopY = enemy.getY() - MapData.TILE_SIZE / 2.0;
 
 		if (img != null) {
-
-			// ⭕ 画像が正常にある場合は中心がズレない正しい座標で画像を描画
-
 			gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
-
 		} else {
-
-			// ⚠️ 万が一画像読み込みに失敗している場合の身代わり描画（Redは赤、Greenは緑の円）
-
 			if (enemy instanceof RedEnemy) {
-
 				gc.setFill(javafx.scene.paint.Color.RED);
-
 			} else if (enemy instanceof GreenEnemy) {
 				gc.setFill(javafx.scene.paint.Color.GREEN);
-
 			} else if (enemy instanceof YellowEnemy) {
 				gc.setFill(javafx.scene.paint.Color.YELLOW);
+			} else if (enemy instanceof BlueEnemy) {
+				gc.setFill(javafx.scene.paint.Color.BLUE);
 			}
-
 			gc.fillOval(enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
-
-			// 中心点が視覚的にわかりやすいように小さな黒い点を打つ
-
 			gc.setFill(javafx.scene.paint.Color.BLACK);
-
 			gc.fillOval(enemy.getX() - 2, enemy.getY() - 2, 4, 4);
-
 		}
-
 	}
 
 	private void drawDyingSengoku(GraphicsContext gc, Sengoku sengoku) {
-
 		double progress = sengoku.getDyingProgress();
 
 		double centerX = sengoku.getX() + MapData.TILE_SIZE / 2.0;
@@ -537,20 +323,19 @@ public class MapView {
 		double scale = 1.0 - progress;
 
 		gc.save();
-
 		gc.translate(centerX, centerY);
-
 		gc.rotate(progress * 720);
-
 		gc.scale(scale, scale);
-
 		gc.setGlobalAlpha(1.0 - progress);
 
-		gc.drawImage(pacmanImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
+		gc.drawImage(
+				pacmanImage,
+				-MapData.TILE_SIZE / 2.0,
+				-MapData.TILE_SIZE / 2.0,
+				MapData.TILE_SIZE,
 				MapData.TILE_SIZE);
 
 		gc.restore();
-
 		gc.setGlobalAlpha(1.0);
 	}
 
@@ -570,17 +355,5 @@ public class MapView {
 		} catch (Exception e) {
 		}
 		return defaultColor;
-	}
-
-	/**
-	 * ボタンを現在のレイアウト構造の最前面へ引き出すメソッド
-	 */
-	public void bringButtonToFront() {
-		if (toStartButton != null && toStartButton.getParent() instanceof Pane) {
-			Pane parent = (Pane) toStartButton.getParent();
-			// 一度親から外して再度追加することで、要素の重ね順を一番手前にする
-			parent.getChildren().remove(toStartButton);
-			parent.getChildren().add(toStartButton);
-		}
 	}
 }
