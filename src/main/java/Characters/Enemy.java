@@ -16,6 +16,8 @@ public abstract class Enemy extends Character {
 	protected javafx.scene.image.Image normalImage;
 	protected javafx.scene.image.Image feverImage;
 	protected javafx.scene.image.Image deadImage;
+	
+	protected long pauseStartTime = 0;
 
 	protected final double startX;
 	protected final double startY;

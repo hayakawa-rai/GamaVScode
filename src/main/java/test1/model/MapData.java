@@ -89,9 +89,9 @@ public class MapData implements GameMap {
 
 	// 初期アイテム配置（エサ復活用）
 	private Item[][] initialItemMap;
-	
-	//クラスのフィールド（メンバ変数）に、最大数を記憶する変数を追加
-	private int totalItems; 
+
+	// クラスのフィールド（メンバ変数）に、最大数を記憶する変数を追加
+	private int totalItems;
 
 	// エサ復活を有効にするか？
 	private boolean enableRespawn;
@@ -199,9 +199,9 @@ public class MapData implements GameMap {
 		// アイテムが完全に配置し終わった後で、バックアップを取り、復活を有効にする
 		this.initialItemMap = copyItemMap(itemMap);
 		this.enableRespawn = true;
-		
-	    // 最初に配置し終わった時の総数を記憶しておく
-	    this.totalItems = this.remainingItems; 
+
+		// 最初に配置し終わった時の総数を記憶しておく
+		this.totalItems = this.remainingItems;
 	}
 
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
@@ -221,23 +221,27 @@ public class MapData implements GameMap {
 			}
 		}
 	}
-	
-	
+
 	private long pauseStartTime = 0;
-	
+
 	public void togglePause() {
-		
-		if(!paused) {
-			
+
+		if (!paused) {
+
 			paused = true;
 			pauseStartTime = System.currentTimeMillis();
-		}else {
+		} else {
 			paused = false;
-			
+
 			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
-			
-			if(feverEndTime > 0) {
+
+			// FEVER停止
+			if (feverEndTime > 0) {
 				feverEndTime += pauseDuration;
+			}
+			// CHASE/SCATTERタイマー停止
+			if (modeStartTime > 0) {
+				modeStartTime += pauseDuration;
 			}
 		}
 	}
@@ -246,35 +250,34 @@ public class MapData implements GameMap {
 	public void update() {
 		if (paused)
 			return;
-		
-		//死んだときのアニメーション
-				if (sengoku.isDyingAnimation()) {
 
-				    if (sengoku.updateDyingAnimation()) {
+		// 死んだときのアニメーション
+		if (sengoku.isDyingAnimation()) {
 
-				        if (sengoku.isAlive()) {
+			if (sengoku.updateDyingAnimation()) {
 
-				            sengoku.resetToStartPosition();
+				if (sengoku.isAlive()) {
 
-				            for (Enemy enemy : enemies) {
-				                enemy.resetToStartPosition();
-				                enemy.setCurrentState(
-				                    Characters.EnemyState.SCATTER);
-				            }
+					sengoku.resetToStartPosition();
 
-				            modeStartTime = 0;
-				            chaseMode = false;
-				            waitingStart = true;
+					for (Enemy enemy : enemies) {
+						enemy.resetToStartPosition();
+						enemy.setCurrentState(Characters.EnemyState.SCATTER);
+					}
 
-				        } else {
+					modeStartTime = 0;
+					chaseMode = false;
+					waitingStart = true;
 
-				            gameOver = true;
-				            paused = true;
-				        }
-				    }
+				} else {
 
-				    return;
+					gameOver = true;
+					paused = true;
 				}
+			}
+
+			return;
+		}
 
 		// パックマンの移動処理
 		updatePacman();
@@ -433,9 +436,9 @@ public class MapData implements GameMap {
 
 				// パワーエサ(2)を食べたらFEVER
 				if (map[currentTileY][currentTileX] == 2) {
-					
+
 					System.out.println("FEVER開始！");
-					
+
 					sengoku.setFever(true);
 					// 毎回7秒にリセット
 					feverEndTime = System.currentTimeMillis() + 7000;
@@ -460,46 +463,38 @@ public class MapData implements GameMap {
 		}
 
 		// 全部食べたかチェック（エサ復活用）
-		//checkAllEaten();
+		// checkAllEaten();
 
 	}
 
 	// --- 全部食べたかチェック ---（エサ復活用）
 
-	/*private void checkAllEaten() {
-		if (!enableRespawn)
-			return; // ← ストーリーでは復活しない
+	/*
+	 * private void checkAllEaten() { if (!enableRespawn) return; // ← ストーリーでは復活しない
+	 * 
+	 * for (int r = 0; r < itemMap.length; r++) { for (int c = 0; c <
+	 * itemMap[0].length; c++) { if (itemMap[r][c] != null) return; // まだ残っている } }
+	 * // 全部食べた → 復活（エサ復活用） resetItems(); }
+	 * 
+	 * // --- エサ復活 ---（エサ復活用）
+	 * 
+	 * private void resetItems() { if (!enableRespawn || initialItemMap == null)
+	 * return;
+	 * 
+	 * this.itemMap = copyItemMap(this.initialItemMap);
+	 * System.out.println("ステージクリア！エサが復活しました！"); }
+	 */
 
-		for (int r = 0; r < itemMap.length; r++) {
-			for (int c = 0; c < itemMap[0].length; c++) {
-				if (itemMap[r][c] != null)
-					return; // まだ残っている
-			}
-		}
-		// 全部食べた → 復活（エサ復活用）
-		resetItems();
-	}
-
-	// --- エサ復活 ---（エサ復活用）
-
-	private void resetItems() {
-		if (!enableRespawn || initialItemMap == null)
-			return;
-
-		this.itemMap = copyItemMap(this.initialItemMap);
-		System.out.println("ステージクリア！エサが復活しました！");
-	}*/
-	
 	public void respawnDots() {
-	    if (this.initialItemMap != null) {
-	        // 1. マップのアイテム配置を初期状態にコピー
-	        this.itemMap = copyItemMap(this.initialItemMap);
-	        
-	        // 2. 残りアイテム数を初期の総数にリセット（これで isCleared() が false に戻る）
-	        this.remainingItems = this.totalItems;
-	        
-	        System.out.println("【練習モード】エサが再配置され、残りカウントが " + this.remainingItems + " にリセットされました。");
-	    }
+		if (this.initialItemMap != null) {
+			// 1. マップのアイテム配置を初期状態にコピー
+			this.itemMap = copyItemMap(this.initialItemMap);
+
+			// 2. 残りアイテム数を初期の総数にリセット（これで isCleared() が false に戻る）
+			this.remainingItems = this.totalItems;
+
+			System.out.println("【練習モード】エサが再配置され、残りカウントが " + this.remainingItems + " にリセットされました。");
+		}
 	}
 
 	public void updateMouth() {
@@ -556,7 +551,7 @@ public class MapData implements GameMap {
 				// FEVER中の敵は食べられる
 				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
 					// 💡 敵を倒したのでスコアを加算（例: 200点）
-					sengoku.addScore(200); 
+					sengoku.addScore(200);
 					e.setCurrentState(Characters.EnemyState.DEAD);
 					continue;
 				}
@@ -570,33 +565,28 @@ public class MapData implements GameMap {
 				sengoku.takeDamage();
 				sengoku.startDying();
 
-				/*if (sengoku.getHp() <= 0) {
-
-					this.gameOver = true;
-					this.paused = true;
-
-				} else {
-
-					sengoku.resetToStartPosition();
-
-					for (Enemy enemy : enemies) {
-						enemy.resetToStartPosition();
-					}
-
-					for (Enemy enemy : enemies) {
-						enemy.setCurrentState(Characters.EnemyState.SCATTER);
-					}
-
-					// タイマーリセット
-					modeStartTime = 0;
-
-					// 初期状態に戻す
-					chaseMode = false;
-
-					// 再入力待ち
-					waitingStart = true;
-
-				}*/
+				/*
+				 * if (sengoku.getHp() <= 0) {
+				 * 
+				 * this.gameOver = true; this.paused = true;
+				 * 
+				 * } else {
+				 * 
+				 * sengoku.resetToStartPosition();
+				 * 
+				 * for (Enemy enemy : enemies) { enemy.resetToStartPosition(); }
+				 * 
+				 * for (Enemy enemy : enemies) {
+				 * enemy.setCurrentState(Characters.EnemyState.SCATTER); }
+				 * 
+				 * // タイマーリセット modeStartTime = 0;
+				 * 
+				 * // 初期状態に戻す chaseMode = false;
+				 * 
+				 * // 再入力待ち waitingStart = true;
+				 * 
+				 * }
+				 */
 
 				return;
 			}
@@ -664,8 +654,6 @@ public class MapData implements GameMap {
 	public Sengoku getSengoku() {
 		return sengoku;
 	}
-	
-	
 
 	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
 	public Enemy getEnemy() {
@@ -683,11 +671,11 @@ public class MapData implements GameMap {
 	}
 
 	public long getFeverRemainingTime() {
-		
-		if(paused && feverEndTime > 0) {
+
+		if (paused && feverEndTime > 0) {
 			return Math.max(0, feverEndTime - pauseStartTime);
 		}
-		
+
 		return Math.max(0, feverEndTime - System.currentTimeMillis());
 	}
 
