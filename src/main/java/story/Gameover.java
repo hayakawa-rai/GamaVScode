@@ -52,7 +52,7 @@ public class Gameover extends Application {
 		ImageView icon = new ImageView();
 		try {
 
-			java.net.URL imgUrl = Gameover.class.getResource("/picture/gvsyujinkou.png");
+			java.net.URL imgUrl = Gameover.class.getResource("/picture/syujinkou(gameover).png");
 
 			if (imgUrl != null) {
 				icon.setImage(new Image(imgUrl.toExternalForm()));
