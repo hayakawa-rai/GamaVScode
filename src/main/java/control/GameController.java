@@ -426,8 +426,7 @@ public class GameController {
 	}
 
 
-<<<<<<< HEAD
-=======
+
 	// Gameover画面へ変更するためのメソッド（引数4つ版に綺麗に統一！）
 	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice, int score) {
 		try {
@@ -470,7 +469,6 @@ public class GameController {
 		}
 	}
 
->>>>>>> branch 'master' of https://github.com/hayakawa-rai/GameApplication.git
 	// 画面変更Main1へ
 	public static void switchToGame1(javafx.stage.Stage stage) {
 		try {
