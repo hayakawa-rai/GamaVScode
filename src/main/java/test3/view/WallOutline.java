@@ -3,16 +3,36 @@ package test3.view;
 
 import javafx.scene.canvas.GraphicsContext;
 
+/**
+ * マップ上の「壁ではないマス（道）」の外周に沿って輪郭線を描画するクラス。
+ * マップの数値そのもの（1=壁）を直接塗りつぶすのではなく、道タイルの
+ * 上下左右の辺のうち、隣が壁になっている辺だけを線として描画することで、
+ * 迷路のような輪郭表現を作り出す。
+ */
 public class WallOutline {
 
+	// 描画対象のマップデータ（1=壁、それ以外=道として扱う）
 	private final int[][] map;
+	// 1マスのピクセルサイズ
 	private final int tile;
 
+	/**
+	 * コンストラクタ。
+	 *
+	 * @param map  壁判定に使うマップの二次元配列
+	 * @param tile 1マスのピクセルサイズ
+	 */
 	public WallOutline(int[][] map, int tile) {
 		this.map = map;
 		this.tile = tile;
 	}
-
+	
+	/**
+	 * マップ全体を走査し、壁ではない（道の）マスそれぞれについて
+	 * drawRoadEdgesを呼び出し、壁と隣接する辺に輪郭線を描画する。
+	 *
+	 * @param gc 描画先のGraphicsContext
+	 */
 	public void drawOutline(GraphicsContext gc) {
 	    for (int ty = 0; ty < map.length; ty++) {
 	        for (int tx = 0; tx < map[ty].length; tx++) {
@@ -23,6 +43,20 @@ public class WallOutline {
 	    }
 	}
 
+	/**
+	 * 指定した道タイル(tx, ty)について、上下左右のうち壁と隣接している辺を検出し、
+	 * その辺に沿って線を描画する。
+	 * 同じ辺で連続して壁に隣接している道タイルがある場合は、1マスずつ描かずに
+	 * まとめて1本の連続した線として描画することで、継ぎ目のない綺麗な輪郭になる。
+	 * inset分だけ外側（壁側）にずらして描画することで、道の内側ぎりぎりではなく
+	 * 少し余裕を持たせた輪郭線にしている。
+	 * 角の処理として、隣接する辺同士が同時に壁と接する「出っ張り」がある場合は
+	 * 二重に描画されないよう開始条件を調整している。
+	 *
+	 * @param gc 描画先のGraphicsContext
+	 * @param tx 対象タイルの列インデックス
+	 * @param ty 対象タイルの行インデックス
+	 */
 	private void drawRoadEdges(GraphicsContext gc, int tx, int ty) {
 		double inset = tile * 0.38; // 外側へのずらし量(0.1～0.4ぐらいがちょうどいいです)
 		 
@@ -99,6 +133,15 @@ public class WallOutline {
 	    }
 	}
 
+	/**
+	 * 指定した座標(x, y)のマスが壁かどうかを判定する。
+	 * マップ範囲外の座標は壁ではない（false）として扱う。
+	 * マップ上の値が1のマスだけを壁とみなし、7(扉)・8(巣)などは壁として描画しない。
+	 *
+	 * @param x 判定するタイルの列インデックス
+	 * @param y 判定するタイルの行インデックス
+	 * @return 壁（値が1）であればtrue、それ以外またはマップ範囲外であればfalse
+	 */
 	private boolean isWall(int x, int y) {
 	    if (x < 0 || y < 0 || y >= map.length || x >= map[0].length)
 	        return false;
