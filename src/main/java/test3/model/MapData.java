@@ -354,7 +354,6 @@ public class MapData implements GameMap {
 			}
 
 			else if (!chaseMode && elapsed >= 7000) {
-				start.Bgm.playFeverBGM(); // ★追加
 
 				chaseMode = true;
 				modeStartTime = System.currentTimeMillis();
@@ -486,6 +485,7 @@ public class MapData implements GameMap {
 					syujinkou.setFever(true);
 					// 7秒間でリセット
 					feverEndTime = System.currentTimeMillis() + 7000;
+					start.Bgm.playFeverBGM(); // ★追加
 
 					for (Enemy e : enemies) {
 						if (e.getCurrentState() != Characters.EnemyState.DEAD) {
