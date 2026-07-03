@@ -7,10 +7,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import test3.model.MapData;
 import test3.view.MapView;
-import util.WindowUtil;
 
 public class Main3 extends Application {
 
@@ -33,9 +35,11 @@ public class Main3 extends Application {
 		}
 
 		MapData model = new MapData();
-		Pane root = new Pane();
+		javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane();
+		Pane gameBase = new Pane();
+		gameBase.getStyleClass().add("stage1");
 
-		MapView view = new MapView(model, root);
+		MapView view = new MapView(model, gameBase);
 
 		int viewWidth = model.getMap()[0].length * MapData.TILE_SIZE;
 		int viewHeight = model.getMap().length * MapData.TILE_SIZE;
@@ -79,34 +83,55 @@ public class Main3 extends Application {
 		canvas.widthProperty().bind(root.widthProperty());
 		canvas.heightProperty().bind(root.heightProperty());
 
-		root.getChildren().addAll(bg, canvas);
+		gameBase.getChildren().addAll(bg, canvas);
 
-		model.initEnemy(null);
-		/*コメントで隠してるのが前の描写方法  
-		// 先に空の ImageView を用意
-		javafx.scene.image.ImageView redImageView = new javafx.scene.image.ImageView();
+		// ★【追加】一時停止（ポーズ）専用の最前面レイヤーを作成
+		javafx.scene.layout.VBox pauseLayer = new javafx.scene.layout.VBox(25); // 縦並び、隙間25px
+		pauseLayer.setAlignment(javafx.geometry.Pos.CENTER); // 画面中央に配置
+		pauseLayer.setStyle("-fx-background-color: rgba(0, 0, 0, 0.65);"); // 全体を暗くする半透明の黒幕
+		pauseLayer.setVisible(false); // 最初は隠しておく
+		pauseLayer.setMouseTransparent(true); // 最初はマウス入力を下にスルーさせる
+
+		// 一時停止用のUIテキストとボタンを構築
+		javafx.scene.control.Label pauseLabel = new javafx.scene.control.Label("PAUSE");
+		pauseLabel.setFont(Font.font("Arial", FontWeight.BOLD, 48));
+		pauseLabel.setTextFill(Color.YELLOW);
+
+		javafx.scene.control.Label subLabel = new javafx.scene.control.Label("もう一度 Pキー を押すと再開します");
+		subLabel.setFont(Font.font("Meiryo", FontWeight.BOLD, 16));
+		subLabel.setTextFill(Color.WHITE);
+
+		javafx.scene.control.Button titleButton = new javafx.scene.control.Button("タイトルへ戻る");
+		titleButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
+		titleButton.setPrefSize(160, 40);
 		
-		// モデル側で敵を生成し、内部で画像（Image）を確実にセットさせる
-		model.initEnemy(redImageView);
-		
-		//  画像が入った「後」に、ビューを通してサイズを30x30にフィットさせる
-		view.setupEnemyView(redImageView);
-		
-		//  敵の ImageView を画面に登録
-		root.getChildren().add(redImageView);
-		*/
-		//敵描画呼び出し　成田
+		// ボタンが押されたらタイトルに戻るアクション
+		titleButton.setOnAction(e -> {
+			if (this.controller != null) {
+				System.out.println("タイトル画面へ戻ります");
+				this.controller.forceBackToTitle();
+			}
+		});
+
+		pauseLayer.getChildren().addAll(pauseLabel, subLabel, titleButton);
+
+		// ★【変更点】StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
+		root.getChildren().addAll(gameBase, pauseLayer);
+
+		// 敵描画呼び出し
 		model.initEnemy(new javafx.scene.image.ImageView());
 
-		//完璧に準備ができた最後にコントローラーを1回だけ生成
-		this.controller = new GameController(model, view, canvas, scene, stage, 3, false);
+		// 準備ができたコントローラーを生成 (stageNumber=1, isPractice=true)
+		this.controller = new GameController(model, view, canvas, scene, stage, 1, true);
+
+		// ★【追加】コントローラーが最前面のポーズレイヤーを制御できるように登録
+		this.controller.setPauseLayer(pauseLayer);
 
 		stage.setTitle("JavaFX Pacman Stage MVC");
 		stage.setScene(scene);
-		//画面の強制再設定
-		WindowUtil.fillScreen(stage);
-		canvas.requestFocus();
+		stage.show();
 
+		canvas.requestFocus();
 	}
 
 	public static void main(String[] args) {
