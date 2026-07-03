@@ -23,7 +23,7 @@ public class Bgm {
         Media bgm = new Media(url.toExternalForm());
         bgmPlayer = new MediaPlayer(bgm);
         bgmPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        bgmPlayer.setVolume(0.0);
+        bgmPlayer.setVolume(0.1);
         bgmPlayer.play();
         currentPath = path;
     }
