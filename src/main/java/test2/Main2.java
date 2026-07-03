@@ -76,9 +76,6 @@ public class Main2 extends Application {
 		// ★ゲーム描画Canvas
 		Canvas canvas = new Canvas();
 
-		canvas.widthProperty().bind(root.widthProperty());
-		canvas.heightProperty().bind(root.heightProperty());
-
 		root.getChildren().addAll(bg, canvas);
 
 		model.initEnemy(null);
