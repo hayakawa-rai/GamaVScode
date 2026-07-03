@@ -1,5 +1,41 @@
 package util;
 
+import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+
+public class WindowUtil {
+
+	public static void fillScreen(Stage stage) {
+		if (stage.isFullScreen()) {
+			stage.setFullScreen(false);
+		}
+
+		// 💡 手動でのサイズ計算(setX/Y/Width/Height)ではなく、
+		//    OSネイティブの最大化機能を使うことで、境界線のズレ（隙間）を防ぐ
+		if (!stage.isMaximized()) {
+			stage.setMaximized(true);
+		}
+
+		if (!stage.isShowing()) {
+			stage.show();
+		}
+
+		// 💡 描画エンジンのDPIスケールキャッシュをリフレッシュするため、
+		//    幅を1pxだけ揺らす（hide()/show()によるチカチカを避けるため）
+		double targetWidth = stage.getWidth();
+		stage.setWidth(targetWidth - 1);
+		Platform.runLater(() -> stage.setWidth(targetWidth));
+	}
+
+	// 💡 各画面のSceneを正しいサイズで作るためのヘルパー
+	public static Rectangle2D getScreenBounds() {
+		return Screen.getPrimary().getBounds();
+	}
+}
+/*package util;
+
 import javafx.stage.Stage;
 
 //フルスクリーンver.(これは遷移するときにがくがくする)
@@ -24,7 +60,7 @@ public class WindowUtil {
         alreadyFullScreen = true;
     
     }
-}
+}*/
 
 /*package util;
 

@@ -3,11 +3,13 @@ package story;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
@@ -202,11 +204,15 @@ public class Stageclear3 extends Application {
 
 		// ⭐ 画面要素の追加（scoreLabelを含めた正しい並びを1回だけ実行）
 		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
-		// 取得したサイズで新しいSceneを作成
-		Scene scene = new Scene(buttonBox, 1000, 800);
+		// 現在のStage（window）から実際のサイズを取得する
+		StackPane root = new StackPane();
+		root.getChildren().add(buttonBox);
+		// 画面サイズに合わせてSceneを作ることで、最大化済みStageでも中身が縮まないようにする
+		Rectangle2D bounds = WindowUtil.getScreenBounds();
+		Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight());
 		//ウィンドウの最小限のサイズを設定
-		stage.setMinWidth(800);
-		stage.setMinHeight(600);
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
 		// CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
