@@ -2,7 +2,6 @@ package story;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,6 +31,7 @@ public class Gameover extends Application {
 		stage.setTitle("ゲーム");
 		//画面の強制再設定
 		WindowUtil.fillScreen(stage);
+		stage.setScene(create(stage, null, score)); // その後でSceneをセット
 
 	}
 
@@ -135,9 +135,8 @@ public class Gameover extends Application {
 		// rootに追加
 		root.getChildren().addAll(bg, whiteOverlay, ui);
 
-		// 画面サイズに合わせてSceneを作ることで、最大化済みStageでも中身が縮まないようにする
-		Rectangle2D bounds = WindowUtil.getScreenBounds();
-		Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight());
+		// 固定サイズを渡さない。StageのサイズにScene側が自動追従する。
+	    Scene scene = new Scene(root);
 		// ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
