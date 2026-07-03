@@ -34,6 +34,9 @@ public class PracticeMain3 extends Application {
 		if (this.controller != null) {
 			this.controller.stop();
 		}
+		
+	    start.Bgm.stopBGM(); // ★追加（リトライ・多重起動時の重複再生防止）
+
 
 		// ストーリーモードはエサ復活なし
         MapData model = new MapData(false);
@@ -120,7 +123,7 @@ public class PracticeMain3 extends Application {
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		// 準備ができたコントローラーを生成 (stageNumber=1, isPractice=true)
-		this.controller = new GameController(model, view, canvas, scene, stage, 1, true);
+		this.controller = new GameController(model, view, canvas, scene, stage, 3, true);
 
 		// ★【追加】コントローラーが最前面のポーズレイヤーを制御できるように登録
 		this.controller.setPauseLayer(pauseLayer);

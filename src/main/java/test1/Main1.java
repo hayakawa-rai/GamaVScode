@@ -34,6 +34,8 @@ public class Main1 extends Application {
 		if (this.controller != null) {
 			this.controller.stop();
 		}
+		
+	    start.Bgm.stopBGM(); // ★追加（リトライ・多重起動時の重複再生防止）
 
 		MapData model = new MapData();
 		
