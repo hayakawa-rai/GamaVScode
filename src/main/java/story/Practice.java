@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -228,8 +229,9 @@ public class Practice extends Application {
 
 		root.getChildren().addAll(bgPane, ui);
 
-		// 現在のStage（window）から実際のサイズを取得する
-		Scene scene = new Scene(root, 1000, 800);
+		// 画面サイズに合わせてSceneを作ることで、最大化済みStageでも中身が縮まないようにする
+		Rectangle2D bounds = WindowUtil.getScreenBounds();
+		Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight());
 		stage.setScene(scene);
 		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
 		stage.setMinWidth(1000);
