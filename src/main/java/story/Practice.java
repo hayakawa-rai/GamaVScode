@@ -191,6 +191,10 @@ public class Practice extends Application {
 
 		ImageView bg1 = new ImageView(bgImage);
 		ImageView bg2 = new ImageView(bgImage);
+		
+		// 画面サイズに合わせて引き伸ばすため、縦横比は維持しない
+		bg1.setPreserveRatio(false);
+		bg2.setPreserveRatio(false);
 
 		bg2.setLayoutX(bgImage.getWidth());
 
@@ -201,11 +205,16 @@ public class Practice extends Application {
 				bg1.setLayoutX(bg1.getLayoutX() - 1);
 				bg2.setLayoutX(bg2.getLayoutX() - 1);
 
-				if (bg1.getLayoutX() + bgImage.getWidth() <= 0) {
-					bg1.setLayoutX(bg2.getLayoutX() + bgImage.getWidth());
+				// 画面幅は可変(bindingでリサイズに追従)なので、
+				// 固定値のbgImage.getWidth()ではなく、
+				// 実際に表示されている幅(fitWidth)を毎フレーム参照する
+				double currentWidth = bg1.getFitWidth();
+
+				if (bg1.getLayoutX() + currentWidth <= 0) {
+					bg1.setLayoutX(bg2.getLayoutX() + currentWidth);
 				}
-				if (bg2.getLayoutX() + bgImage.getWidth() <= 0) {
-					bg2.setLayoutX(bg1.getLayoutX() + bgImage.getWidth());
+				if (bg2.getLayoutX() + currentWidth <= 0) {
+					bg2.setLayoutX(bg1.getLayoutX() + currentWidth);
 				}
 			}
 		};
@@ -229,6 +238,15 @@ public class Practice extends Application {
 
 		// 固定サイズを渡さない。StageのサイズにScene側が自動追従する。
 	    Scene scene = new Scene(root);
+	    
+	 // 背景画像をウィンドウの高さ・幅いっぱいに合わせる
+	 // (fitWidth/fitHeightをSceneのサイズにバインドすることで、
+	 //  最大化やリサイズをしても常に画面を覆うようにする)
+	 bg1.fitWidthProperty().bind(scene.widthProperty());
+	 bg1.fitHeightProperty().bind(scene.heightProperty());
+	 bg2.fitWidthProperty().bind(scene.widthProperty());
+	 bg2.fitHeightProperty().bind(scene.heightProperty());
+	 
 		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);

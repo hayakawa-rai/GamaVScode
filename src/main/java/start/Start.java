@@ -82,6 +82,10 @@ public class Start extends Application {
 		// 背景用画像表示を２つ設定
 		ImageView bg1 = new ImageView(bgImage);
 		ImageView bg2 = new ImageView(bgImage);
+		
+		// 画面サイズに合わせて引き伸ばすため、縦横比は維持しない
+		bg1.setPreserveRatio(false);
+		bg2.setPreserveRatio(false);
 
 		//bg2をbg1の横に置く(bg2の位置を取得した画像の横幅分右に配置)
 		bg2.setLayoutX(bgImage.getWidth());
@@ -94,15 +98,28 @@ public class Start extends Application {
 				//背景画像を1pxづつ左に動かしている
 				bg1.setLayoutX(bg1.getLayoutX() - 1);
 				bg2.setLayoutX(bg2.getLayoutX() - 1);
+				
+				//画面幅は可変(bindingでリサイズに追従)なので、
+				// 固定値のbgImage.getWidth()ではなく、
+				// 実際に表示されている幅(fitWidth)を毎フレーム参照する
+				double currentWidth = bg1.getFitWidth();
+				
+				//bg1が画面外に完全に出たらbg2の右端に移動
+				if (bg1.getLayoutX() + currentWidth <= 0) {
+					bg1.setLayoutX(bg2.getLayoutX() + currentWidth);
+				}
+				//bg2が画面外に完全に出たらbg1の右端に移動
+				if (bg2.getLayoutX() + currentWidth <= 0) {
+					bg2.setLayoutX(bg1.getLayoutX() + currentWidth);
 
-				// 画面外に出たらループ
+				/*// 画面外に出たらループ
 				//big1が画面外に完全に出たらbg2の右端に移動
 				if (bg1.getLayoutX() + bgImage.getWidth() <= 0) {
 					bg1.setLayoutX(bg2.getLayoutX() + bgImage.getWidth());
 				}
 				//big2が画面外に完全に出たらbg1の右端に移動
 				if (bg2.getLayoutX() + bgImage.getWidth() <= 0) {
-					bg2.setLayoutX(bg1.getLayoutX() + bgImage.getWidth());
+					bg2.setLayoutX(bg1.getLayoutX() + bgImage.getWidth());*/
 				}
 			}
 		};
@@ -248,6 +265,15 @@ public class Start extends Application {
 
 		//rootを中身とした1000×800のウィンドウを作成
 		Scene scene = new Scene(root, 1000, 800);
+		
+		// 背景画像をウィンドウの高さ・幅いっぱいに合わせる
+		// (fitWidth/fitHeightをSceneのサイズにバインドすることで、
+		//  最大化やリサイズをしても常に画面を覆うようにする)
+		bg1.fitWidthProperty().bind(scene.widthProperty());
+		bg1.fitHeightProperty().bind(scene.heightProperty());
+		bg2.fitWidthProperty().bind(scene.widthProperty());
+		bg2.fitHeightProperty().bind(scene.heightProperty());
+		
 		//CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
