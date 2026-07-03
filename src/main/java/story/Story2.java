@@ -436,7 +436,7 @@ public class Story2 extends Application {
 			cleanup(scene);
 
 			//スタート画面へ
-			test.test2.GameController.switchStart(stage);
+			control.GameController.switchStart(stage);
 		});
 
 		// 追加

@@ -167,7 +167,7 @@ public class Start extends Application {
 						cleanup();
 
 						//画面遷移
-						test.test2.GameController.startToStory(stage);
+						control.GameController.startToStory(stage);
 					}));
 				delay.play();
 			} catch (Exception ex) {

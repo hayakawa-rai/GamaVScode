@@ -1,5 +1,6 @@
 package story;
 
+import control.GameController;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -14,7 +15,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import test.test2.GameController;
 import util.WindowUtil;
 
 public class Stageclear1 extends Application {

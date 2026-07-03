@@ -58,7 +58,7 @@ public class MapView {
 
 		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
 			if (newScene != null) {
-				test.test2.GameController.applyMobileControls(newScene, this.model);
+				control.GameController.applyMobileControls(newScene, this.model);
 			}
 		});
 	}

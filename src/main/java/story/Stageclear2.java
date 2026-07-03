@@ -1,5 +1,6 @@
 package story;
 
+import Characters.Syujinkou;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -14,7 +15,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import sample.Syujinkou;
 import util.WindowUtil;
 
 public class Stageclear2 extends Application {
@@ -155,7 +155,7 @@ public class Stageclear2 extends Application {
 			pause.setOnFinished(ev -> {
 				try {
 					cleanup();
-					test.test2.GameController.switchStory3(stage);
+					control.GameController.switchStory3(stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -180,7 +180,7 @@ public class Stageclear2 extends Application {
 			pause.setOnFinished(ev -> {
 				try {
 					cleanup();
-					test.test2.GameController.switchStart(stage);
+					control.GameController.switchStart(stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}

@@ -14,7 +14,6 @@ import story.Story1;
 import story.Story2;
 import story.Story3;
 import story.Story4;
-import test.test2.TestMainapp;
 import test1.Main1;
 import test1.PracticeMain1;
 import test2.Main2;
@@ -353,7 +352,7 @@ public class GameController {
 
 	public static void switchToGame(javafx.stage.Stage stage) {
 		try {
-			TestMainapp App = new TestMainapp();
+			Main1 App = new Main1();
 			App.starts(stage);
 		} catch (Exception e) {
 			e.printStackTrace();

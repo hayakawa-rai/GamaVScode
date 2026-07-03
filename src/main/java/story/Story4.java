@@ -374,7 +374,7 @@ public class Story4 extends Application {
 			cleanup(scene, base);
 
 			//スタート画面へ
-			test.test2.GameController.switchStart(stage);
+			control.GameController.switchStart(stage);
 		});
 
 		// 追加

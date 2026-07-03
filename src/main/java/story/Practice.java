@@ -172,7 +172,7 @@ public class Practice extends Application {
 				cleanup();
 				try {
 					// 画面遷移
-					test.test2.GameController.switchStart(stage);
+					control.GameController.switchStart(stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
