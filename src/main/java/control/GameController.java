@@ -322,277 +322,6 @@ public class GameController {
 		timer.start();
 	}
 
-	// ゲーム停止
-	public void stop() {
-		if (timer != null)
-			timer.stop();
-	}
-
-	// === 画面遷移用のメソッド群 ===
-
-	public static void switchToStart(javafx.stage.Stage stage) {
-		try {
-			Start App = new Start();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void switchToPractice(javafx.stage.Stage stage) {
-		try {
-			// practiceクラスのインスタンスを作る
-			story.Practice practiceScreen = new story.Practice();
-			// ウィンドウの権利(stage)を渡して、練習モード画面を起動・上書きする！
-			practiceScreen.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void switchToGame(javafx.stage.Stage stage) {
-		try {
-			Main1 App = new Main1();
-			App.starts(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// Stageclear1画面へ変更するためのメソッド（引数に score を追加）
-	public static void switchToStageclear1(javafx.stage.Stage stage, int score) {
-		try {
-			Stageclear1 App = new Stageclear1();
-			App.setScore(score); // 受け取った score を確実に引き渡す
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// Stageclear2画面へ変更するためのメソッド（引数に score を追加）
-	public static void switchToStageclear2(javafx.stage.Stage stage, int score) {
-		try {
-			Stageclear2 App = new Stageclear2();
-			App.setScore(score); // 受け取った score を確実に引き渡す
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// Stageclear3画面へ変更するためのメソッド（引数に score を追加）
-	public static void switchToStageclear3(javafx.stage.Stage stage, int score) {
-		try {
-			Stageclear3 App = new Stageclear3();
-			App.setScore(score);
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// Gameover画面へ変更するためのメソッド
-	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice) {
-	    try {
-	        Runnable retryAction;
-
-	        if (isPractice) {
-	            // 🟢 練習モードから来た場合のリトライ先（PracticeMain系）
-	            switch (stageNum) {
-	                case 1:
-	                    retryAction = () -> test1.PracticeMain1.createAndStart(stage);
-	                    break;
-	                case 2:
-	                    retryAction = () -> test2.PracticeMain2.createAndStart(stage);
-	                    break;
-	                case 3:
-	                    retryAction = () -> test3.PracticeMain3.createAndStart(stage);
-	                    break;
-	                default:
-	                    retryAction = () -> test1.PracticeMain1.createAndStart(stage);
-	                    break;
-	            }
-	        } else {
-	            // 🔴 本番モードから来た場合のリトライ先（Main系）
-	            switch (stageNum) {
-	                case 1:
-	                    retryAction = () -> test1.Main1.createAndStart(stage);
-	                    break;
-	                case 2:
-	                    retryAction = () -> test2.Main2.createAndStart(stage);
-	                    break;
-	                case 3:
-	                    retryAction = () -> test3.Main3.createAndStart(stage);
-	                    break;
-	                default:
-	                    retryAction = () -> test1.Main1.createAndStart(stage);
-	                    break;
-	            }
-	        }
-
-	        // Gameoverクラスへ、判別済みのリトライ処理を渡す
-	    //    stage.setScene(story.Gameover.create(stage, retryAction));
-	        stage.show();
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
-
-
-
-	// Gameover画面へ変更するためのメソッド（引数4つ版に綺麗に統一！）
-	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice, int score) {
-		try {
-			Runnable retryAction;
-
-			// ステージ番号 と 練習モードフラグ に応じて、リトライ時に起動するクラスを完全に切り替える
-			switch (stageNum) {
-			case 1:
-				if (isPractice) {
-					retryAction = () -> test1.PracticeMain1.createAndStart(stage); // 練習モード1へ
-				} else {
-					retryAction = () -> test1.Main1.createAndStart(stage); // 本番モード1へ
-				}
-				break;
-			case 2:
-				if (isPractice) {
-					retryAction = () -> test2.PracticeMain2.createAndStart(stage); // 練習モード2へ
-				} else {
-					retryAction = () -> test2.Main2.createAndStart(stage); // 本番モード2へ
-				}
-				break;
-			case 3:
-				if (isPractice) {
-					retryAction = () -> test3.PracticeMain3.createAndStart(stage); // 練習モード3へ
-				} else {
-					retryAction = () -> test3.Main3.createAndStart(stage); // 本番モード3へ
-				}
-				break;
-			default:
-				retryAction = () -> test1.Main1.createAndStart(stage);
-				break;
-			}
-
-			// Gameoverクラスに、stageと組み立てた適切なリトライ処理、そしてスコアを渡す！
-			stage.setScene(story.Gameover.create(stage, retryAction, score));
-			stage.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更Main1へ
-	public static void switchToGame1(javafx.stage.Stage stage) {
-		try {
-	        Main1 App = new Main1();
-	        App.start(stage);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
-
-	// 画面変更Mani2へ
-	public static void switchToGame2(javafx.stage.Stage stage) {
-		try {
-			Main2 App = new Main2();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更Main3へ
-	public static void switchToGame3(javafx.stage.Stage stage) {
-		try {
-			Main3 App = new Main3();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更start→story
-	public static void startToStory(javafx.stage.Stage stage) {
-		try {
-			Story1 App = new Story1();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更start
-	public static void switchStart(javafx.stage.Stage stage) {
-		try {
-			Start App = new Start();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更Story2
-	public static void switchStory2(javafx.stage.Stage stage) {
-		try {
-			Story2 App = new Story2();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更Story3
-	public static void switchStory3(javafx.stage.Stage stage) {
-		try {
-			Story3 App = new Story3();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更Story4
-	public static void switchStory4(javafx.stage.Stage stage) {
-		try {
-			Story4 App = new Story4();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更PracticeMain1へ
-	public static void switchToPracticeGame1(javafx.stage.Stage stage) {
-		try {
-			PracticeMain1 App = new PracticeMain1();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更PracticeMani2へ
-	public static void switchToPracticeGame2(javafx.stage.Stage stage) {
-		try {
-			PracticeMain2 App = new PracticeMain2();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 画面変更PracticeMain3へ
-	public static void switchToPracticeGame3(javafx.stage.Stage stage) {
-		try {
-			PracticeMain3 App = new PracticeMain3();
-			App.start(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	// 既存の処理を一切壊さず、外部（MapView）から安全にループを停止させてタイトルへ戻るための専用メソッド
 	public void forceBackToTitle() {
@@ -638,6 +367,210 @@ public class GameController {
 					}
 				});
 			}
+		}
+	}
+	
+	// ゲーム停止
+	public void stop() {
+		if (timer != null)
+			timer.stop();
+	}
+
+	// === 画面遷移用のメソッド群 ===
+
+	// 画面変更start
+	public static void switchStart(javafx.stage.Stage stage) {
+		try {
+			Start App = new Start();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void switchToPractice(javafx.stage.Stage stage) {
+		try {
+			// practiceクラスのインスタンスを作る
+			story.Practice practiceScreen = new story.Practice();
+			// ウィンドウの権利(stage)を渡して、練習モード画面を起動・上書きする！
+			practiceScreen.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面変更start→story
+	public static void startToStory(javafx.stage.Stage stage) {
+		try {
+			Story1 App = new Story1();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面変更Story2
+	public static void switchStory2(javafx.stage.Stage stage) {
+		try {
+			Story2 App = new Story2();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面変更Story3
+	public static void switchStory3(javafx.stage.Stage stage) {
+		try {
+			Story3 App = new Story3();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面変更Story4
+	public static void switchStory4(javafx.stage.Stage stage) {
+		try {
+			Story4 App = new Story4();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 画面変更Main1へ
+	public static void switchToGame1(javafx.stage.Stage stage) {
+		try {
+	        Main1 App = new Main1();
+	        App.start(stage);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	// 画面変更Main2へ
+	public static void switchToGame2(javafx.stage.Stage stage) {
+		try {
+			Main2 App = new Main2();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面変更Main3へ
+	public static void switchToGame3(javafx.stage.Stage stage) {
+		try {
+			Main3 App = new Main3();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Stageclear1画面へ変更するためのメソッド（引数に score を追加）
+	public static void switchToStageclear1(javafx.stage.Stage stage, int score) {
+		try {
+			Stageclear1 App = new Stageclear1();
+			App.setScore(score); // 受け取った score を確実に引き渡す
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Stageclear2画面へ変更するためのメソッド（引数に score を追加）
+	public static void switchToStageclear2(javafx.stage.Stage stage, int score) {
+		try {
+			Stageclear2 App = new Stageclear2();
+			App.setScore(score); // 受け取った score を確実に引き渡す
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Stageclear3画面へ変更するためのメソッド（引数に score を追加）
+	public static void switchToStageclear3(javafx.stage.Stage stage, int score) {
+		try {
+			Stageclear3 App = new Stageclear3();
+			App.setScore(score);
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面変更PracticeMain1へ
+	public static void switchToPracticeGame1(javafx.stage.Stage stage) {
+		try {
+			PracticeMain1 App = new PracticeMain1();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面変更PracticeMani2へ
+	public static void switchToPracticeGame2(javafx.stage.Stage stage) {
+		try {
+			PracticeMain2 App = new PracticeMain2();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面変更PracticeMain3へ
+	public static void switchToPracticeGame3(javafx.stage.Stage stage) {
+		try {
+			PracticeMain3 App = new PracticeMain3();
+			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Gameover画面へ変更するためのメソッド（引数4つ版に綺麗に統一！）
+	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice, int score) {
+		try {
+			Runnable retryAction;
+
+			// ステージ番号 と 練習モードフラグ に応じて、リトライ時に起動するクラスを完全に切り替える
+			switch (stageNum) {
+			case 1:
+				if (isPractice) {
+					retryAction = () -> test1.PracticeMain1.createAndStart(stage); // 練習モード1へ
+				} else {
+					retryAction = () -> test1.Main1.createAndStart(stage); // 本番モード1へ
+				}
+				break;
+			case 2:
+				if (isPractice) {
+					retryAction = () -> test2.PracticeMain2.createAndStart(stage); // 練習モード2へ
+				} else {
+					retryAction = () -> test2.Main2.createAndStart(stage); // 本番モード2へ
+				}
+				break;
+			case 3:
+				if (isPractice) {
+					retryAction = () -> test3.PracticeMain3.createAndStart(stage); // 練習モード3へ
+				} else {
+					retryAction = () -> test3.Main3.createAndStart(stage); // 本番モード3へ
+				}
+				break;
+			default:
+				retryAction = () -> test1.Main1.createAndStart(stage);
+				break;
+			}
+
+			// Gameoverクラスに、stageと組み立てた適切なリトライ処理、そしてスコアを渡す！
+			stage.setScene(story.Gameover.create(stage, retryAction, score));
+			stage.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
