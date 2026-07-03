@@ -266,11 +266,11 @@ public abstract class Enemy extends Character {
 		// 全方向をチェック
 		for (Direction dir : Direction.values()) {
 			// NONE は判定対象外
-			if (dir == Direction.NONE)
-				continue;
+			if (dir == Direction.NONE)	continue;
+			
 			// 常にUターン禁止
-			if (isOppositeDirection(dir, this.direction))
-				continue;
+			if (isOppositeDirection(dir, this.direction))	continue;
+			
 			// 実際に移動可能なら候補に追加
 			if (canmove(dir, map)) {
 				list.add(dir);
@@ -284,8 +284,8 @@ public abstract class Enemy extends Character {
 	private boolean canmove(Direction direction, int[][] map) {
 
 		// 移動しない場合は不可
-		if (direction == Direction.NONE)
-			return false;
+		if (direction == Direction.NONE)	return false;
+		
 		// 現在位置のタイル座標を取得
 		int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
 		int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
@@ -309,6 +309,7 @@ public abstract class Enemy extends Character {
 
 		// 通常状態の敵の「巣（扉含む）」への侵入制限
 		if (this.currentState != Characters.EnemyState.DEAD) {
+			
 			// 外(8以外)から、扉(7)や床(8)に入ろうとしたら通行不可
 			if (currentTileType != 8 && (nextTileType == 7 || nextTileType == 8)) {
 				return false;
@@ -396,6 +397,14 @@ public abstract class Enemy extends Character {
 			e.printStackTrace();
 		}
 	}
+	
+	// プレイヤーが被弾時に元の場所、出撃時間をリセット、状態を縄張りモード(SCATTER)へ戻す
+	public void resetToStartPosition() {
+		this.x = startX;
+		this.y = startY;
+		this.direction = Direction.NONE;
+		this.currentState = Characters.EnemyState.SCATTER;
+	}
 
 	// ---getter---
 
@@ -437,13 +446,4 @@ public abstract class Enemy extends Character {
 	public void setCurrentState(Characters.EnemyState state) {
 		this.currentState = state;
 	}
-
-	// プレイヤーが被弾時に元の場所、出撃時間をリセット、状態を通常状態(SCATTER)へ戻す
-	public void resetToStartPosition() {
-		this.x = startX;
-		this.y = startY;
-		this.direction = Direction.NONE;
-		this.currentState = Characters.EnemyState.SCATTER;
-	}
-
 }
