@@ -28,6 +28,7 @@ public class GameController {
 	private final Object view; // 描画処理
 	private final Canvas canvas; // 描画先キャンバス
 	private AnimationTimer timer; // ゲームループ(毎フレーム実行)
+	private javafx.scene.layout.VBox pauseLayer;
 
 	// 画面遷移のためにStageを保持する変数
 	private final javafx.stage.Stage stage;
@@ -171,6 +172,19 @@ public class GameController {
 				// Pキーでゲームを一時停止・再開
 				if (code == KeyCode.P) {
 					togglePauseMethod.invoke(model);
+					
+					if (pauseLayer != null) {
+						boolean isPaused = (boolean) isPausedMethod.invoke(model);
+						if (isPaused) {
+							pauseLayer.setMouseTransparent(false); // ★クリックできるようにする
+							pauseLayer.setVisible(true);           // 十字キーやスコアを完全に覆い隠して表示
+							pauseLayer.requestFocus();             // ボタンをクリック・選択可能にする
+						} else {
+							pauseLayer.setMouseTransparent(true);  // ★クリックを完全にスルーさせる（透明化）
+							pauseLayer.setVisible(false);          // ポーズ解除時はレイヤーを隠す
+							canvas.requestFocus();                 // 操作権をゲーム（Canvas）側に戻す
+						}
+					}
 					return;
 				}
 
@@ -593,46 +607,29 @@ public class GameController {
 		}
 	}
 
-	/**
-	 * 画面内の「タイトルへ戻る」ボタンを、確実に最前面レイヤー(baseHolder)へ引っ越しさせるメソッド
-	 */
-	public void bringTitleButtonToFront() {
-		try {
-			javafx.scene.Parent root = this.stage.getScene().getRoot();
+	
+	public void setPauseLayer(javafx.scene.layout.VBox pauseLayer) {
+		this.pauseLayer = pauseLayer;
+		
+		if (pauseLayer != null && this.canvas != null && this.canvas.getScene() != null) {
+			javafx.scene.Parent root = this.canvas.getScene().getRoot();
+			
+			// 十字キー自動生成によって作られた、本物の最前面 StackPane を捕まえる
 			if (root instanceof javafx.scene.layout.StackPane) {
-				javafx.scene.layout.StackPane baseHolder = (javafx.scene.layout.StackPane) root;
-
-				// baseHolderの最初の要素（元のメイン画面）を取得
-				if (!baseHolder.getChildren().isEmpty()
-						&& baseHolder.getChildren().get(0) instanceof javafx.scene.layout.Pane) {
-					javafx.scene.layout.Pane rootPane = (javafx.scene.layout.Pane) baseHolder.getChildren().get(0);
-
-					// rootPaneからボタンを探す
-					for (javafx.scene.Node node : rootPane.getChildren()) {
-						if (node instanceof javafx.scene.control.Button
-								&& "タイトルへ戻る".equals(((javafx.scene.control.Button) node).getText())) {
-
-							// 最前面へ引っ越し
-							javafx.application.Platform.runLater(() -> {
-								rootPane.getChildren().remove(node);
-								baseHolder.getChildren().add(node);
-
-								// ボタンの重ね合わせの基準を中央（Pos.CENTER）にし、そこから下にずらします
-								javafx.scene.layout.StackPane.setAlignment(node, javafx.geometry.Pos.CENTER);
-
-								node.setTranslateY(100);
-
-								node.setTranslateX(150);
-							});
-							System.out.println("✨ タイトル戻るボタンを最前面レイヤーに引っ越しさせました！");
-							break;
-						}
-					}
+				javafx.scene.layout.StackPane trueRoot = (javafx.scene.layout.StackPane) root;
+				
+				// いったん古い親（Main1のroot）からポーズ画面を引き剥がす
+				if (pauseLayer.getParent() instanceof javafx.scene.layout.Pane) {
+					((javafx.scene.layout.Pane) pauseLayer.getParent()).getChildren().remove(pauseLayer);
 				}
+				
+				// 十字キーよりもさらに上（本当の最前面）にポーズ画面を配置する！
+				javafx.application.Platform.runLater(() -> {
+					if (!trueRoot.getChildren().contains(pauseLayer)) {
+						trueRoot.getChildren().add(pauseLayer);
+					}
+				});
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 	}
-
 }

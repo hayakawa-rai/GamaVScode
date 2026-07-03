@@ -112,7 +112,7 @@ public class MapView {
 		gc.translate(offsetX, offsetY);
 		gc.scale(scale, scale);
 
-		// ★【重要】パックマンが動く「ステージの四角い枠内だけ」を真っ黒に塗りつぶします
+		// 【重要】パックマンが動く「ステージの四角い枠内だけ」を真っ黒に塗りつぶします
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, stageWidth, stageHeight);
 
@@ -151,7 +151,7 @@ public class MapView {
 			gc.setStroke(Color.DARKGRAY);
 			gc.strokeLine(0, INFO_HEIGHT, canvasWidth, INFO_HEIGHT);
 		}
-
+/*		一旦コメントアウト　一時停止系はMainに移送
 		// モデルが一時停止中（paused）だったら、画面中央にテキストを描画する
 		if (model.isPaused() && !model.isGameOver() && !model.isCleared()) {
 
@@ -180,7 +180,7 @@ public class MapView {
 			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
 			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
 			gc.setTextBaseline(javafx.geometry.VPos.TOP);
-		}
+		}*/
 	}
 
 	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
