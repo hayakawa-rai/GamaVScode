@@ -48,11 +48,19 @@ public class WindowUtil {
         nudge(stage);
     }
 
+    // 幅・高さ両方を揺らして、DPIスケール再計算のきっかけを両軸に与える
     private static void nudge(Stage stage) {
         double w = stage.getWidth();
-        if (w <= 0) return;
+        double h = stage.getHeight();
+        if (w <= 0 || h <= 0) return;
+
         stage.setWidth(w - 1);
-        Platform.runLater(() -> stage.setWidth(w));
+        stage.setHeight(h - 1);
+
+        Platform.runLater(() -> {
+            stage.setWidth(w);
+            stage.setHeight(h);
+        });
     }
 
     public static void bindCanvasToRoot(Canvas canvas, StackPane root) {
