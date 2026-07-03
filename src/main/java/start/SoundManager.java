@@ -10,6 +10,13 @@ public class SoundManager {
 
 	public static final AudioClip DAMAGE = load("/music/syujinkoudeadsound.mp3");
 
+	static {
+		//音量調節
+		WARP.setVolume(0.5); // ワープ音
+		ENEMY_DEAD.setVolume(0.3); // 敵撃破
+		DAMAGE.setVolume(0.1); // ダメージ
+	}
+
 	private static AudioClip load(String path) {
 
 		try {
