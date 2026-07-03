@@ -1,38 +1,39 @@
 package util;
 
-import javafx.application.Platform;
-import javafx.geometry.Rectangle2D;
-import javafx.stage.Screen;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class WindowUtil {
 
-	public static void fillScreen(Stage stage) {
-		if (stage.isFullScreen()) {
-			stage.setFullScreen(false);
-		}
+    public static void fillScreen(Stage stage) {
+        if (stage.isFullScreen()) {
+            stage.setFullScreen(false);
+        }
+        if (!stage.isMaximized()) {
+            stage.setMaximized(true);
+        }
+        if (!stage.isShowing()) {
+            stage.show();
+        }
+        // ここでは幅を触らない。実際のリサイズ完了はリスナー側に任せる。
+    }
 
-		// 💡 手動でのサイズ計算(setX/Y/Width/Height)ではなく、
-		//    OSネイティブの最大化機能を使うことで、境界線のズレ（隙間）を防ぐ
-		if (!stage.isMaximized()) {
-			stage.setMaximized(true);
-		}
+    // Canvasをrootに完全追従させる。手動でサイズを計算・代入しない。
+    public static void bindCanvasToRoot(Canvas canvas, StackPane root) {
+        canvas.widthProperty().bind(root.widthProperty());
+        canvas.heightProperty().bind(root.heightProperty());
 
-		if (!stage.isShowing()) {
-			stage.show();
-		}
+        // Canvasはリサイズされても自動で再描画されないため、
+        // サイズが変わるたびに描画処理を呼び出す必要がある
+        canvas.widthProperty().addListener((obs, oldV, newV) -> redraw(canvas));
+        canvas.heightProperty().addListener((obs, oldV, newV) -> redraw(canvas));
+    }
 
-		// 💡 描画エンジンのDPIスケールキャッシュをリフレッシュするため、
-		//    幅を1pxだけ揺らす（hide()/show()によるチカチカを避けるため）
-		double targetWidth = stage.getWidth();
-		stage.setWidth(targetWidth - 1);
-		Platform.runLater(() -> stage.setWidth(targetWidth));
-	}
-
-	// 💡 各画面のSceneを正しいサイズで作るためのヘルパー
-	public static Rectangle2D getScreenBounds() {
-		return Screen.getPrimary().getBounds();
-	}
+    private static void redraw(Canvas canvas) {
+        // ここでゲーム側の描画メソッドを呼ぶ
+        // 例: GameRenderer.render(canvas.getGraphicsContext2D());
+    }
 }
 /*package util;
 

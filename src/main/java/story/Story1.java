@@ -10,7 +10,6 @@ import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -40,10 +39,9 @@ public class Story1 extends Application {
 		//受け取った変数Stageを自分のStageに保存
 		this.stage = stage;
 		//ウィンドウの中身を決定
-		stage.setScene(story());
 		stage.setTitle("story1");
-		//画面の強制再設定
 		WindowUtil.fillScreen(stage);
+		stage.setScene(story());
 
 	}
 
@@ -287,8 +285,7 @@ public class Story1 extends Application {
 		StackPane base = new StackPane();
 		base.getChildren().addAll(bgView, syujinkouView, anikiView, nariView, root);
 		// 画面サイズに合わせてSceneを作ることで、最大化済みStageでも中身が縮まないようにする
-		Rectangle2D bounds = WindowUtil.getScreenBounds();
-		Scene scene = new Scene(base, bounds.getWidth(), bounds.getHeight());
+		Scene scene = new Scene(base);
 		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
 
 
