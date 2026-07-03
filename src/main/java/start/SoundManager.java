@@ -8,13 +8,16 @@ public class SoundManager {
 
 	public static final AudioClip ENEMY_DEAD = load("/music/enemydeadsound.mp3");
 
-	public static final AudioClip DAMAGE = load("/music/enemydeadsound2.mp3");
+	public static final AudioClip DAMAGE = load("/music/syujinkoudeadsound.mp3");
 
 	private static AudioClip load(String path) {
 
 		try {
 
 			var url = SoundManager.class.getResource(path);
+
+			System.out.println("SE読込: " + path);
+			System.out.println("URL = " + url);
 
 			if (url != null) {
 				return new AudioClip(url.toExternalForm());
