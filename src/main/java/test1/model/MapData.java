@@ -13,6 +13,7 @@ import Items.Chii;
 import Items.Item;
 import Items.Point;
 import common.GameMap;
+import start.SoundManager;
 
 public class MapData implements GameMap {
 
@@ -464,6 +465,9 @@ public class MapData implements GameMap {
 
 				syujinkou.setX(newPacX);
 				syujinkou.setY(newPacY);
+				
+				//効果音
+				SoundManager.play(SoundManager.WARP);
 
 				justWarped = true;
 				lastWarpX = warpX;
@@ -627,12 +631,15 @@ public class MapData implements GameMap {
 			}
 
 			double dx = pacCenterX - e.getX();
-
 			double dy = pacCenterY - e.getY();
 
 			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
 				// FEVER中の敵は食べられる
 				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
+					
+					//効果音
+					SoundManager.play(SoundManager.ENEMY_DEAD);
+					
 					// 💡 敵を倒したのでスコアを加算（例: 200点）
 					syujinkou.addScore(200);
 					e.setCurrentState(Characters.EnemyState.DEAD);
@@ -644,6 +651,9 @@ public class MapData implements GameMap {
 				}
 
 				System.out.println("💥敵に捕まった！");
+				
+				//効果音
+				SoundManager.play(SoundManager.DAMAGE);
 
 				syujinkou.takeDamage();
 				syujinkou.startDying();
