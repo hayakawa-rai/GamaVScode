@@ -46,6 +46,8 @@ public class GameController {
 		this.stageNumber = stageNumber; // ⭐ ステージ番号を記憶
 		this.isPractice = isPractice;
 
+		playStageBgm(stageNumber); // ★追加
+		
 		// キーボードの入力を登録
 		attachInput(scene);
 
@@ -245,6 +247,7 @@ public class GameController {
 						// 敵に捕まった（ゲームオーバー）かチェック
 						if ((boolean) isGameOverMethod.invoke(model)) {
 							stop();
+							start.Bgm.stopBGM(); // ★追加
 							System.out.println("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
 
 							// スコアを安全に取得する処理
@@ -272,6 +275,7 @@ public class GameController {
 							} else {
 								// 💡 本番モード：タイマーを止めて各ステージのクリア画面へ遷移
 								stop();
+								start.Bgm.stopBGM(); // ★追加
 								System.out.println("🏁 本番モード：ステージクリア！次の画面へ。");
 
 								int finalScore = 0;
@@ -597,6 +601,7 @@ public class GameController {
 			System.out.println("① forceBackToTitle開始");
 
 			stop();
+			start.Bgm.stopBGM(); // ★追加
 			System.out.println("② timer停止");
 
 			switchStart(this.stage);
@@ -605,6 +610,10 @@ public class GameController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	//BGM処理
+	private void playStageBgm(int stageNumber) {
+	    start.Bgm.playStageBGM(stageNumber); // ★変更：Bgm側に処理を委譲
 	}
 
 	

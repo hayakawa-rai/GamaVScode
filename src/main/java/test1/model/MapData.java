@@ -261,6 +261,8 @@ public class MapData implements GameMap {
 
 			paused = true;
 			pauseStartTime = System.currentTimeMillis();
+	        start.Bgm.pauseBGM(); // ★追加
+
 
 			for (Enemy e : enemies) {
 				e.pauseTimer();
@@ -268,6 +270,8 @@ public class MapData implements GameMap {
 
 		} else {
 			paused = false;
+	        start.Bgm.resumeBGM(); // ★追加
+
 
 			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
 
@@ -334,6 +338,8 @@ public class MapData implements GameMap {
 		if (feverEndTime > 0 && System.currentTimeMillis() >= feverEndTime) {
 			feverEndTime = 0;
 			syujinkou.setFever(false);
+		    start.Bgm.stopFeverBGM(); // ★追加：ステージBGMに復帰
+
 
 			for (Enemy e : enemies) {
 				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
@@ -496,6 +502,8 @@ public class MapData implements GameMap {
 					syujinkou.setFever(true);
 					// 毎回7秒にリセット
 					feverEndTime = System.currentTimeMillis() + 7000;
+				    start.Bgm.playFeverBGM(); // ★追加
+
 
 					for (Enemy e : enemies) {
 						if (e.getCurrentState() != Characters.EnemyState.DEAD) {

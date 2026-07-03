@@ -34,6 +34,8 @@ public class PracticeMain1 extends Application {
 		if (this.controller != null) {
 			this.controller.stop();
 		}
+		
+	    start.Bgm.stopBGM(); // ★追加（リトライ・多重起動時の重複再生防止）
 
 		// ストーリーモードはエサ復活なし
         MapData model = new MapData(false);
