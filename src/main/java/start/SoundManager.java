@@ -15,19 +15,21 @@ public class SoundManager {
 	// 主人公DEAD時の効果音
 	public static final AudioClip DAMAGE = load("/music/syujinkoudeadsound.mp3");
 
+	// 音量調節
 	static {
-		// 音量調節
 		WARP.setVolume(0.5); // ワープ音
 		ENEMY_DEAD.setVolume(0.3); // 敵撃破
 		DAMAGE.setVolume(0.1); // ダメージ
 	}
 
+	// 指定したパスの効果音を読み込む
 	private static AudioClip load(String path) {
 
 		try {
 
 			var url = SoundManager.class.getResource(path);
 
+			// デバッグ用ログ
 			System.out.println("SE読込: " + path);
 			System.out.println("URL = " + url);
 
@@ -42,11 +44,17 @@ public class SoundManager {
 		return null;
 	}
 
+	// 効果音を再生する
 	public static void play(AudioClip clip) {
 
 		if (clip != null) {
+
+			// 同じ効果音を連続再生できるよう一度停止
 			clip.stop();
+
+			// 効果音再生
 			clip.play();
+
 		}
 	}
 }
