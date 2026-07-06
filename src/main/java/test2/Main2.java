@@ -114,7 +114,7 @@ public class Main2 extends Application {
 		// コントローラーが最前面のポーズレイヤーを制御できるように登録
 		this.controller.setPauseLayer(pauseLayer);
 
-		stage.setTitle("仙石さん - ステージ 1");
+		stage.setTitle("仙石さん - ステージ 2");
 		stage.setScene(scene);
 
 		// ウィンドウのサイズ制限

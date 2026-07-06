@@ -45,7 +45,7 @@ public class PracticeMain3 extends Application {
 	    MapData model = new MapData(false);
         
         StackPane root = new StackPane();
-		root.getStyleClass().add("stage2");
+		root.getStyleClass().add("stage3");
 
 		// 1000x800 でSceneを生成
 		Scene scene = new Scene(root, 1000, 800);
@@ -106,20 +106,26 @@ public class PracticeMain3 extends Application {
 
 		pauseLayer.getChildren().addAll(pauseLabel, subLabel, titleButton);
 
-		// ★【変更点】StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
-		root.getChildren().addAll(gameBase, pauseLayer);
-
+		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
+				root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
+				
 		// 敵描画呼び出し
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		// 準備ができたコントローラーを生成 (stageNumber=1, isPractice=true)
-		this.controller = new GameController(model, view, canvas, scene, stage, 3, true);
-
-		// ★【追加】コントローラーが最前面のポーズレイヤーを制御できるように登録
+		this.controller = new GameController(model, view, canvas, scene, stage, 1, true);
+		// コントローラーが最前面のポーズレイヤーを制御できるように登録
 		this.controller.setPauseLayer(pauseLayer);
 
-		stage.setTitle("JavaFX Pacman Stage MVC");
+		stage.setTitle("仙石さん - 練習ステージ 3");
 		stage.setScene(scene);
+
+		// ウィンドウのサイズ制限
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
+		stage.setMaxWidth(1920);
+		stage.setMaxHeight(1080);
+
 		stage.show();
 
 		canvas.requestFocus();
