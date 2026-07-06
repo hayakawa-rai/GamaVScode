@@ -269,6 +269,11 @@ public class MapData implements GameMap {
 			if (modeStartTime > 0) {
 				modeStartTime += pauseDuration;
 			}
+			
+			 //フルーツのタイマーもポーズ時間分ずらす
+	        if (lastFruitSpawnTime > 0) {
+	            lastFruitSpawnTime += pauseDuration;
+	        }
 
 			for (Enemy e : enemies) {
 				e.resumeTimer();
@@ -317,8 +322,6 @@ public class MapData implements GameMap {
 
 		// パックマンの移動処理
 		updatePacman();
-	    checkFruitSpawn();  // ★追加
-	    updateFruit();      // ★追加
 
 		// FEVER終了判定
 		if (feverEndTime > 0 && System.currentTimeMillis() >= feverEndTime) {
@@ -377,6 +380,8 @@ public class MapData implements GameMap {
 			for (Enemy e : enemies) {
 				e.move(map);
 			}
+		    checkFruitSpawn();  
+		    updateFruit();      
 		}
 		// 口パクの更新
 		// updateMouth();
@@ -625,6 +630,9 @@ public class MapData implements GameMap {
 			waitingStart = false;
 
 			modeStartTime = System.currentTimeMillis();
+			
+	        lastFruitSpawnTime = System.currentTimeMillis(); // ★追加
+
 
 			System.out.println("ゲーム開始");
 		}
