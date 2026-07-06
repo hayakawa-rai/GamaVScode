@@ -56,13 +56,13 @@ public class Storyclear extends Application {
 
 				"PROGRAMMER\n\n" +
 
-				"うさぎ　ちいかわ\n" + "カピバラ\n" + "堀京子\n" + "マイメロディ\n" + "五条悟\n" + "服部平次\n" + "名探偵コナン\n\n" +
+				"N.Y\n" + "H.R\n" + "O.S\n" + "K.S\n" + "W.M\n" + "W.T\n" + "F.O\n" + "M.R\n\n" +
 
 				"━━━━━━━━━━━━━━━━━━\n\n" +
 
 				"COOPERATION\n\n" +
 
-				"徳田 減衰\n\n" +
+				"先輩社員\n\n" +
 
 				"━━━━━━━━━━━━━━━━━━\n\n" +
 
@@ -210,6 +210,8 @@ public class Storyclear extends Application {
 		companyBox.setAlignment(Pos.BOTTOM_RIGHT);
 
 		companyBox.getChildren().addAll(companyLogoView, copyrightText);
+		
+		companyBox.setMouseTransparent(true);
 
 		StackPane.setAlignment(companyBox, Pos.BOTTOM_RIGHT);
 
