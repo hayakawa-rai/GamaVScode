@@ -46,10 +46,11 @@ public class Storyclear extends Application {
 		// ==================================================
 		Text storyClear = new Text("STORY CLEAR!!");
 
-		storyClear.setStyle("-fx-font-family: 'PixelMplus12';" + "-fx-font-size: 100px;" + "-fx-fill: #2B4A6A;");
+		storyClear.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:100px;" + "-fx-font-weight:bold;"
+				+ "-fx-fill:black;" + "-fx-stroke:white;" + "-fx-stroke-width:3;");
 
 		// ==================================================
-		// スタッフロール本文
+		// スタッフロール本文(後ほど名前変更)
 		// ==================================================
 		Text credits = new Text("━━━━━━━━━━━━━━━━━━\n\n" +
 
@@ -89,8 +90,8 @@ public class Storyclear extends Application {
 
 		Text endText = new Text("THANK YOU FOR PLAYING!!");
 
-		endText.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:70px;" + "-fx-font-weight:bold;"
-				+ "-fx-fill:#2B4A6A;");
+		endText.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:80px;" + "-fx-font-weight:bold;"
+				+ "-fx-fill:black;" + "-fx-stroke:white;" + "-fx-stroke-width:3;");
 
 		endText.setVisible(false);
 
@@ -102,10 +103,16 @@ public class Storyclear extends Application {
 		Button titleButton = new Button("タイトルへ");
 
 		titleButton.getStyleClass().add("game-button2");
-		titleButton.setPrefSize(250, 80);
+		titleButton.setPrefSize(170, 55);
 		titleButton.setVisible(false);
 
-		titleButton.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:26px;");
+		titleButton.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:24px;" +
+
+				"-fx-background-color:#EAF4FF;" + "-fx-text-fill:#2B4A6A;" +
+
+				"-fx-border-color:white;" + "-fx-border-width:2;" +
+
+				"-fx-background-radius:10;" + "-fx-border-radius:10;");
 		titleButton.setTranslateY(90);
 
 		titleButton.setOnAction(e -> {
@@ -154,12 +161,12 @@ public class Storyclear extends Application {
 		// ==================================================
 		// Scene
 		// ==================================================
-		Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+		Scene scene = new Scene(root, 1600, 900);
 
 		// ==================================================
 		// スタッフロールアニメーション
 		// =================================================
-		TranslateTransition roll = new TranslateTransition(Duration.seconds(25), rollBox);
+		TranslateTransition roll = new TranslateTransition(Duration.seconds(23), rollBox);
 
 		rollBox.setTranslateY(scene.getHeight());
 		roll.setToY(-900);
@@ -192,7 +199,7 @@ public class Storyclear extends Application {
 		startWait.setOnFinished(e -> {
 
 			root.getChildren().remove(storyClear);
-			
+
 			root.getChildren().add(rollBox);
 
 			roll.play();
