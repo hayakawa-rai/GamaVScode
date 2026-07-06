@@ -4,37 +4,40 @@ import Characters.Syujinkou;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * 固定位置に出現し、プレイヤーに食べられるのを待つボーナスフルーツ。
- * 移動ロジックが不要になったため、非常にシンプル。
+ * 固定位置に出現するボーナスフルーツ。
+ * itemMap配列に直接配置される
+ * 「普通のアイテム」として扱えるようにシンプル化した。
+ * 座標情報は持たず、描画時に呼び出し元(MapView)から渡されるx, yをそのまま使う。
  */
 public class Fruit extends Item {
 
     private final FruitType type;
-    private final double x; // 描画用の中心ピクセル座標
-    private final double y;
 
-    public Fruit(FruitType type, double startX, double startY) {
-        // FruitTypeからスコアを取得して親クラス(Item)に渡す
-        super(type.getScore(), null); 
+    public Fruit(FruitType type) {
+        super(type.getScore(), null); // Node（getView）は使わずCanvas描画のみ利用
         this.type = type;
-        this.x = startX;
-        this.y = startY;
     }
 
     public FruitType getType() { return type; }
 
+    /**
+     * プレイヤーがこのフルーツを取得した時の処理。スコアを加算する。
+     */
     @Override
     public void onEaten(Syujinkou player) {
-        player.addScore(score); // スコア加算
-        System.out.println("【ご褒美】" + type + "を食べた！ +" + score + "点");
+        player.addScore(score);
+        System.out.println(type + "を食べた！ +" + score + "点");
     }
 
+    /**
+     * フルーツを画面に描画する。種類ごとの色で丸を描く仮実装。
+     * 画像を使いたい場合はここをdrawImageに差し替える。
+     */
     @Override
-    public void draw(GraphicsContext gc, double leftX, double topY, double tileSize) {
-        // 仮描画：種類ごとの色で丸を描き、上に緑のヘタを描く
+    public void draw(GraphicsContext gc, double x, double y, double tileSize) {
         gc.setFill(type.getColor());
-        gc.fillOval(leftX + tileSize * 0.15, topY + tileSize * 0.15, tileSize * 0.7, tileSize * 0.7);
+        gc.fillOval(x + tileSize * 0.15, y + tileSize * 0.15, tileSize * 0.7, tileSize * 0.7);
         gc.setFill(javafx.scene.paint.Color.GREEN);
-        gc.fillRect(leftX + tileSize * 0.45, topY + tileSize * 0.05, tileSize * 0.1, tileSize * 0.2);
+        gc.fillRect(x + tileSize * 0.45, y + tileSize * 0.05, tileSize * 0.1, tileSize * 0.2);
     }
 }
