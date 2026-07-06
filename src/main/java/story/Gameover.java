@@ -1,6 +1,7 @@
 package story;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,23 +16,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import start.Start;
-import util.WindowUtil;
 
 public class Gameover extends Application {
 
 	private int score = 0;
 
-	public void setScore(int score) {
-		this.score = score;
-	}
-
 	@Override
 	public void start(Stage stage) {
 		stage.setScene(create(stage, null, score));
-		stage.setTitle("ゲーム");
+		stage.setTitle("ゲームオーバー");
 		//画面の強制再設定
-		WindowUtil.fillScreen(stage);
-		stage.setScene(create(stage, null, score)); // その後でSceneをセット
+		//WindowUtil.fillScreen(stage);	最大化
+		stage.setScene(create(stage, null, score));
+		stage.centerOnScreen();
+		stage.show();
 
 	}
 
@@ -52,9 +50,7 @@ public class Gameover extends Application {
 		// いらすとや
 		ImageView icon = new ImageView();
 		try {
-
 			java.net.URL imgUrl = Gameover.class.getResource("/picture/syujinkou(gameover).png");
-
 			if (imgUrl != null) {
 				icon.setImage(new Image(imgUrl.toExternalForm()));
 			} else {
@@ -63,8 +59,9 @@ public class Gameover extends Application {
 		} catch (Exception e) {
 			System.out.println("⚠️ 画像の読み込みに失敗しました。");
 		}
-		icon.setFitWidth(300);
-		icon.setFitHeight(400);
+		icon.setFitWidth(400);
+		icon.setFitHeight(500);
+		icon.setTranslateY(-80);
 
 		// 直前のステージをやり直す
 		Button retryBtn = new Button("リトライする");
@@ -102,6 +99,9 @@ public class Gameover extends Application {
 
 		// レイアウト
 		BorderPane ui = new BorderPane();
+		BorderPane.setAlignment(titleBox, Pos.CENTER);
+		BorderPane.setMargin(titleBox, new Insets(150, 0, 40, 0)); // 上150px、下40pxの余白
+		
 		ui.setTop(titleBox);
 		ui.setCenter(centerBox);
 
@@ -121,7 +121,7 @@ public class Gameover extends Application {
 		}
 		bg.setPreserveRatio(false);
 
-		// 白い透明レイヤー（背景を柔らかくする）
+		// 白い透明レイヤー
 		Rectangle whiteOverlay = new Rectangle();
 		whiteOverlay.setFill(Color.rgb(255, 255, 255, 0.15));
 
@@ -135,17 +135,24 @@ public class Gameover extends Application {
 		// rootに追加
 		root.getChildren().addAll(bg, whiteOverlay, ui);
 
-		// 固定サイズを渡さない。StageのサイズにScene側が自動追従する。
-	    Scene scene = new Scene(root);
-		// ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+		Scene scene = new Scene(root, 1000, 800);
+	    //CSSを接続
+		scene.getStylesheets().add(Gameover.class.getResource("/css/gameover.css").toExternalForm());
+	    
+		//ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
-		scene.getStylesheets().add(Gameover.class.getResource("/css/gameover.css").toExternalForm());
+		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxHeight(1080);
 
 		return scene;
 
 	}
-
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
 	public static void main(String[] args) {
 		launch();
 	}

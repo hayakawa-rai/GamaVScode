@@ -2,6 +2,7 @@ package start;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,11 +18,11 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import util.WindowUtil;
 
 public class Start extends Application {
 	private AnimationTimer timer;
 	private AudioClip clickSound;
+	private PauseTransition pause;
 
 	private void cleanup() {
 
@@ -30,6 +31,12 @@ public class Start extends Application {
 			timer.stop();
 			timer = null;
 		}
+
+		// 遅延処理停止
+				if (pause != null) {
+					pause.stop();
+					pause = null;
+				}
 
 		// 効果音停止
 		if (clickSound != null) {
@@ -41,13 +48,10 @@ public class Start extends Application {
 		Bgm.stopBGM();
 	}
 
-	//javafxのApplicationにもともとあるstartを上書き
 	@Override
 	public void start(Stage stage) {
-		
-		// startメソッドの最初の方に配置
 		try {
-		    // 1. ファイルをストリームとして読み込む
+		    // ファイルをストリームとして読み込む
 		    var fontStream = getClass().getResourceAsStream("/font/PixelMplus12-Regular.ttf");
 		    
 		    if (fontStream == null) {
@@ -68,7 +72,7 @@ public class Start extends Application {
 		    e.printStackTrace();
 		}
 
-		// 2. 画面を作る前にレトロフォントファイルを読み込む
+		// 画面を作る前にレトロフォントファイルを読み込む
 		try {
 			Font.loadFont(getClass().getResourceAsStream("/font/PixelMplus12-Regular.ttf"), 20);
 		} catch (Exception e) {
@@ -79,48 +83,38 @@ public class Start extends Application {
 		Image bgImage = new Image(
 				getClass().getResource("/picture/background.png").toExternalForm());
 
-		// 背景用画像表示を２つ設定
-		ImageView bg1 = new ImageView(bgImage);
-		ImageView bg2 = new ImageView(bgImage);
-		
-		// 画面サイズに合わせて引き伸ばすため、縦横比は維持しない
-		bg1.setPreserveRatio(false);
-		bg2.setPreserveRatio(false);
+		// 画像の元のサイズを取得
+		double bgWidth = bgImage.getWidth();
+		double bgHeight = bgImage.getHeight();
+		// 背景をタイルのように敷き詰めるためのPaneを作成
+		Pane bgPane = new Pane();
+		final double[] scrollX = {0};
 
-		//bg2をbg1の横に置く(bg2の位置を取得した画像の横幅分右に配置)
-		bg2.setLayoutX(bgImage.getWidth());
-
-		// AnimationTimer:javafxでのループ処理(handle()のみを繰り返し呼び出す)
+		// アニメーション
 		timer = new AnimationTimer() {
-			//Applicationにhandleというメソッドがあるため書き換え(AnimationTimerはhandl()しか呼び出せないためhandleを使用)
 			@Override
 			public void handle(long now) {
-				//背景画像を1pxづつ左に動かしている
-				bg1.setLayoutX(bg1.getLayoutX() - 1);
-				bg2.setLayoutX(bg2.getLayoutX() - 1);
+				// 1pxずつ左に動かす
+				scrollX[0] -= 1;
 				
-				//画面幅は可変(bindingでリサイズに追従)なので、
-				// 固定値のbgImage.getWidth()ではなく、
-				// 実際に表示されている幅(fitWidth)を毎フレーム参照する
-				double currentWidth = bg1.getFitWidth();
+				// 画像の横幅分動いたら0に戻す（これで無限ループ）
+				if (scrollX[0] <= -bgWidth) {
+					scrollX[0] = 0;
+				}
 				
-				//bg1が画面外に完全に出たらbg2の右端に移動
-				if (bg1.getLayoutX() + currentWidth <= 0) {
-					bg1.setLayoutX(bg2.getLayoutX() + currentWidth);
-				}
-				//bg2が画面外に完全に出たらbg1の右端に移動
-				if (bg2.getLayoutX() + currentWidth <= 0) {
-					bg2.setLayoutX(bg1.getLayoutX() + currentWidth);
-
-				/*// 画面外に出たらループ
-				//big1が画面外に完全に出たらbg2の右端に移動
-				if (bg1.getLayoutX() + bgImage.getWidth() <= 0) {
-					bg1.setLayoutX(bg2.getLayoutX() + bgImage.getWidth());
-				}
-				//big2が画面外に完全に出たらbg1の右端に移動
-				if (bg2.getLayoutX() + bgImage.getWidth() <= 0) {
-					bg2.setLayoutX(bg1.getLayoutX() + bgImage.getWidth());*/
-				}
+				// 画像は元のサイズのまま、表示位置だけをずらして背景を再描画
+				javafx.scene.paint.ImagePattern pattern = new javafx.scene.paint.ImagePattern(
+					bgImage, 
+					scrollX[0], 0,	// X座標をずらす, Y座標は固定
+					bgWidth, bgHeight, // 画像の本来のサイズを維持
+					false // 絶対座標指定
+				);
+				
+				// bgPane全体の背景をこのパターンで塗りつぶす
+				bgPane.setBackground(new javafx.scene.layout.Background(
+					new javafx.scene.layout.BackgroundFill(pattern, null, null)
+				));
+				
 			}
 		};
 		//ここから自動的にループ開始(AnimationTimerとペアで使用)
@@ -128,16 +122,15 @@ public class Start extends Application {
 		//重ねて表示するためのレイアウト(レイヤー構造の作成)
 		StackPane root = new StackPane();
 
-		// 背景用の画像をbagPaneに追加
-		Pane bgPane = new Pane();
-		bgPane.getChildren().addAll(bg1, bg2);
-
 		//縦に並べるための箱を作成
 		VBox ui = new VBox();
+		// UIが広がりすぎないよう最大幅を制限
+		ui.setMaxWidth(800); 
 		//uiによる配置の間隔を設定
 		ui.setSpacing(20);
 		//中央に設定
 		ui.setAlignment(Pos.CENTER);
+		        
 
 		//title用の画像読み込み
 		Image image = new Image(getClass().getResource("/picture/title.png").toExternalForm());
@@ -176,7 +169,7 @@ public class Start extends Application {
 				clickSound.stop();
 				clickSound.play();
 				
-				// 0.15秒後に画面遷移
+				// 0.5秒待つ
 				Timeline delay = new Timeline(
 					new KeyFrame(Duration.millis(500), ev -> {
 
@@ -205,7 +198,7 @@ public class Start extends Application {
 				clickSound.stop();
 				clickSound.play();
 
-				// 0.15秒後に画面遷移
+				// 0.5秒待つ
 				Timeline delay = new Timeline(
 					new KeyFrame(Duration.millis(500), ev -> {
 
@@ -225,7 +218,7 @@ public class Start extends Application {
 		btn2.getStyleClass().add("game-button");
 
 		//無限モードへ飛ぶボタン作成
-		Button btn3 = new Button("🔚ゲーム終了");
+		Button btn3 = new Button("ゲーム終了");
 		btn3.setPrefSize(300, 100);
 
 		//btn3にCSSのgame-buttonを付与
@@ -265,32 +258,28 @@ public class Start extends Application {
 
 		//rootを中身とした1000×800のウィンドウを作成
 		Scene scene = new Scene(root, 1000, 800);
-		
-		// 背景画像をウィンドウの高さ・幅いっぱいに合わせる
-		// (fitWidth/fitHeightをSceneのサイズにバインドすることで、
-		//  最大化やリサイズをしても常に画面を覆うようにする)
-		bg1.fitWidthProperty().bind(scene.widthProperty());
-		bg1.fitHeightProperty().bind(scene.heightProperty());
-		bg2.fitWidthProperty().bind(scene.widthProperty());
-		bg2.fitHeightProperty().bind(scene.heightProperty());
+		//
+		bgPane.prefWidthProperty().bind(scene.widthProperty());
+		bgPane.prefHeightProperty().bind(scene.heightProperty());
 		
 		//CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
-		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+		//ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(800);
 		stage.setMinHeight(600);
+		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxHeight(1080);
 
 		//ウィンドウの名前を設定
 		stage.setTitle("スタート画面");
 
 		//ウィンドウの中身を設定・表示
 		stage.setScene(scene);
-		WindowUtil.fillScreen(stage);
+		//WindowUtil.fillScreen(stage);	//最大化
 		//リセットするため、一度隠してから再表示する
-		stage.hide();
+		//stage.hide();
 		stage.show();
-
 	}
 
 	//launchをmainで呼び出すことでjavafxのアプリが起動
