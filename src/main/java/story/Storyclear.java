@@ -10,6 +10,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Storyclear extends Application {
 
@@ -33,12 +37,12 @@ public class Storyclear extends Application {
 
 		// GAME CLEAR
 		Text clearTitle = new Text("GAME CLEAR");
-		clearTitle.setStyle("-fx-font-size: 80px;" + "-fx-fill: rgb(180,180,180);");
+		clearTitle.setStyle("-fx-font-size: 90px;" + "-fx-font-weight: bold;" + "-fx-fill: white;");
 
 		// 感謝メッセージ
 		Text thanks = new Text("ここまで遊んでいただき\n" + "本当にありがとうございました！\n\n" + "少しでも楽しんでいただけたなら幸いです。");
 
-		thanks.setStyle("-fx-font-size: 24px;" + "-fx-fill: gray;");
+		thanks.setStyle("-fx-font-size: 24px;" + "-fx-fill: #334455;");
 		thanks.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
 		// タイトルへ戻る
@@ -61,13 +65,27 @@ public class Storyclear extends Application {
 
 		content.getChildren().addAll(clearTitle, thanks, titleButton);
 
-		// Stageclearと同じ雰囲気の背景
-		StackPane root = new StackPane();
-		root.setStyle("-fx-background-color: black;");
+		// 背景画像
+		Image bgImage = new Image(getClass().getResourceAsStream("/picture/EMD_picture.jpg"));
 
-		root.getChildren().add(content);
+		ImageView bgView = new ImageView(bgImage);
+		bgView.setPreserveRatio(false);
+
+		// 白フィルター
+		Rectangle whiteFilter = new Rectangle();
+		whiteFilter.setFill(Color.rgb(255, 255, 255, 0.30));
+
+		// レイアウト
+		StackPane root = new StackPane();
+		root.getChildren().addAll(bgView, whiteFilter, content);
 
 		Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+
+		bgView.fitWidthProperty().bind(scene.widthProperty());
+		bgView.fitHeightProperty().bind(scene.heightProperty());
+
+		whiteFilter.widthProperty().bind(scene.widthProperty());
+		whiteFilter.heightProperty().bind(scene.heightProperty());
 
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 
