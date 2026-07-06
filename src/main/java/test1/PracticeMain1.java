@@ -2,7 +2,6 @@ package test1;
 
 import control.GameController;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
@@ -57,15 +56,12 @@ public class PracticeMain1 extends Application {
 
 		StackPane root = new StackPane();
 		root.getStyleClass().add("stage1");
-
+		
+		// 1000x800 でSceneを生成
 		Scene scene = new Scene(root, 1000, 800);
 		scene.getStylesheets().add(
 				getClass().getResource("/css/test.css").toExternalForm());
-		/*// ★背景用Pane（CSSを効かせる対象）
-		Pane bg = new Pane();
-		bg.getStyleClass().add("game-bg");
-		bg.setPrefSize(viewWidth, viewHeight);
-		bg.setMouseTransparent(true);*/
+		
 		ImageView backgroundView = new ImageView();
 		try {
 			// src/main/resources/picture/companyroom.jpg から画像を読み込む
@@ -87,13 +83,13 @@ public class PracticeMain1 extends Application {
 
 		Pane gameBase = new Pane();
 		gameBase.getStyleClass().add("stage1");
-		gameBase.setMaxSize(viewWidth, viewHeight); // マップ実寸より大きくならないよう固定
-		gameBase.setPrefSize(viewWidth, viewHeight);
 
 		MapView view = new MapView(model, gameBase);
 		
 		// ゲーム描画用Canvas（マップの実寸サイズで固定）
-				Canvas canvas = new Canvas(viewWidth, viewHeight);
+				Canvas canvas = new Canvas();
+				canvas.widthProperty().bind(root.widthProperty());
+				canvas.heightProperty().bind(root.heightProperty());
 				gameBase.getChildren().add(canvas);
 
 				VBox pauseLayer = new VBox(25);
@@ -125,7 +121,6 @@ public class PracticeMain1 extends Application {
 
 		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
 		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
-		StackPane.setAlignment(gameBase, Pos.CENTER); // ゲーム画面は常に中央
 
 		// 敵描画呼び出し
 		model.initEnemy(new javafx.scene.image.ImageView());
