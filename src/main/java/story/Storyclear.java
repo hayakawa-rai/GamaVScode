@@ -29,7 +29,7 @@ public class Storyclear extends Application {
 	public void start(Stage stage) {
 		this.stage = stage;
 
-		stage.setTitle("GAME CLEAR");
+		stage.setTitle("STORY CLEAR");
 		stage.setScene(clearScene());
 		stage.show();
 	}
@@ -85,6 +85,18 @@ public class Storyclear extends Application {
 		credits.setTextAlignment(TextAlignment.CENTER);
 
 		// ==================================================
+		// ゲームタイトル
+		// ==================================================
+
+		Image logoImage = new Image(getClass().getResourceAsStream("/picture/title.png"));
+
+		ImageView logoView = new ImageView(logoImage);
+
+		logoView.setPreserveRatio(true);
+
+		logoView.setFitWidth(350);
+
+		// ==================================================
 		// THANK YOU FOR PLAYING!!
 		// ==================================================
 
@@ -113,7 +125,6 @@ public class Storyclear extends Application {
 				"-fx-border-color:white;" + "-fx-border-width:2;" +
 
 				"-fx-background-radius:10;" + "-fx-border-radius:10;");
-		titleButton.setTranslateY(90);
 
 		titleButton.setOnAction(e -> {
 
@@ -126,8 +137,11 @@ public class Storyclear extends Application {
 		// ==================================================
 		// THANK YOU + ボタン
 		// ==================================================
-		StackPane thankBox = new StackPane();
-		thankBox.getChildren().addAll(endText, titleButton);
+		VBox thankBox = new VBox(30);
+
+		thankBox.setAlignment(Pos.CENTER);
+
+		thankBox.getChildren().addAll(logoView, endText, titleButton);
 
 		// ==================================================
 		// スタッフロール用VBox
@@ -168,8 +182,38 @@ public class Storyclear extends Application {
 		// =================================================
 		TranslateTransition roll = new TranslateTransition(Duration.seconds(23), rollBox);
 
-		rollBox.setTranslateY(scene.getHeight());
+		rollBox.setTranslateY(1050);
 		roll.setToY(-900);
+
+		// ==================================================
+		// コピーライト
+		// ==================================================
+		Text copyrightText = new Text("2026年度 EMD 新卒一同");
+
+		copyrightText.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:18px;" + "-fx-fill:#334455;");
+
+		// ==================================================
+		// 会社ロゴ
+		// ==================================================
+		Image companyLogoImage = new Image(getClass().getResourceAsStream("/picture/EMD_logo.png"));
+
+		ImageView companyLogoView = new ImageView(companyLogoImage);
+
+		companyLogoView.setPreserveRatio(true);
+		companyLogoView.setFitWidth(60);
+
+		// ==================================================
+		// 右下表示
+		// ==================================================
+		VBox companyBox = new VBox(5);
+
+		companyBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+		companyBox.getChildren().addAll(companyLogoView, copyrightText);
+
+		StackPane.setAlignment(companyBox, Pos.BOTTOM_RIGHT);
+
+		StackPane.setMargin(companyBox, new javafx.geometry.Insets(0, 30, 20, 0));
 
 		// ==================================================
 		// スタッフロール終了
@@ -180,7 +224,7 @@ public class Storyclear extends Application {
 
 			endText.setVisible(true);
 
-			root.getChildren().add(thankBox);
+			root.getChildren().addAll(thankBox, companyBox);
 
 			PauseTransition endWait = new PauseTransition(Duration.seconds(2));
 
