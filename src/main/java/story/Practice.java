@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -18,7 +17,6 @@ import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Bgm;
-import util.WindowUtil;
 
 public class Practice extends Application {
 
@@ -28,15 +26,6 @@ public class Practice extends Application {
 	private Stage stage;
 	// hold the background animation so we can stop it when switching scenes
 	private AnimationTimer timer;
-
-	@Override
-	public void start(Stage stage) {
-	    this.stage = stage;
-	    stage.setTitle("練習モード");
-	    WindowUtil.fillScreen(stage);   // 先に最大化を確定
-	    stage.setScene(createScene());  // その後でSceneをセット
-
-	}
 
 	private void cleanup() {
 
@@ -66,6 +55,16 @@ public class Practice extends Application {
 		// BGM停止
 		Bgm.stopBGM();
 	}
+	
+	@Override
+	public void start(Stage stage) {
+	    this.stage = stage;
+	    stage.setTitle("練習モード");
+	    //WindowUtil.fillScreen(stage);   // 先に最大化を確定
+	    stage.setScene(createScene());  // その後でSceneをセット
+
+	}
+
 
 	public Scene createScene() {
 
@@ -188,21 +187,45 @@ public class Practice extends Application {
 		// 背景
 		Image bgImage = new Image(
 				Practice.class.getResource("/picture/background.png").toExternalForm());
+		//追加
+		double bgWidth = bgImage.getWidth();
+		double bgHeight = bgImage.getHeight();
 
-		ImageView bg1 = new ImageView(bgImage);
+		Pane bgPane = new Pane();
+		final double[] scrollX = {0};
+		
+		/*ImageView bg1 = new ImageView(bgImage);
 		ImageView bg2 = new ImageView(bgImage);
 		
 		// 画面サイズに合わせて引き伸ばすため、縦横比は維持しない
 		bg1.setPreserveRatio(false);
 		bg2.setPreserveRatio(false);
 
-		bg2.setLayoutX(bgImage.getWidth());
+		bg2.setLayoutX(bgImage.getWidth());*/
 
 		// アニメーション
 		this.timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				bg1.setLayoutX(bg1.getLayoutX() - 1);
+				//追加
+				scrollX[0] -= 1;
+
+				if (scrollX[0] <= -bgWidth) {
+					scrollX[0] = 0;
+				}
+
+				javafx.scene.paint.ImagePattern pattern = new javafx.scene.paint.ImagePattern(
+					bgImage,
+					scrollX[0], 0,
+					bgWidth, bgHeight,
+					false
+				);
+
+				bgPane.setBackground(new javafx.scene.layout.Background(
+					new javafx.scene.layout.BackgroundFill(pattern, null, null)
+				));
+				
+				/*bg1.setLayoutX(bg1.getLayoutX() - 1);
 				bg2.setLayoutX(bg2.getLayoutX() - 1);
 
 				// 画面幅は可変(bindingでリサイズに追従)なので、
@@ -215,21 +238,22 @@ public class Practice extends Application {
 				}
 				if (bg2.getLayoutX() + currentWidth <= 0) {
 					bg2.setLayoutX(bg1.getLayoutX() + currentWidth);
-				}
+				}*/
 			}
 		};
 		this.timer.start();
 
 		StackPane root = new StackPane();
 
-		Pane bgPane = new Pane();
-		bgPane.getChildren().addAll(bg1, bg2);
+		//Pane bgPane = new Pane();
+		//bgPane.getChildren().addAll(bg1, bg2);
 
 		VBox titleBox = new VBox(title);
 		titleBox.setAlignment(Pos.CENTER);
 		titleBox.setStyle("-fx-padding: 200px 0 20px 0;");
 
 		BorderPane ui = new BorderPane();
+		ui.setMaxWidth(800);//追加
 		ui.setTop(titleBox);
 		ui.setCenter(stageButtons);
 		ui.setBottom(backBox);
@@ -237,19 +261,26 @@ public class Practice extends Application {
 		root.getChildren().addAll(bgPane, ui);
 
 		// 固定サイズを渡さない。StageのサイズにScene側が自動追従する。
-	    Scene scene = new Scene(root);
+	    //Scene scene = new Scene(root);
+		//rootを中身とした1000×800のウィンドウを作成
+	  	Scene scene = new Scene(root, 1000, 800);
+	    //追加
+	    bgPane.prefWidthProperty().bind(scene.widthProperty());
+		bgPane.prefHeightProperty().bind(scene.heightProperty());
 	    
-	 // 背景画像をウィンドウの高さ・幅いっぱいに合わせる
+	 /*// 背景画像をウィンドウの高さ・幅いっぱいに合わせる
 	 // (fitWidth/fitHeightをSceneのサイズにバインドすることで、
 	 //  最大化やリサイズをしても常に画面を覆うようにする)
 	 bg1.fitWidthProperty().bind(scene.widthProperty());
 	 bg1.fitHeightProperty().bind(scene.heightProperty());
 	 bg2.fitWidthProperty().bind(scene.widthProperty());
-	 bg2.fitHeightProperty().bind(scene.heightProperty());
+	 bg2.fitHeightProperty().bind(scene.heightProperty());*/
 	 
-		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+		//ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
+		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限 ２行追加
+		stage.setMaxHeight(1080);
 
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());

@@ -80,22 +80,52 @@ public class Start extends Application {
 				getClass().getResource("/picture/background.png").toExternalForm());
 
 		// 背景用画像表示を２つ設定
-		ImageView bg1 = new ImageView(bgImage);
-		ImageView bg2 = new ImageView(bgImage);
+		//ImageView bg1 = new ImageView(bgImage);
+		//ImageView bg2 = new ImageView(bgImage);
 		
+		//追加
+		// 画像の元のサイズを取得
+		double bgWidth = bgImage.getWidth();
+		double bgHeight = bgImage.getHeight();
+		// 背景をタイルのように敷き詰めるためのPaneを作成
+		Pane bgPane = new Pane();
+		final double[] scrollX = {0};
+				
 		// 画面サイズに合わせて引き伸ばすため、縦横比は維持しない
-		bg1.setPreserveRatio(false);
-		bg2.setPreserveRatio(false);
+		//bg1.setPreserveRatio(false);
+		//bg2.setPreserveRatio(false);
 
 		//bg2をbg1の横に置く(bg2の位置を取得した画像の横幅分右に配置)
-		bg2.setLayoutX(bgImage.getWidth());
+		//bg2.setLayoutX(bgImage.getWidth());
 
 		// AnimationTimer:javafxでのループ処理(handle()のみを繰り返し呼び出す)
 		timer = new AnimationTimer() {
 			//Applicationにhandleというメソッドがあるため書き換え(AnimationTimerはhandl()しか呼び出せないためhandleを使用)
 			@Override
 			public void handle(long now) {
-				//背景画像を1pxづつ左に動かしている
+				//追加
+				// 1pxずつ左に動かす
+				scrollX[0] -= 1;
+				
+				// 画像の横幅分動いたら0に戻す（これで無限ループ）
+				if (scrollX[0] <= -bgWidth) {
+					scrollX[0] = 0;
+				}
+				
+				// 🌟 画像は元のサイズのまま、表示位置だけをずらして背景を再描画
+				javafx.scene.paint.ImagePattern pattern = new javafx.scene.paint.ImagePattern(
+					bgImage, 
+					scrollX[0], 0, // X座標をずらす, Y座標は固定
+					bgWidth, bgHeight, // 画像の本来のサイズを維持
+					false // 絶対座標指定
+				);
+				
+				// bgPane全体の背景をこのパターンで塗りつぶす
+				bgPane.setBackground(new javafx.scene.layout.Background(
+					new javafx.scene.layout.BackgroundFill(pattern, null, null)
+				));
+				
+				/*//背景画像を1pxづつ左に動かしている
 				bg1.setLayoutX(bg1.getLayoutX() - 1);
 				bg2.setLayoutX(bg2.getLayoutX() - 1);
 				
@@ -110,17 +140,17 @@ public class Start extends Application {
 				}
 				//bg2が画面外に完全に出たらbg1の右端に移動
 				if (bg2.getLayoutX() + currentWidth <= 0) {
-					bg2.setLayoutX(bg1.getLayoutX() + currentWidth);
+					bg2.setLayoutX(bg1.getLayoutX() + currentWidth);*/
 
-				/*// 画面外に出たらループ
+				/*// 画面外に出たらループ	元からコメントされている
 				//big1が画面外に完全に出たらbg2の右端に移動
 				if (bg1.getLayoutX() + bgImage.getWidth() <= 0) {
 					bg1.setLayoutX(bg2.getLayoutX() + bgImage.getWidth());
 				}
 				//big2が画面外に完全に出たらbg1の右端に移動
 				if (bg2.getLayoutX() + bgImage.getWidth() <= 0) {
-					bg2.setLayoutX(bg1.getLayoutX() + bgImage.getWidth());*/
-				}
+					bg2.setLayoutX(bg1.getLayoutX() + bgImage.getWidth());
+				}*/
 			}
 		};
 		//ここから自動的にループ開始(AnimationTimerとペアで使用)
@@ -129,8 +159,8 @@ public class Start extends Application {
 		StackPane root = new StackPane();
 
 		// 背景用の画像をbagPaneに追加
-		Pane bgPane = new Pane();
-		bgPane.getChildren().addAll(bg1, bg2);
+		//Pane bgPane = new Pane();
+		//bgPane.getChildren().addAll(bg1, bg2);
 
 		//縦に並べるための箱を作成
 		VBox ui = new VBox();
@@ -138,6 +168,8 @@ public class Start extends Application {
 		ui.setSpacing(20);
 		//中央に設定
 		ui.setAlignment(Pos.CENTER);
+		// UIが広がりすぎないよう最大幅を制限
+		ui.setMaxWidth(800);         
 
 		//title用の画像読み込み
 		Image image = new Image(getClass().getResource("/picture/title.png").toExternalForm());
@@ -265,14 +297,19 @@ public class Start extends Application {
 
 		//rootを中身とした1000×800のウィンドウを作成
 		Scene scene = new Scene(root, 1000, 800);
+		//追加
+		bgPane.prefWidthProperty().bind(scene.widthProperty());
+		bgPane.prefHeightProperty().bind(scene.heightProperty());
 		
-		// 背景画像をウィンドウの高さ・幅いっぱいに合わせる
+		/*// 背景画像をウィンドウの高さ・幅いっぱいに合わせる
 		// (fitWidth/fitHeightをSceneのサイズにバインドすることで、
 		//  最大化やリサイズをしても常に画面を覆うようにする)
 		bg1.fitWidthProperty().bind(scene.widthProperty());
 		bg1.fitHeightProperty().bind(scene.heightProperty());
 		bg2.fitWidthProperty().bind(scene.widthProperty());
 		bg2.fitHeightProperty().bind(scene.heightProperty());
+		//追加
+		bg2.setLayoutX(1000);*/
 		
 		//CSSを接続
 		scene.getStylesheets().add(
@@ -280,6 +317,8 @@ public class Start extends Application {
 		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
 		stage.setMinWidth(800);
 		stage.setMinHeight(600);
+		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限 ２行追加
+		stage.setMaxHeight(1080);
 
 		//ウィンドウの名前を設定
 		stage.setTitle("スタート画面");
@@ -290,7 +329,6 @@ public class Start extends Application {
 		//リセットするため、一度隠してから再表示する
 		stage.hide();
 		stage.show();
-
 	}
 
 	//launchをmainで呼び出すことでjavafxのアプリが起動
