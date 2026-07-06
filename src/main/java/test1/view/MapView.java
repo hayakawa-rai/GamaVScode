@@ -218,6 +218,13 @@ public class MapView {
 				}
 			}
 		}
+		 //  フルーツを描画
+	    Items.Fruit fruit = model.getCurrentFruit();
+	    if (fruit != null) {
+	        int fx = MapData.FRUIT_COL * MapData.TILE_SIZE;
+	        int fy = MapData.FRUIT_ROW * MapData.TILE_SIZE;
+	        fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
+	    }
 	}
 	
 	//MapViewのフィールドにPac-man画像を追加
@@ -228,7 +235,7 @@ public class MapView {
 			getClass().getResource("/picture/syujinkou_Fever.png").toExternalForm());
 
 	/**
-	 * プレイヤー（戦国）を描画する。
+	 * プレイヤーを描画する。
 	 * 死亡アニメーション中は drawDyingsyujinkou に処理を委譲して回転・縮小・フェードアウト演出を行い、
 	 * 死亡している（isAlive()がfalse）場合は何も描画しない。
 	 * FEVER中は専用画像に切り替え、FEVER終了間際（残り3秒以内）は一定間隔で点滅させる。
