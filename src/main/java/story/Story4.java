@@ -27,30 +27,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Bgm;
-import util.WindowUtil;
 
 public class Story4 extends Application {
-
-	// ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
-	private Stage stage;
-
-	// javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
-	@Override
-	public void start(Stage stage) {
-		// 受け取った変数Stageを自分のStageに保存
-		this.stage = stage;
-		// ウィンドウの中身を決定
-		stage.setTitle("story1");
-		WindowUtil.fillScreen(stage);
-		stage.setScene(story4());
-
-	}
 
 	private Timeline blink;
 	private Timeline arrowMove;
 	private AudioClip jumpSound;
 	private AudioClip aSound;
-
 	private TranslateTransition fall;
 	// ストーリー終了処理を1回だけにする用
 	private boolean isEndingStarted = false;
@@ -69,27 +52,19 @@ public class Story4 extends Application {
 	private Timeline jumpsyujinkou;
 	private Timeline jumpnari;
 	private Timeline jumptaku;
-
-	// 新しいメッセージを表示するための準備用メソッド
-	private void startTyping() {
-		// 文字カウントをリセット
-		charIndex = 0;
-		// 画面を一旦空にする
-		text.setText("");
-		// 今打ち込み中ですよという状態にする
-		isTyping = true;
-		timeline.playFromStart();
-	}
-
+	
+	// ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
+	private Stage stage;
+	
 	private void cleanup(Scene scene, StackPane base) {
 
-		// タイピング
+		// 文字タイピング
 		if (timeline != null) {
 			timeline.stop();
 			timeline = null;
 		}
 
-		// ジャンプ
+		// ジャンプ系
 		if (jumpAniki != null) {
 			jumpAniki.stop();
 			jumpAniki = null;
@@ -107,7 +82,7 @@ public class Story4 extends Application {
 			jumptaku = null;
 		}
 
-		// ▼アニメ
+		// ▼アニメーション
 		if (blink != null) {
 			blink.stop();
 			blink = null;
@@ -117,33 +92,58 @@ public class Story4 extends Application {
 			arrowMove = null;
 		}
 
-		// 落下アニメ
+		// 落下アニメーション
 		if (fall != null) {
 			fall.stop();
 			fall = null;
 		}
 
-		// 効果音停止
-		if (jumpSound != null)
+		// 効果音（全部止める）
+		if (jumpSound != null) {
 			jumpSound.stop();
-		if (aSound != null)
+			jumpSound = null;
+		}
+		if (aSound != null) {
 			aSound.stop();
-
-		jumpSound = null;
-		aSound = null;
+			aSound = null;
+		}
 
 		// BGM停止
 		Bgm.stopBGM();
 
-		// イベント解除
+		// クリックイベント解除
 		if (scene != null) {
 			scene.setOnMouseClicked(null);
 		}
 
-		// UI削除（推奨）
+		// 画面全部削除（超重要）
 		if (base != null) {
 			base.getChildren().clear();
 		}
+	}
+
+	// javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
+	@Override
+	public void start(Stage stage) {
+		// 受け取った変数Stageを自分のStageに保存
+		this.stage = stage;
+		// ウィンドウの中身を決定
+		stage.setTitle("story1");
+		//WindowUtil.fillScreen(stage);	最大化
+		stage.setScene(story4());
+		stage.centerOnScreen();
+		stage.show();
+	}
+
+	// 新しいメッセージを表示するための準備用メソッド
+	private void startTyping() {
+		// 文字カウントをリセット
+		charIndex = 0;
+		// 画面を一旦空にする
+		text.setText("");
+		// 今打ち込み中ですよという状態にする
+		isTyping = true;
+		timeline.playFromStart();
 	}
 
 	public Scene story4() {
@@ -183,7 +183,7 @@ public class Story4 extends Application {
 
 		// 吹き出し(textの背景)作成
 		Rectangle box = new Rectangle();
-		// 横幅が760pxを超えたら自動で改行する
+		// 横幅が850pxを超えたら自動で改行する
 		text.setWrappingWidth(850);
 		// 吹き出しの色
 		box.setFill(Color.rgb(0, 0, 0, 0.7));
@@ -233,32 +233,37 @@ public class Story4 extends Application {
 		bubble.getChildren().addAll(nameText, text, arrowBox);
 
 		// 背景画像を読み込み
-		Image bgImage = new Image(getClass().getResourceAsStream("/picture/shatyoroom.jpg"));
+		Image bgImage = new Image(
+				getClass().getResourceAsStream("/picture/shatyoroom.jpg"));
 		// 背景画像の表示
 		ImageView bgView = new ImageView(bgImage);
 		// 余白を生まないために縦横比を無視
 		bgView.setPreserveRatio(false);
 
 		// 人物画像の読み込み(あにき)
-		Image anikiImage = new Image(getClass().getResourceAsStream("/picture/aniki-udekumi.png"));
+		Image anikiImage = new Image(
+				getClass().getResourceAsStream("/picture/aniki-udekumi.png"));
 		// 人物画像の表示
 		ImageView anikiView = new ImageView(anikiImage);
 		// 縦横比率を維持
 		anikiView.setPreserveRatio(true);
 		// 人物画像の読み込み(仙石さん)
-		Image syujinkouImage = new Image(getClass().getResourceAsStream("/picture/syujinkou(hello).png"));
+		Image syujinkouImage = new Image(
+				getClass().getResourceAsStream("/picture/syujinkou(hello).png"));
 		// 人物画像の表示
 		ImageView syujinkouView = new ImageView(syujinkouImage);
 		// 縦横比率を維持
 		syujinkouView.setPreserveRatio(true);
 		// 人物画像の読み込み(なりなり)
-		Image nariImage = new Image(getClass().getResourceAsStream("/picture/nari.png"));
+		Image nariImage = new Image(
+				getClass().getResourceAsStream("/picture/nari.png"));
 		// 人物画像の表示
 		ImageView nariView = new ImageView(nariImage);
 		// 縦横比率を維持
 		nariView.setPreserveRatio(true);
 		// 人物画像の読み込み(わだたく)
-		Image takuImage = new Image(getClass().getResourceAsStream("/picture/taku2.png"));
+		Image takuImage = new Image(
+				getClass().getResourceAsStream("/picture/taku2.png"));
 		// 人物画像の表示
 		ImageView takuView = new ImageView(takuImage);
 		// 縦横比率を維持
@@ -269,16 +274,14 @@ public class Story4 extends Application {
 		takuView.setVisible(false);
 
 		// box(吹き出し)とbubble(テキストと▼)をまとめる
-		// StackPaneにより同じ位置の前後に置かれるので重なって見える
 		StackPane messageBox = new StackPane();
 		messageBox.getChildren().addAll(box, bubble);
 
-		// 背景の設定(1番最初に入れたものが1番後ろになる)
+		/*// 背景の設定(1番最初に入れたものが1番後ろになる)
 		StackPane back = new StackPane();
-		back.getChildren().add(bgView);
+		back.getChildren().add(bgView);*/
 
 		// レイヤー構造を使用し吹き出しとテキストの位置を設定
-		// mesageBoxによりまとめられたものを、ウィンドウのどこに表示するかを設定する
 		BorderPane root = new BorderPane();
 		// 吹き出しを中央下に配置
 		root.setBottom(messageBox);
@@ -287,33 +290,34 @@ public class Story4 extends Application {
 		// Borderpaneにより一番下に表示されてしまうので、下に余白を設定する
 		BorderPane.setMargin(messageBox, new Insets(0, 0, 30, 0));
 
-		// ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
-		StackPane base = new StackPane();
-		base.getChildren().addAll(bgView, syujinkouView, anikiView, nariView, takuView, root);
-		// 画面サイズに合わせてSceneを作ることで、最大化済みStageでも中身が縮まないようにする
-		Scene scene = new Scene(base);
-		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
+		
 
 		// メニューボタン作成
 
-		Image menuImg = new Image(getClass().getResourceAsStream("/picture/menu.jpeg"));
+		Image menuImg = new Image(
+				getClass().getResourceAsStream("/picture/menu.jpeg"));
 
 		ImageView menuView = new ImageView(menuImg);
 		menuView.setFitWidth(40);
 		menuView.setFitHeight(40);
 
 		Button menuBtn = new Button("");
-
 		menuBtn.setGraphic(menuView);
 		menuBtn.setStyle("-fx-background-color: transparent;");
 
 		// 右上に配置
 		StackPane.setAlignment(menuBtn, Pos.TOP_LEFT);
 		StackPane.setMargin(menuBtn, new Insets(30));
+		
+		// ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
+		StackPane base = new StackPane();
+		base.getChildren().addAll(bgView, syujinkouView, anikiView, nariView, takuView, root);
+		// 決められた画面サイズ(1000,800)に合わせてSceneを作る
+		Scene scene = new Scene(base, 1000, 800);
+		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
 
-		// メニュー画面追加
+		// メニューオーバーレイの作成
 		StackPane menuOverlay = new StackPane();
-
 		// 背景（うっすら暗く）
 		menuOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
 		menuOverlay.setVisible(false);
@@ -321,48 +325,38 @@ public class Story4 extends Application {
 		// 中央のかわいいパネル
 		VBox menuBox = new VBox(20);
 		menuBox.setAlignment(Pos.CENTER);
-
 		// サイズを小さめにする
 		menuBox.setMaxWidth(300);
 		menuBox.setMaxHeight(250);
-
-		// かわいい見た目
 		menuBox.setStyle("-fx-background-color: rgba(40,40,50,0.95);" + // 少し透明
-				"-fx-background-radius: 20;" + // 角丸
-				"-fx-padding: 25;" + "-fx-border-radius: 20;" + "-fx-border-color: white;" + "-fx-border-width: 2;");
+								"-fx-background-radius: 20;" + // 角丸
+								"-fx-padding: 25;" +
+								"-fx-border-radius: 20;" +
+								"-fx-border-color: white;" +
+								"-fx-border-width: 2;");
 
 		// ボタン
 		Button resume = new Button("再開");
 		Button titleBtn = new Button("タイトルへ");
-
-		// ボタンをかわいく
 		resume.getStyleClass().add("game-button2");
 		titleBtn.getStyleClass().add("game-button2");
-
 		// サイズ
 		resume.setPrefWidth(180);
 		titleBtn.setPrefWidth(180);
-
 		// ボタン処理
 		resume.setOnAction(e -> {
 			menuOverlay.setVisible(false);
-
-			if (timeline != null)
-				timeline.play();
-			if (blink != null)
-				blink.play();
-			if (arrowMove != null)
-				arrowMove.play();
+			if (timeline != null)	timeline.play();
+			if (blink != null)		blink.play();
+			if (arrowMove != null)	arrowMove.play();
 		});
 
 		titleBtn.setOnAction(e -> {
 			cleanup(scene, base);
-
 			// スタート画面へ
 			control.GameController.switchStart(stage);
 		});
 
-		// 追加
 		menuBox.getChildren().addAll(resume, titleBtn);
 		menuOverlay.getChildren().add(menuBox);
 
@@ -398,11 +392,14 @@ public class Story4 extends Application {
 		bubble.prefWidthProperty().bind(box.widthProperty());
 		bubble.maxWidthProperty().bind(box.widthProperty());
 		// フォントサイズも変化
-		text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-font-family: monospace;",
-				scene.widthProperty().multiply(0.03)));
+		text.styleProperty().bind(
+				Bindings.format(
+						"-fx-font-size: %.0fpx; -fx-font-family: monospace;",
+						scene.widthProperty().multiply(0.03)));
 		// ▼のサイズも変化
-		nextMark.styleProperty()
-				.bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: white; -fx-font-family: monospace;",
+		nextMark.styleProperty().bind(
+				Bindings.format(
+						"-fx-font-size: %.0fpx; -fx-fill: white; -fx-font-family: monospace;",
 						scene.widthProperty().multiply(0.02)));
 		// 名前表示も変化
 		nameText.styleProperty().bind(
@@ -411,25 +408,19 @@ public class Story4 extends Application {
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
 
-		// メニュー表示処理
+		// ESCキーでメニュー表示
 		scene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ESCAPE) {
-
 				// メニュー表示
 				menuOverlay.setVisible(true);
-
 				// ストーリー停止
-				if (timeline != null)
-					timeline.pause();
-				if (blink != null)
-					blink.pause();
-				if (arrowMove != null)
-					arrowMove.pause();
+				if (timeline != null)	timeline.pause();
+				if (blink != null)		blink.pause();
+				if (arrowMove != null)	arrowMove.pause();
 			}
 		});
 		menuBtn.setOnAction(e -> {
 			menuOverlay.setVisible(true);
-
 			// ストーリー停止（ESCと同じ処理）
 			if (timeline != null)
 				timeline.pause();
@@ -600,7 +591,6 @@ public class Story4 extends Application {
 
 				fade.setOnFinished(ev -> {
 					cleanup(scene, base);
-
 					// クリア画面へ
 					control.GameController.switchStoryClear(stage);
 				});
@@ -617,9 +607,16 @@ public class Story4 extends Application {
 		}
 
 		// CSSを接続
-		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		scene.getStylesheets().add(
+				getClass().getResource("/css/style.css").toExternalForm());
+
 		// 最初の文章を表示(部品のすべての処理を終えてから文字を表示するため最後に記述)
 		startTyping();
+		//ウィンドウの最小限のサイズを設定
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
+		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxHeight(1080);
 
 		return scene;
 	}

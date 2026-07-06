@@ -118,7 +118,7 @@ public class Story3 extends Application {
 			endSound = null;
 		}
 
-		// BGM
+		// BGM停止
 		Bgm.stopBGM();
 
 		// クリックイベント解除
@@ -132,6 +132,7 @@ public class Story3 extends Application {
 		}
 	}
 	
+	// javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
 	@Override
 	public void start(Stage stage) {
 		//受け取った変数Stageを自分のStageに保存
@@ -140,6 +141,8 @@ public class Story3 extends Application {
 		stage.setTitle("story1");
 		//WindowUtil.fillScreen(stage);	最大化
 		stage.setScene(story3());
+		stage.centerOnScreen();
+		stage.show();
 
 	}
 
@@ -212,7 +215,7 @@ public class Story3 extends Application {
 
 		//吹き出し(textの背景)作成
 		Rectangle box = new Rectangle();
-		//横幅が760pxを超えたら自動で改行する
+		//横幅が850pxを超えたら自動で改行する
 		text.setWrappingWidth(850);
 		//吹き出しの色
 		box.setFill(Color.rgb(0, 0, 0, 0.7));
@@ -341,11 +344,11 @@ public class Story3 extends Application {
 		StackPane.setMargin(menuBtn, new Insets(30));
 		
 		//ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
-				StackPane base = new StackPane();
-				base.getChildren().addAll(bgView, anikiView, syujinkouView, nariView, takuView, root);				// 決められた画面サイズ(1000,800)に合わせてSceneを作る
-				// 決められた画面サイズ(1000,800)に合わせてSceneを作る
-				Scene scene = new Scene(base, 1000, 800);
-				scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
+		StackPane base = new StackPane();
+		base.getChildren().addAll(bgView, anikiView, syujinkouView, nariView, takuView, root);				// 決められた画面サイズ(1000,800)に合わせてSceneを作る
+		// 決められた画面サイズ(1000,800)に合わせてSceneを作る
+		Scene scene = new Scene(base, 1000, 800);
+		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
 		
 		//メニューオーバーレイの作成
 		StackPane menuOverlay = new StackPane();
@@ -448,12 +451,9 @@ public class Story3 extends Application {
 				// メニュー表示
 				menuOverlay.setVisible(true);
 				// ストーリー停止
-				if (timeline != null)
-					timeline.pause();
-				if (blink != null)
-					blink.pause();
-				if (arrowMove != null)
-					arrowMove.pause();
+				if (timeline != null)	timeline.pause();
+				if (blink != null)		blink.pause();
+				if (arrowMove != null)	arrowMove.pause();
 			}
 		});
 		menuBtn.setOnAction(e -> {

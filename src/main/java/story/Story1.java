@@ -106,7 +106,8 @@ public class Story1 extends Application {
 		stage.setTitle("story1");
 		//WindowUtil.fillScreen(stage); 最大化
 		stage.setScene(story());
-
+		stage.centerOnScreen();
+		stage.show();
 	}
 
 	//新しいメッセージを表示するための準備用メソッド
