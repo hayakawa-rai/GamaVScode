@@ -42,17 +42,6 @@ public class PracticeMain1 extends Application {
 
 		// ストーリーモードはエサ復活なし
         MapData model = new MapData(false);
-        
-    /* // レイアウト崩れを防ぐため、一番外側を StackPane に統一します
-     		javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane();
-     		Pane gameBase = new Pane();
-     		gameBase.getStyleClass().add("stage1");
-
-		MapView view = new MapView(model, gameBase);*/
-
-
-		int viewWidth = model.getMap()[0].length * MapData.TILE_SIZE;
-		int viewHeight = model.getMap().length * MapData.TILE_SIZE;
 
 		StackPane root = new StackPane();
 		root.getStyleClass().add("stage1");
@@ -63,9 +52,9 @@ public class PracticeMain1 extends Application {
 				getClass().getResource("/css/test.css").toExternalForm());
 		
 		ImageView backgroundView = new ImageView();
+		
 		try {
 			// src/main/resources/picture/companyroom.jpg から画像を読み込む
-			//Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/emd-nottori.jpg"));
 			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/insert.png"));
 			backgroundView = new ImageView(backgroundImage);
 
@@ -74,12 +63,9 @@ public class PracticeMain1 extends Application {
             backgroundView.fitHeightProperty().bind(root.heightProperty());
             backgroundView.setPreserveRatio(false);
 
-			// 背景用Paneに画像を追加
-			//bg.getChildren().add(backgroundView);
 		} catch (Exception e) {
 			System.out.println("⚠️ 背景画像の読み込みに失敗しました。パスを確認してください: " + e.getMessage());
 		}
-
 
 		Pane gameBase = new Pane();
 		gameBase.getStyleClass().add("stage1");
@@ -130,7 +116,7 @@ public class PracticeMain1 extends Application {
 		// コントローラーが最前面のポーズレイヤーを制御できるように登録
 		this.controller.setPauseLayer(pauseLayer);
 
-		stage.setTitle("仙石さん - ステージ 1");
+		stage.setTitle("仙石さん - 練習ステージ 1");
 		stage.setScene(scene);
 		
 		// ウィンドウのサイズ制限
