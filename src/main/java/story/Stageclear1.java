@@ -15,40 +15,23 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import util.WindowUtil;
 
 public class Stageclear1 extends Application {
-
-	// ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
-	private Stage stage;
-
-	// ★ スコアを数値として保持する変数を追加
-	private int score = 0;
-
-	// ★ 引数なしのコンストラクタ（GameControllerの new Stageclear1() で必要）
-	public Stageclear1() {
-	}
-
-	// ★ GameControllerの App.setScore(score); でスコアを受け取るためのメソッド
-	public void setScore(int score) {
-		this.score = score;
-	}
-
-	// javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
-	@Override
-	public void start(Stage stage) {
-	    this.stage = stage;
-	    stage.setTitle("stage1CLEAR");
-	    WindowUtil.fillScreen(stage);   // 先に最大化を確定
-	    stage.setScene(clear());        // その後でSceneをセット
-	}
 
 	private AudioClip clearSound;
 	private AudioClip clickSound;
 	private AudioClip cancelSound;
+	// スコアを数値として保持する変数を追加
+	private int score = 0;
 	private PauseTransition delay;
 	private PauseTransition pause;
+	// ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
+	private Stage stage;
 
+	// 引数なしのコンストラクタ（GameControllerの new Stageclear1() で必要）
+	public Stageclear1() {
+	}
+	
 	private void cleanup() {
 		// 遅延処理
 		if (delay != null) {
@@ -78,7 +61,26 @@ public class Stageclear1 extends Application {
 		}
 	}
 
-	public Scene clear() {
+	// javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
+	@Override
+	public void start(Stage stage) {
+	    this.stage = stage;
+	    stage.setTitle("stage1CLEAR");
+	    //WindowUtil.fillScreen(stage);	最大化
+	    stage.setScene(clear(stage)); // 安全にstageを渡す
+		stage.centerOnScreen();
+		stage.show();
+	}
+	
+	// 引数なしの clear() 
+		public Scene clear() {
+			return clear(this.stage);
+		}
+
+	public Scene clear(Stage currentStage) {
+		if (currentStage != null) {
+			this.stage = currentStage;
+		}
 		// クリア音
 		clearSound = new AudioClip(
 				getClass().getResource("/music/yay.mp3").toExternalForm());
@@ -86,12 +88,10 @@ public class Stageclear1 extends Application {
 
 		// 0.5秒待つ
 		delay = new PauseTransition(Duration.seconds(0.5));
-
 		// 時間経過後に再生
 		delay.setOnFinished(e -> {
 			clearSound.play();
 		});
-
 		// タイマー開始
 		delay.play();
 
@@ -99,10 +99,12 @@ public class Stageclear1 extends Application {
 		Text title = new Text("STAGE1    CLEAR!");
 		// フォントサイズとカラーを指定
 		title.setStyle("-fx-font-size: 80px; -fx-fill: rgb(180,180,180);");
+		
 		// 獲得したアイテムを表示
 		Text text = new Text("鍵を獲得しました！！");
 		// フォントサイズとカラーを指定
 		text.setStyle("-fx-font-size: 20px; -fx-fill: gray;");
+		
 		// 獲得したアイテムの画像読み込み
 		Image image = new Image(
 				getClass().getResource("/picture/kagi.png").toExternalForm());
@@ -120,13 +122,7 @@ public class Stageclear1 extends Application {
 		textAndImage.setAlignment(Pos.CENTER);
 		// 画像とtextを箱に入れる
 		textAndImage.getChildren().addAll(imageView, text);
-
-		// 縦並びにする箱を設定
-		VBox buttonBox = new VBox();
-		// ボタン配置に間隔を設定
-		buttonBox.setSpacing(20);
-		// 中央に配置
-		buttonBox.setAlignment(Pos.CENTER);
+		
 		// 音声読み込み
 		clickSound = new AudioClip(
 				getClass().getResource("/music/select.mp3").toExternalForm());
@@ -158,7 +154,7 @@ public class Stageclear1 extends Application {
 				try {
 					cleanup();
 					// 画面遷移
-					GameController.switchStory2(stage);
+					GameController.switchStory2(this.stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -168,7 +164,7 @@ public class Stageclear1 extends Application {
 			pause.play();
 		});
 
-		// ⭐ スコア表示（重複宣言を削除し、すっきり1つに統合）
+		// スコア表示
 		Text scoreLabel = new Text("SCORE: " + this.score);
 		scoreLabel.setStyle("-fx-font-size: 30px; -fx-fill:  gray;");
 
@@ -184,7 +180,6 @@ public class Stageclear1 extends Application {
 
 			// 0.5秒待つ
 			pause = new PauseTransition(Duration.seconds(0.5));
-
 			// 待った後に画面遷移
 			pause.setOnFinished(ev -> {
 				try {
@@ -199,20 +194,27 @@ public class Stageclear1 extends Application {
 			pause.play();
 		});
 
-		// titleと画像とtextをまとめたもの、ボタン2つを箱に入れる。
+		// 縦並びにする箱を設定
+		VBox buttonBox = new VBox(20); // 隙間20px
+		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
 		// 現在のStage（window）から実際のサイズを取得する
 		StackPane root = new StackPane();
 		root.getChildren().add(buttonBox);
-		// 固定サイズを渡さない。StageのサイズにScene側が自動追従する。
-	    Scene scene = new Scene(root);
-		// ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
+		// 
+		Scene scene = new Scene(root, 1000, 800);
+		// CSSを接続
+		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+	  //ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
-		// CSSを接続
-		scene.getStylesheets().add(
-				getClass().getResource("/css/style.css").toExternalForm());
-		// 画面に表示させたいものを返す
+		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxHeight(1080);
 		return scene;
 	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 }
