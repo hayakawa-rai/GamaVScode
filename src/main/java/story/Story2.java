@@ -27,28 +27,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Bgm;
-import util.WindowUtil;
 
 public class Story2 extends Application {
 
-	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
-	private Stage stage;
-
-	//javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
-	@Override
-	public void start(Stage stage) {
-		//受け取った変数Stageを自分のStageに保存
-		this.stage = stage;
-		//ウィンドウの中身を決定
-		stage.setTitle("story1");
-		WindowUtil.fillScreen(stage);
-		stage.setScene(story2());
-
-	}
-
 	private Timeline blink;
 	private Timeline arrowMove;
-
 	private AudioClip jumpSound;
 	private AudioClip cuteSound;
 	private AudioClip appearSound;
@@ -57,7 +40,6 @@ public class Story2 extends Application {
 	private AudioClip damageSound;
 	private AudioClip aSound;
 	private AudioClip atacSound;
-
 	//ストーリー終了処理を1回だけにする用
 	private boolean isEndingStarted = false;
 	//今どのメッセージを表示しているかのカウント用
@@ -75,17 +57,8 @@ public class Story2 extends Application {
 	private Timeline jumpsyujinkou;
 	private Timeline jumpnari;
 	private Timeline jumptaku;
-
-	//新しいメッセージを表示するための準備用メソッド
-	private void startTyping() {
-		//文字カウントをリセット
-		charIndex = 0;
-		//画面を一旦空にする
-		text.setText("");
-		//今打ち込み中ですよという状態にする
-		isTyping = true;
-		timeline.playFromStart();
-	}
+	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
+	private Stage stage;
 
 	private void cleanup(Scene scene) {
 
@@ -124,31 +97,38 @@ public class Story2 extends Application {
 		}
 
 		// 効果音（全部止める）
-		if (jumpSound != null)
+		if (jumpSound != null) {
 			jumpSound.stop();
-		if (cuteSound != null)
+			jumpSound = null;
+		}
+		if (cuteSound != null) {
 			cuteSound.stop();
-		if (appearSound != null)
+			cuteSound = null;
+		}
+		if (appearSound != null) {
 			appearSound.stop();
-		if (mysteriousSound != null)
+			appearSound = null;
+		}
+		if (mysteriousSound != null) {
 			mysteriousSound.stop();
-		if (shineSound != null)
+			mysteriousSound = null;
+		}
+		if (shineSound != null) {
 			shineSound.stop();
-		if (damageSound != null)
+			shineSound = null;
+		}
+		if (damageSound != null) {
 			damageSound.stop();
-		if (aSound != null)
+			damageSound = null;
+		}
+		if (aSound != null) {
 			aSound.stop();
-		if (atacSound != null)
+			aSound = null;
+		}
+		if (atacSound != null) {
 			atacSound.stop();
-
-		jumpSound = null;
-		cuteSound = null;
-		appearSound = null;
-		mysteriousSound = null;
-		shineSound = null;
-		damageSound = null;
-		aSound = null;
-		atacSound = null;
+			atacSound = null;
+		}
 
 		// BGM停止
 		Bgm.stopBGM();
@@ -158,12 +138,38 @@ public class Story2 extends Application {
 			scene.setOnMouseClicked(null);
 		}
 	}
+	
+	//javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
+	@Override
+	public void start(Stage stage) {
+		//受け取った変数Stageを自分のStageに保存
+		this.stage = stage;
+		//ウィンドウの中身を決定
+		stage.setTitle("story1");
+		//WindowUtil.fillScreen(stage);	最大化
+		stage.setScene(story2());
+
+	}
+
+	//新しいメッセージを表示するための準備用メソッド
+	private void startTyping() {
+		//文字カウントをリセット
+		charIndex = 0;
+		//画面を一旦空にする
+		text.setText("");
+		//今打ち込み中ですよという状態にする
+		isTyping = true;
+		timeline.playFromStart();
+	}
 
 	public Scene story2() {
 
 		//BGMの再生
 		Bgm.stopBGM();
 		Bgm.playBGM("/music/naribgm.mp3");
+		/**
+		 	各種効果音の読み込み 
+		 **/
 		//ジャンプ音の読み込み
 		jumpSound = new AudioClip(
 				getClass().getResource("/music/jump06.mp3").toExternalForm());
@@ -204,6 +210,7 @@ public class Story2 extends Application {
 				getClass().getResource("/music/atac.mp3").toExternalForm());
 		//音量調整
 		atacSound.setVolume(0.3);
+		
 		//会話内容を設定
 		List<Dialogue> dialogues = Arrays.asList(
 				new Dialogue("なりなり", "あ、あれっ…！？", mysteriousSound, Color.ORANGE), //0
@@ -283,6 +290,7 @@ public class Story2 extends Application {
 		bubble.setMaxWidth(850);
 		//中央左寄りに配置
 		bubble.setAlignment(Pos.CENTER_LEFT);
+		
 		//bubble自体をウィンドウの中央下に配置
 		StackPane.setAlignment(bubble, Pos.BOTTOM_CENTER);
 		// ▼を中央に配置、下に余白を作成
@@ -341,16 +349,14 @@ public class Story2 extends Application {
 		insertView.setVisible(false); // 最初は非表示
 
 		//box(吹き出し)とbubble(テキストと▼)をまとめる
-		//StackPaneにより同じ位置の前後に置かれるので重なって見える
 		StackPane messageBox = new StackPane();
 		messageBox.getChildren().addAll(box, bubble);
 
-		//背景の設定(1番最初に入れたものが1番後ろになる)
+		/*//背景の設定(1番最初に入れたものが1番後ろになる)
 		StackPane back = new StackPane();
-		back.getChildren().add(bgView);
+		back.getChildren().add(bgView);*/
 
 		//レイヤー構造を使用し吹き出しとテキストの位置を設定
-		//mesageBoxによりまとめられたものを、ウィンドウのどこに表示するかを設定する
 		BorderPane root = new BorderPane();
 		//吹き出しを中央下に配置
 		root.setBottom(messageBox);
@@ -358,13 +364,6 @@ public class Story2 extends Application {
 		root.setStyle("-fx-background-color: transparent;");
 		//Borderpaneにより一番下に表示されてしまうので、下に余白を設定する
 		BorderPane.setMargin(messageBox, new Insets(0, 0, 30, 0));
-
-		//ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
-		StackPane base = new StackPane();
-		base.getChildren().addAll(bgView, syujinkouView, anikiView, nariView, takuView, root, insertView);
-		// 画面サイズに合わせてSceneを作ることで、最大化済みStageでも中身が縮まないようにする
-		Scene scene = new Scene(base);
-		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
 
 		//メニューボタン作成
 
@@ -376,30 +375,31 @@ public class Story2 extends Application {
 		menuView.setFitHeight(40);
 
 		Button menuBtn = new Button("");
-
 		menuBtn.setGraphic(menuView);
 		menuBtn.setStyle("-fx-background-color: transparent;");
-
 		// 右上に配置
 		StackPane.setAlignment(menuBtn, Pos.TOP_LEFT);
 		StackPane.setMargin(menuBtn, new Insets(30));
 
-		//メニュー画面追加
-		StackPane menuOverlay = new StackPane();
+		//ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
+		StackPane base = new StackPane();
+		base.getChildren().addAll(bgView, syujinkouView, anikiView, nariView, takuView, root, insertView);				// 決められた画面サイズ(1000,800)に合わせてSceneを作る
+		// 決められた画面サイズ(1000,800)に合わせてSceneを作る
+		Scene scene = new Scene(base, 1000, 800);
+		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
 
+		//メニューオーバーレイの作成
+		StackPane menuOverlay = new StackPane();
 		// 背景（うっすら暗く）
 		menuOverlay.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
 		menuOverlay.setVisible(false);
 		menuOverlay.setPickOnBounds(true);
-		// 中央のかわいいパネル
+		// 中央パネル
 		VBox menuBox = new VBox(20);
 		menuBox.setAlignment(Pos.CENTER);
-
 		// サイズを小さめにする
 		menuBox.setMaxWidth(300);
 		menuBox.setMaxHeight(250);
-
-		//かわいい見た目
 		menuBox.setStyle(
 				"-fx-background-color: rgba(40,40,50,0.95);" + // 少し透明
 						"-fx-background-radius: 20;" + // 角丸
@@ -411,41 +411,30 @@ public class Story2 extends Application {
 		// ボタン
 		Button resume = new Button("再開");
 		Button titleBtn = new Button("タイトルへ");
-
-		// ボタンをかわいく
 		resume.getStyleClass().add("game-button2");
 		titleBtn.getStyleClass().add("game-button2");
-
 		// サイズ
 		resume.setPrefWidth(180);
 		titleBtn.setPrefWidth(180);
-
 		// ボタン処理
 		resume.setOnAction(e -> {
 			menuOverlay.setVisible(false);
-
-			if (timeline != null)
-				timeline.play();
-			if (blink != null)
-				blink.play();
-			if (arrowMove != null)
-				arrowMove.play();
+			if (timeline != null)	timeline.play();
+			if (blink != null)		blink.play();
+			if (arrowMove != null)	arrowMove.play();
 		});
 
 		titleBtn.setOnAction(e -> {
 			cleanup(scene);
-
 			//スタート画面へ
 			control.GameController.switchStart(stage);
 		});
 
-		// 追加
 		menuBox.getChildren().addAll(resume, titleBtn);
 		menuOverlay.getChildren().add(menuBox);
 
 		//最前面に追加
-		base.getChildren().add(menuBtn);
-		base.getChildren().add(menuOverlay);
+		base.getChildren().addAll(menuBtn, menuOverlay);
 
 		// 背景画像をウィンドウサイズに合わせる
 		bgView.fitWidthProperty().bind(scene.widthProperty());
@@ -492,29 +481,20 @@ public class Story2 extends Application {
 				Bindings.format(
 						"-fx-font-size: %.0fpx; -fx-fill: lightgray;",
 						scene.widthProperty().multiply(0.025)));
-		//ウィンドウの最小限のサイズを設定(吹き出しから全てが飛び出してしまうため)
-		stage.setMinWidth(800);
-		stage.setMinHeight(600);
 
-		//メニュー表示処理
+		//ESCキーでメニュー表示
 		scene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ESCAPE) {
-
 				// メニュー表示
 				menuOverlay.setVisible(true);
-
 				// ストーリー停止
-				if (timeline != null)
-					timeline.pause();
-				if (blink != null)
-					blink.pause();
-				if (arrowMove != null)
-					arrowMove.pause();
+				if (timeline != null)	timeline.pause();
+				if (blink != null)		blink.pause();
+				if (arrowMove != null)	arrowMove.pause();
 			}
 		});
 		menuBtn.setOnAction(e -> {
 			menuOverlay.setVisible(true);
-
 			// ストーリー停止（ESCと同じ処理）
 			if (timeline != null)
 				timeline.pause();
@@ -611,7 +591,6 @@ public class Story2 extends Application {
 			if (messageIndex < dialogues.size() - 1) {
 				//メッセージカウントを増やす
 				messageIndex++;
-
 				//差し込み絵の処理
 				if (messageIndex == 4) {
 					insertView.setVisible(true);
@@ -728,7 +707,12 @@ public class Story2 extends Application {
 
 		//最初の文章を表示(部品のすべての処理を終えてから文字を表示するため最後に記述)
 		startTyping();
-
+		//ウィンドウの最小限のサイズを設定
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
+		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxHeight(1080);
+		
 		return scene;
 
 	}
