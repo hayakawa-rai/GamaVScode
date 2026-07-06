@@ -104,6 +104,18 @@ public class MapData implements GameMap {
 
 	// FEVER終了時刻
 	private long feverEndTime = 0;
+	
+	// --- 追加フィールド ---
+	public static final int FRUIT_ROW = 17;
+	public static final int FRUIT_COL = 13;
+	public static final int FRUIT_VALUE = 3; // map配列内でのフルーツを表す数値
+
+	private Items.Fruit currentFruit = null; // 現在出現中のフルーツ(nullなら未出現)
+	private long lastFruitSpawnTime = 0;     // 最後にフルーツを出した時刻
+	private int lastFruitScore = 0;          // 最後にフルーツを出した時点のスコア
+
+	private static final long FRUIT_TIME_INTERVAL = 15000; // 15秒ごとに出現チャンス
+	private static final int FRUIT_SCORE_INTERVAL = 1000;  // 1000点ごとに出現チャンス
 
 	// booleanを受け取る新しいコンストラクターを追加
 	public MapData(boolean paused) {
@@ -122,6 +134,8 @@ public class MapData implements GameMap {
 		this.syujinkou = new Syujinkou(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
 		this.remainingItems = 0;
+		this.lastFruitSpawnTime = System.currentTimeMillis();
+		this.lastFruitScore = 0;
 
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[0].length; col++) {
@@ -171,6 +185,8 @@ public class MapData implements GameMap {
 		this.syujinkou = new Syujinkou(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
 		this.itemMap = new Item[map.length][map[0].length];
 		this.remainingItems = 0;
+		this.lastFruitSpawnTime = System.currentTimeMillis();
+		this.lastFruitScore = 0;
 
 		// アイテムの配置
 		for (int row = 0; row < map.length; row++) {
@@ -253,6 +269,11 @@ public class MapData implements GameMap {
 			if (modeStartTime > 0) {
 				modeStartTime += pauseDuration;
 			}
+			
+			 //フルーツのタイマーもポーズ時間分ずらす
+	        if (lastFruitSpawnTime > 0) {
+	            lastFruitSpawnTime += pauseDuration;
+	        }
 
 			for (Enemy e : enemies) {
 				e.resumeTimer();
@@ -359,11 +380,53 @@ public class MapData implements GameMap {
 			for (Enemy e : enemies) {
 				e.move(map);
 			}
+		    checkFruitSpawn();  
+		    updateFruit();      
 		}
 		// 口パクの更新
 		// updateMouth();
 		// パックマンと敵の当たり判定を毎フレーム確認
 		checkCollision();
+	}
+	
+	/**
+	 * 時間経過 または スコア到達 を条件にフルーツを固定位置に出現させる
+	 */
+	private void checkFruitSpawn() {
+	    if (currentFruit != null) return; // 既に出現中なら何もしない
+
+	    long now = System.currentTimeMillis();
+	    int score = syujinkou.getScore();
+
+	    boolean timeCondition = (now - lastFruitSpawnTime) >= FRUIT_TIME_INTERVAL;
+	    boolean scoreCondition = (score - lastFruitScore) >= FRUIT_SCORE_INTERVAL;
+
+	    if (timeCondition || scoreCondition) {
+	        spawnFruit();
+	        lastFruitSpawnTime = now;
+	        lastFruitScore = score;
+	    }
+	}
+
+	private void spawnFruit() {
+	    Items.FruitType type = Items.FruitType.random(new java.util.Random());
+	    currentFruit = new Items.Fruit(type);
+	    map[FRUIT_ROW][FRUIT_COL] = FRUIT_VALUE; // 二次元配列に数値を書き込む
+	    System.out.println(type + "が出現しました！");
+	}
+
+	/**
+	 * フルーツのタイマー更新。時間切れになったら消す。
+	 */
+	private void updateFruit() {
+	    if (currentFruit == null) return;
+
+	    currentFruit.update();
+	    if (currentFruit.isExpired()) {
+	        map[FRUIT_ROW][FRUIT_COL] = 0; // 消えたら道に戻す
+	        currentFruit = null;
+	        System.out.println("フルーツが消えました");
+	    }
 	}
 
 	/**
@@ -490,6 +553,13 @@ public class MapData implements GameMap {
 				System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
 			}
 		}
+		// --- updatePacman()内、既存のitemMap判定の直後あたりに追加 ---
+		// フルーツを食べたかチェック
+		if (currentFruit != null && currentTileY == FRUIT_ROW && currentTileX == FRUIT_COL) {
+		    currentFruit.onEaten(syujinkou);
+		    map[FRUIT_ROW][FRUIT_COL] = 0;
+		    currentFruit = null;
+		}
 
 		// 全部食べたかチェック（エサ復活用）
 		// checkAllEaten();
@@ -529,6 +599,8 @@ public class MapData implements GameMap {
 			System.out.println("【練習モード】エサが再配置され、残りカウントが " + this.remainingItems + " にリセットされました。");
 		}
 	}
+	
+	
 
 	/*
 	 * public void updateMouth() { if (paused || !syujinkou.isAlive() ||
@@ -558,6 +630,9 @@ public class MapData implements GameMap {
 			waitingStart = false;
 
 			modeStartTime = System.currentTimeMillis();
+			
+	        lastFruitSpawnTime = System.currentTimeMillis(); // ★追加
+
 
 			System.out.println("ゲーム開始");
 		}
@@ -748,6 +823,10 @@ public class MapData implements GameMap {
 	// ゲームオーバーになったかどうかを返す(プレイヤーのHPが0になった後、死亡アニメーション終了時にtrueになる)。
 	public boolean isGameOver() {
 		return gameOver;
+	}
+	//フルーツ
+		public Items.Fruit getCurrentFruit() {
+	    return currentFruit;
 	}
 
 }
