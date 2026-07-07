@@ -9,11 +9,11 @@ import javafx.scene.paint.Color;
  */
 public enum FruitType {
 
-    CHERRY(100, Color.RED),
-    STRAWBERRY(300, Color.HOTPINK),
-    ORANGE(500, Color.ORANGE),
-    APPLE(700, Color.LIMEGREEN),
-    GRAPE(1000, Color.PURPLE);
+    CHERRY(100, Color.RED),//サクランボ
+    STRAWBERRY(300, Color.HOTPINK),//イチゴ
+    ORANGE(500, Color.ORANGE),//オレンジ
+    APPLE(700, Color.LIMEGREEN),//リンゴ
+    GRAPE(1000, Color.PURPLE);//ブドウ
 
     private final int score;
     private final Color color;
