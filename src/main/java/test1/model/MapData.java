@@ -590,15 +590,15 @@ public class MapData implements GameMap {
 		if (currentFruit != null && currentTileY == fruitRow && currentTileX == fruitCol) {
 			currentFruit.onEaten(syujinkou);
 
-			map[fruitRow][fruitCol] = 0;
-			currentFruit = null;
-			fruitRow = -1;
-			fruitCol = -1;
-
 			// スコアポップアップ開始
 			fruitPopupScore = currentFruit.getType().getScore();
 			fruitPopupStartTime = System.currentTimeMillis();
 			fruitPopupActive = true;
+			
+			map[fruitRow][fruitCol] = 0;
+			currentFruit = null;
+			fruitRow = -1;
+			fruitCol = -1;
 
 		}
 
