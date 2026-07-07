@@ -35,6 +35,12 @@ public abstract class Enemy extends Character {
 	// 敵の初期位置（リスポーン用）
 	protected final double startX;
 	protected final double startY;
+	
+	// スコアポップアップ表示用（古田）
+	protected int lastDefeatScore = 0;
+	protected long scorePopupStartTime = 0;
+	protected boolean scorePopupActive = false;
+	protected static final long SCORE_POPUP_DURATION = 1000; // 表示時間(ms)
 
 	// 各エネミーの初期設定
 	public Enemy(double startX, double startY, int speed) {
@@ -50,7 +56,7 @@ public abstract class Enemy extends Character {
 		pauseStartTime = System.currentTimeMillis();
 	}
 
-	// ポーズ解除時の処理、必要に応じてタイマー補正を行
+	// ポーズ解除時の処理、必要に応じてタイマー補正を行う
 	public void resumeTimer() {
 	}
 
@@ -441,9 +447,29 @@ public abstract class Enemy extends Character {
 	}
 
 	// ---setter---
-	//　敵の状態を変更する
+		//　敵の状態を変更する
+		public void setCurrentState(Characters.EnemyState state) {
+			this.currentState = state;
+		}
 
-	public void setCurrentState(Characters.EnemyState state) {
-		this.currentState = state;
+		// 敵をDEAD状態にし、撃破スコアの表示を開始する
+		public void onDefeated(int score) {
+			this.lastDefeatScore = score;
+			this.scorePopupStartTime = System.currentTimeMillis();
+			this.scorePopupActive = true;
+			setCurrentState(Characters.EnemyState.DEAD);
+		}
+
+		// ポップアップをまだ表示すべきか判定する（時間経過で自動的にfalseになる）
+		public boolean isScorePopupActive() {
+			if (scorePopupActive && System.currentTimeMillis() - scorePopupStartTime > SCORE_POPUP_DURATION) {
+				scorePopupActive = false;
+			}
+			return scorePopupActive;
+		}
+
+		// 表示するスコア値を返す
+		public int getLastDefeatScore() {
+			return lastDefeatScore;
+		}
 	}
-}
