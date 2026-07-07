@@ -375,7 +375,7 @@ public class Story4 extends Application {
 		takuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
 		takuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
-		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.34));
+		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.37));
 		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(1.4));
 		syujinkouView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
 		// boxのサイズをウィンドウに合わせる
