@@ -34,7 +34,7 @@
 			<version>${javafx.version}</version>
 		</dependency>
 	</dependencies>
-	<build>
+	<build＞>
 		<plugins>
 			<plugin>
 				<groupId>org.openjfx</groupId>
@@ -52,7 +52,6 @@
 
 			</plugin>
 		</plugins>
-	</build
-
+	</build>
 
 </project>
