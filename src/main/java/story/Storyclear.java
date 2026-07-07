@@ -262,9 +262,9 @@ public class Storyclear extends Application {
 		});
 
 		// ==================================================
-		// STORY CLEAR!! を2秒表示
+		// STORY CLEAR!! を4秒表示
 		// ==================================================
-		PauseTransition startWait = new PauseTransition(Duration.seconds(2));
+		PauseTransition startWait = new PauseTransition(Duration.seconds(4));
 
 		startWait.setOnFinished(e -> {
 
