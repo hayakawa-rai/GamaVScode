@@ -105,7 +105,7 @@ public class MapData implements GameMap {
 	// FEVER終了時刻
 	private long feverEndTime = 0;
 
-	// --- 追加フィールド ---
+	// フルーツ関連
 	public static final int FRUIT_VALUE = 3;
 	private int fruitRow = -1;
 	private int fruitCol = -1; // map配列内でのフルーツを表す数値
@@ -122,6 +122,8 @@ public class MapData implements GameMap {
 	private long fruitPopupStartTime = 0;
 	private int fruitPopupScore = 0;
 	private static final long FRUIT_POPUP_DURATION = 1000; // 表示時間(ms)
+	private double fruitPopupX = 0; // 食べた瞬間のX座標（固定・ピクセル）
+	private double fruitPopupY = 0; // 食べた瞬間のY座標（固定・ピクセル）
 
 	// booleanを受け取る新しいコンストラクターを追加
 	public MapData(boolean paused) {
@@ -228,7 +230,6 @@ public class MapData implements GameMap {
 	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
 
 		// ⭕ リストを一度クリアして、敵をどんどん追加する
-
 		enemies.clear();
 		enemies.add(new RedEnemy(this)); // 今後Map3Enemyなどもここに enemies.add(...) するだけで追加可能
 		enemies.add(new GreenEnemy(this));
@@ -561,11 +562,11 @@ public class MapData implements GameMap {
 				if (map[currentTileY][currentTileX] == 2) {
 
 					System.out.println("FEVER開始！");
+					start.Bgm.playFeverBGM(); // ★追加
 
 					syujinkou.setFever(true);
 					// 毎回7秒にリセット
 					feverEndTime = System.currentTimeMillis() + 7000;
-					start.Bgm.playFeverBGM(); // ★追加
 
 					for (Enemy e : enemies) {
 						if (e.getCurrentState() != Characters.EnemyState.DEAD) {
@@ -594,7 +595,9 @@ public class MapData implements GameMap {
 			fruitPopupScore = currentFruit.getType().getScore();
 			fruitPopupStartTime = System.currentTimeMillis();
 			fruitPopupActive = true;
-			
+			fruitPopupX = fruitCol * TILE_SIZE + TILE_SIZE / 2.0;
+			fruitPopupY = fruitRow * TILE_SIZE + TILE_SIZE / 2.0;
+
 			map[fruitRow][fruitCol] = 0;
 			currentFruit = null;
 			fruitRow = -1;
@@ -794,7 +797,7 @@ public class MapData implements GameMap {
 		return stageNumber;
 	}
 
-	// ゲームがまだプレイヤーの初回入力を待っている状態か銅貨を返す。
+	// ゲームがまだプレイヤーの初回入力を待っている状態かどうかを返す。
 	@Override
 	public boolean isWaitingStart() {
 		return waitingStart;
@@ -840,6 +843,18 @@ public class MapData implements GameMap {
 		return syujinkou;
 	}
 
+	/**
+	 * FEVER状態の残り時間（ミリ秒）を返す。 一時停止中は、一時停止した時点での残り時間を固定して返す。
+	 * FEVERが発動していない、または既に終了している場合は0以上の値（実質0）を返す。
+	 */
+	public long getFeverRemainingTime() {
+
+		if (paused && feverEndTime > 0) {
+			return Math.max(0, feverEndTime - pauseStartTime);
+		}
+		return Math.max(0, feverEndTime - System.currentTimeMillis());
+	}
+
 	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
 	public Enemy getEnemy() {
 		return enemies.isEmpty() ? null : enemies.get(0);
@@ -854,19 +869,6 @@ public class MapData implements GameMap {
 	// 残りアイテム数が0以下、つまり全てのドット・パワーエサを食べ終えたかどうかを返す。(ステージクリア判定)。
 	public boolean isCleared() {
 		return remainingItems <= 0;
-	}
-
-	/**
-	 * FEVER状態の残り時間（ミリ秒）を返す。 一時停止中は、一時停止した時点での残り時間を固定して返す。
-	 * FEVERが発動していない、または既に終了している場合は0以上の値（実質0）を返す。
-	 */
-	public long getFeverRemainingTime() {
-
-		if (paused && feverEndTime > 0) {
-			return Math.max(0, feverEndTime - pauseStartTime);
-		}
-
-		return Math.max(0, feverEndTime - System.currentTimeMillis());
 	}
 
 	// ゲームオーバーになったかどうかを返す(プレイヤーのHPが0になった後、死亡アニメーション終了時にtrueになる)。
@@ -890,6 +892,16 @@ public class MapData implements GameMap {
 	// 表示するフルーツのスコア値を返す
 	public int getFruitPopupScore() {
 		return fruitPopupScore;
+	}
+
+	// 食べた瞬間のX座標を返す（ポップアップ表示用、固定値・ピクセル）
+	public double getFruitPopupX() {
+		return fruitPopupX;
+	}
+
+	// 食べた瞬間のY座標を返す（ポップアップ表示用、固定値・ピクセル）
+	public double getFruitPopupY() {
+		return fruitPopupY;
 	}
 
 	// ポップアップの進行度を0.0(開始)〜1.0(終了)で返す

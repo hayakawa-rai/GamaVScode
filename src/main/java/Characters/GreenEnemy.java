@@ -5,6 +5,7 @@
 
 package Characters;
 
+import java.io.InputStream;
 import java.util.List;
 
 import common.GameConfig;
@@ -32,35 +33,28 @@ public class GreenEnemy extends Enemy {
 	// コンストラクタ
 	// ==================================================
 	public GreenEnemy(GameMap mapData) {
-
 		// マスの中心座標を初期位置として Enemy に渡す
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
 				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
 		this.mapData = mapData;
-
 		// FEVER画像をステージごとに読み込む
 		loadFeverImage();
-
 		// DEAD画像を読み込む
 		loadDeadImage();
-
 		// 現在のステージ番号によって、読み込む画像を切り替える
 		// デフォルト（ステージ1用）
 		String imagePath = "/picture/nari_EnemyGreen.png";
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-
 				// ステージ1の画像
 				imagePath = "/picture/nari_EnemyGreen.png";
 				break;
 			case 2:
-
 				// ステージ2の画像
 				imagePath = "/picture/taku_EnemyGreen.png";
 				break;
 			case 3:
-
 				// ステージ3の画像
 				imagePath = "/picture/aniki_EnemyGreen.png";
 				break;
@@ -71,7 +65,7 @@ public class GreenEnemy extends Enemy {
 
 		// 画像読み込み
 		try {
-			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
+			InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
 				System.err.println("【エラー】画像が見つかりません: " + imagePath);
 			} else {
@@ -89,13 +83,10 @@ public class GreenEnemy extends Enemy {
 	// ポーズ中の時間を出撃タイマーへ反映する
 	@Override
 	public void resumeTimer() {
-
 		// 出撃待機中のみタイマー補正を行う
 		if (timerStarted && !released) {
-
 			// ポーズしていた時間を計算
 			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
-
 			// タイマーを補正
 			startTime += pauseDuration;
 		}
@@ -107,42 +98,33 @@ public class GreenEnemy extends Enemy {
 	// プレイヤーが被弾時に元の場所、出撃時間をリセット
 	@Override
 	public void resetToStartPosition() {
-
 		// Enemy共通のリセット処理
 		super.resetToStartPosition();
-
 		// 出撃状態を初期化
 		released = false;
-
 		// 出撃タイマーをリセット
 		timerStarted = false;
 	}
-
 	
 	// ==================================================
 	// 動き
 	// ==================================================
-	// 20秒経過後に出撃
+	// 10秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
-
 		// READY中は移動しない
 		if (mapData.isWaitingStart()) {
 			return;
 		}
-
 		// 初回入力後にタイマー開始
 		if (!timerStarted) {
-
 			startTime = System.currentTimeMillis();
 			timerStarted = true;
 		}
 		// 出撃待機中
 		if (!released) {
-
 			// 経過時間を取得
 			long elapsed = System.currentTimeMillis() - startTime;
-
 			// 10秒経過するまで待機
 			if (elapsed < 10000) {
 				return;
@@ -150,7 +132,6 @@ public class GreenEnemy extends Enemy {
 			// 出撃開始
 			released = true;
 		}
-
 		// Enemy共通の移動処理
 		super.move(map);
 	}
@@ -178,7 +159,7 @@ public class GreenEnemy extends Enemy {
 		int targetRow = (int) (pacY / GameConfig.TILE_SIZE);
 
 		// 縄張りモード
-		if (currentState == Characters.EnemyState.SCATTER) {
+		if (currentState == EnemyState.SCATTER) {
 			return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 		}
 
