@@ -1,30 +1,34 @@
 package Items;
 
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+
 
 /**
  * フルーツの種類を表す列挙型。
  * 種類ごとにスコアと色（仮描画用）を持つ。
- * 画像を使いたい場合はcolorの代わりにimagePathを持たせる形に変更可能。
  */
 public enum FruitType {
 
-    CHERRY(100, Color.RED),//サクランボ
-    STRAWBERRY(300, Color.HOTPINK),//イチゴ
-    ORANGE(500, Color.ORANGE),//オレンジ
-    APPLE(700, Color.LIMEGREEN),//リンゴ
-    GRAPE(1000, Color.PURPLE);//ブドウ
+    CHERRY(100, "/picture/sakuranbo.png"),         // サクランボ
+    STRAWBERRY(300, "/picture/ichigo.png"), // イチゴ
+    ORANGE(500, "/picture/orange.png"),         // オレンジ
+    APPLE(700, "/picture/ringo.png"),           // リンゴ
+    GRAPE(1000, "/picture/budo.png");          // ブドウ
 
     private final int score;
-    private final Color color;
+    private final Image image;
 
-    FruitType(int score, Color color) {
+    FruitType(int score, String imagePath) {
         this.score = score;
-        this.color = color;
+        var stream = getClass().getResourceAsStream(imagePath);
+        if (stream == null) {
+            throw new IllegalStateException("画像が見つかりません: " + imagePath);
+        }
+        this.image = new Image(stream);
     }
 
     public int getScore() { return score; }
-    public Color getColor() { return color; }
+    public Image getImage() { return image; }
 
     private static final FruitType[] VALUES = values();
 

@@ -42,9 +42,12 @@ public class Fruit extends Item {
         if (remainingTicks < 120 && (remainingTicks / 10) % 2 == 0) {
             return; // 描画をスキップして点滅させる
         }
-        gc.setFill(type.getColor());
-        gc.fillOval(x + tileSize * 0.15, y + tileSize * 0.15, tileSize * 0.7, tileSize * 0.7);
-        gc.setFill(javafx.scene.paint.Color.GREEN);
-        gc.fillRect(x + tileSize * 0.45, y + tileSize * 0.05, tileSize * 0.1, tileSize * 0.2);
-    }
+        
+        gc.drawImage(
+                type.getImage(),
+                x + tileSize * 0.1,
+                y + tileSize * 0.1,
+                tileSize * 0.8,
+                tileSize * 0.8
+            );    }
 }
