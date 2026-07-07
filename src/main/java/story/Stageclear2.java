@@ -39,18 +39,22 @@ public class Stageclear2 extends Application {
 			delay.stop();
 			delay = null;
 		}
+		
 		if (pause != null) {
 			pause.stop();
 			pause = null;
 		}
+		
 		if (clearSound != null) {
 			clearSound.stop();
 			clearSound = null;
 		}
+		
 		if (clickSound != null) {
 			clickSound.stop();
 			clickSound = null;
 		}
+		
 		if (cancelSound != null) {
 			cancelSound.stop();
 			cancelSound = null;
@@ -62,7 +66,7 @@ public class Stageclear2 extends Application {
 	public void start(Stage stage) {
 		this.stage = stage;
 		stage.setTitle("stage2CLEAR");
-		 //WindowUtil.fillScreen(stage);	最大化
+		//WindowUtil.fillScreen(stage);	最大化
 	    stage.setScene(clear(stage)); // 安全にstageを渡す
 		stage.centerOnScreen();
 		stage.show();
@@ -73,10 +77,10 @@ public class Stageclear2 extends Application {
 		return clear(this.stage);
 	}
 
-public Scene clear(Stage currentStage) {
-	if (currentStage != null) {
-		this.stage = currentStage;
-	}
+	public Scene clear(Stage currentStage) {
+		if (currentStage != null) {
+			this.stage = currentStage;
+		}
 		// クリア音
 		clearSound = new AudioClip(
 				getClass().getResource("/music/yay.mp3").toExternalForm());
@@ -88,6 +92,7 @@ public Scene clear(Stage currentStage) {
 		delay.setOnFinished(e -> {
 			clearSound.play();
 		});
+		
 		// タイマー開始
 		delay.play();
 
@@ -119,11 +124,14 @@ public Scene clear(Stage currentStage) {
 		textAndImage.getChildren().addAll(imageView, text);
 
 		// 音声読み込み
-		clickSound = new AudioClip(getClass().getResource("/music/select.mp3").toExternalForm());
+		clickSound = new AudioClip(
+				getClass().getResource("/music/select.mp3").toExternalForm());
 		// 音量調整
 		clickSound.setVolume(0.4);
+		
 		// 音声読み込み
-		cancelSound = new AudioClip(getClass().getResource("/music/cancel.mp3").toExternalForm());
+		cancelSound = new AudioClip(
+				getClass().getResource("/music/cancel.mp3").toExternalForm());
 		// 音量調整
 		cancelSound.setVolume(0.4);
 
@@ -132,6 +140,7 @@ public Scene clear(Stage currentStage) {
 		// ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
 		next.getStyleClass().add("game-button2");
 		next.setPrefSize(250, 80);
+		// 次の画面に遷移
 		next.setOnAction(e -> {
 			// 音を再生
 			clickSound.stop();
@@ -144,7 +153,7 @@ public Scene clear(Stage currentStage) {
 			pause.setOnFinished(ev -> {
 				try {
 					cleanup();
-					//画面遷移
+					// 画面遷移
 					GameController.switchStory3(this.stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -194,7 +203,6 @@ public Scene clear(Stage currentStage) {
 		root.getChildren().add(buttonBox);
 		// 
 		Scene scene = new Scene(root, 1000, 800);
-		
 		// CSSを接続
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 		//ウィンドウの最小限のサイズを設定
@@ -202,7 +210,6 @@ public Scene clear(Stage currentStage) {
   		stage.setMinHeight(800);
   		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
   		stage.setMaxHeight(1080);
-		
 		return scene;
 	}
 	

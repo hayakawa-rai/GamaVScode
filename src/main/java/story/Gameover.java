@@ -1,5 +1,6 @@
 package story;
 
+import control.GameController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import start.Start;
 
 public class Gameover extends Application {
 
@@ -25,7 +25,6 @@ public class Gameover extends Application {
 	public void start(Stage stage) {
 		stage.setScene(create(stage, null, score));
 		stage.setTitle("ゲームオーバー");
-		//画面の強制再設定
 		//WindowUtil.fillScreen(stage);	最大化
 		stage.setScene(create(stage, null, score));
 		stage.centerOnScreen();
@@ -81,9 +80,9 @@ public class Gameover extends Application {
 		titleBtn.setPrefSize(300, 70);
 		titleBtn.getStyleClass().add("gameover-button");
 		titleBtn.setOnAction(e -> {
-			Start titleScreen = new Start();
 			try {
-				titleScreen.start(stage);
+				// 画面遷移
+				GameController.switchStart(stage);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
