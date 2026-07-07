@@ -1,5 +1,6 @@
 package start;
 
+import control.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -11,10 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -103,7 +107,7 @@ public class Start extends Application {
 				}
 				
 				// 画像は元のサイズのまま、表示位置だけをずらして背景を再描画
-				javafx.scene.paint.ImagePattern pattern = new javafx.scene.paint.ImagePattern(
+				ImagePattern pattern = new ImagePattern(
 					bgImage, 
 					scrollX[0], 0,	// X座標をずらす, Y座標は固定
 					bgWidth, bgHeight, // 画像の本来のサイズを維持
@@ -111,8 +115,8 @@ public class Start extends Application {
 				);
 				
 				// bgPane全体の背景をこのパターンで塗りつぶす
-				bgPane.setBackground(new javafx.scene.layout.Background(
-					new javafx.scene.layout.BackgroundFill(pattern, null, null)
+				bgPane.setBackground(new Background(
+					new BackgroundFill(pattern, null, null)
 				));
 				
 			}
@@ -177,7 +181,7 @@ public class Start extends Application {
 						cleanup();
 
 						//画面遷移
-						control.GameController.startToStory(stage);
+						GameController.startToStory(stage);
 					}));
 				delay.play();
 			} catch (Exception ex) {
@@ -206,7 +210,7 @@ public class Start extends Application {
 					timer.stop();
 
 					// 画面遷移
-					control.GameController.switchToPractice(stage);
+					GameController.switchToPractice(stage);
 					}));
 				delay.play();
 			} catch (Exception ex) {
