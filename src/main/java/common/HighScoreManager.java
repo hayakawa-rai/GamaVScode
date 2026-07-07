@@ -46,7 +46,6 @@ public class HighScoreManager {
 			if (score > oldScore) {
 
 				prop.setProperty("stage" + stage, String.valueOf(score));
-
 				prop.store(Files.newOutputStream(FILE), "High Score Data");
 
 				return true;

@@ -12,15 +12,17 @@ public abstract class Item {
         this.score = score;
         this.view = view;
     }
-
-    // ゲッター
-    public Node getView() { 
-        return view; 
-    }
     
     // 食べた時の処理（子クラスでそれぞれ中身を実装する）
     public abstract void onEaten(Syujinkou player);
     
     // 自分自身を画面（Canvas）に描画する命令
     public abstract void draw(GraphicsContext gc, double x, double y, double tileSize);
+
+    // ==================================================
+    // getter
+    // ==================================================
+    public Node getView() { 
+        return view; 
+    }
 }

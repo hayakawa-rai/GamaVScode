@@ -47,19 +47,6 @@ public class Chii extends Item {
 		player.addScore(this.score);
 	}
 
-	// 外部から画像単体を取り出したい時用のゲッター
-	public Image getImage() {
-		if (this.view instanceof ImageView) {
-			return ((ImageView) this.view).getImage();
-		}
-		return null;
-	}
-
-	// 外部からサイズを知りたい時用のゲッター
-	public double getSize() {
-		return IMAGE_SIZE;
-	}
-
 	@Override
 	public void draw(GraphicsContext gc, double x, double y, double tileSize) {
 
@@ -88,5 +75,20 @@ public class Chii extends Item {
 				x + tileSize / 2.0 - radius,
 				y + tileSize / 2.0 - radius,
 				radius * 2, radius * 2);
+	}
+	// ==================================================
+	// getter
+	// ==================================================
+	// 外部から画像単体を取り出したい時用
+	public Image getImage() {
+		if (this.view instanceof ImageView) {
+			return ((ImageView) this.view).getImage();
+		}
+		return null;
+	}
+
+	// 外部からサイズを知りたい時用
+	public double getSize() {
+		return IMAGE_SIZE;
 	}
 }

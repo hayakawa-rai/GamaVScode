@@ -16,9 +16,6 @@ public class Fruit extends Item {
         this.remainingTicks = 600; // 10秒間表示
     }
 
-    public FruitType getType() { return type; }
-    public boolean isExpired() { return isExpired; }
-
     /**
      * 毎フレーム呼び出される更新処理
      */
@@ -43,12 +40,16 @@ public class Fruit extends Item {
         if (remainingTicks < 120 && (remainingTicks / 10) % 2 == 0) {
             return; // 描画をスキップして点滅させる
         }
-        
         gc.drawImage(
                 type.getImage(),
                 x + tileSize * 0.1,
                 y + tileSize * 0.1,
                 tileSize * 0.8,
                 tileSize * 0.8
-            );    }
+        	);    
+    }
+
+    public boolean isExpired() { return isExpired; }
+    // ゲッター
+    public FruitType getType() { return type; }
 }

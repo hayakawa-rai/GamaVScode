@@ -143,19 +143,18 @@ public class Gameover extends Application {
 
 		// rootに追加
 		root.getChildren().addAll(bg, whiteOverlay, ui);
-
 		Scene scene = new Scene(root, 1000, 800);
-		// CSSを接続
-		scene.getStylesheets().add(Gameover.class.getResource("/css/gameover.css").toExternalForm());
 
-		// ウィンドウの最小限のサイズを設定
+	    //CSSを接続
+		scene.getStylesheets().add(
+				Gameover.class.getResource("/css/gameover.css").toExternalForm());
+	    
+		//ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
 		stage.setMaxWidth(1920); // PC大画面やブラウザ最大化時の最大サイズ制限
 		stage.setMaxHeight(1080);
-
 		return scene;
-
 	}
 
 	public void setScore(int score) {

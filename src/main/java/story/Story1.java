@@ -339,7 +339,7 @@ public class Story1 extends Application {
 		nariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
 		nariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
-		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.34));
+		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.37));
 		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(1.4));
 		syujinkouView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
 		// boxのサイズをウィンドウに合わせる
@@ -388,32 +388,32 @@ public class Story1 extends Application {
 		// 文字表示用のタイマーを作成、50ミリ秒ごとに処理
 		timeline = new Timeline(
 				new KeyFrame(Duration.millis(50), e -> {
-					// 今再生されている会話テキストのリスト番号を取得
-					Dialogue d = dialogues.get(messageIndex);
-					// まだ文字が残っているかどうかを判断(文字が残っている間は処理を実行)
-					if (charIndex < d.message.length()) {
-						// 文字カウントを増やす
-						charIndex++;
-						// 誰が話しているか情報取得(話者によって話者名・テキストの色を変化)
-						String speaker = d.speaker;
-						nameText.setText(speaker);
-						text.setFill(d.textColor);
-						if (speaker.equals("あにき")) {
-							// あにきの画像を表示・なりなりの画像を非表示
-							anikiView.setVisible(true);
-							nariView.setVisible(false);
-						} else if (speaker.equals("仙石さん")) {
-						} else if (speaker.equals("なりなり")) {
-							// あにきの画像を非表示・なりなりの画像を表示
-							anikiView.setVisible(false);
-							nariView.setVisible(true);
-						}
+				// 今再生されている会話テキストのリスト番号を取得
+				Dialogue d = dialogues.get(messageIndex);
+				// まだ文字が残っているかどうかを判断(文字が残っている間は処理を実行)
+				if (charIndex < d.message.length()) {
+					// 文字カウントを増やす
+					charIndex++;
+					// 誰が話しているか情報取得(話者によって話者名・テキストの色を変化)
+					String speaker = d.speaker;
+					nameText.setText(speaker);
+					text.setFill(d.textColor);
+					if (speaker.equals("あにき")) {
+						// あにきの画像を表示・なりなりの画像を非表示
+						anikiView.setVisible(true);
+						nariView.setVisible(false);
+					} else if (speaker.equals("仙石さん")) {
+					} else if (speaker.equals("なりなり")) {
+						// なりなりの画像を表示・あにきの画像を非表示
+						anikiView.setVisible(false);
+						nariView.setVisible(true);
+					}
 
-						// 表示しているメッセージに対して1文ずつ表示する文字数を増やしていく処理
-						// 例：メッセージがhelloのとき、h→he→hel→hell→hello
-						text.setText(d.message.substring(0, charIndex));
-						if (Math.random() < 0.5) {
-						}
+					// 表示しているメッセージに対して1文ずつ表示する文字数を増やしていく処理
+					// 例：メッセージがhelloのとき、h→he→hel→hell→hello
+					text.setText(d.message.substring(0, charIndex));
+					if (Math.random() < 0.5) {
+					}
 					} else {// 全て表示し終わった後の処理
 							// fales：タイピング中じゃない
 						isTyping = false;
@@ -426,7 +426,7 @@ public class Story1 extends Application {
 						// ▼を上下に揺らすアニメーション表示
 						arrowMove.play();
 					}
-				}));
+		}));
 		// Timeline.INDEFINITE：無限ループ
 		timeline.setCycleCount(Timeline.INDEFINITE);
 
@@ -434,10 +434,9 @@ public class Story1 extends Application {
 		scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
 
 			if (menuOverlay.isVisible()) {
-				if (e.getTarget() == menuBtn)
-					return;
-				e.consume();
-				return;
+				if (e.getTarget() == menuBtn)	return;
+			e.consume();
+			return;
 			}
 
 			// 文字表示中ならスキップして全文表示する処理
@@ -454,14 +453,16 @@ public class Story1 extends Application {
 				nextMark.setVisible(true);
 				// ▼点滅アニメーション表示
 				blink.play();
-				// ▼を上下に揺らすアニメーション表示
-				arrowMove.play();
+				// ▼を上下に揺らすアニメーション停止
+				arrowMove.stop();
 				return;
-			}
+				}
+
 			//まだメッセージがある場合if文内のの処理を実行
 			if (messageIndex < dialogues.size() - 1) {
 				// メッセージカウントを増やす
 				messageIndex++;
+
 				//タイピングを再スタート
 				startTyping();
 				// ▼を消す
@@ -491,9 +492,7 @@ public class Story1 extends Application {
 					jumpnari.playFromStart();
 				}
 			} else {// メッセージの最後まで行った後の処理
-
-				if (isEndingStarted)
-					return;
+				if (isEndingStarted)	return;
 				isEndingStarted = true;
 
 				nextMark.setVisible(false);
@@ -526,6 +525,7 @@ public class Story1 extends Application {
 		// CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
+		
 		// 最初の文章を表示
 		startTyping();
 		// ウィンドウの最小限のサイズを設定

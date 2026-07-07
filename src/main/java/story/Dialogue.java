@@ -9,7 +9,6 @@ public class Dialogue {
     public AudioClip sound;
     public Color textColor;
 
-
     public Dialogue(String speaker, String message, AudioClip sound, Color textColor) {
         this.speaker = speaker;
         this.message = message;
