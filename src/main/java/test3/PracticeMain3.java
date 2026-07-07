@@ -113,7 +113,7 @@ public class PracticeMain3 extends Application {
 		model.initEnemy(new javafx.scene.image.ImageView());
 
 		// 準備ができたコントローラーを生成 (stageNumber=1, isPractice=true)
-		this.controller = new GameController(model, view, canvas, scene, stage, 1, true);
+		this.controller = new GameController(model, view, canvas, scene, stage, 3, true);
 		// コントローラーが最前面のポーズレイヤーを制御できるように登録
 		this.controller.setPauseLayer(pauseLayer);
 
