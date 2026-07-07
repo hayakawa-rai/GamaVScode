@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -68,7 +67,6 @@ public class Practice extends Application {
 		stage.setTitle("練習モード");
 		// WindowUtil.fillScreen(stage); // 最大化
 		stage.setScene(createScene()); // その後でSceneをセット
-
 	}
 
 	public Scene createScene() {
@@ -185,10 +183,6 @@ public class Practice extends Application {
 			pause.play();
 		});
 
-		HBox backBox = new HBox(backButton);
-		backBox.setAlignment(Pos.BOTTOM_RIGHT);
-		backBox.setStyle("-fx-padding: 20px;");
-
 		// 背景用の画像を読み込み
 		Image bgImage = new Image(Practice.class.getResource("/picture/background.png").toExternalForm());
 
@@ -237,7 +231,7 @@ public class Practice extends Application {
 
 		highScoreTip.setStyle("-fx-font-family: 'PixelMplus12';" + "-fx-font-size: 32px;"
 				+ "-fx-background-color: rgba(0,0,0,0.95);" + "-fx-text-fill: white;" + "-fx-padding: 20;");
-		
+
 		scoreInfo.setOnMouseClicked(e -> {
 
 			if (highScoreTip.isShowing()) {
@@ -246,9 +240,25 @@ public class Practice extends Application {
 
 			} else {
 
-				highScoreTip.show(scoreInfo, e.getScreenX() - 300, e.getScreenY() + 20);
+				double x = e.getScreenX() - 350;
+				double y = e.getScreenY() + 20;
+
+				// 左にはみ出さない
+				if (x < 20) {
+					x = 20;
+				}
+
+				highScoreTip.show(scoreInfo, x, y);
 			}
 		});
+
+		StackPane.setAlignment(scoreInfo, Pos.TOP_RIGHT);
+
+		StackPane.setMargin(scoreInfo, new javafx.geometry.Insets(15, 15, 0, 0));
+
+		StackPane.setAlignment(backButton, Pos.BOTTOM_RIGHT);
+
+		StackPane.setMargin(backButton, new javafx.geometry.Insets(0, 30, 30, 0));
 
 		// ここから自動的にループ開始(AnimationTimerとペアで使用)
 		this.timer.start();
@@ -264,7 +274,6 @@ public class Practice extends Application {
 		ui.setMaxWidth(800);
 		ui.setTop(title);
 		ui.setCenter(stageButtons);
-		ui.setBottom(backBox);
 
 		// タイトルラベル自体を上部の中央に配置する
 		BorderPane.setAlignment(title, Pos.CENTER);
@@ -273,21 +282,41 @@ public class Practice extends Application {
 		BorderPane.setMargin(title, new Insets(200, 0, 20, 0));
 
 		// 下から背景、UIの箱に入れたものの順でレイヤー構造のrootに入れる
-		root.getChildren().addAll(bgPane, ui, scoreInfo);
+		root.getChildren().addAll(bgPane, ui, scoreInfo, backButton);
 
 		StackPane.setAlignment(scoreInfo, Pos.TOP_RIGHT);
 
 		StackPane.setMargin(scoreInfo, new Insets(15, 15, 0, 0));
 
+		StackPane.setAlignment(backButton, Pos.BOTTOM_RIGHT);
+
+		StackPane.setMargin(backButton, new javafx.geometry.Insets(0, 30, 30, 0));
+
 		// rootを中身とした1000×800のウィンドウを作成
 		Scene scene = new Scene(root, 1000, 800);
+
+		// ★初期値設定
+		double fontSize = Math.max(18, scene.getWidth() * 0.02);
+
+		highScoreTip.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:" + (int) fontSize + "px;"
+				+ "-fx-background-color:rgba(0,0,0,0.95);" + "-fx-text-fill:white;" + "-fx-padding:15;");
+
+		// ★リサイズ時更新
+		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+
+			double newFontSize = Math.max(18, newVal.doubleValue() * 0.02);
+
+			highScoreTip.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:" + (int) newFontSize + "px;"
+					+ "-fx-background-color:rgba(0,0,0,0.95);" + "-fx-text-fill:white;" + "-fx-padding:15;");
+		});
+
 		//
 		bgPane.prefWidthProperty().bind(scene.widthProperty());
 		bgPane.prefHeightProperty().bind(scene.heightProperty());
 
 		// CSSを接続
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-		
+
 		// ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
