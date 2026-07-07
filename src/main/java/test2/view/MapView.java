@@ -79,14 +79,13 @@ public class MapView {
 	 */
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 
-
 		// 1. まずはCanvasを一度綺麗に消す（透明にする）
 		gc.clearRect(0, 0, canvasWidth, canvasHeight);
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvasWidth, INFO_HEIGHT);
 
 		Color wallColor = getColorFromCSS(wallDummy, Color.BLUE);
-		Color pacmanColor = getColorFromCSS(pacmanDummy,Color.YELLOW);
+		Color pacmanColor = getColorFromCSS(pacmanDummy, Color.YELLOW);
 
 		// 1. ステージ本来のサイズを計算
 		int cols = model.getMap()[0].length;
@@ -132,11 +131,11 @@ public class MapView {
 		Syujinkou syujinkou = model.getsyujinkou();
 
 		if (syujinkou != null) {
-			
+
 			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
 			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
 			gc.setTextBaseline(javafx.geometry.VPos.TOP);
-			
+
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
 			// スコア
@@ -151,36 +150,36 @@ public class MapView {
 			gc.setStroke(Color.DARKGRAY);
 			gc.strokeLine(0, INFO_HEIGHT, canvasWidth, INFO_HEIGHT);
 		}
-/*
-		// モデルが一時停止中（paused）だったら、画面中央にテキストを描画する
-		if (model.isPaused() && !model.isGameOver() && !model.isCleared()) {
-
-			// 1. 画面全体を少し暗くする（半透明の黒いフィルターを重ねる）
-			gc.setFill(Color.rgb(0, 0, 0, 0.6)); // 最後の0.6が不透明度（60%）
-			gc.fillRect(0, 0, canvasWidth, canvasHeight);
-
-			// 2. 「PAUSE」の文字を設定
-			gc.setFont(Font.font("Arial", FontWeight.BOLD, 48)); // 大きめのフォント
-			gc.setFill(Color.YELLOW); // 目立つ黄色
-
-			// 3. 文字が中央にぴったり配置されるように、文字の基準点を「中央」にする
-			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
-
-			// 4. キャンバスの真ん中（横幅 / 2, 高さ / 2）に描画
-			gc.fillText("PAUSE", canvasWidth / 2.0, canvasHeight / 2.0);
-
-			// ここから日本語サブテキストの描画 
-			gc.setFont(Font.font("Meiryo", FontWeight.BOLD, 16)); // メイリオで少し太めに
-			gc.setFill(Color.WHITE); // 白文字
-
-			// PAUSEの文字から、縦に「45ピクセル」下にずらした位置に描画
-			gc.fillText("もう一度 Pキー を押すと再開します", canvasWidth / 2.0, (canvasHeight / 2.0) + 45);
-
-			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
-			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
-			gc.setTextBaseline(javafx.geometry.VPos.TOP);
-		}*/
+		/*
+				// モデルが一時停止中（paused）だったら、画面中央にテキストを描画する
+				if (model.isPaused() && !model.isGameOver() && !model.isCleared()) {
+		
+					// 1. 画面全体を少し暗くする（半透明の黒いフィルターを重ねる）
+					gc.setFill(Color.rgb(0, 0, 0, 0.6)); // 最後の0.6が不透明度（60%）
+					gc.fillRect(0, 0, canvasWidth, canvasHeight);
+		
+					// 2. 「PAUSE」の文字を設定
+					gc.setFont(Font.font("Arial", FontWeight.BOLD, 48)); // 大きめのフォント
+					gc.setFill(Color.YELLOW); // 目立つ黄色
+		
+					// 3. 文字が中央にぴったり配置されるように、文字の基準点を「中央」にする
+					gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+					gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+		
+					// 4. キャンバスの真ん中（横幅 / 2, 高さ / 2）に描画
+					gc.fillText("PAUSE", canvasWidth / 2.0, canvasHeight / 2.0);
+		
+					// ここから日本語サブテキストの描画 
+					gc.setFont(Font.font("Meiryo", FontWeight.BOLD, 16)); // メイリオで少し太めに
+					gc.setFill(Color.WHITE); // 白文字
+		
+					// PAUSEの文字から、縦に「45ピクセル」下にずらした位置に描画
+					gc.fillText("もう一度 Pキー を押すと再開します", canvasWidth / 2.0, (canvasHeight / 2.0) + 45);
+		
+					// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
+					gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
+					gc.setTextBaseline(javafx.geometry.VPos.TOP);
+				}*/
 	}
 
 	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
@@ -218,17 +217,43 @@ public class MapView {
 				}
 			}
 		}
-	//  フルーツを描画
+		//  フルーツを描画
 		Items.Fruit fruit = model.getCurrentFruit();
 		if (fruit != null) {
-		    int fx = model.getFruitCol() * MapData.TILE_SIZE;
-		    int fy = model.getFruitRow() * MapData.TILE_SIZE;
-		    fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
+			int fx = model.getFruitCol() * MapData.TILE_SIZE;
+			int fy = model.getFruitRow() * MapData.TILE_SIZE;
+			fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
+		}
+
+		// ▼ フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
+		if (model.isFruitPopupActive()) {
+			double progress = model.getFruitPopupProgress(); // 0.0〜1.0
+			double riseOffset = progress * 20;
+			double alpha = 1.0 - progress;
+
+			double popupX = model.getFruitPopupX();
+			double popupY = model.getFruitPopupY() - MapData.TILE_SIZE / 2.0 - 6 - riseOffset;
+
+			gc.save();
+			gc.setGlobalAlpha(alpha);
+
+			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(3);
+			gc.strokeText("+" + model.getFruitPopupScore(), popupX, popupY);
+
+			gc.setFill(Color.WHITE);
+			gc.fillText("+" + model.getFruitPopupScore(), popupX, popupY);
+
+			gc.restore();
 		}
 	}
-	
+
 	//MapViewのフィールドにPac-man画像を追加
-	
+
 	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
 			getClass().getResource("/picture/syujinkou.png").toExternalForm());
 	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
@@ -248,13 +273,13 @@ public class MapView {
 
 		if (syujinkou == null)
 			return;
-		
-		if(syujinkou.isDyingAnimation()) {
-			drawDyingsyujinkou(gc,syujinkou);
+
+		if (syujinkou.isDyingAnimation()) {
+			drawDyingsyujinkou(gc, syujinkou);
 			return;
 		}
-		
-		if(!syujinkou.isAlive())
+
+		if (!syujinkou.isAlive())
 			return;
 
 		if (pacmanImage == null) {
@@ -265,31 +290,31 @@ public class MapView {
 
 		double pacX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
 		double pacY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
-		
+
 		Characters.Direction dir = syujinkou.getDirection();
 		double angle = 0;
-		
+
 		gc.save();
 
 		gc.translate(pacX, pacY);
 		gc.rotate(angle);
 
 		//FEVER終了時は点滅
-		if(syujinkou.isFever()) {
-			
+		if (syujinkou.isFever()) {
+
 			long remain = model.getFeverRemainingTime();
-				
-			if(remain <= 3000) {
-			
-				if((System.currentTimeMillis() / 150) % 2 == 0) {
+
+			if (remain <= 3000) {
+
+				if ((System.currentTimeMillis() / 150) % 2 == 0) {
 					gc.restore();
 					return;
 				}
 			}
 		}
-		
+
 		//使用画像を指定
-		
+
 		Image currentImage = pacmanImage;
 
 		if (syujinkou.isFever()) {
@@ -386,36 +411,36 @@ public class MapView {
 			gc.fillOval(enemy.getX() - 2, enemy.getY() - 2, 4, 4);
 		}
 		// ▼ 撃破時のスコアポップアップ表示（ふわっと上に浮かびながらフェードアウト）
-				if (enemy.isScorePopupActive()) {
-					double progress = enemy.getScorePopupProgress(); // 0.0〜1.0
+		if (enemy.isScorePopupActive()) {
+			double progress = enemy.getScorePopupProgress(); // 0.0〜1.0
 
-					// 上方向へのオフセット（最大20pxくらい浮かせる）
-					double riseOffset = progress * 20;
+			// 上方向へのオフセット（最大20pxくらい浮かせる）
+			double riseOffset = progress * 20;
 
-					// フェードアウト（後半から徐々に透明に）
-					double alpha = 1.0 - progress;
+			// フェードアウト（後半から徐々に透明に）
+			double alpha = 1.0 - progress;
 
-					double popupX = enemy.getDefeatX();
-					double popupY = enemy.getDefeatY() - MapData.TILE_SIZE / 2.0 - 6 - riseOffset;
+			double popupX = enemy.getDefeatX();
+			double popupY = enemy.getDefeatY() - MapData.TILE_SIZE / 2.0 - 6 - riseOffset;
 
-					gc.save();
-					gc.setGlobalAlpha(alpha);
+			gc.save();
+			gc.setGlobalAlpha(alpha);
 
-					gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-					gc.setTextBaseline(javafx.geometry.VPos.CENTER);
-					gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-					// 縁取り（黒）
-					gc.setStroke(Color.BLACK);
-					gc.setLineWidth(3);
-					gc.strokeText("+" + enemy.getLastDefeatScore(), popupX, popupY);
+			// 縁取り（黒）
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(3);
+			gc.strokeText("+" + enemy.getLastDefeatScore(), popupX, popupY);
 
-					// 本体（白文字）
-					gc.setFill(Color.WHITE);
-					gc.fillText("+" + enemy.getLastDefeatScore(), popupX, popupY);
+			// 本体（白文字）
+			gc.setFill(Color.WHITE);
+			gc.fillText("+" + enemy.getLastDefeatScore(), popupX, popupY);
 
-					gc.restore();
-				}
+			gc.restore();
+		}
 	}
 
 	/**
@@ -450,7 +475,7 @@ public class MapView {
 		gc.restore();
 		gc.setGlobalAlpha(1.0);
 	}
-	
+
 	/**
 	 * 非表示のダミー部品(Region)に適用されたCSSの背景色を取得する。
 	 * これにより、壁やパックマンの色をCanvas描画側でもCSSファイルから一元管理できる。
