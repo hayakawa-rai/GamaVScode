@@ -53,7 +53,7 @@ public class Main3 extends Application {
 
 		try {
 			// src/main/resources/picture/companyroom.jpg から画像を読み込む
-			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/emd-nottori.jpg"));
+			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/shatyoroom.jpg"));
 			backgroundView = new ImageView(backgroundImage);
 			// 画像のサイズも、ウィンドウ（root）のサイズに完全に連動（バインド）させる
 			backgroundView.fitWidthProperty().bind(root.widthProperty());
