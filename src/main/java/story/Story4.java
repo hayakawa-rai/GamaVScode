@@ -225,6 +225,7 @@ public class Story4 extends Application {
 		bubble.setMaxWidth(850);
 		// 中央左寄りに配置
 		bubble.setAlignment(Pos.CENTER_LEFT);
+		
 		// bubble自体をウィンドウの中央下に配置
 		StackPane.setAlignment(bubble, Pos.BOTTOM_CENTER);
 		// ▼を中央に配置、下に余白を作成
@@ -278,23 +279,16 @@ public class Story4 extends Application {
 		StackPane messageBox = new StackPane();
 		messageBox.getChildren().addAll(box, bubble);
 
-		/*// 背景の設定(1番最初に入れたものが1番後ろになる)
-		StackPane back = new StackPane();
-		back.getChildren().add(bgView);*/
-
 		// レイヤー構造を使用し吹き出しとテキストの位置を設定
 		BorderPane root = new BorderPane();
 		// 吹き出しを中央下に配置
 		root.setBottom(messageBox);
-		// rooのuiレイアウト背景を透明にする(背景などが映るようにするため)
+		// rootのuiレイアウト背景を透明にする(背景などが映るようにするため)
 		root.setStyle("-fx-background-color: transparent;");
 		// Borderpaneにより一番下に表示されてしまうので、下に余白を設定する
 		BorderPane.setMargin(messageBox, new Insets(0, 0, 30, 0));
 
-		
-
 		// メニューボタン作成
-
 		Image menuImg = new Image(
 				getClass().getResourceAsStream("/picture/menu.jpeg"));
 
@@ -329,12 +323,13 @@ public class Story4 extends Application {
 		// サイズを小さめにする
 		menuBox.setMaxWidth(300);
 		menuBox.setMaxHeight(250);
-		menuBox.setStyle("-fx-background-color: rgba(40,40,50,0.95);" + // 少し透明
-								"-fx-background-radius: 20;" + // 角丸
-								"-fx-padding: 25;" +
-								"-fx-border-radius: 20;" +
-								"-fx-border-color: white;" +
-								"-fx-border-width: 2;");
+		menuBox.setStyle(
+				"-fx-background-color: rgba(40,40,50,0.95);" + // 少し透明
+						"-fx-background-radius: 20;" + // 角丸
+						"-fx-padding: 25;" +
+						"-fx-border-radius: 20;" +
+						"-fx-border-color: white;" +
+						"-fx-border-width: 2;");
 
 		// ボタン
 		Button resume = new Button("再開");
@@ -362,8 +357,7 @@ public class Story4 extends Application {
 		menuOverlay.getChildren().add(menuBox);
 
 		// 最前面に追加
-		base.getChildren().add(menuBtn);
-		base.getChildren().add(menuOverlay);
+		base.getChildren().addAll(menuBtn, menuOverlay);
 
 		// 背景画像をウィンドウサイズに合わせる
 		bgView.fitWidthProperty().bind(scene.widthProperty());

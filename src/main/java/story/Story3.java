@@ -325,7 +325,6 @@ public class Story3 extends Application {
 		BorderPane.setMargin(messageBox, new Insets(0, 0, 30, 0));
 
 		// メニューボタン作成
-
 		Image menuImg = new Image(
 				getClass().getResourceAsStream("/picture/menu.jpeg"));
 
@@ -342,7 +341,7 @@ public class Story3 extends Application {
 		
 		// ウィンドウ全体のレイヤー(下から背景、人物画像、吹き出しの順に配置)
 		StackPane base = new StackPane();
-		base.getChildren().addAll(bgView, anikiView, syujinkouView, nariView, takuView, root);				// 決められた画面サイズ(1000,800)に合わせてSceneを作る
+		base.getChildren().addAll(bgView, anikiView, syujinkouView, nariView, takuView, root);
 		// 決められた画面サイズ(1000,800)に合わせてSceneを作る
 		Scene scene = new Scene(base, 1000, 800);
 		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
@@ -393,8 +392,7 @@ public class Story3 extends Application {
 		menuOverlay.getChildren().add(menuBox);
 
 		// 最前面に追加
-		base.getChildren().add(menuBtn);
-		base.getChildren().add(menuOverlay);
+		base.getChildren().addAll(menuBtn, menuOverlay);
 
 		// 背景画像をウィンドウサイズに合わせる
 		bgView.fitWidthProperty().bind(scene.widthProperty());
@@ -637,7 +635,6 @@ public class Story3 extends Application {
 
 				fade.setOnFinished(ev -> {
 					cleanup(scene, base);
-					base.getChildren().clear();
 					// 次の画面へ
 					GameController.switchToGame3(stage);
 				});

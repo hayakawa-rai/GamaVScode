@@ -134,7 +134,7 @@ public class Story2 extends Application {
 		// BGM停止
 		Bgm.stopBGM();
 
-		// イベント解除
+		// クリックイベント解除
 		if (scene != null) {
 			scene.setOnMouseClicked(null);
 		}
@@ -314,7 +314,7 @@ public class Story2 extends Application {
 				getClass().getResourceAsStream("/picture/aniki-udekumi.png"));
 		// 人物画像の表示
 		ImageView anikiView = new ImageView(anikiImage);
-		//縦横比率を維持
+		// 縦横比率を維持
 		anikiView.setPreserveRatio(true);
 		// 人物画像の読み込み(仙石さん)
 		Image syujinkouImage = new Image(
@@ -364,7 +364,6 @@ public class Story2 extends Application {
 		BorderPane.setMargin(messageBox, new Insets(0, 0, 30, 0));
 
 		// メニューボタン作成
-
 		Image menuImg = new Image(
 				getClass().getResourceAsStream("/picture/menu.jpeg"));
 
