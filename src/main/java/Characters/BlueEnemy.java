@@ -55,17 +55,14 @@ public class BlueEnemy extends Enemy {
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-
 				// ステージ1の画像
 				imagePath = "/picture/nari_EnemyBlue.png";
 				break;
 			case 2:
-
 				// ステージ2の画像
 				imagePath = "/picture/taku_EnemyBlue.png";
 				break;
 			case 3:
-
 				// ステージ3の画像
 				imagePath = "/picture/aniki_EnemyBlue.png";
 				break;

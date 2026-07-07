@@ -20,10 +20,6 @@ public enum Direction {
 		this.dy = dy;
 	}
 	
-	// 移動した量を取得するゲッター
-	public double getDX() {return dx;}
-	public double getDY() {return dy;}
-	
 	
 	// JavaFXのキー入力(KeyCode)から対応するDirection(動き)を返すメソッド
 	public static Direction fromKeyCode(javafx.scene.input.KeyCode code) {
@@ -41,4 +37,10 @@ public enum Direction {
 		
 		};
 	}
+	// ==================================================
+	// getter
+	// ==================================================
+	public double getDX() {return dx;}
+	public double getDY() {return dy;}
+	
 }
