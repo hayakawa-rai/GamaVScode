@@ -4,7 +4,6 @@ public enum SyujinkouState {
 	
 	//通常状態(速度倍率1.0)
 	NORMAL(1.0),
-	
 	//フィーバー状態(速度倍率1.2にすることでEnemyより早くなり食べられる。)
 	FEVER(1.2);
 	
@@ -16,9 +15,10 @@ public enum SyujinkouState {
 		this.speedMultiplier = speedMultiplier;
 	}
 	
-	//ゲッター
+	// ==================================================
+	// getter
+	// ==================================================
 	public double getSpeedMultiplier() {
-		
 		return speedMultiplier;
 	}
 
