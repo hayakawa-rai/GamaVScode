@@ -4,6 +4,7 @@ import control.GameController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -36,19 +37,19 @@ public class Main2 extends Application {
 			this.controller.stop();
 			controller = null;
 		}
-		
-	    start.Bgm.stopBGM(); // リトライ・多重起動時の重複再生防止
 
-	    MapData model = new MapData();
-		
+		start.Bgm.stopBGM(); // リトライ・多重起動時の重複再生防止
+
+		MapData model = new MapData();
+
 		StackPane root = new StackPane();
 		root.getStyleClass().add("stage2");
-		
+
 		// 1000x800 でSceneを生成
 		Scene scene = new Scene(root, 1000, 800);
 		scene.getStylesheets().add(
 				getClass().getResource("/css/test.css").toExternalForm());
-		
+
 		ImageView backgroundView = new ImageView();
 
 		try {
@@ -61,6 +62,9 @@ public class Main2 extends Application {
 			backgroundView.fitHeightProperty().bind(root.heightProperty());
 			backgroundView.setPreserveRatio(false);
 
+			// 背景をぼかす
+			backgroundView.setEffect(new GaussianBlur(10));
+
 		} catch (Exception e) {
 			System.out.println("⚠️ 背景画像の読み込みに失敗しました。パスを確認してください: " + e.getMessage());
 		}
@@ -69,7 +73,7 @@ public class Main2 extends Application {
 		gameBase.getStyleClass().add("stage1");
 
 		MapView view = new MapView(model, gameBase);
-		
+
 		// ゲーム描画用Canvas（マップの実寸サイズで固定）
 		Canvas canvas = new Canvas();
 		canvas.widthProperty().bind(root.widthProperty());
@@ -93,7 +97,7 @@ public class Main2 extends Application {
 		javafx.scene.control.Button titleButton = new javafx.scene.control.Button("タイトルへ戻る");
 		titleButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
 		titleButton.setPrefSize(160, 40);
-				
+
 		titleButton.setOnAction(e -> {
 			if (this.controller != null) {
 				System.out.println("タイトル画面へ戻ります");
@@ -104,8 +108,8 @@ public class Main2 extends Application {
 		pauseLayer.getChildren().addAll(pauseLabel, subLabel, titleButton);
 
 		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
-				root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
-				
+		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
+
 		// 敵描画呼び出し
 		model.initEnemy(new javafx.scene.image.ImageView());
 
