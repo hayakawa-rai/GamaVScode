@@ -597,7 +597,7 @@ public class MapData implements GameMap {
 			fruitPopupActive = true;
 			fruitPopupX = fruitCol * TILE_SIZE + TILE_SIZE / 2.0;
 			fruitPopupY = fruitRow * TILE_SIZE + TILE_SIZE / 2.0;
-			
+
 			map[fruitRow][fruitCol] = 0;
 			currentFruit = null;
 			fruitRow = -1;
@@ -854,7 +854,7 @@ public class MapData implements GameMap {
 		}
 		return Math.max(0, feverEndTime - System.currentTimeMillis());
 	}
-	
+
 	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
 	public Enemy getEnemy() {
 		return enemies.isEmpty() ? null : enemies.get(0);
@@ -893,7 +893,7 @@ public class MapData implements GameMap {
 	public int getFruitPopupScore() {
 		return fruitPopupScore;
 	}
-	
+
 	// 食べた瞬間のX座標を返す（ポップアップ表示用、固定値・ピクセル）
 	public double getFruitPopupX() {
 		return fruitPopupX;
