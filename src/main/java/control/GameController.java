@@ -21,6 +21,7 @@ import test2.Main2;
 import test2.PracticeMain2;
 import test3.Main3;
 import test3.PracticeMain3;
+import common.HighScoreManager;
 
 public class GameController {
 
@@ -36,6 +37,12 @@ public class GameController {
 	// 現在のステージ番号（1〜3）を記憶する変数
 	private final int stageNumber;
 	private final boolean isPractice;
+	
+	//ハイスコア用
+	private static boolean newRecord = false;
+	public static boolean isNewRecord() {
+	    return newRecord;
+	}
 
 	public GameController(Object model, Object view, Canvas canvas, Scene scene, javafx.stage.Stage stage,
 			int stageNumber, boolean isPractice) {
@@ -254,17 +261,31 @@ public class GameController {
 							int finalScore = 0;
 							try {
 								Object syujinkou = getsyujinkouMethod.invoke(model);
+
 								if (syujinkou != null) {
+
 									java.lang.reflect.Method getScoreMethod = syujinkou.getClass()
 											.getMethod("getScore");
+
 									finalScore = (int) getScoreMethod.invoke(syujinkou);
 								}
+
 							} catch (Exception e) {
-								// メソッドがない場合は0のまま進む
 							}
 
-							// 綺麗に一本化したゲームオーバー遷移を呼び出す（スコアも引き渡す）
+							// ★練習モードだけハイスコア更新
+							if (isPractice) {
+
+								newRecord = HighScoreManager.updateHighScore(stageNumber, finalScore);
+
+							} else {
+
+								newRecord = false;
+							}
+
+							// GameOverへ
 							switchToGameover(stage, stageNumber, isPractice, finalScore);
+
 							return;
 						}
 

@@ -25,7 +25,7 @@ public class Gameover extends Application {
 	public void start(Stage stage) {
 		stage.setScene(create(stage, null, score));
 		stage.setTitle("ゲームオーバー");
-		//WindowUtil.fillScreen(stage);	最大化
+		// WindowUtil.fillScreen(stage); 最大化
 		stage.setScene(create(stage, null, score));
 		stage.centerOnScreen();
 		stage.show();
@@ -38,11 +38,21 @@ public class Gameover extends Application {
 		Label gameOverLabel = new Label("GAME OVER");
 		gameOverLabel.getStyleClass().add("gameover-title");
 
+		// ハイスコア表示
+		Label newRecordLabel = new Label("NEW RECORD!!");
+		newRecordLabel.setStyle("-fx-font-size: 40px;" + "-fx-font-weight: bold;" + "-fx-text-fill: gold;");
+
 		// スコア表示
 		Label scoreLabel = new Label("SCORE : " + score);
 		scoreLabel.setStyle("-fx-font-size: 32px;" + "-fx-font-weight: bold;" + "-fx-text-fill: white;");
 
-		VBox titleBox = new VBox(20, gameOverLabel, scoreLabel);
+		VBox titleBox = new VBox(20);
+
+		titleBox.getChildren().addAll(gameOverLabel, scoreLabel);
+
+		if (GameController.isNewRecord()) {
+			titleBox.getChildren().add(newRecordLabel);
+		}
 		titleBox.setAlignment(Pos.CENTER);
 		titleBox.setStyle("-fx-padding: 150px 0 40px 0;");
 
@@ -100,7 +110,7 @@ public class Gameover extends Application {
 		BorderPane ui = new BorderPane();
 		BorderPane.setAlignment(titleBox, Pos.CENTER);
 		BorderPane.setMargin(titleBox, new Insets(150, 0, 40, 0)); // 上150px、下40pxの余白
-		
+
 		ui.setTop(titleBox);
 		ui.setCenter(centerBox);
 
@@ -135,23 +145,23 @@ public class Gameover extends Application {
 		root.getChildren().addAll(bg, whiteOverlay, ui);
 
 		Scene scene = new Scene(root, 1000, 800);
-	    //CSSを接続
+		// CSSを接続
 		scene.getStylesheets().add(Gameover.class.getResource("/css/gameover.css").toExternalForm());
-	    
-		//ウィンドウの最小限のサイズを設定
+
+		// ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
-		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxWidth(1920); // PC大画面やブラウザ最大化時の最大サイズ制限
 		stage.setMaxHeight(1080);
 
 		return scene;
 
 	}
-	
+
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 	public static void main(String[] args) {
 		launch();
 	}
