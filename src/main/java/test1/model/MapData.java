@@ -106,9 +106,9 @@ public class MapData implements GameMap {
 	private long feverEndTime = 0;
 	
 	// --- 追加フィールド ---
-	public static final int FRUIT_ROW = 17;
-	public static final int FRUIT_COL = 13;
-	public static final int FRUIT_VALUE = 3; // map配列内でのフルーツを表す数値
+	public static final int FRUIT_VALUE = 3;
+	private int fruitRow = -1;
+	private int fruitCol = -1; // map配列内でのフルーツを表す数値
 
 	private Items.Fruit currentFruit = null; // 現在出現中のフルーツ(nullなら未出現)
 	private long lastFruitSpawnTime = 0;     // 最後にフルーツを出した時刻
@@ -409,10 +409,32 @@ public class MapData implements GameMap {
 	}
 
 	private void spawnFruit() {
-	    Items.FruitType type = Items.FruitType.random(new java.util.Random());
+
+	    // 道(0)かつ、まだドットが残っていない(itemMapがnull)マスだけを候補にする
+	    List<int[]> candidates = new ArrayList<>();
+	    for (int row = 0; row < map.length; row++) {
+	        for (int col = 0; col < map[0].length; col++) {
+	            if (map[row][col] == 0 && itemMap[row][col] == null) {
+	                candidates.add(new int[]{row, col});
+	            }
+	        }
+	    }
+
+	    if (candidates.isEmpty()) {
+	        return; // 万が一、道が無ければ何もしない
+	    }
+
+	    // ランダムに1マス選ぶ
+	    java.util.Random random = new java.util.Random();
+	    int[] chosen = candidates.get(random.nextInt(candidates.size()));
+	    this.fruitRow = chosen[0];
+	    this.fruitCol = chosen[1];
+
+	    Items.FruitType type = Items.FruitType.random(random);
 	    currentFruit = new Items.Fruit(type);
-	    map[FRUIT_ROW][FRUIT_COL] = FRUIT_VALUE; // 二次元配列に数値を書き込む
-	    System.out.println(type + "が出現しました！");
+	    map[fruitRow][fruitCol] = FRUIT_VALUE;
+
+	    System.out.println(type + "が (" + fruitRow + ", " + fruitCol + ") に出現しました！");
 	}
 
 	/**
@@ -423,8 +445,10 @@ public class MapData implements GameMap {
 
 	    currentFruit.update();
 	    if (currentFruit.isExpired()) {
-	        map[FRUIT_ROW][FRUIT_COL] = 0; // 消えたら道に戻す
+	        map[fruitRow][fruitCol] = 0; // 消えたら道に戻す
 	        currentFruit = null;
+	        fruitRow = -1;
+	        fruitCol = -1;
 	        System.out.println("フルーツが消えました");
 	    }
 	}
@@ -555,10 +579,12 @@ public class MapData implements GameMap {
 		}
 		// --- updatePacman()内、既存のitemMap判定の直後あたりに追加 ---
 		// フルーツを食べたかチェック
-		if (currentFruit != null && currentTileY == FRUIT_ROW && currentTileX == FRUIT_COL) {
+		if (currentFruit != null && currentTileY == fruitRow && currentTileX == fruitCol) {
 		    currentFruit.onEaten(syujinkou);
-		    map[FRUIT_ROW][FRUIT_COL] = 0;
+		    map[fruitRow][fruitCol] = 0;
 		    currentFruit = null;
+		    fruitRow = -1;
+		    fruitCol = -1;
 		}
 
 		// 全部食べたかチェック（エサ復活用）
@@ -595,6 +621,16 @@ public class MapData implements GameMap {
 
 			// 2. 残りアイテム数を初期の総数にリセット（これで isCleared() が false に戻る）
 			this.remainingItems = this.totalItems;
+			
+	        //フルーツ関連の状態もリセット
+	        if (fruitRow != -1 && fruitCol != -1) {
+	            this.map[fruitRow][fruitCol] = 0;
+	        }
+	        this.currentFruit = null;
+	        this.fruitRow = -1;
+	        this.fruitCol = -1;
+	        this.lastFruitSpawnTime = System.currentTimeMillis();
+	        this.lastFruitScore = (syujinkou != null) ? syujinkou.getScore() : 0;
 
 			System.out.println("【練習モード】エサが再配置され、残りカウントが " + this.remainingItems + " にリセットされました。");
 		}
@@ -834,5 +870,13 @@ public class MapData implements GameMap {
 		public Items.Fruit getCurrentFruit() {
 	    return currentFruit;
 	}
+		
+		public int getFruitRow() {
+		    return fruitRow;
+		}
+
+		public int getFruitCol() {
+		    return fruitCol;
+		}
 
 }

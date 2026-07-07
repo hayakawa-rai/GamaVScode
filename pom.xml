@@ -44,7 +44,7 @@
 				<version>0.0.8</version>
 				<configuration>
 
-					<mainClass>story.Story3</mainClass>
+					<mainClass>story.Storyclear</mainClass>
 
 
 				</configuration>

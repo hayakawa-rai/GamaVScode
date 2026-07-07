@@ -217,12 +217,12 @@ public class MapView {
 				}
 			}
 		}
-		//  フルーツを描画
+	//  フルーツを描画
 		Items.Fruit fruit = model.getCurrentFruit();
 		if (fruit != null) {
-			int fx = MapData.FRUIT_COL * MapData.TILE_SIZE;
-			int fy = MapData.FRUIT_ROW * MapData.TILE_SIZE;
-			fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
+		    int fx = model.getFruitCol() * MapData.TILE_SIZE;
+		    int fy = model.getFruitRow() * MapData.TILE_SIZE;
+		    fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
 		}
 	}
 
