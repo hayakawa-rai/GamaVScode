@@ -104,18 +104,24 @@ public class MapData implements GameMap {
 
 	// FEVER終了時刻
 	private long feverEndTime = 0;
-	
+
 	// --- 追加フィールド ---
 	public static final int FRUIT_VALUE = 3;
 	private int fruitRow = -1;
 	private int fruitCol = -1; // map配列内でのフルーツを表す数値
 
 	private Items.Fruit currentFruit = null; // 現在出現中のフルーツ(nullなら未出現)
-	private long lastFruitSpawnTime = 0;     // 最後にフルーツを出した時刻
-	private int lastFruitScore = 0;          // 最後にフルーツを出した時点のスコア
+	private long lastFruitSpawnTime = 0; // 最後にフルーツを出した時刻
+	private int lastFruitScore = 0; // 最後にフルーツを出した時点のスコア
 
 	private static final long FRUIT_TIME_INTERVAL = 15000; // 15秒ごとに出現チャンス
-	private static final int FRUIT_SCORE_INTERVAL = 1000;  // 1000点ごとに出現チャンス
+	private static final int FRUIT_SCORE_INTERVAL = 1000; // 1000点ごとに出現チャンス
+
+	// フルーツスコアポップアップ用
+	private boolean fruitPopupActive = false;
+	private long fruitPopupStartTime = 0;
+	private int fruitPopupScore = 0;
+	private static final long FRUIT_POPUP_DURATION = 1000; // 表示時間(ms)
 
 	// booleanを受け取る新しいコンストラクターを追加
 	public MapData(boolean paused) {
@@ -269,11 +275,11 @@ public class MapData implements GameMap {
 			if (modeStartTime > 0) {
 				modeStartTime += pauseDuration;
 			}
-			
-			 //フルーツのタイマーもポーズ時間分ずらす
-	        if (lastFruitSpawnTime > 0) {
-	            lastFruitSpawnTime += pauseDuration;
-	        }
+
+			//フルーツのタイマーもポーズ時間分ずらす
+			if (lastFruitSpawnTime > 0) {
+				lastFruitSpawnTime += pauseDuration;
+			}
 
 			for (Enemy e : enemies) {
 				e.resumeTimer();
@@ -380,77 +386,79 @@ public class MapData implements GameMap {
 			for (Enemy e : enemies) {
 				e.move(map);
 			}
-		    checkFruitSpawn();  
-		    updateFruit();      
+			checkFruitSpawn();
+			updateFruit();
 		}
 		// 口パクの更新
 		// updateMouth();
 		// パックマンと敵の当たり判定を毎フレーム確認
 		checkCollision();
 	}
-	
+
 	/**
 	 * 時間経過 または スコア到達 を条件にフルーツを固定位置に出現させる
 	 */
 	private void checkFruitSpawn() {
-	    if (currentFruit != null) return; // 既に出現中なら何もしない
+		if (currentFruit != null)
+			return; // 既に出現中なら何もしない
 
-	    long now = System.currentTimeMillis();
-	    int score = syujinkou.getScore();
+		long now = System.currentTimeMillis();
+		int score = syujinkou.getScore();
 
-	    boolean timeCondition = (now - lastFruitSpawnTime) >= FRUIT_TIME_INTERVAL;
-	    boolean scoreCondition = (score - lastFruitScore) >= FRUIT_SCORE_INTERVAL;
+		boolean timeCondition = (now - lastFruitSpawnTime) >= FRUIT_TIME_INTERVAL;
+		boolean scoreCondition = (score - lastFruitScore) >= FRUIT_SCORE_INTERVAL;
 
-	    if (timeCondition || scoreCondition) {
-	        spawnFruit();
-	        lastFruitSpawnTime = now;
-	        lastFruitScore = score;
-	    }
+		if (timeCondition || scoreCondition) {
+			spawnFruit();
+			lastFruitSpawnTime = now;
+			lastFruitScore = score;
+		}
 	}
 
 	private void spawnFruit() {
 
-	    // 道(0)かつ、まだドットが残っていない(itemMapがnull)マスだけを候補にする
-	    List<int[]> candidates = new ArrayList<>();
-	    for (int row = 0; row < map.length; row++) {
-	        for (int col = 0; col < map[0].length; col++) {
-	            if (map[row][col] == 0 && itemMap[row][col] == null) {
-	                candidates.add(new int[]{row, col});
-	            }
-	        }
-	    }
+		// 道(0)かつ、まだドットが残っていない(itemMapがnull)マスだけを候補にする
+		List<int[]> candidates = new ArrayList<>();
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[0].length; col++) {
+				if (map[row][col] == 0 && itemMap[row][col] == null) {
+					candidates.add(new int[] { row, col });
+				}
+			}
+		}
 
-	    if (candidates.isEmpty()) {
-	        return; // 万が一、道が無ければ何もしない
-	    }
+		if (candidates.isEmpty()) {
+			return; // 万が一、道が無ければ何もしない
+		}
 
-	    // ランダムに1マス選ぶ
-	    java.util.Random random = new java.util.Random();
-	    int[] chosen = candidates.get(random.nextInt(candidates.size()));
-	    this.fruitRow = chosen[0];
-	    this.fruitCol = chosen[1];
+		// ランダムに1マス選ぶ
+		java.util.Random random = new java.util.Random();
+		int[] chosen = candidates.get(random.nextInt(candidates.size()));
+		this.fruitRow = chosen[0];
+		this.fruitCol = chosen[1];
 
-	    Items.FruitType type = Items.FruitType.random(random);
-	    currentFruit = new Items.Fruit(type);
-	    map[fruitRow][fruitCol] = FRUIT_VALUE;
+		Items.FruitType type = Items.FruitType.random(random);
+		currentFruit = new Items.Fruit(type);
+		map[fruitRow][fruitCol] = FRUIT_VALUE;
 
-	    System.out.println(type + "が (" + fruitRow + ", " + fruitCol + ") に出現しました！");
+		System.out.println(type + "が (" + fruitRow + ", " + fruitCol + ") に出現しました！");
 	}
 
 	/**
 	 * フルーツのタイマー更新。時間切れになったら消す。
 	 */
 	private void updateFruit() {
-	    if (currentFruit == null) return;
+		if (currentFruit == null)
+			return;
 
-	    currentFruit.update();
-	    if (currentFruit.isExpired()) {
-	        map[fruitRow][fruitCol] = 0; // 消えたら道に戻す
-	        currentFruit = null;
-	        fruitRow = -1;
-	        fruitCol = -1;
-	        System.out.println("フルーツが消えました");
-	    }
+		currentFruit.update();
+		if (currentFruit.isExpired()) {
+			map[fruitRow][fruitCol] = 0; // 消えたら道に戻す
+			currentFruit = null;
+			fruitRow = -1;
+			fruitCol = -1;
+			System.out.println("フルーツが消えました");
+		}
 	}
 
 	/**
@@ -580,11 +588,18 @@ public class MapData implements GameMap {
 		// --- updatePacman()内、既存のitemMap判定の直後あたりに追加 ---
 		// フルーツを食べたかチェック
 		if (currentFruit != null && currentTileY == fruitRow && currentTileX == fruitCol) {
-		    currentFruit.onEaten(syujinkou);
-		    map[fruitRow][fruitCol] = 0;
-		    currentFruit = null;
-		    fruitRow = -1;
-		    fruitCol = -1;
+			currentFruit.onEaten(syujinkou);
+
+			map[fruitRow][fruitCol] = 0;
+			currentFruit = null;
+			fruitRow = -1;
+			fruitCol = -1;
+
+			// スコアポップアップ開始
+			fruitPopupScore = currentFruit.getType().getScore();
+			fruitPopupStartTime = System.currentTimeMillis();
+			fruitPopupActive = true;
+
 		}
 
 		// 全部食べたかチェック（エサ復活用）
@@ -621,22 +636,20 @@ public class MapData implements GameMap {
 
 			// 2. 残りアイテム数を初期の総数にリセット（これで isCleared() が false に戻る）
 			this.remainingItems = this.totalItems;
-			
-	        //フルーツ関連の状態もリセット
-	        if (fruitRow != -1 && fruitCol != -1) {
-	            this.map[fruitRow][fruitCol] = 0;
-	        }
-	        this.currentFruit = null;
-	        this.fruitRow = -1;
-	        this.fruitCol = -1;
-	        this.lastFruitSpawnTime = System.currentTimeMillis();
-	        this.lastFruitScore = (syujinkou != null) ? syujinkou.getScore() : 0;
+
+			//フルーツ関連の状態もリセット
+			if (fruitRow != -1 && fruitCol != -1) {
+				this.map[fruitRow][fruitCol] = 0;
+			}
+			this.currentFruit = null;
+			this.fruitRow = -1;
+			this.fruitCol = -1;
+			this.lastFruitSpawnTime = System.currentTimeMillis();
+			this.lastFruitScore = (syujinkou != null) ? syujinkou.getScore() : 0;
 
 			System.out.println("【練習モード】エサが再配置され、残りカウントが " + this.remainingItems + " にリセットされました。");
 		}
 	}
-	
-	
 
 	/*
 	 * public void updateMouth() { if (paused || !syujinkou.isAlive() ||
@@ -666,9 +679,8 @@ public class MapData implements GameMap {
 			waitingStart = false;
 
 			modeStartTime = System.currentTimeMillis();
-			
-	        lastFruitSpawnTime = System.currentTimeMillis(); // ★追加
 
+			lastFruitSpawnTime = System.currentTimeMillis(); // ★追加
 
 			System.out.println("ゲーム開始");
 		}
@@ -706,11 +718,6 @@ public class MapData implements GameMap {
 					// 効果音
 					SoundManager.play(SoundManager.ENEMY_DEAD);
 
-					// 💡 敵を倒したのでスコアを加算（例: 200点）
-					//syujinkou.addScore(200);
-					//e.setCurrentState(Characters.EnemyState.DEAD);
-					//continue;
-					
 					// 💡 敵を倒したのでスコアを加算し、その場にスコア表示を開始する
 					int defeatScore = 200;
 					syujinkou.addScore(defeatScore);
@@ -866,17 +873,37 @@ public class MapData implements GameMap {
 	public boolean isGameOver() {
 		return gameOver;
 	}
-	//フルーツ
-		public Items.Fruit getCurrentFruit() {
-	    return currentFruit;
-	}
-		
-		public int getFruitRow() {
-		    return fruitRow;
-		}
 
-		public int getFruitCol() {
-		    return fruitCol;
+	//フルーツ
+	public Items.Fruit getCurrentFruit() {
+		return currentFruit;
+	}
+
+	// フルーツのスコアポップアップがまだ表示中か判定する（時間経過で自動的にfalseになる）
+	public boolean isFruitPopupActive() {
+		if (fruitPopupActive && System.currentTimeMillis() - fruitPopupStartTime > FRUIT_POPUP_DURATION) {
+			fruitPopupActive = false;
 		}
+		return fruitPopupActive;
+	}
+
+	// 表示するフルーツのスコア値を返す
+	public int getFruitPopupScore() {
+		return fruitPopupScore;
+	}
+
+	// ポップアップの進行度を0.0(開始)〜1.0(終了)で返す
+	public double getFruitPopupProgress() {
+		long elapsed = System.currentTimeMillis() - fruitPopupStartTime;
+		return Math.min(1.0, Math.max(0.0, elapsed / (double) FRUIT_POPUP_DURATION));
+	}
+
+	public int getFruitRow() {
+		return fruitRow;
+	}
+
+	public int getFruitCol() {
+		return fruitCol;
+	}
 
 }

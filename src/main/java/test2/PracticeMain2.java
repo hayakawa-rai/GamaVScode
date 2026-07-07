@@ -4,6 +4,7 @@ import control.GameController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -25,7 +26,7 @@ public class PracticeMain2 extends Application {
 	public void start(Stage stage) {
 		starts(stage);
 	}
-	
+
 	public static void createAndStart(Stage stage) {
 		PracticeMain2 app = new PracticeMain2();
 		app.starts(stage);
@@ -38,30 +39,33 @@ public class PracticeMain2 extends Application {
 			controller = null;
 		}
 
-	    start.Bgm.stopBGM(); // リトライ・多重起動時の重複再生防止
+		start.Bgm.stopBGM(); // リトライ・多重起動時の重複再生防止
 
 		// ストーリーモードはエサ復活なし
-        MapData model = new MapData(false);
-        
-        StackPane root = new StackPane();
+		MapData model = new MapData(false);
+
+		StackPane root = new StackPane();
 		root.getStyleClass().add("stage2");
 
 		// 1000x800 でSceneを生成
 		Scene scene = new Scene(root, 1000, 800);
 		scene.getStylesheets().add(
-		getClass().getResource("/css/test.css").toExternalForm());
+				getClass().getResource("/css/test.css").toExternalForm());
 
 		ImageView backgroundView = new ImageView();
 
 		try {
 			// src/main/resources/picture/companyroom.jpg から画像を読み込む
-			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/insert.png"));
+			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/companyroom.jpg"));
 			backgroundView = new ImageView(backgroundImage);
 
 			// 画像のサイズも、ウィンドウ（root）のサイズに完全に連動（バインド）させる
 			backgroundView.fitWidthProperty().bind(root.widthProperty());
-            backgroundView.fitHeightProperty().bind(root.heightProperty());
-            backgroundView.setPreserveRatio(false);
+			backgroundView.fitHeightProperty().bind(root.heightProperty());
+			backgroundView.setPreserveRatio(false);
+
+			// 背景をぼかす
+			backgroundView.setEffect(new GaussianBlur(10));
 
 		} catch (Exception e) {
 			System.out.println("⚠️ 背景画像の読み込みに失敗しました。パスを確認してください: " + e.getMessage());
@@ -71,7 +75,7 @@ public class PracticeMain2 extends Application {
 		gameBase.getStyleClass().add("stage2");
 
 		MapView view = new MapView(model, gameBase);
-		
+
 		// ゲーム描画用Canvas（マップの実寸サイズで固定）
 		Canvas canvas = new Canvas();
 		canvas.widthProperty().bind(root.widthProperty());
@@ -97,10 +101,10 @@ public class PracticeMain2 extends Application {
 		titleButton.setPrefSize(160, 40);
 
 		titleButton.setOnAction(e -> {
-		if (controller != null) {
-			System.out.println("タイトル画面へ戻ります");
-			controller.forceBackToTitle();
-		}
+			if (controller != null) {
+				System.out.println("タイトル画面へ戻ります");
+				controller.forceBackToTitle();
+			}
 		});
 
 		pauseLayer.getChildren().addAll(pauseLabel, subLabel, titleButton);

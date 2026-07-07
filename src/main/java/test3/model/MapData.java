@@ -698,9 +698,10 @@ public class MapData implements GameMap {
 					// 効果音
 					SoundManager.play(SoundManager.ENEMY_DEAD);
 
-					// 💡 敵を倒したのでスコアを加算（例: 200点）
-					syujinkou.addScore(200);
-					e.setCurrentState(Characters.EnemyState.DEAD);
+					// 💡 敵を倒したのでスコアを加算し、その場にスコア表示を開始する
+					int defeatScore = 200;
+					syujinkou.addScore(defeatScore);
+					e.onDefeated(defeatScore);
 					continue;
 				}
 

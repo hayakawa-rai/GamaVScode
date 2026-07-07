@@ -217,13 +217,39 @@ public class MapView {
 				}
 			}
 		}
-	//  フルーツを描画
+		//  フルーツを描画
 		Items.Fruit fruit = model.getCurrentFruit();
 		if (fruit != null) {
 		    int fx = model.getFruitCol() * MapData.TILE_SIZE;
 		    int fy = model.getFruitRow() * MapData.TILE_SIZE;
 		    fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
 		}
+
+	    // ▼ フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
+	    if (model.isFruitPopupActive()) {
+	        double progress = model.getFruitPopupProgress(); // 0.0〜1.0
+	        double riseOffset = progress * 20;
+	        double alpha = 1.0 - progress;
+
+	        double popupX = MapData.FRUIT_VALUE * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+	        double popupY = MapData.FRUIT_VALUE * MapData.TILE_SIZE - riseOffset;
+
+	        gc.save();
+	        gc.setGlobalAlpha(alpha);
+
+	        gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+	        gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+	        gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+
+	        gc.setStroke(Color.BLACK);
+	        gc.setLineWidth(3);
+	        gc.strokeText("+" + model.getFruitPopupScore(), popupX, popupY);
+
+	        gc.setFill(Color.WHITE);
+	        gc.fillText("+" + model.getFruitPopupScore(), popupX, popupY);
+
+	        gc.restore();
+	    }
 	}
 
 	//MapViewのフィールドにPac-man画像を追加

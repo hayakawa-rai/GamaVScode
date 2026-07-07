@@ -60,6 +60,9 @@ public class Main1 extends Application {
 			backgroundView.fitWidthProperty().bind(root.widthProperty());
 			backgroundView.fitHeightProperty().bind(root.heightProperty());
 			backgroundView.setPreserveRatio(false);
+			
+			// 背景を薄くする 【30%の濃さ（70%透明）】
+			backgroundView.setOpacity(0.7);
 
 		} catch (Exception e) {
 			System.out.println("⚠️ 背景画像の読み込みに失敗しました。パスを確認してください: " + e.getMessage());

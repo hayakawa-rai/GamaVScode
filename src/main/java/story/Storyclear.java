@@ -1,25 +1,25 @@
 package story;
 
 import control.GameController;
+import javafx.animation.PauseTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.animation.PauseTransition;
-import javafx.animation.TranslateTransition;
-import javafx.util.Duration;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Storyclear extends Application {
 
@@ -30,9 +30,10 @@ public class Storyclear extends Application {
 	@Override
 	public void start(Stage stage) {
 		this.stage = stage;
-
+		// ウィンドウの中身を決定
 		stage.setTitle("STORY CLEAR");
 		stage.setScene(clearScene());
+		stage.centerOnScreen();//追加
 		stage.show();
 	}
 
@@ -195,7 +196,7 @@ public class Storyclear extends Application {
 		// ==================================================
 		// Scene
 		// ==================================================
-		Scene scene = new Scene(root, 1600, 900);
+		Scene scene = new Scene(root, 1000, 800);
 
 		// ==================================================
 		// スタッフロールアニメーション
@@ -278,8 +279,20 @@ public class Storyclear extends Application {
 
 		whiteFilter.widthProperty().bind(scene.widthProperty());
 		whiteFilter.heightProperty().bind(scene.heightProperty());
-
-		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		
+		// ==================================================
+		//CSSを接続
+		// ==================================================
+		scene.getStylesheets().add(
+				getClass().getResource("/css/style.css").toExternalForm());
+		
+		// ==================================================
+		// ウィンドウの最小限のサイズを設定
+		// ==================================================
+				stage.setMinWidth(1000);
+				stage.setMinHeight(800);
+				stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+				stage.setMaxHeight(1080);
 
 		return scene;
 	}
