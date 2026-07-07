@@ -30,6 +30,7 @@ public class Stageclear1 extends Application {
 
 	// 引数なしのコンストラクタ（GameControllerの new Stageclear1() で必要）
 	public Stageclear1() {
+		// 引数なしでインスタンス化できるように空で用意
 	}
 	
 	private void cleanup() {
@@ -64,18 +65,18 @@ public class Stageclear1 extends Application {
 	// javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
 	@Override
 	public void start(Stage stage) {
-	    this.stage = stage;
+		this.stage = stage;
 	    stage.setTitle("stage1CLEAR");
 	    //WindowUtil.fillScreen(stage);	最大化
 	    stage.setScene(clear(stage)); // 安全にstageを渡す
-		stage.centerOnScreen();
-		stage.show();
+	    stage.centerOnScreen();
+	    stage.show();
 	}
 	
 	// 引数なしの clear() 
-		public Scene clear() {
-			return clear(this.stage);
-		}
+	public Scene clear() {
+		return clear(this.stage);
+	}
 
 	public Scene clear(Stage currentStage) {
 		if (currentStage != null) {
@@ -92,6 +93,7 @@ public class Stageclear1 extends Application {
 		delay.setOnFinished(e -> {
 			clearSound.play();
 		});
+		
 		// タイマー開始
 		delay.play();
 
@@ -205,7 +207,7 @@ public class Stageclear1 extends Application {
 		Scene scene = new Scene(root, 1000, 800);
 		// CSSを接続
 		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-	  //ウィンドウの最小限のサイズを設定
+		//ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
 		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
@@ -216,5 +218,4 @@ public class Stageclear1 extends Application {
 	public void setScore(int score) {
 		this.score = score;
 	}
-
 }

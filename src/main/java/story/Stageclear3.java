@@ -21,15 +21,17 @@ public class Stageclear3 extends Application {
 	private AudioClip clickSound;
 	private AudioClip cancelSound;
 	// スコアを数値として保持する変数を追加
-		private int score = 0;
+	private int score = 0;
 	private PauseTransition delay;
 	private PauseTransition pause;
-	//ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
+	// ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
 	private Stage stage;
 
 	// 引数なしのコンストラクタ（GameControllerの new Stageclear3() で必要）
-		public Stageclear3() {
-		}
+	public Stageclear3() {
+			// 引数なしでインスタンス化できるように空で用意
+	}
+		
 	private void cleanup() {
 		// 遅延処理停止
 		if (delay != null) {
@@ -41,8 +43,8 @@ public class Stageclear3 extends Application {
 			pause.stop();
 			pause = null;
 		}
-
-		// 音停止
+		
+		// 効果音停止
 		if (clearSound != null) {
 			clearSound.stop();
 			clearSound = null;
@@ -58,7 +60,8 @@ public class Stageclear3 extends Application {
 			cancelSound = null;
 		}
 	}
-	//javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
+	
+	// javafxではstartを呼び出さないと起動しないため、親クラスのstartを上書きすることで子クラスを起動
 	@Override
 	public void start(Stage stage) {
 		this.stage = stage;
@@ -93,21 +96,22 @@ public class Stageclear3 extends Application {
 		// タイマー開始
 		delay.play();
 
-		//どこのステージをクリアしたか表示する
+		// どこのステージをクリアしたか表示する
 		Text title = new Text("STAGE3    CLEAR!");
-		//フォントサイズとカラーを指定
+		// フォントサイズとカラーを指定
 		title.setStyle("-fx-font-size: 80px; -fx-fill: rgb(180,180,180);");
-		//獲得したアイテムを表示
+		
+		// 獲得したアイテムを表示
 		Text text = new Text("ハンコを獲得しました！！");
-		//フォントサイズとカラーを指定
+		// フォントサイズとカラーを指定
 		text.setStyle("-fx-font-size: 20px; -fx-fill: gray;");
 		
-		//獲得したアイテムの画像読み込み
+		// 獲得したアイテムの画像読み込み
 		Image image = new Image(
 				getClass().getResource("/picture/hanko.png").toExternalForm());
-		//読み込んだ画像を表示
+		// 読み込んだ画像を表示
 		ImageView imageView = new ImageView(image);
-		//画像のサイズを調整
+		// 画像のサイズ調整
 		imageView.setFitWidth(150);
 		imageView.setFitHeight(150);
 
@@ -120,24 +124,24 @@ public class Stageclear3 extends Application {
 		// 画像とtextを箱に入れる
 		textAndImage.getChildren().addAll(imageView, text);
 
-		//音声読み込み
+		// 音声読み込み
 		clickSound = new AudioClip(
 				getClass().getResource("/music/select.mp3").toExternalForm());
 		// 音量調整
 		clickSound.setVolume(0.4);
 
-		//音声読み込み
+		// 音声読み込み
 		cancelSound = new AudioClip(
 				getClass().getResource("/music/cancel.mp3").toExternalForm());
 		// 音量調整
 		cancelSound.setVolume(0.4);
 
 		// 次に進むボタン
-		Button next = new Button("次へ");
-		//ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
+		Button next = new Button("次のステージへ");
+		// ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
 		next.getStyleClass().add("game-button2");
 		next.setPrefSize(250, 80);
-		//次の画面に遷移
+		// 次の画面に遷移
 		next.setOnAction(e -> {
 			// 音を再生
 			clickSound.stop();
@@ -151,7 +155,7 @@ public class Stageclear3 extends Application {
 				try {
 					cleanup();
 					// 画面遷移
-					GameController.switchStory4(stage);
+					GameController.switchStory4(this.stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -167,10 +171,10 @@ public class Stageclear3 extends Application {
 
 		// 戻るボタン
 		Button backButton = new Button("タイトルへ");
-		//ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
+		// ボタンにcssに記述したgame-button2を付与、ボタンサイズを指定
 		backButton.getStyleClass().add("game-button2");
 		backButton.setPrefSize(250, 80);
-		//スタート画面へ戻る
+		// スタート画面へ戻る
 		backButton.setOnAction(e -> {
 			cancelSound.stop();
 			cancelSound.play();
@@ -213,5 +217,4 @@ public class Stageclear3 extends Application {
 	public void setScore(int score) {
 		this.score = score;
 	}
-
 }

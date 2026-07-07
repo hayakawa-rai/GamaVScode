@@ -554,18 +554,26 @@ public class Story4 extends Application {
 				}
 				if (d.sound == jumpSound) {
 					if (speaker.equals("あにき")) {
+						// ジャンプを設定
 						jumpAniki = StoryUtils.createJumpAnimation(anikiView, d.sound);
+						// ジャンプアニメーションを再生
 						jumpAniki.playFromStart();
 
 					} else if (speaker.equals("仙石さん")) {
+						// ジャンプを設定
 						jumpsyujinkou = StoryUtils.createJumpAnimation(syujinkouView, d.sound);
+						// ジャンプアニメーションを再生
 						jumpsyujinkou.playFromStart();
 
 					} else if (speaker.equals("なりなり")) {
+						// ジャンプを設定
 						jumpnari = StoryUtils.createJumpAnimation(nariView, d.sound);
+						// ジャンプアニメーションを再生
 						jumpnari.playFromStart();
 					} else if (speaker.equals("わだたく")) {
+						// ジャンプを設定
 						jumptaku = StoryUtils.createJumpAnimation(takuView, d.sound);
+						// ジャンプアニメーションを再生
 						jumptaku.playFromStart();
 					}
 				}
@@ -613,12 +621,11 @@ public class Story4 extends Application {
 
 		// 最初の文章を表示(部品のすべての処理を終えてから文字を表示するため最後に記述)
 		startTyping();
-		//ウィンドウの最小限のサイズを設定
+		// ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
 		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
 		stage.setMaxHeight(1080);
-
 		return scene;
 	}
 }

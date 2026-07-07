@@ -1,5 +1,6 @@
 package story;
 
+import control.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -115,7 +116,7 @@ public class Practice extends Application {
 			cleanup();
 
 			//画面遷移
-			control.GameController.switchToPracticeGame1(stage);
+			GameController.switchToPracticeGame1(stage);
 		});
 
 		btn2.setOnAction(e -> {
@@ -128,7 +129,7 @@ public class Practice extends Application {
 			// 音と背景停止
 			cleanup();
 			//画面遷移！
-			control.GameController.switchToPracticeGame2(stage);
+			GameController.switchToPracticeGame2(stage);
 		});
 
 		btn3.setOnAction(e -> {
@@ -142,7 +143,7 @@ public class Practice extends Application {
 			cleanup();
 
 			//画面遷移
-			control.GameController.switchToPracticeGame3(stage);
+			GameController.switchToPracticeGame3(stage);
 		});
 		VBox stageButtons = new VBox(20, btn1, btn2, btn3);
 		stageButtons.setAlignment(Pos.CENTER);
@@ -167,7 +168,7 @@ public class Practice extends Application {
 				cleanup();
 				try {
 					// 画面遷移
-					control.GameController.switchStart(stage);
+					GameController.switchStart(stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
