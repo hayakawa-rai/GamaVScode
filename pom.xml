@@ -43,13 +43,8 @@
 					
 				<version>0.0.8</version>
 				<configuration>
-			
-					<mainClass>start.Start</mainClass>
 
-
-
-					<mainClass>story.Storyclear</mainClass>
-
+					<mainClass>story.Story3</mainClass>
 
 
 				</configuration>

@@ -240,7 +240,7 @@ public class Story1 extends Application {
 		ImageView nariView = new ImageView(nariImage);
 		// 縦横比率を維持
 		nariView.setPreserveRatio(true);
-		// 最初どちらの画像を表示するか設定
+		// 最初どの画像を表示するか設定
 		nariView.setVisible(false);
 		anikiView.setVisible(true);
 
@@ -252,13 +252,12 @@ public class Story1 extends Application {
 		BorderPane root = new BorderPane();
 		// 吹き出しを中央下に配置
 		root.setBottom(messageBox);
-		// rooのuiレイアウト背景を透明にする(背景などが映るようにするため)
+		// rootのuiレイアウト背景を透明にする(背景などが映るようにするため)
 		root.setStyle("-fx-background-color: transparent;");
 		// Borderpaneにより一番下に表示されてしまうので、下に余白を設定する
 		BorderPane.setMargin(messageBox, new Insets(0, 0, 30, 0));
 
 		// メニューボタン作成
-
 		Image menuImg = new Image(
 				getClass().getResourceAsStream("/picture/menu.jpeg"));
 
@@ -277,7 +276,7 @@ public class Story1 extends Application {
 		StackPane base = new StackPane();
 		base.getChildren().addAll(bgView, syujinkouView, anikiView, nariView, root);
 		// 決められた画面サイズ(1000,800)に合わせてSceneを作る
-		Scene scene = new Scene(base,1000,800);
+		Scene scene = new Scene(base, 1000, 800);
 		scene.setOnMouseClicked(e -> scene.getRoot().requestFocus());
 
 		// メニューオーバーレイの作成
