@@ -39,7 +39,7 @@ public class Main2 extends Application {
 		
 	    start.Bgm.stopBGM(); // リトライ・多重起動時の重複再生防止
 
-	    MapData model = new MapData(true);
+	    MapData model = new MapData();
 		
 		StackPane root = new StackPane();
 		root.getStyleClass().add("stage2");
