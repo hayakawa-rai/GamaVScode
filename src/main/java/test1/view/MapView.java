@@ -231,8 +231,8 @@ public class MapView {
 	        double riseOffset = progress * 20;
 	        double alpha = 1.0 - progress;
 
-	        double popupX = MapData.FRUIT_VALUE * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
-	        double popupY = MapData.FRUIT_VALUE * MapData.TILE_SIZE - riseOffset;
+	        double popupX = model.getFruitCol() * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+	        double popupY = model.getFruitRow() * MapData.TILE_SIZE - riseOffset;
 
 	        gc.save();
 	        gc.setGlobalAlpha(alpha);
