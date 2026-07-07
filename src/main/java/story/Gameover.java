@@ -25,11 +25,10 @@ public class Gameover extends Application {
 	public void start(Stage stage) {
 		stage.setScene(create(stage, null, score));
 		stage.setTitle("ゲームオーバー");
-		// WindowUtil.fillScreen(stage); 最大化
+		// WindowUtil.fillScreen(stage);  最大化
 		stage.setScene(create(stage, null, score));
 		stage.centerOnScreen();
 		stage.show();
-
 	}
 
 	public static Scene create(Stage stage, Runnable retryAction, int score) {
@@ -54,9 +53,9 @@ public class Gameover extends Application {
 			titleBox.getChildren().add(newRecordLabel);
 		}
 		titleBox.setAlignment(Pos.CENTER);
-		titleBox.setStyle("-fx-padding: 150px 0 40px 0;");
 
-		// いらすとや
+
+		// ゲームオーバー仙石さん
 		ImageView icon = new ImageView();
 		try {
 			java.net.URL imgUrl = Gameover.class.getResource("/picture/syujinkou(gameover).png");
@@ -68,9 +67,9 @@ public class Gameover extends Application {
 		} catch (Exception e) {
 			System.out.println("⚠️ 画像の読み込みに失敗しました。");
 		}
-		icon.setFitWidth(400);
-		icon.setFitHeight(500);
-		icon.setTranslateY(-80);
+		icon.setFitWidth(350);
+		icon.setFitHeight(455);
+		icon.setTranslateY(-70);
 
 		// 直前のステージをやり直す
 		Button retryBtn = new Button("リトライする");
@@ -110,7 +109,7 @@ public class Gameover extends Application {
 		// レイアウト
 		BorderPane ui = new BorderPane();
 		BorderPane.setAlignment(titleBox, Pos.CENTER);
-		BorderPane.setMargin(titleBox, new Insets(150, 0, 40, 0)); // 上150px、下40pxの余白
+		BorderPane.setMargin(titleBox, new Insets(60, 0, 20, 0)); // 上60px、下20pxの余白
 
 		ui.setTop(titleBox);
 		ui.setCenter(centerBox);
