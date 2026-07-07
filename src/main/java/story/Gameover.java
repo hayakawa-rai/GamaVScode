@@ -91,6 +91,7 @@ public class Gameover extends Application {
 		titleBtn.getStyleClass().add("gameover-button");
 		titleBtn.setOnAction(e -> {
 			try {
+				
 				// 画面遷移
 				GameController.switchStart(stage);
 			} catch (Exception ex) {
