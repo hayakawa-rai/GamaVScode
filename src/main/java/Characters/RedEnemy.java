@@ -22,20 +22,15 @@ public class RedEnemy extends Enemy {
 	// コンストラクタ
 	// ==================================================
 	public RedEnemy(GameMap sampleModel) {
-
 		// マスの中心座標を初期位置として親クラスへ渡す
 		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
 				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
-
 		// ステージ情報を保存
 		this.mapData = sampleModel;
-
 		// FEVER状態用画像を読み込む
 		loadFeverImage();
-
 		// DEAD状態用画像を読み込む
 		loadDeadImage();
-
 		// 通常時に使用する画像パス
 		String imagePath = "/picture/nari_EnemyRed.png";
 
@@ -43,17 +38,14 @@ public class RedEnemy extends Enemy {
 		if (this.mapData != null) {
 			switch (this.mapData.getStageNumber()) {
 			case 1:
-
 				// ステージ1の画像
 				imagePath = "/picture/nari_EnemyRed.png";
 				break;
 			case 2:
-
 				// ステージ2の画像
 				imagePath = "/picture/taku_EnemyRed.png";
 				break;
 			case 3:
-
 				// ステージ3の画像
 				imagePath = "/picture/aniki_EnemyRed.png";
 				break;
@@ -80,11 +72,9 @@ public class RedEnemy extends Enemy {
 	// ==================================================
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
-
 		// 移動可能な方向がない場合は停止、または最初の方向を返す
 		if (mapData == null || validDirections.isEmpty())
 			return Direction.NONE;
-
 		// プレイヤーの現在位置を取得
 		double pacX = mapData.getPacX() + GameConfig.TILE_SIZE / 2.0;
 		double pacY = mapData.getPacY() + GameConfig.TILE_SIZE / 2.0;
@@ -94,10 +84,9 @@ public class RedEnemy extends Enemy {
 		int targetRow = (int) (pacY / GameConfig.TILE_SIZE);
 
 		// 縄張りモード
-		if (currentState == Characters.EnemyState.SCATTER) {
+		if (currentState == EnemyState.SCATTER) {
 			return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 		}
-
 		// FEVER・DEAD状態の共通処理
 		Direction special = handleSpecialState(validDirections, targetCol, targetRow, map);
 		if (special != null) {

@@ -4,6 +4,7 @@
 
 package Characters;
 
+import java.io.InputStream;
 import java.util.List;
 
 import common.GameConfig;
@@ -78,7 +79,7 @@ public class BlueEnemy extends Enemy {
 
 		// 画像の読み込み
 		try {
-			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
+			InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
 				System.err.println("【エラー】画像が見つかりません: " + imagePath);
 			} else {
@@ -204,7 +205,7 @@ public class BlueEnemy extends Enemy {
 		int targetRow = pacRow + vy;
 
 		// 縄張りモード
-		if (currentState == Characters.EnemyState.SCATTER) {
+		if (currentState == EnemyState.SCATTER) {
 			return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 		}
 

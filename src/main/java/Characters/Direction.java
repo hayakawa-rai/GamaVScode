@@ -1,5 +1,7 @@
 package Characters;
 
+import javafx.scene.input.KeyCode;
+
 public enum Direction {
 	// JavaFXの画面座標は「上がマイナスの値、下がプラスの値」になっている
 	
@@ -25,7 +27,7 @@ public enum Direction {
 	// 方向決定
 	// ==================================================
 	// JavaFXのキー入力(KeyCode)から対応するDirection(動き)を返すメソッド
-	public static Direction fromKeyCode(javafx.scene.input.KeyCode code) {
+	public static Direction fromKeyCode(KeyCode code) {
 		return switch(code) {
 		// 矢印上
 		case UP -> UP;		

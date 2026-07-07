@@ -53,7 +53,6 @@ public class Story1 extends Application {
 	private Stage stage;
 
 	private void cleanup(Scene scene) {
-
 		// 文字タイピング
 		if (timeline != null) {
 			timeline.stop();
@@ -176,8 +175,6 @@ public class Story1 extends Application {
 		Text nextMark = new Text("▼");
 		// 色を白色に設定
 		nextMark.setFill(Color.WHITE);
-		// フォントサイズを設定
-		// nextMark.setStyle("-fx-font-size: 20px;");
 		// 最初は非表示にする
 		nextMark.setVisible(false);
 		// 下に下げる
@@ -507,7 +504,7 @@ public class Story1 extends Application {
 				fade.setFromValue(0);
 				fade.setToValue(1);
 
-				// サイズをウィンドウに合わせる
+				// 背景をウィンドウに合わせる
 				fadeRect.widthProperty().bind(scene.widthProperty());
 				fadeRect.heightProperty().bind(scene.heightProperty());
 
