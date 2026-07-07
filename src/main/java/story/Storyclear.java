@@ -18,12 +18,16 @@ import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class Storyclear extends Application {
 
 	private Stage stage;
 
 	private AudioClip clickSound;
+
+	private MediaPlayer endingBgm;
 
 	@Override
 	public void start(Stage stage) {
@@ -42,12 +46,28 @@ public class Storyclear extends Application {
 		clickSound = new AudioClip(getClass().getResource("/music/select.mp3").toExternalForm());
 
 		// ==================================================
+		// エンドロールBGM
+		// ==================================================
+		Media media = new Media(getClass().getResource("/music/Storyclear_bgm2.mp3").toExternalForm());
+
+		endingBgm = new MediaPlayer(media);
+		//音量
+		endingBgm.setVolume(0.5);
+		//ループ
+		endingBgm.setCycleCount(MediaPlayer.INDEFINITE);
+
+		// ==================================================
 		// STORY CLEAR!!
 		// ==================================================
 		Text storyClear = new Text("STORY CLEAR!!");
 
 		storyClear.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:100px;" + "-fx-font-weight:bold;"
 				+ "-fx-fill:black;" + "-fx-stroke:white;" + "-fx-stroke-width:3;");
+
+		// 効果音
+		AudioClip clearSound = new AudioClip(getClass().getResource("/music/Storyclear_sound.mp3").toExternalForm());
+
+		clearSound.play();
 
 		// ==================================================
 		// スタッフロール本文(後ほど名前変更)
@@ -131,6 +151,10 @@ public class Storyclear extends Application {
 			clickSound.stop();
 			clickSound.play();
 
+			if (endingBgm != null) {
+				endingBgm.stop();
+			}
+
 			GameController.switchStart(stage);
 		});
 
@@ -210,7 +234,7 @@ public class Storyclear extends Application {
 		companyBox.setAlignment(Pos.BOTTOM_RIGHT);
 
 		companyBox.getChildren().addAll(companyLogoView, copyrightText);
-		
+
 		companyBox.setMouseTransparent(true);
 
 		StackPane.setAlignment(companyBox, Pos.BOTTOM_RIGHT);
@@ -247,6 +271,8 @@ public class Storyclear extends Application {
 			root.getChildren().remove(storyClear);
 
 			root.getChildren().add(rollBox);
+
+			endingBgm.play();
 
 			roll.play();
 		});

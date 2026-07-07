@@ -3,6 +3,7 @@ package story;
 import java.util.Arrays;
 import java.util.List;
 
+import control.GameController;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -428,7 +429,7 @@ public class Story2 extends Application {
 		titleBtn.setOnAction(e -> {
 			cleanup(scene);
 			//スタート画面へ
-			control.GameController.switchStart(stage);
+			GameController.switchStart(stage);
 		});
 
 		menuBox.getChildren().addAll(resume, titleBtn);
@@ -688,7 +689,7 @@ public class Story2 extends Application {
 					cleanup(scene);
 					base.getChildren().clear();
 					//次の画面へ
-					control.GameController.switchToGame2(stage);
+					GameController.switchToGame2(stage);
 				});
 
 				fade.play();
