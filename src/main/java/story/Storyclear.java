@@ -33,7 +33,7 @@ public class Storyclear extends Application {
 		// ウィンドウの中身を決定
 		stage.setTitle("STORY CLEAR");
 		stage.setScene(clearScene());
-		stage.centerOnScreen();//追加
+		stage.centerOnScreen();
 		stage.show();
 	}
 
@@ -48,12 +48,9 @@ public class Storyclear extends Application {
 		// エンドロールBGM
 		// ==================================================
 		Media media = new Media(getClass().getResource("/music/Storyclear_bgm2.mp3").toExternalForm());
-
 		endingBgm = new MediaPlayer(media);
-
 		// 音量
 		endingBgm.setVolume(0.5);
-
 		// BGMループ
 		endingBgm.setCycleCount(MediaPlayer.INDEFINITE);
 
@@ -61,13 +58,10 @@ public class Storyclear extends Application {
 		// STORY CLEAR!!
 		// ==================================================
 		Text storyClear = new Text("STORY CLEAR!!");
-
 		storyClear.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:100px;" + "-fx-font-weight:bold;"
 				+ "-fx-fill:black;" + "-fx-stroke:white;" + "-fx-stroke-width:3;");
-
 		// 効果音
 		AudioClip clearSound = new AudioClip(getClass().getResource("/music/Storyclear_sound.mp3").toExternalForm());
-
 		clearSound.play();
 
 		// ==================================================
@@ -102,29 +96,23 @@ public class Storyclear extends Application {
 				"\n\n\n\n\n\n\n\n\n\n");
 
 		credits.setStyle("-fx-font-family: 'PixelMplus12';" + "-fx-font-size: 24px;" + "-fx-fill: #334455;");
-
 		credits.setTextAlignment(TextAlignment.CENTER);
 
 		// ==================================================
 		// ゲームタイトル
 		// ==================================================
-
 		Image logoImage = new Image(getClass().getResourceAsStream("/picture/title.png"));
-
 		ImageView logoView = new ImageView(logoImage);
-
 		logoView.setPreserveRatio(true);
 		logoView.setFitWidth(350);
 
 		// ==================================================
 		// THANK YOU FOR PLAYING!!
 		// ==================================================
-
 		Text endText = new Text("THANK YOU FOR PLAYING!!");
-
-		endText.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:80px;" + "-fx-font-weight:bold;"
-				+ "-fx-fill:black;" + "-fx-stroke:white;" + "-fx-stroke-width:3;");
-
+		endText.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:80px;" 
+							+ "-fx-font-weight:bold;"+ "-fx-fill:black;" 
+							+ "-fx-stroke:white;" + "-fx-stroke-width:3;");
 		endText.setVisible(false);
 		endText.setTextAlignment(TextAlignment.CENTER);
 
@@ -132,28 +120,20 @@ public class Storyclear extends Application {
 		// タイトルへ戻るボタン
 		// ==================================================
 		Button titleButton = new Button("タイトルへ");
-
 		titleButton.getStyleClass().add("game-button2");
 		titleButton.setPrefSize(170, 55);
 		titleButton.setVisible(false);
-
 		titleButton.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:24px;" +
-
-				"-fx-background-color:#EAF4FF;" + "-fx-text-fill:#2B4A6A;" +
-
-				"-fx-border-color:white;" + "-fx-border-width:2;" +
-
-				"-fx-background-radius:10;" + "-fx-border-radius:10;");
-
+								"-fx-background-color:#EAF4FF;" + "-fx-text-fill:#2B4A6A;" +
+								"-fx-border-color:white;" + "-fx-border-width:2;" +
+								"-fx-background-radius:10;" + "-fx-border-radius:10;");
 		titleButton.setOnAction(e -> {
-
 			clickSound.stop();
 			clickSound.play();
-
 			if (endingBgm != null) {
 				endingBgm.stop();
 			}
-
+			//画面遷移
 			GameController.switchStart(stage);
 		});
 
@@ -161,7 +141,6 @@ public class Storyclear extends Application {
 		// THANK YOU + ボタン
 		// ==================================================
 		VBox thankBox = new VBox(30);
-
 		thankBox.setAlignment(Pos.CENTER);
 		thankBox.getChildren().addAll(logoView, endText, titleButton);
 
@@ -176,7 +155,6 @@ public class Storyclear extends Application {
 		// 背景画像
 		// =================================================
 		Image bgImage = new Image(getClass().getResourceAsStream("/picture/EMD_picture.jpg"));
-
 		ImageView bgView = new ImageView(bgImage);
 		bgView.setPreserveRatio(false);
 
@@ -187,14 +165,13 @@ public class Storyclear extends Application {
 		whiteFilter.setFill(Color.rgb(255, 255, 255, 0.70));
 
 		// ==================================================
-		// Root
+		// ウィンドウ全体のレイヤーを順に配置
 		// ==================================================
 		StackPane root = new StackPane();
-
 		root.getChildren().addAll(bgView, whiteFilter, storyClear);
 
 		// ==================================================
-		// Scene
+		// ウィンドウサイズを設定
 		// ==================================================
 		Scene scene = new Scene(root, 1000, 800);
 
@@ -202,7 +179,6 @@ public class Storyclear extends Application {
 		// スタッフロールアニメーション
 		// =================================================
 		TranslateTransition roll = new TranslateTransition(Duration.seconds(23), rollBox);
-
 		rollBox.setTranslateY(1050);
 		roll.setToY(-900);
 
@@ -210,16 +186,13 @@ public class Storyclear extends Application {
 		// コピーライト
 		// ==================================================
 		Text copyrightText = new Text("2026年度 EMD 新卒一同");
-
 		copyrightText.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:18px;" + "-fx-fill:#334455;");
 
 		// ==================================================
 		// 会社ロゴ
 		// ==================================================
 		Image companyLogoImage = new Image(getClass().getResourceAsStream("/picture/EMD_logo.png"));
-
 		ImageView companyLogoView = new ImageView(companyLogoImage);
-
 		companyLogoView.setPreserveRatio(true);
 		companyLogoView.setFitWidth(60);
 
@@ -227,11 +200,9 @@ public class Storyclear extends Application {
 		// 右下表示
 		// ==================================================
 		VBox companyBox = new VBox(5);
-
 		companyBox.setAlignment(Pos.BOTTOM_RIGHT);
 		companyBox.getChildren().addAll(companyLogoView, copyrightText);
 		companyBox.setMouseTransparent(true);
-
 		StackPane.setAlignment(companyBox, Pos.BOTTOM_RIGHT);
 		StackPane.setMargin(companyBox, new javafx.geometry.Insets(0, 30, 20, 0));
 
@@ -239,18 +210,13 @@ public class Storyclear extends Application {
 		// スタッフロール終了
 		// ==================================================
 		roll.setOnFinished(e -> {
-
 			root.getChildren().remove(rollBox);
 			root.getChildren().addAll(thankBox, companyBox);
-			
 			endText.setVisible(true);
-			
 			PauseTransition endWait = new PauseTransition(Duration.seconds(2));
-
 			endWait.setOnFinished(ev -> {
 				titleButton.setVisible(true);
 			});
-
 			endWait.play();
 		});
 
@@ -258,17 +224,12 @@ public class Storyclear extends Application {
 		// STORY CLEAR!! を4秒表示
 		// ==================================================
 		PauseTransition startWait = new PauseTransition(Duration.seconds(4));
-
 		startWait.setOnFinished(e -> {
-
 			root.getChildren().remove(storyClear);
 			root.getChildren().add(rollBox);
-
 			endingBgm.play();
-
 			roll.play();
 		});
-
 		startWait.play();
 
 		// ==================================================
@@ -276,7 +237,6 @@ public class Storyclear extends Application {
 		// ==================================================
 		bgView.fitWidthProperty().bind(scene.widthProperty());
 		bgView.fitHeightProperty().bind(scene.heightProperty());
-
 		whiteFilter.widthProperty().bind(scene.widthProperty());
 		whiteFilter.heightProperty().bind(scene.heightProperty());
 		
