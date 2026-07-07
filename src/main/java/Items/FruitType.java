@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
  * 種類ごとにスコアと色（仮描画用）を持つ。
  */
 public enum FruitType {
-
     CHERRY(100, "/picture/sakuranbo.png"),         // サクランボ
     STRAWBERRY(300, "/picture/ichigo.png"), // イチゴ
     ORANGE(500, "/picture/orange.png"),         // オレンジ
@@ -27,9 +26,6 @@ public enum FruitType {
         this.image = new Image(stream);
     }
 
-    public int getScore() { return score; }
-    public Image getImage() { return image; }
-
     private static final FruitType[] VALUES = values();
 
     /**
@@ -39,4 +35,8 @@ public enum FruitType {
     public static FruitType random(java.util.Random random) {
         return VALUES[random.nextInt(VALUES.length)];
     }
+    
+    // ゲッター
+    public int getScore() { return score; }
+    public Image getImage() { return image; }
 }
