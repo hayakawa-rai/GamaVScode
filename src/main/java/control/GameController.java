@@ -1,12 +1,29 @@
 package control;
 
+import java.lang.reflect.Method;
+import java.util.function.Consumer;
+
 import Characters.Direction;
+import common.HighScoreManager;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import start.Bgm;
 import start.Start;
+import story.Gameover;
+import story.Practice;
 import story.Stageclear1;
 import story.Stageclear2;
 import story.Stageclear3;
@@ -21,7 +38,6 @@ import test2.Main2;
 import test2.PracticeMain2;
 import test3.Main3;
 import test3.PracticeMain3;
-import common.HighScoreManager;
 
 public class GameController {
 
@@ -29,10 +45,10 @@ public class GameController {
 	private final Object view; // 描画処理
 	private final Canvas canvas; // 描画先キャンバス
 	private AnimationTimer timer; // ゲームループ(毎フレーム実行)
-	private javafx.scene.layout.VBox pauseLayer;
+	private VBox pauseLayer;
 
 	// 画面遷移のためにStageを保持する変数
-	private final javafx.stage.Stage stage;
+	private final Stage stage;
 
 	// 現在のステージ番号（1〜3）を記憶する変数
 	private final int stageNumber;
@@ -44,7 +60,7 @@ public class GameController {
 	    return newRecord;
 	}
 
-	public GameController(Object model, Object view, Canvas canvas, Scene scene, javafx.stage.Stage stage,
+	public GameController(Object model, Object view, Canvas canvas, Scene scene, Stage stage,
 			int stageNumber, boolean isPractice) {
 		this.model = model;
 		this.view = view;
@@ -66,25 +82,25 @@ public class GameController {
 	}
 
 	// ステージ画面に十字キーを追加する スマホ用のメソッド
-	public static void applyMobileControls(javafx.scene.Scene gameScene, Object model) {
+	public static void applyMobileControls(Scene gameScene, Object model) {
 		if (model == null)
 			return;
 
 		// 画面のルートコンテナを取得し、StackPaneで包み込む
-		javafx.scene.Parent root = gameScene.getRoot();
-		javafx.scene.layout.StackPane baseHolder;
-		if (root instanceof javafx.scene.layout.StackPane) {
-			baseHolder = (javafx.scene.layout.StackPane) root;
+		Parent root = gameScene.getRoot();
+		StackPane baseHolder;
+		if (root instanceof StackPane) {
+			baseHolder = (StackPane) root;
 		} else {
-			baseHolder = new javafx.scene.layout.StackPane();
+			baseHolder = new StackPane();
 			gameScene.setRoot(baseHolder);
 			baseHolder.getChildren().add(root);
 		}
 
 		// 十字キー（GridPane）を作成
-		javafx.scene.layout.GridPane dPad = new javafx.scene.layout.GridPane();
-		dPad.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
-		dPad.setPadding(new javafx.geometry.Insets(0, 0, 40, 40));
+		GridPane dPad = new GridPane();
+		dPad.setAlignment(Pos.BOTTOM_LEFT);
+		dPad.setPadding(new Insets(0, 0, 40, 40));
 		dPad.setHgap(10);
 		dPad.setVgap(10);
 		dPad.setStyle("-fx-background-color: transparent;");
@@ -92,10 +108,10 @@ public class GameController {
 		dPad.setPickOnBounds(false);
 
 		// ボタン作成とスタイル適用
-		javafx.scene.control.Button btnUp = new javafx.scene.control.Button("▲");
-		javafx.scene.control.Button btnDown = new javafx.scene.control.Button("▼");
-		javafx.scene.control.Button btnLeft = new javafx.scene.control.Button("◀");
-		javafx.scene.control.Button btnRight = new javafx.scene.control.Button("▶");
+		Button btnUp = new Button("▲");
+		Button btnDown = new Button("▼");
+		Button btnLeft = new Button("◀");
+		Button btnRight = new Button("▶");
 
 		String buttonStyle = "-fx-font-size: 24px; -fx-min-width: 60px; -fx-min-height: 60px; "
 				+ "-fx-background-radius: 30px; -fx-background-color: rgba(255, 255, 255, 0.4); -fx-text-fill: white;";
@@ -116,17 +132,17 @@ public class GameController {
 		dPad.add(btnRight, 2, 1);
 		dPad.add(btnDown, 1, 2);
 
-		// ★ リフレクションを使って、どのパッケージの MapData からでも安全にメソッドを呼び出す共通処理
-		java.util.function.Consumer<Characters.Direction> sendDirection = (dir) -> {
+		// どのMapDataからでも安全にメソッドを呼び出す共通処理
+		Consumer<Direction> sendDirection = (dir) -> {
 			try {
 				// 一時停止中かチェック (isPaused メソッドを実行)
-				java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
+				Method isPausedMethod = model.getClass().getMethod("isPaused");
 				boolean isPaused = (boolean) isPausedMethod.invoke(model);
 
 				if (!isPaused) {
 					// 方向をセット (setNextDirection メソッドを実行)
-					java.lang.reflect.Method setDirMethod = model.getClass().getMethod("setNextDirection",
-							Characters.Direction.class);
+					Method setDirMethod = model.getClass().getMethod("setNextDirection",
+							Direction.class);
 					setDirMethod.invoke(model, dir);
 				}
 			} catch (Exception ex) {
@@ -135,28 +151,28 @@ public class GameController {
 		};
 
 		// タップイベント（上記の共通処理を呼び出す）
-		btnUp.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.UP));
-		btnDown.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.DOWN));
-		btnLeft.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.LEFT));
-		btnRight.setOnMousePressed(e -> sendDirection.accept(Characters.Direction.RIGHT));
+		btnUp.setOnMousePressed(e -> sendDirection.accept(Direction.UP));
+		btnDown.setOnMousePressed(e -> sendDirection.accept(Direction.DOWN));
+		btnLeft.setOnMousePressed(e -> sendDirection.accept(Direction.LEFT));
+		btnRight.setOnMousePressed(e -> sendDirection.accept(Direction.RIGHT));
 
 		// 最前面のレイヤーとして十字キーを追加
 		baseHolder.getChildren().add(dPad);
 
 		try {
 			// rootがPaneクラス（またはその子クラス）の場合だけキャストして処理する
-			if (root instanceof javafx.scene.layout.Pane) {
-				javafx.scene.layout.Pane rootPane = (javafx.scene.layout.Pane) root;
+			if (root instanceof Pane) {
+				Pane rootPane = (Pane) root;
 
 				// rootPaneから「タイトルへ戻る」ボタンを探す
 				for (javafx.scene.Node node : rootPane.getChildren()) {
-					if (node instanceof javafx.scene.control.Button
-							&& "タイトルへ戻る".equals(((javafx.scene.control.Button) node).getText())) {
+					if (node instanceof Button
+							&& "タイトルへ戻る".equals(((Button) node).getText())) {
 
 						// 発見したら、安全に最前面のベースホルダー（baseHolder）へ引っ越しさせる
-						javafx.application.Platform.runLater(() -> {
+						Platform.runLater(() -> {
 							rootPane.getChildren().remove(node); // 元の背景レイヤーから削除
-							baseHolder.getChildren().add(node); // 最前面のレイヤーへ追加！
+							baseHolder.getChildren().add(node); // 最前面のレイヤーへ追加
 						});
 						break; // 見つかったのでループを抜ける
 					}
@@ -167,16 +183,16 @@ public class GameController {
 		}
 	}
 
-	// キーボード入力処理（🌟リフレクション化により、どのステージのModelでも動作可能）
+	// キーボード入力処理
 	private void attachInput(Scene scene) {
 		scene.setOnKeyPressed(e -> {
 			try {
 				KeyCode code = e.getCode();
 
-				java.lang.reflect.Method togglePauseMethod = model.getClass().getMethod("togglePause");
-				java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
-				java.lang.reflect.Method setNextDirectionMethod = model.getClass().getMethod("setNextDirection",
-						Characters.Direction.class);
+				Method togglePauseMethod = model.getClass().getMethod("togglePause");
+				Method isPausedMethod = model.getClass().getMethod("isPaused");
+				Method setNextDirectionMethod = model.getClass().getMethod("setNextDirection",
+						Direction.class);
 
 				// Pキーでゲームを一時停止・再開
 				if (code == KeyCode.P) {
@@ -185,11 +201,11 @@ public class GameController {
 					if (pauseLayer != null) {
 						boolean isPaused = (boolean) isPausedMethod.invoke(model);
 						if (isPaused) {
-							pauseLayer.setMouseTransparent(false); // ★クリックできるようにする
+							pauseLayer.setMouseTransparent(false); // クリックできるようにする
 							pauseLayer.setVisible(true); // 十字キーやスコアを完全に覆い隠して表示
 							pauseLayer.requestFocus(); // ボタンをクリック・選択可能にする
 						} else {
-							pauseLayer.setMouseTransparent(true); // ★クリックを完全にスルーさせる（透明化）
+							pauseLayer.setMouseTransparent(true); // クリックを完全にスルーさせる（透明化）
 							pauseLayer.setVisible(false); // ポーズ解除時はレイヤーを隠す
 							canvas.requestFocus(); // 操作権をゲーム（Canvas）側に戻す
 						}
@@ -225,7 +241,7 @@ public class GameController {
 			canvas.widthProperty().unbind();
 			canvas.heightProperty().unbind();
 
-			// 💡 ウィンドウ（Scene）の幅・高さとCanvasの幅・高さを完全にバインド（同期）させる
+			// ウィンドウ（Scene）の幅・高さとCanvasの幅・高さを完全にバインド（同期）させる
 			canvas.widthProperty().bind(canvas.getScene().widthProperty());
 			canvas.heightProperty().bind(canvas.getScene().heightProperty());
 		}
@@ -234,16 +250,16 @@ public class GameController {
 			@Override
 			public void handle(long now) {
 				try {
-					java.lang.reflect.Method isPausedMethod = model.getClass().getMethod("isPaused");
-					java.lang.reflect.Method updateMethod = model.getClass().getMethod("update");
-					java.lang.reflect.Method isGameOverMethod = model.getClass().getMethod("isGameOver");
-					java.lang.reflect.Method isClearedMethod = model.getClass().getMethod("isCleared");
-					java.lang.reflect.Method getsyujinkouMethod = model.getClass().getMethod("getsyujinkou");
+					Method isPausedMethod = model.getClass().getMethod("isPaused");
+					Method updateMethod = model.getClass().getMethod("update");
+					Method isGameOverMethod = model.getClass().getMethod("isGameOver");
+					Method isClearedMethod = model.getClass().getMethod("isCleared");
+					Method getsyujinkouMethod = model.getClass().getMethod("getsyujinkou");
 
-					// 💡 練習モード用の復活メソッドを事前に取得
-					final java.lang.reflect.Method respawnDotsMethod = model.getClass().getMethod("respawnDots");
+					// 練習モード用の復活メソッドを事前に取得
+					final Method respawnDotsMethod = model.getClass().getMethod("respawnDots");
 
-					// 💡 一時停止フラグをここで変数に保存
+					// 一時停止フラグをここで変数に保存
 					boolean isPaused = (boolean) isPausedMethod.invoke(model);
 
 					// 一時停止中でない（通常プレイ中）のときだけ、移動やゲームクリア判定を行う
@@ -254,7 +270,7 @@ public class GameController {
 						// 敵に捕まった（ゲームオーバー）かチェック
 						if ((boolean) isGameOverMethod.invoke(model)) {
 							stop();
-							start.Bgm.stopBGM(); // ★追加
+							Bgm.stopBGM(); // ★追加
 							System.out.println("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
 
 							// スコアを安全に取得する処理
@@ -264,7 +280,7 @@ public class GameController {
 
 								if (syujinkou != null) {
 
-									java.lang.reflect.Method getScoreMethod = syujinkou.getClass()
+									Method getScoreMethod = syujinkou.getClass()
 											.getMethod("getScore");
 
 									finalScore = (int) getScoreMethod.invoke(syujinkou);
@@ -273,7 +289,7 @@ public class GameController {
 							} catch (Exception e) {
 							}
 
-							// ★練習モードだけハイスコア更新
+							// 練習モードだけハイスコア更新
 							if (isPractice) {
 
 								newRecord = HighScoreManager.updateHighScore(stageNumber, finalScore);
@@ -292,10 +308,10 @@ public class GameController {
 						// すべてのドットを食べ終えたかチェック
 						if ((boolean) isClearedMethod.invoke(model)) {
 							if (isPractice) {
-								// 💡 練習モード：画面遷移せず、エサを復活させてループを継続
+								// 練習モード：画面遷移せず、エサを復活させてループを継続
 								respawnDotsMethod.invoke(model);
 							} else {
-								// 💡 本番モード：タイマーを止めて各ステージのクリア画面へ遷移
+								// 本番モード：タイマーを止めて各ステージのクリア画面へ遷移
 								stop();
 								start.Bgm.stopBGM(); // ★追加
 								System.out.println("🏁 本番モード：ステージクリア！次の画面へ。");
@@ -303,7 +319,7 @@ public class GameController {
 								int finalScore = 0;
 								Object syujinkou = getsyujinkouMethod.invoke(model);
 								if (syujinkou != null) {
-									java.lang.reflect.Method getScoreMethod = syujinkou.getClass()
+									Method getScoreMethod = syujinkou.getClass()
 											.getMethod("getScore");
 									finalScore = (int) getScoreMethod.invoke(syujinkou);
 								}
@@ -327,11 +343,11 @@ public class GameController {
 						}
 					}
 
-					// 💡 描画処理（draw）は if (!isPaused) の外側に置くことで、一時停止中も常に実行される！
+					// 描画処理（draw）は if (!isPaused) の外側に置くことで、一時停止中も常に実行される！
 					double currentWidth = canvas.getWidth();
 					double currentHeight = canvas.getHeight();
 
-					java.lang.reflect.Method drawMethod = view.getClass().getMethod("draw", GraphicsContext.class,
+					Method drawMethod = view.getClass().getMethod("draw", GraphicsContext.class,
 							double.class, double.class);
 					drawMethod.invoke(view, gc, currentWidth, currentHeight);
 
@@ -352,7 +368,7 @@ public class GameController {
 			System.out.println("① forceBackToTitle開始");
 
 			stop();
-			start.Bgm.stopBGM(); // ★追加
+			Bgm.stopBGM();
 			System.out.println("② timer停止");
 
 			switchStart(this.stage);
@@ -365,26 +381,26 @@ public class GameController {
 
 	// BGM処理
 	private void playStageBgm(int stageNumber) {
-		start.Bgm.playStageBGM(stageNumber); // ★変更：Bgm側に処理を委譲
+		Bgm.playStageBGM(stageNumber); // ★変更：Bgm側に処理を委譲
 	}
 
-	public void setPauseLayer(javafx.scene.layout.VBox pauseLayer) {
+	public void setPauseLayer(VBox pauseLayer) {
 		this.pauseLayer = pauseLayer;
 
 		if (pauseLayer != null && this.canvas != null && this.canvas.getScene() != null) {
-			javafx.scene.Parent root = this.canvas.getScene().getRoot();
+			Parent root = this.canvas.getScene().getRoot();
 
 			// 十字キー自動生成によって作られた、本物の最前面 StackPane を捕まえる
-			if (root instanceof javafx.scene.layout.StackPane) {
-				javafx.scene.layout.StackPane trueRoot = (javafx.scene.layout.StackPane) root;
+			if (root instanceof StackPane) {
+				StackPane trueRoot = (StackPane) root;
 
 				// いったん古い親（Main1のroot）からポーズ画面を引き剥がす
-				if (pauseLayer.getParent() instanceof javafx.scene.layout.Pane) {
-					((javafx.scene.layout.Pane) pauseLayer.getParent()).getChildren().remove(pauseLayer);
+				if (pauseLayer.getParent() instanceof Pane) {
+					((Pane) pauseLayer.getParent()).getChildren().remove(pauseLayer);
 				}
 
 				// 十字キーよりもさらに上（本当の最前面）にポーズ画面を配置する！
-				javafx.application.Platform.runLater(() -> {
+				Platform.runLater(() -> {
 					if (!trueRoot.getChildren().contains(pauseLayer)) {
 						trueRoot.getChildren().add(pauseLayer);
 					}
@@ -402,7 +418,7 @@ public class GameController {
 	// === 画面遷移用のメソッド群 ===
 
 	// 画面変更start
-	public static void switchStart(javafx.stage.Stage stage) {
+	public static void switchStart(Stage stage) {
 		try {
 			Start App = new Start();
 			App.start(stage);
@@ -411,10 +427,11 @@ public class GameController {
 		}
 	}
 
-	public static void switchToPractice(javafx.stage.Stage stage) {
+	// 画面遷移start→practice
+	public static void switchToPractice(Stage stage) {
 		try {
 			// practiceクラスのインスタンスを作る
-			story.Practice practiceScreen = new story.Practice();
+			Practice practiceScreen = new Practice();
 			// ウィンドウの権利(stage)を渡して、練習モード画面を起動・上書きする！
 			practiceScreen.start(stage);
 		} catch (Exception e) {
@@ -423,7 +440,7 @@ public class GameController {
 	}
 
 	// 画面変更start→story
-	public static void startToStory(javafx.stage.Stage stage) {
+	public static void startToStory(Stage stage) {
 		try {
 			Story1 App = new Story1();
 			App.start(stage);
@@ -433,7 +450,7 @@ public class GameController {
 	}
 
 	// 画面変更Story2
-	public static void switchStory2(javafx.stage.Stage stage) {
+	public static void switchStory2(Stage stage) {
 		try {
 			Story2 App = new Story2();
 			App.start(stage);
@@ -443,7 +460,7 @@ public class GameController {
 	}
 
 	// 画面変更Story3
-	public static void switchStory3(javafx.stage.Stage stage) {
+	public static void switchStory3(Stage stage) {
 		try {
 			Story3 App = new Story3();
 			App.start(stage);
@@ -453,7 +470,7 @@ public class GameController {
 	}
 
 	// 画面変更Story4
-	public static void switchStory4(javafx.stage.Stage stage) {
+	public static void switchStory4(Stage stage) {
 		try {
 			Story4 App = new Story4();
 			App.start(stage);
@@ -463,7 +480,7 @@ public class GameController {
 	}
 
 	// 画面変更StoryClear
-	public static void switchStoryClear(javafx.stage.Stage stage) {
+	public static void switchStoryClear(Stage stage) {
 		try {
 			Storyclear app = new Storyclear();
 			app.start(stage);
@@ -473,7 +490,7 @@ public class GameController {
 	}
 
 	// 画面変更Main1へ
-	public static void switchToGame1(javafx.stage.Stage stage) {
+	public static void switchToGame1(Stage stage) {
 		try {
 			Main1 App = new Main1();
 			App.start(stage);
@@ -483,7 +500,7 @@ public class GameController {
 	}
 
 	// 画面変更Main2へ
-	public static void switchToGame2(javafx.stage.Stage stage) {
+	public static void switchToGame2(Stage stage) {
 		try {
 			Main2 App = new Main2();
 			App.start(stage);
@@ -493,7 +510,7 @@ public class GameController {
 	}
 
 	// 画面変更Main3へ
-	public static void switchToGame3(javafx.stage.Stage stage) {
+	public static void switchToGame3(Stage stage) {
 		try {
 			Main3 App = new Main3();
 			App.start(stage);
@@ -503,7 +520,7 @@ public class GameController {
 	}
 
 	// Stageclear1画面へ変更するためのメソッド（引数に score を追加）
-	public static void switchToStageclear1(javafx.stage.Stage stage, int score) {
+	public static void switchToStageclear1(Stage stage, int score) {
 		try {
 			Stageclear1 App = new Stageclear1();
 			App.setScore(score); // 受け取った score を確実に引き渡す
@@ -514,7 +531,7 @@ public class GameController {
 	}
 
 	// Stageclear2画面へ変更するためのメソッド（引数に score を追加）
-	public static void switchToStageclear2(javafx.stage.Stage stage, int score) {
+	public static void switchToStageclear2(Stage stage, int score) {
 		try {
 			Stageclear2 App = new Stageclear2();
 			App.setScore(score); // 受け取った score を確実に引き渡す
@@ -525,7 +542,7 @@ public class GameController {
 	}
 
 	// Stageclear3画面へ変更するためのメソッド（引数に score を追加）
-	public static void switchToStageclear3(javafx.stage.Stage stage, int score) {
+	public static void switchToStageclear3(Stage stage, int score) {
 		try {
 			Stageclear3 App = new Stageclear3();
 			App.setScore(score);
@@ -536,7 +553,7 @@ public class GameController {
 	}
 
 	// 画面変更PracticeMain1へ
-	public static void switchToPracticeGame1(javafx.stage.Stage stage) {
+	public static void switchToPracticeGame1(Stage stage) {
 		try {
 			PracticeMain1 App = new PracticeMain1();
 			App.start(stage);
@@ -546,7 +563,7 @@ public class GameController {
 	}
 
 	// 画面変更PracticeMani2へ
-	public static void switchToPracticeGame2(javafx.stage.Stage stage) {
+	public static void switchToPracticeGame2(Stage stage) {
 		try {
 			PracticeMain2 App = new PracticeMain2();
 			App.start(stage);
@@ -556,7 +573,7 @@ public class GameController {
 	}
 
 	// 画面変更PracticeMain3へ
-	public static void switchToPracticeGame3(javafx.stage.Stage stage) {
+	public static void switchToPracticeGame3(Stage stage) {
 		try {
 			PracticeMain3 App = new PracticeMain3();
 			App.start(stage);
@@ -566,7 +583,7 @@ public class GameController {
 	}
 
 	// Gameover画面へ変更するためのメソッド（引数4つ版に綺麗に統一！）
-	public static void switchToGameover(javafx.stage.Stage stage, int stageNum, boolean isPractice, int score) {
+	public static void switchToGameover(Stage stage, int stageNum, boolean isPractice, int score) {
 		try {
 			Runnable retryAction;
 
@@ -574,32 +591,32 @@ public class GameController {
 			switch (stageNum) {
 			case 1:
 				if (isPractice) {
-					retryAction = () -> test1.PracticeMain1.createAndStart(stage); // 練習モード1へ
+					retryAction = () -> PracticeMain1.createAndStart(stage); // 練習モード1へ
 				} else {
-					retryAction = () -> test1.Main1.createAndStart(stage); // 本番モード1へ
+					retryAction = () -> Main1.createAndStart(stage); // 本番モード1へ
 				}
 				break;
 			case 2:
 				if (isPractice) {
-					retryAction = () -> test2.PracticeMain2.createAndStart(stage); // 練習モード2へ
+					retryAction = () -> PracticeMain2.createAndStart(stage); // 練習モード2へ
 				} else {
-					retryAction = () -> test2.Main2.createAndStart(stage); // 本番モード2へ
+					retryAction = () -> Main2.createAndStart(stage); // 本番モード2へ
 				}
 				break;
 			case 3:
 				if (isPractice) {
-					retryAction = () -> test3.PracticeMain3.createAndStart(stage); // 練習モード3へ
+					retryAction = () -> PracticeMain3.createAndStart(stage); // 練習モード3へ
 				} else {
-					retryAction = () -> test3.Main3.createAndStart(stage); // 本番モード3へ
+					retryAction = () -> Main3.createAndStart(stage); // 本番モード3へ
 				}
 				break;
 			default:
-				retryAction = () -> test1.Main1.createAndStart(stage);
+				retryAction = () -> Main1.createAndStart(stage);
 				break;
 			}
 
 			// Gameoverクラスに、stageと組み立てた適切なリトライ処理、そしてスコアを渡す！
-			stage.setScene(story.Gameover.create(stage, retryAction, score));
+			stage.setScene(Gameover.create(stage, retryAction, score));
 			stage.show();
 
 		} catch (Exception e) {
