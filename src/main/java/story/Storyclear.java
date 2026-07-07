@@ -24,9 +24,7 @@ import javafx.scene.media.MediaPlayer;
 public class Storyclear extends Application {
 
 	private Stage stage;
-
 	private AudioClip clickSound;
-
 	private MediaPlayer endingBgm;
 
 	@Override
@@ -51,9 +49,11 @@ public class Storyclear extends Application {
 		Media media = new Media(getClass().getResource("/music/Storyclear_bgm2.mp3").toExternalForm());
 
 		endingBgm = new MediaPlayer(media);
-		//音量
+
+		// 音量
 		endingBgm.setVolume(0.5);
-		//ループ
+
+		// BGMループ
 		endingBgm.setCycleCount(MediaPlayer.INDEFINITE);
 
 		// ==================================================
@@ -113,7 +113,6 @@ public class Storyclear extends Application {
 		ImageView logoView = new ImageView(logoImage);
 
 		logoView.setPreserveRatio(true);
-
 		logoView.setFitWidth(350);
 
 		// ==================================================
@@ -126,7 +125,6 @@ public class Storyclear extends Application {
 				+ "-fx-fill:black;" + "-fx-stroke:white;" + "-fx-stroke-width:3;");
 
 		endText.setVisible(false);
-
 		endText.setTextAlignment(TextAlignment.CENTER);
 
 		// ==================================================
@@ -164,7 +162,6 @@ public class Storyclear extends Application {
 		VBox thankBox = new VBox(30);
 
 		thankBox.setAlignment(Pos.CENTER);
-
 		thankBox.getChildren().addAll(logoView, endText, titleButton);
 
 		// ==================================================
@@ -172,7 +169,6 @@ public class Storyclear extends Application {
 		// ==================================================
 		VBox rollBox = new VBox(30);
 		rollBox.setAlignment(Pos.TOP_CENTER);
-
 		rollBox.getChildren().add(credits);
 
 		// ==================================================
@@ -232,13 +228,10 @@ public class Storyclear extends Application {
 		VBox companyBox = new VBox(5);
 
 		companyBox.setAlignment(Pos.BOTTOM_RIGHT);
-
 		companyBox.getChildren().addAll(companyLogoView, copyrightText);
-
 		companyBox.setMouseTransparent(true);
 
 		StackPane.setAlignment(companyBox, Pos.BOTTOM_RIGHT);
-
 		StackPane.setMargin(companyBox, new javafx.geometry.Insets(0, 30, 20, 0));
 
 		// ==================================================
@@ -247,11 +240,10 @@ public class Storyclear extends Application {
 		roll.setOnFinished(e -> {
 
 			root.getChildren().remove(rollBox);
-
-			endText.setVisible(true);
-
 			root.getChildren().addAll(thankBox, companyBox);
-
+			
+			endText.setVisible(true);
+			
 			PauseTransition endWait = new PauseTransition(Duration.seconds(2));
 
 			endWait.setOnFinished(ev -> {
@@ -269,7 +261,6 @@ public class Storyclear extends Application {
 		startWait.setOnFinished(e -> {
 
 			root.getChildren().remove(storyClear);
-
 			root.getChildren().add(rollBox);
 
 			endingBgm.play();
