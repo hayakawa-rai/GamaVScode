@@ -36,7 +36,9 @@ public abstract class Enemy extends Character {
 	protected double defeatX = 0; // 倒された瞬間のX座標（固定）
 	protected double defeatY = 0; // 倒された瞬間のY座標（固定）
 
-	// 各エネミーの初期設定
+	// ==================================================
+	// コンストラクタ
+	// ==================================================
 	public Enemy(double startX, double startY, int speed) {
 		super(startX, startY, speed);
 
@@ -44,7 +46,10 @@ public abstract class Enemy extends Character {
 		this.startX = startX;
 		this.startY = startY;
 	}
-
+	
+	// ==================================================
+	// タイマー
+	// ==================================================
 	// ポーズ開始時間を記録する、出撃タイマーや状態タイマー停止用
 	public void pauseTimer() {
 		pauseStartTime = System.currentTimeMillis();
@@ -54,6 +59,120 @@ public abstract class Enemy extends Character {
 	public void resumeTimer() {
 	}
 
+	// ==================================================
+	// 画像読み込み
+	// ==================================================
+	// FEVER状態で使用する画像をステージごとに読み込む
+	protected void loadFeverImage() {
+
+		// デフォルト画像（ステージ1）
+		String feverPath = "/picture/nari_EnemyFever.png";
+
+		// 現在のステージ番号に応じて画像を切り替える
+		if (mapData != null) {
+			switch (mapData.getStageNumber()) {
+			case 1:
+				feverPath = "/picture/nari_EnemyFever.png";
+				break;
+			case 2:
+				feverPath = "/picture/taku_EnemyFever.png";
+				break;
+			case 3:
+				feverPath = "/picture/aniki_EnemyFever.png";
+				break;
+			}
+		}
+
+		try {
+			// 指定したパスから画像を取得
+			java.io.InputStream is = getClass().getResourceAsStream(feverPath);
+
+			// 読み込み成功時
+			if (is != null) {
+				feverImage = new javafx.scene.image.Image(is);
+				System.out.println("FEVER画像読込成功: " + feverPath);
+			}
+			// 読み込み失敗時
+			else {
+				System.err.println("FEVER画像が見つかりません: " + feverPath);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// DEAD状態で使用する画像をステージごとに読み込む
+		protected void loadDeadImage() {
+
+			// デフォルトはステージ1
+			String deadPath = "/picture/nari_EnemyDead.png";
+
+			// 現在のステージ番号に応じて画像を切り替える
+			if (mapData != null) {
+				switch (mapData.getStageNumber()) {
+				case 1:
+					deadPath = "/picture/nari_EnemyDead.png";
+					break;
+				case 2:
+					deadPath = "/picture/taku_EnemyDead.png";
+					break;
+				case 3:
+					deadPath = "/picture/aniki_EnemyDead.png";
+					break;
+				}
+			}
+
+			try {
+				// リソースから画像を読み込む
+				java.io.InputStream is = getClass().getResourceAsStream(deadPath);
+				// 読み込み成功
+				if (is != null) {
+					deadImage = new javafx.scene.image.Image(is);
+					System.out.println("DEAD画像読込成功: " + deadPath);
+				} else {
+					// 読み込み失敗
+					System.err.println("DEAD画像が見つかりません: " + deadPath);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	// ==================================================
+	// スコア表示
+	// ==================================================
+	// ポップアップをまだ表示すべきか判定する（時間経過で自動的にfalseになる）
+	public boolean isScorePopupActive() {
+		if (scorePopupActive && System.currentTimeMillis() - scorePopupStartTime > SCORE_POPUP_DURATION) {
+			scorePopupActive = false;
+		}
+		return scorePopupActive;
+	}
+		
+	// 敵をDEAD状態にし、撃破スコアの表示を開始する
+	public void onDefeated(int score) {
+		this.lastDefeatScore = score;
+		this.scorePopupStartTime = System.currentTimeMillis();
+		this.scorePopupActive = true;
+		this.defeatX = this.x; // 倒された瞬間の位置を固定
+		this.defeatY = this.y;
+		setCurrentState(Characters.EnemyState.DEAD);
+	}
+		
+	// ==================================================
+	// ポジション
+	// ==================================================
+	// プレイヤーが被弾時に元の場所、出撃時間をリセット、状態を縄張りモード(SCATTER)へ戻す
+	public void resetToStartPosition() {
+		this.x = startX;
+		this.y = startY;
+		this.direction = Direction.NONE;
+		this.currentState = Characters.EnemyState.SCATTER;
+	}
+		
+	// ==================================================
+	// 動き
+	// ==================================================
 	@Override
 	public void move(int[][] map) {
 		// 現在位置をタイル座標へ変換
@@ -141,6 +260,45 @@ public abstract class Enemy extends Character {
 		}
 	}
 
+	// 指定した方向へ移動できるか判定する
+	private boolean canmove(Direction direction, int[][] map) {
+
+		// 移動しない場合は不可
+		if (direction == Direction.NONE)
+			return false;
+
+		// 現在位置のタイル座標を取得
+		int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
+		int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
+
+		// 移動先のタイル座標を計算
+		int nextCol = currentCol + (int) direction.getDX();
+		int nextRow = currentRow + (int) direction.getDY();
+
+		// マップ範囲外は移動不可
+		if (nextRow < 0 || nextRow >= map.length || nextCol < 0 || nextCol >= map[0].length) {
+			return false;
+		}
+		// 壁(1)には進めない
+		if (map[nextRow][nextCol] == 1) {
+			return false;
+		}
+
+		// 現在地と移動先のマス情報を取得
+		int currentTileType = map[currentRow][currentCol];
+		int nextTileType = map[nextRow][nextCol];
+
+		// 通常状態の敵の「巣（扉含む）」への侵入制限
+		if (this.currentState != Characters.EnemyState.DEAD) {
+
+			// 外(8以外)から、扉(7)や床(8)に入ろうとしたら通行不可
+			if (currentTileType != 8 && (nextTileType == 7 || nextTileType == 8)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	// DEAD・FEVERの共通処理移動処理
 	protected Direction handleSpecialState(List<Direction> validDirections, int targetCol, int targetRow, int[][] map) {
 
@@ -182,7 +340,10 @@ public abstract class Enemy extends Character {
 		}
 		return null;
 	}
-
+	
+	// ==================================================
+	// 方向決定
+	// ==================================================
 	// 三平方の定理を使って目的地に一番近い方向を選ぶ共通処理
 	protected Direction getClosestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
 		Direction bestDirection = Direction.NONE;
@@ -271,147 +432,6 @@ public abstract class Enemy extends Character {
 		}
 		return list;
 
-	}
-
-	// 指定した方向へ移動できるか判定する
-	private boolean canmove(Direction direction, int[][] map) {
-
-		// 移動しない場合は不可
-		if (direction == Direction.NONE)
-			return false;
-
-		// 現在位置のタイル座標を取得
-		int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
-		int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
-
-		// 移動先のタイル座標を計算
-		int nextCol = currentCol + (int) direction.getDX();
-		int nextRow = currentRow + (int) direction.getDY();
-
-		// マップ範囲外は移動不可
-		if (nextRow < 0 || nextRow >= map.length || nextCol < 0 || nextCol >= map[0].length) {
-			return false;
-		}
-		// 壁(1)には進めない
-		if (map[nextRow][nextCol] == 1) {
-			return false;
-		}
-
-		// 現在地と移動先のマス情報を取得
-		int currentTileType = map[currentRow][currentCol];
-		int nextTileType = map[nextRow][nextCol];
-
-		// 通常状態の敵の「巣（扉含む）」への侵入制限
-		if (this.currentState != Characters.EnemyState.DEAD) {
-
-			// 外(8以外)から、扉(7)や床(8)に入ろうとしたら通行不可
-			if (currentTileType != 8 && (nextTileType == 7 || nextTileType == 8)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	// FEVER状態で使用する画像をステージごとに読み込む
-	protected void loadFeverImage() {
-
-		// デフォルト画像（ステージ1）
-		String feverPath = "/picture/nari_EnemyFever.png";
-
-		// 現在のステージ番号に応じて画像を切り替える
-		if (mapData != null) {
-			switch (mapData.getStageNumber()) {
-			case 1:
-				feverPath = "/picture/nari_EnemyFever.png";
-				break;
-			case 2:
-				feverPath = "/picture/taku_EnemyFever.png";
-				break;
-			case 3:
-				feverPath = "/picture/aniki_EnemyFever.png";
-				break;
-			}
-		}
-
-		try {
-			// 指定したパスから画像を取得
-			java.io.InputStream is = getClass().getResourceAsStream(feverPath);
-
-			// 読み込み成功時
-			if (is != null) {
-				feverImage = new javafx.scene.image.Image(is);
-				System.out.println("FEVER画像読込成功: " + feverPath);
-			}
-			// 読み込み失敗時
-			else {
-				System.err.println("FEVER画像が見つかりません: " + feverPath);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// DEAD状態で使用する画像をステージごとに読み込む
-	protected void loadDeadImage() {
-
-		// デフォルトはステージ1
-		String deadPath = "/picture/nari_EnemyDead.png";
-
-		// 現在のステージ番号に応じて画像を切り替える
-		if (mapData != null) {
-			switch (mapData.getStageNumber()) {
-			case 1:
-				deadPath = "/picture/nari_EnemyDead.png";
-				break;
-			case 2:
-				deadPath = "/picture/taku_EnemyDead.png";
-				break;
-			case 3:
-				deadPath = "/picture/aniki_EnemyDead.png";
-				break;
-			}
-		}
-
-		try {
-			// リソースから画像を読み込む
-			java.io.InputStream is = getClass().getResourceAsStream(deadPath);
-			// 読み込み成功
-			if (is != null) {
-				deadImage = new javafx.scene.image.Image(is);
-				System.out.println("DEAD画像読込成功: " + deadPath);
-			} else {
-				// 読み込み失敗
-				System.err.println("DEAD画像が見つかりません: " + deadPath);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// プレイヤーが被弾時に元の場所、出撃時間をリセット、状態を縄張りモード(SCATTER)へ戻す
-	public void resetToStartPosition() {
-		this.x = startX;
-		this.y = startY;
-		this.direction = Direction.NONE;
-		this.currentState = Characters.EnemyState.SCATTER;
-	}
-
-	// 敵をDEAD状態にし、撃破スコアの表示を開始する
-	public void onDefeated(int score) {
-		this.lastDefeatScore = score;
-		this.scorePopupStartTime = System.currentTimeMillis();
-		this.scorePopupActive = true;
-		this.defeatX = this.x; // 倒された瞬間の位置を固定
-		this.defeatY = this.y;
-		setCurrentState(Characters.EnemyState.DEAD);
-	}
-
-	// ポップアップをまだ表示すべきか判定する（時間経過で自動的にfalseになる）
-	public boolean isScorePopupActive() {
-		if (scorePopupActive && System.currentTimeMillis() - scorePopupStartTime > SCORE_POPUP_DURATION) {
-			scorePopupActive = false;
-		}
-		return scorePopupActive;
 	}
 	
 	// 敵ごとのAIで次の進行方向を決定する

@@ -14,11 +14,13 @@ public class RedEnemy extends Enemy {
 	// 初期位置（エネミーハウス中央付近）
 	private static final int START_COL = 13;
 	private static final int START_ROW = 13;
-
 	// SCATTER状態で向かう縄張り（右上）
 	private static final int TERRITORY_COL = 24;
 	private static final int TERRITORY_ROW = 3;
 
+	// ==================================================
+	// コンストラクタ
+	// ==================================================
 	public RedEnemy(GameMap sampleModel) {
 
 		// マスの中心座標を初期位置として親クラスへ渡す
@@ -71,9 +73,11 @@ public class RedEnemy extends Enemy {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
-
+	
+	// ==================================================
+	// 方向決定
+	// ==================================================
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
 
@@ -99,7 +103,10 @@ public class RedEnemy extends Enemy {
 		if (special != null) {
 			return special;
 		}
-
+		
+		// ==================================================
+		// getter
+		// ==================================================
 		// 赤エネミー固有AI
 		// プレイヤーへ最短距離で接近する
 		return getClosestDirection(validDirections, targetCol, targetRow);

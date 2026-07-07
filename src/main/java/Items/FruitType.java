@@ -36,7 +36,9 @@ public enum FruitType {
         return VALUES[random.nextInt(VALUES.length)];
     }
     
-    // ゲッター
+    // ==================================================
+ 	// getter
+ 	// ==================================================
     public int getScore() { return score; }
     public Image getImage() { return image; }
 }
