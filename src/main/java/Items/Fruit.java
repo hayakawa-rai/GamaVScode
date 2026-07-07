@@ -2,6 +2,7 @@ package Items;
 
 import Characters.Syujinkou;
 import javafx.scene.canvas.GraphicsContext;
+import start.SoundManager;
 
 public class Fruit extends Item {
     private final FruitType type;
@@ -36,7 +37,7 @@ public class Fruit extends Item {
     @Override
     public void onEaten(Syujinkou player) {
         player.addScore(score);
-        start.SoundManager.play(start.SoundManager.FRUIT_EAT); 
+        SoundManager.play(SoundManager.FRUIT_EAT); 
         System.out.println(type + "を食べた！ +" + score + "点");
     }
     

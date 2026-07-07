@@ -4,6 +4,7 @@ import Characters.Syujinkou;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 // パワーエサ（Chii）
@@ -41,7 +42,7 @@ public class Chii extends Item {
 			System.out.println("画像の読み込みに失敗しました。パスが正しいか確認してください。");
 			
 			// 画像が読み込めなかった時の保険として、臨時の色円を表示させておく設定
-			this.view = new Circle(pixelX, pixelY, 8, javafx.scene.paint.Color.CHARTREUSE);
+			this.view = new Circle(pixelX, pixelY, 8, Color.CHARTREUSE);
 		}
 	}
 	// ==================================================

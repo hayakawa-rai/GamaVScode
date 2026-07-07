@@ -1,5 +1,7 @@
 package Items;
 
+import java.util.Random;
+
 import javafx.scene.image.Image;
 
 
@@ -32,7 +34,7 @@ public enum FruitType {
      * 全種類の中からランダムに1つ選んで返す。
      * MapData#spawnFruit() から呼ばれる。
      */
-    public static FruitType random(java.util.Random random) {
+    public static FruitType random(Random random) {
         return VALUES[random.nextInt(VALUES.length)];
     }
     
