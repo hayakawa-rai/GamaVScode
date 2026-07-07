@@ -204,7 +204,8 @@ public class Stageclear2 extends Application {
 		// 
 		Scene scene = new Scene(root, 1000, 800);
 		// CSSを接続
-		scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		scene.getStylesheets().add(
+				getClass().getResource("/css/style.css").toExternalForm());
 		//ウィンドウの最小限のサイズを設定
   		stage.setMinWidth(1000);
   		stage.setMinHeight(800);

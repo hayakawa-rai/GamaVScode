@@ -465,67 +465,67 @@ public class Story3 extends Application {
 		// 文字表示用のタイマーを作成、50ミリ秒ごとに処理
 		timeline = new Timeline(
 				new KeyFrame(Duration.millis(50), e -> {
-					// 今再生されている会話テキストのリスト番号を取得
-					Dialogue d = dialogues.get(messageIndex);
-					// まだ文字が残っているかどうかを判断(文字が残っている間は処理を実行)
-					if (charIndex < d.message.length()) {
-						// 文字カウントを増やす
-						charIndex++;
-						// 最初に画像を下に落とす
-						if (messageIndex == 0) {
-							fall.play();
-						}
-						// 誰が話しているか情報取得(話者によって話者名・テキストの色を変化)
-						String speaker = d.speaker;
-						nameText.setText(speaker);
-						text.setFill(d.textColor);
-						if (speaker.equals("あにき")) {
-							// あにきの画像を表示・なりなりの画像を非表示
-							anikiView.setVisible(true);
-							nariView.setVisible(false);
-							takuView.setVisible(false);
-						} else if (speaker.equals("仙石さん")) {
-						} else if (speaker.equals("なりなり")) {
-							// あにきの画像を非表示・なりなりの画像を表示
-							anikiView.setVisible(false);
-							nariView.setVisible(true);
-							takuView.setVisible(false);
-						} else if (speaker.equals("わだたく")) {
-							// あにきの画像を非表示・わだたくの画像を表示
-							anikiView.setVisible(false);
-							nariView.setVisible(false);
-							takuView.setVisible(true);
-						}
-
-						// 表示しているメッセージに対して1文ずつ表示する文字数を増やしていく処理
-						// 例：メッセージがhelloのとき、h→he→hel→hell→hello
-						text.setText(d.message.substring(0, charIndex));
-						if (Math.random() < 0.5) {
-						}
-					} else {// 全て表示し終わった後の処理
-							// fales：タイピング中じゃない
-						isTyping = false;
-						// タイピング(文字を1文字ずつ表示するアニメーション)を停止
-						timeline.stop();
-						// ▼を表示
-						nextMark.setVisible(true);
-						// ▼点滅アニメーション表示
-						blink.play();
-						// ▼を上下に揺らすアニメーション表示
-						arrowMove.play();
+				// 今再生されている会話テキストのリスト番号を取得
+				Dialogue d = dialogues.get(messageIndex);
+				// まだ文字が残っているかどうかを判断(文字が残っている間は処理を実行)
+				if (charIndex < d.message.length()) {
+					// 文字カウントを増やす
+					charIndex++;
+					// 最初に画像を下に落とす
+					if (messageIndex == 0) {
+						fall.play();
 					}
-				}));
+					// 誰が話しているか情報取得(話者によって話者名・テキストの色を変化)
+					String speaker = d.speaker;
+					nameText.setText(speaker);
+					text.setFill(d.textColor);
+					if (speaker.equals("あにき")) {
+						// なりなり、わだたくの画像を表示・あにきの画像を表示
+						anikiView.setVisible(true);
+						nariView.setVisible(false);
+						takuView.setVisible(false);
+					} else if (speaker.equals("仙石さん")) {
+					} else if (speaker.equals("なりなり")) {
+						// あにき、わだたくの画像を非表示・なりなりの画像を表示
+						anikiView.setVisible(false);
+						nariView.setVisible(true);
+						takuView.setVisible(false);
+					} else if (speaker.equals("わだたく")) {
+						// あにき・なりなりの画像を非表示・わだたくの画像を表示
+						anikiView.setVisible(false);
+						nariView.setVisible(false);
+						takuView.setVisible(true);
+					}
+
+					// 表示しているメッセージに対して1文ずつ表示する文字数を増やしていく処理
+					// 例：メッセージがhelloのとき、h→he→hel→hell→hello
+					text.setText(d.message.substring(0, charIndex));
+					if (Math.random() < 0.5) {
+					}
+				} else {// 全て表示し終わった後の処理
+							// fales：タイピング中じゃない
+				isTyping = false;
+				// タイピング(文字を1文字ずつ表示するアニメーション)を停止
+				timeline.stop();
+				// ▼を表示
+				nextMark.setVisible(true);
+				// ▼点滅アニメーション表示
+				blink.play();
+				// ▼を上下に揺らすアニメーション表示
+				arrowMove.play();
+				}
+		}));
 		// Timeline.INDEFINITE：無限ループ
 		timeline.setCycleCount(Timeline.INDEFINITE);
 
 		// クリックされたときの処理
 		scene.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
 			if (menuOverlay.isVisible()) {
-				if (e.getTarget() == menuBtn)
-					return;
+				if (e.getTarget() == menuBtn)	return;
 				e.consume();
 				return;
 			}
+			
 			// 文字表示中ならスキップして全文表示する処理
 			if (isTyping) {
 				// タイピング停止
@@ -544,6 +544,7 @@ public class Story3 extends Application {
 				arrowMove.play();
 				return;
 			}
+			
 			// まだメッセージがある場合if文内のの処理を実行
 			if (messageIndex < dialogues.size() - 1) {
 				// メッセージカウントを増やす
@@ -581,6 +582,7 @@ public class Story3 extends Application {
 				Dialogue d = dialogues.get(messageIndex);
 				// 誰が話しているかの情報取得
 				String speaker = d.speaker;
+				
 				// 設定した音をならす
 				if (d.sound != null && d.sound != jumpSound) {
 					d.sound.stop();
@@ -612,7 +614,6 @@ public class Story3 extends Application {
 					}
 				}
 			} else {// メッセージの最後まで行った後の処理
-
 				if (isEndingStarted)
 					return;
 				isEndingStarted = true;
