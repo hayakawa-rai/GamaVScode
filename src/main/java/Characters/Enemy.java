@@ -35,12 +35,14 @@ public abstract class Enemy extends Character {
 	// 敵の初期位置（リスポーン用）
 	protected final double startX;
 	protected final double startY;
-	
+
 	// スコアポップアップ表示用（古田）
 	protected int lastDefeatScore = 0;
 	protected long scorePopupStartTime = 0;
 	protected boolean scorePopupActive = false;
 	protected static final long SCORE_POPUP_DURATION = 1000; // 表示時間(ms)
+	protected double defeatX = 0; // 倒された瞬間のX座標（固定）
+	protected double defeatY = 0; // 倒された瞬間のY座標（固定）
 
 	// 各エネミーの初期設定
 	public Enemy(double startX, double startY, int speed) {
@@ -272,11 +274,13 @@ public abstract class Enemy extends Character {
 		// 全方向をチェック
 		for (Direction dir : Direction.values()) {
 			// NONE は判定対象外
-			if (dir == Direction.NONE)	continue;
-			
+			if (dir == Direction.NONE)
+				continue;
+
 			// 常にUターン禁止
-			if (isOppositeDirection(dir, this.direction))	continue;
-			
+			if (isOppositeDirection(dir, this.direction))
+				continue;
+
 			// 実際に移動可能なら候補に追加
 			if (canmove(dir, map)) {
 				list.add(dir);
@@ -290,8 +294,9 @@ public abstract class Enemy extends Character {
 	private boolean canmove(Direction direction, int[][] map) {
 
 		// 移動しない場合は不可
-		if (direction == Direction.NONE)	return false;
-		
+		if (direction == Direction.NONE)
+			return false;
+
 		// 現在位置のタイル座標を取得
 		int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
 		int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
@@ -315,7 +320,7 @@ public abstract class Enemy extends Character {
 
 		// 通常状態の敵の「巣（扉含む）」への侵入制限
 		if (this.currentState != Characters.EnemyState.DEAD) {
-			
+
 			// 外(8以外)から、扉(7)や床(8)に入ろうとしたら通行不可
 			if (currentTileType != 8 && (nextTileType == 7 || nextTileType == 8)) {
 				return false;
@@ -403,7 +408,7 @@ public abstract class Enemy extends Character {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// プレイヤーが被弾時に元の場所、出撃時間をリセット、状態を縄張りモード(SCATTER)へ戻す
 	public void resetToStartPosition() {
 		this.x = startX;
@@ -414,7 +419,7 @@ public abstract class Enemy extends Character {
 
 	// ---getter---
 
-// 現在の状態に対応した画像を返す
+	// 現在の状態に対応した画像を返す
 	public javafx.scene.image.Image getEnemyImage() {
 
 		// 撃破状態
@@ -447,29 +452,47 @@ public abstract class Enemy extends Character {
 	}
 
 	// ---setter---
-		//　敵の状態を変更する
-		public void setCurrentState(Characters.EnemyState state) {
-			this.currentState = state;
-		}
-
-		// 敵をDEAD状態にし、撃破スコアの表示を開始する
-		public void onDefeated(int score) {
-			this.lastDefeatScore = score;
-			this.scorePopupStartTime = System.currentTimeMillis();
-			this.scorePopupActive = true;
-			setCurrentState(Characters.EnemyState.DEAD);
-		}
-
-		// ポップアップをまだ表示すべきか判定する（時間経過で自動的にfalseになる）
-		public boolean isScorePopupActive() {
-			if (scorePopupActive && System.currentTimeMillis() - scorePopupStartTime > SCORE_POPUP_DURATION) {
-				scorePopupActive = false;
-			}
-			return scorePopupActive;
-		}
-
-		// 表示するスコア値を返す
-		public int getLastDefeatScore() {
-			return lastDefeatScore;
-		}
+	//　敵の状態を変更する
+	public void setCurrentState(Characters.EnemyState state) {
+		this.currentState = state;
 	}
+
+	// 敵をDEAD状態にし、撃破スコアの表示を開始する
+	public void onDefeated(int score) {
+		this.lastDefeatScore = score;
+		this.scorePopupStartTime = System.currentTimeMillis();
+		this.scorePopupActive = true;
+		this.defeatX = this.x; // 倒された瞬間の位置を固定
+		this.defeatY = this.y;
+		setCurrentState(Characters.EnemyState.DEAD);
+	}
+
+	// ポップアップをまだ表示すべきか判定する（時間経過で自動的にfalseになる）
+	public boolean isScorePopupActive() {
+		if (scorePopupActive && System.currentTimeMillis() - scorePopupStartTime > SCORE_POPUP_DURATION) {
+			scorePopupActive = false;
+		}
+		return scorePopupActive;
+	}
+
+	// 表示するスコア値を返す
+	public int getLastDefeatScore() {
+		return lastDefeatScore;
+	}
+
+	// 倒された瞬間のX座標を返す（ポップアップ表示用、固定値）
+	public double getDefeatX() {
+		return defeatX;
+	}
+
+	// 倒された瞬間のY座標を返す（ポップアップ表示用、固定値）
+	public double getDefeatY() {
+		return defeatY;
+	}
+
+	// ポップアップの進行度を0.0(開始)〜1.0(終了)で返す
+	public double getScorePopupProgress() {
+		long elapsed = System.currentTimeMillis() - scorePopupStartTime;
+		return Math.min(1.0, Math.max(0.0, elapsed / (double) SCORE_POPUP_DURATION));
+	}
+}
