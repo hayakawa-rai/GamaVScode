@@ -217,13 +217,13 @@ public class MapView {
 				}
 			}
 		}
-	//  フルーツを描画
-	    Items.Fruit fruit = model.getCurrentFruit();
-	    if (fruit != null) {
-	        int fx = MapData.FRUIT_COL * MapData.TILE_SIZE;
-	        int fy = MapData.FRUIT_ROW * MapData.TILE_SIZE;
-	        fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
-	    }
+		//  フルーツを描画
+		Items.Fruit fruit = model.getCurrentFruit();
+		if (fruit != null) {
+		    int fx = model.getFruitCol() * MapData.TILE_SIZE;
+		    int fy = model.getFruitRow() * MapData.TILE_SIZE;
+		    fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
+		}
 
 	    // ▼ フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
 	    if (model.isFruitPopupActive()) {
@@ -231,8 +231,8 @@ public class MapView {
 	        double riseOffset = progress * 20;
 	        double alpha = 1.0 - progress;
 
-	        double popupX = MapData.FRUIT_COL * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
-	        double popupY = MapData.FRUIT_ROW * MapData.TILE_SIZE - riseOffset;
+	        double popupX = MapData.FRUIT_VALUE * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+	        double popupY = MapData.FRUIT_VALUE * MapData.TILE_SIZE - riseOffset;
 
 	        gc.save();
 	        gc.setGlobalAlpha(alpha);
