@@ -15,23 +15,21 @@ public class YellowEnemy extends Enemy {
 	// 初期位置（エネミーハウス内）
 	private static final int START_COL = 13;
 	private static final int START_ROW = 14;
-
 	// プレイヤーの進行方向の4マス先を狙う
 	private static final int PREDICT_TILES = 4;
-
 	// SCATTER状態時の縄張り座標（左上）
 	private static final int TERRITORY_COL = 3;
 	private static final int TERRITORY_ROW = 3;
-
 	// 出撃タイマー用
 	private long startTime;
-
 	// タイマー開始フラグ
 	private boolean timerStarted = false;
-
 	// 出撃済みかどうか
 	private boolean released = false;
 
+	// ==================================================
+	// コンストラクタ
+	// ==================================================
 	public YellowEnemy(GameMap mapData) {
 
 		// マスの中心座標を初期位置として Enemy に渡す
@@ -85,6 +83,44 @@ public class YellowEnemy extends Enemy {
 		}
 	}
 
+	// ==================================================
+	// タイマー
+	// ==================================================
+	// ポーズ中の時間を出撃タイマーへ反映する
+	@Override
+	public void resumeTimer() {
+
+		// 出撃待機中のみ補正を行う
+		if (timerStarted && !released) {
+
+			// ポーズしていた時間を計算
+			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
+
+			// タイマーを補正
+			startTime += pauseDuration;
+		}
+	}
+	
+	// ==================================================
+	// ポジション
+	// ==================================================
+	// プレイヤーが被弾時に元の場所、出撃時間をリセット
+	@Override
+	public void resetToStartPosition() {
+
+		// Enemy共通のリセット処理
+		super.resetToStartPosition();
+
+		// 出撃状態を初期化
+		released = false;
+
+		// タイマーをリセット
+		timerStarted = false;
+	}
+	
+	// ==================================================
+	// 動き
+	// ==================================================
 	// 10秒経過後に出撃
 	@Override
 	public void move(int[][] map) {
@@ -118,7 +154,10 @@ public class YellowEnemy extends Enemy {
 		// Enemy共通の移動処理
 		super.move(map);
 	}
-
+	
+	// ==================================================
+	// 方向決定
+	// ==================================================
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
 
@@ -153,45 +192,18 @@ public class YellowEnemy extends Enemy {
 		if (currentState == Characters.EnemyState.SCATTER) {
 			return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 		}
-
 		// FEVER・DEAD状態の共通処理
 		Direction special = handleSpecialState(validDirections, targetCol, targetRow, map);
 		if (special != null) {
 			return special;
 		}
-
+		
+		// ==================================================
+		// getter
+		// ==================================================
 		// YellowEnemy固有AI
 		// プレイヤーの4マス先を最短距離で追跡する
 		return getClosestDirection(validDirections, targetCol, targetRow);
-	}
-
-	// プレイヤーが被弾時に元の場所、出撃時間をリセット
-	@Override
-	public void resetToStartPosition() {
-
-		// Enemy共通のリセット処理
-		super.resetToStartPosition();
-
-		// 出撃状態を初期化
-		released = false;
-
-		// タイマーをリセット
-		timerStarted = false;
-	}
-
-	// ポーズ中の時間を出撃タイマーへ反映する
-	@Override
-	public void resumeTimer() {
-
-		// 出撃待機中のみ補正を行う
-		if (timerStarted && !released) {
-
-			// ポーズしていた時間を計算
-			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
-
-			// タイマーを補正
-			startTime += pauseDuration;
-		}
 	}
 
 }
