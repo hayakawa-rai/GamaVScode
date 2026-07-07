@@ -10,6 +10,11 @@ public abstract class Character {
 	// キャラクターが現在向いている方向
 	protected Direction direction;
 
+	// 速さデフォルトを 1 にして、syujinkou の呼び出しと互換性を持たせる
+	public Character(double x, double y) {
+		this(x, y, 1);
+	}
+	
 	public Character(double x, double y, int speed) {
 		// 初期X座標
 		this.x = x;
@@ -20,12 +25,13 @@ public abstract class Character {
 		// 初期状態では停止
 		this.direction = Direction.NONE;
 	}
+	
+	// キャラクターを移動させる処理
+	public abstract void move(int[][] map);
 
-	// 速さデフォルトを 1 にして、syujinkou の呼び出しと互換性を持たせる
-	public Character(double x, double y) {
-		this(x, y, 1);
-	}
-
+	//==================================================
+	//getter
+	//==================================================
 	// 子クラスからx座標の情報を取得
 	public double getX() {
 		return x;
@@ -46,6 +52,4 @@ public abstract class Character {
 		return direction;
 	}
 
-	// キャラクターを移動させる処理
-	public abstract void move(int[][] map);
 }

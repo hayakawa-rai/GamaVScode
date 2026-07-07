@@ -15,7 +15,6 @@ public class Point extends Item {
 
     @Override
     public void onEaten(Syujinkou player) {
-
     		// プレイヤーのスコアを加算
         player.addScore(this.score);
     }
