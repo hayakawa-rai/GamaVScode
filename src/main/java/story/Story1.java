@@ -3,6 +3,7 @@ package story;
 import java.util.Arrays;
 import java.util.List;
 
+import control.GameController;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -247,10 +248,6 @@ public class Story1 extends Application {
 		StackPane messageBox = new StackPane();
 		messageBox.getChildren().addAll(box, bubble);
 
-		/*//背景の設定(1番最初に入れたものが1番後ろになる)
-		StackPane back = new StackPane();
-		back.getChildren().add(bgView);*/
-
 		//レイヤー構造を使用し吹き出しとテキストの位置を設定
 		BorderPane root = new BorderPane();
 		//吹き出しを中央下に配置
@@ -322,7 +319,7 @@ public class Story1 extends Application {
 		titleBtn.setOnAction(e -> {
 			cleanup(scene);
 			//スタート画面へ
-			control.GameController.switchStart(stage);
+			GameController.switchStart(stage);
 		});
 
 		menuBox.getChildren().addAll(resume, titleBtn);
@@ -520,7 +517,7 @@ public class Story1 extends Application {
 					cleanup(scene);
 					base.getChildren().clear();
 					//次の画面へ
-					control.GameController.switchToGame1(stage);
+					GameController.switchToGame1(stage);
 				});
 
 				fade.play();
