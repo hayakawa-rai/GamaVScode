@@ -62,7 +62,6 @@ public class Story2 extends Application {
 	private Stage stage;
 
 	private void cleanup(Scene scene) {
-
 		// テキストタイピング
 		if (timeline != null) {
 			timeline.stop();

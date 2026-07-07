@@ -4,6 +4,7 @@ import control.GameController;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -204,7 +205,7 @@ public class Storyclear extends Application {
 		companyBox.getChildren().addAll(companyLogoView, copyrightText);
 		companyBox.setMouseTransparent(true);
 		StackPane.setAlignment(companyBox, Pos.BOTTOM_RIGHT);
-		StackPane.setMargin(companyBox, new javafx.geometry.Insets(0, 30, 20, 0));
+		StackPane.setMargin(companyBox, new Insets(0, 30, 20, 0));
 
 		// ==================================================
 		// スタッフロール終了

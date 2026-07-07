@@ -60,7 +60,6 @@ public class Story3 extends Application {
 	private Stage stage;
 
 	private void cleanup(Scene scene, StackPane base) {
-
 		// 文字タイピング
 		if (timeline != null) {
 			timeline.stop();

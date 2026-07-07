@@ -145,10 +145,8 @@ public class Stageclear2 extends Application {
 			// 音を再生
 			clickSound.stop();
 			clickSound.play();
-
 			// 0.5秒待つ
 			pause = new PauseTransition(Duration.seconds(0.5));
-
 			// 待った後に画面遷移
 			pause.setOnFinished(ev -> {
 				try {
@@ -159,7 +157,6 @@ public class Stageclear2 extends Application {
 					ex.printStackTrace();
 				}
 			});
-
 			// タイマー開始
 			pause.play();
 		});

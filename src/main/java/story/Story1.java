@@ -122,7 +122,6 @@ public class Story1 extends Application {
 	}
 
 	public Scene story() {
-
 		// BGMの再生
 		Bgm.stopBGM();
 		Bgm.playBGM("/music/storybgm.mp3");

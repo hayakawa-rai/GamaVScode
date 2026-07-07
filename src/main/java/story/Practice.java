@@ -1,25 +1,29 @@
 package story;
 
+import common.HighScoreManager;
 import control.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Bgm;
-import javafx.scene.control.Tooltip;
-import common.HighScoreManager;
 
 public class Practice extends Application {
 
@@ -209,14 +213,14 @@ public class Practice extends Application {
 				}
 
 				// 画像は元のサイズのまま、表示位置だけをずらして背景を再描画
-				javafx.scene.paint.ImagePattern pattern = new javafx.scene.paint.ImagePattern(bgImage, scrollX[0], 0, // bgPane全体の背景をこのパターンで塗りつぶす
+				ImagePattern pattern = new ImagePattern(bgImage, scrollX[0], 0, // bgPane全体の背景をこのパターンで塗りつぶす
 						bgWidth, bgHeight, // 画像の本来のサイズを維持
 						false // 絶対座標指定
 				);
 
 				// bgPane全体の背景
-				bgPane.setBackground(new javafx.scene.layout.Background(
-						new javafx.scene.layout.BackgroundFill(pattern, null, null)));
+				bgPane.setBackground(new Background(
+						new BackgroundFill(pattern, null, null)));
 			}
 		};
 
@@ -254,7 +258,7 @@ public class Practice extends Application {
 		BorderPane ui = new BorderPane();
 
 		BorderPane.setAlignment(scoreInfo, Pos.TOP_RIGHT);
-		BorderPane.setMargin(scoreInfo, new javafx.geometry.Insets(20, 20, 0, 0));
+		BorderPane.setMargin(scoreInfo, new Insets(20, 20, 0, 0));
 
 		// UIが広がりすぎないよう最大幅を制限
 		ui.setMaxWidth(800);
@@ -266,14 +270,14 @@ public class Practice extends Application {
 		BorderPane.setAlignment(title, Pos.CENTER);
 
 		// 「上200px、下20px」の余白をマージンとして直接設定する
-		BorderPane.setMargin(title, new javafx.geometry.Insets(200, 0, 20, 0));
+		BorderPane.setMargin(title, new Insets(200, 0, 20, 0));
 
 		// 下から背景、UIの箱に入れたものの順でレイヤー構造のrootに入れる
 		root.getChildren().addAll(bgPane, ui, scoreInfo);
 
 		StackPane.setAlignment(scoreInfo, Pos.TOP_RIGHT);
 
-		StackPane.setMargin(scoreInfo, new javafx.geometry.Insets(15, 15, 0, 0));
+		StackPane.setMargin(scoreInfo, new Insets(15, 15, 0, 0));
 
 		// rootを中身とした1000×800のウィンドウを作成
 		Scene scene = new Scene(root, 1000, 800);
