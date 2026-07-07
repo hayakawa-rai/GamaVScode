@@ -33,6 +33,7 @@ public class Fruit extends Item {
     @Override
     public void onEaten(Syujinkou player) {
         player.addScore(score);
+        start.SoundManager.play(start.SoundManager.FRUIT_EAT); 
         System.out.println(type + "を食べた！ +" + score + "点");
     }
 

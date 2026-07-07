@@ -14,12 +14,16 @@ public class SoundManager {
 
 	// 主人公DEAD時の効果音
 	public static final AudioClip DAMAGE = load("/music/syujinkoudeadsound.mp3");
+	
+	// フルーツ取得時の効果音 
+		public static final AudioClip FRUIT_EAT = load("/music/fruiteatsound.mp3");
 
 	// 音量調節
 	static {
 		WARP.setVolume(0.5); // ワープ音
 		ENEMY_DEAD.setVolume(0.3); // 敵撃破
 		DAMAGE.setVolume(0.1); // ダメージ
+		FRUIT_EAT.setVolume(0.4); // フルーツ取得 
 	}
 
 	// 指定したパスの効果音を読み込む
