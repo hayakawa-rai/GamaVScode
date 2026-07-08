@@ -9,12 +9,14 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -60,40 +62,43 @@ public class Help extends Application {
 
 		// ===== 中央の半透明パネル =====
 		VBox panel = new VBox(16);
+		panel.setMaxHeight(Region.USE_PREF_SIZE);
 		panel.setAlignment(Pos.CENTER);
 		panel.setMaxWidth(560);
 		panel.setPadding(new Insets(35, 45, 35, 45));
 		panel.setStyle(
 				"-fx-background-color: rgba(0,0,0,0.6);"
-				+ "-fx-border-color: #4FD8E8;"
-				+ "-fx-border-width: 2;"
-				+ "-fx-background-radius: 4;"
-				+ "-fx-border-radius: 4;");
+						+ "-fx-border-color: #4FD8E8;"
+						+ "-fx-border-width: 2;"
+						+ "-fx-background-radius: 4;"
+						+ "-fx-border-radius: 4;");
 
 		// タイトル
 		Label title = new Label("操作方法");
 		title.setTextFill(Color.web("#F4C022"));
-		title.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 30));
+		title.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 40));
 		panel.getChildren().add(title);
 
 		// 操作一覧（PAUSE画面と同じ「ラベル：キー」の1行表記）
 		panel.getChildren().add(makeLine("移動： ↑ / ↓ / ← / →   または   W / A / S / D"));
-		panel.getChildren().add(makeLine("画面右下ボタン（スマホ用）"));
+		panel.getChildren().add(makeLine("モバイルデバイスでの移動： 画面右下の矢印ボタン"));
+		Region spacer = new Region();
+		spacer.setPrefHeight(8);
+		panel.getChildren().add(spacer);
 		panel.getChildren().add(makeLine("一時停止・再開： P"));
 
-		// 区切り
-		Label divider = new Label("――――――――――――――――");
-		divider.setTextFill(Color.web("#4a4a5a"));
-		divider.setFont(Font.font("PixelMplus12", 12));
+		// 区切り線
+		Separator divider = new Separator();
+		divider.setStyle("-fx-background-color: #4a4a5a;");
 		panel.getChildren().add(divider);
 
 		// 補足ルール（ドット・パワーエサはアイコン付きで表示）
-		panel.getChildren().add(makeIconNote(makeDotIcon(), "ドットを食べるとスコアが加算されます"));
-		panel.getChildren().add(makeIconNote(makePowerPelletIcon(), "パワーエサを食べると一定時間ゴーストを食べられます"));
-		panel.getChildren().add(makeNote("・ゴーストに触れるとミスになります"));
-		panel.getChildren().add(makeNote("・ゲーム画面の「タイトルへ戻る」ボタンでいつでも中断できます"));
+		panel.getChildren().add(makeNoteRow(makeDotIcon(), "ドットを食べるとスコアが加算されます"));
+		panel.getChildren().add(makeNoteRow(makePowerPelletIcon(), "パワーエサを食べると一定時間敵を食べられます"));
+		panel.getChildren().add(makeNoteRow(null, "敵に触れるとゲームオーバーになります"));
+		panel.getChildren().add(makeNoteRow(null, "一時停止画面の「タイトルへ戻る」ボタンでいつでも中断できます"));
 
-		// 戻るボタン（PAUSE画面の「操作説明」「タイトルへ戻る」ボタンと同じ見た目）
+		// 戻るボタン
 		Button backBtn = new Button("戻る");
 		backBtn.setPrefSize(220, 60);
 		backBtn.getStyleClass().add("panel-button");
@@ -109,7 +114,7 @@ public class Help extends Application {
 		bgPane.prefWidthProperty().bind(scene.widthProperty());
 		bgPane.prefHeightProperty().bind(scene.heightProperty());
 
-		// Startと同じスタイルシートを流用
+		// Startと同じスタイルシート
 		try {
 			scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 		} catch (Exception ex) {
@@ -131,23 +136,26 @@ public class Help extends Application {
 		return l;
 	}
 
-	// 補足ノート用の小さいラベルを作る補助メソッド
-	private Label makeNote(String text) {
+	private static final double ICON_COL_WIDTH = 40; // パワーエサ画像の幅に合わせる
+
+	// 補足行を統一して作る補助メソッド（アイコンはnull可）
+	private HBox makeNoteRow(Node icon, String text) {
+		// アイコン枠：常に同じ幅を確保する
+		StackPane iconBox = new StackPane();
+		iconBox.setMinWidth(ICON_COL_WIDTH);
+		iconBox.setPrefWidth(ICON_COL_WIDTH);
+		iconBox.setAlignment(Pos.CENTER);
+		if (icon != null) {
+			iconBox.getChildren().add(icon);
+		}
+		// icon が null の場合は空のまま → 同じ幅のスペーサーとして機能する
+
 		Label l = new Label(text);
 		l.setTextFill(Color.web("#9a9ab0"));
 		l.setFont(Font.font("PixelMplus12", 13));
 		l.setWrapText(true);
-		return l;
-	}
 
-	// アイコン＋説明文を横並びにする補助メソッド
-	private HBox makeIconNote(Node icon, String text) {
-		Label l = new Label(text);
-		l.setTextFill(Color.web("#9a9ab0"));
-		l.setFont(Font.font("PixelMplus12", 13));
-		l.setWrapText(true);
-
-		HBox row = new HBox(10, icon, l);
+		HBox row = new HBox(10, iconBox, l);
 		row.setAlignment(Pos.CENTER_LEFT);
 		return row;
 	}
@@ -163,8 +171,8 @@ public class Help extends Application {
 	private ImageView makePowerPelletIcon() {
 		Image img = new Image(getClass().getResource("/picture/Chii_Item.png").toExternalForm());
 		ImageView view = new ImageView(img);
-		view.setFitWidth(22);
-		view.setFitHeight(22);
+		view.setFitWidth(40);
+		view.setFitHeight(40);
 		view.setPreserveRatio(true);
 		return view;
 	}
