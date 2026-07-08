@@ -111,9 +111,6 @@ public class MapData implements GameMap {
 	// キャラクター管理
 	// ==================================================
 
-	// マップ上のアイテム配置
-	private Item[][] itemMap;
-
 	// 主人公キャラクター
 	private Syujinkou syujinkou;
 
@@ -139,6 +136,9 @@ public class MapData implements GameMap {
 	// ==================================================
 	// アイテム管理
 	// ==================================================
+
+	// マップ上のアイテム配置
+	private Item[][] itemMap;
 
 	// 初期状態のアイテム配置（復活用)
 	private Item[][] initialItemMap;
@@ -230,7 +230,6 @@ public class MapData implements GameMap {
 	// 表示位置
 	private double fruitPopupX = 0; // 食べた瞬間のX座標（固定・ピクセル）
 	private double fruitPopupY = 0; // 食べた瞬間のY座標（固定・ピクセル）
-
 
 	// booleanを受け取る新しいコンストラクターを追加
 	public MapData(boolean paused) {
