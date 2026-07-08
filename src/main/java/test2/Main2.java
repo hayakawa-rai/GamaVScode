@@ -135,6 +135,7 @@ public class Main2 extends Application {
 		howToPlayText.setTextFill(Color.WHITE);
 		howToPlayText.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 		howToPlayText.setWrapText(true);
+
 		// 見やすくするための背景パネル（枠と余白をつける）
 		howToPlayText.setStyle("-fx-background-color: rgba(255, 255, 255, 0.12);" + // うっすら白背景
 				"-fx-background-radius: 8;" + "-fx-border-color: rgba(255, 255, 255, 0.4);" + // 薄い枠線
