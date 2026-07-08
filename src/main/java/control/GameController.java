@@ -50,6 +50,10 @@ public class GameController {
 
 	// 画面遷移のためにStageを保持する変数
 	private final Stage stage;
+	
+	// フリック操作に必要な変数
+	private static final double[] touchStart = new double[2];//触った座標x,yを取得
+	private static final double FLICK_THRESHOLD = 30.0;     // 30.0ピクセル動いたらスワイプ判定
 
 	// 現在のステージ番号（1〜3）を記憶する変数
 	private final int stageNumber;
@@ -161,6 +165,44 @@ public class GameController {
 		// 最前面のレイヤーとして十字キーを追加
 		baseHolder.getChildren().add(dPad);
 
+		// ==========================================
+		// スワイプ操作を検知する処理
+		// ==========================================
+		gameScene.setOnMousePressed(e -> {
+			// 画面に触れた瞬間の座標を記録 (X, Y)
+			touchStart[0] = e.getSceneX();
+			touchStart[1] = e.getSceneY();
+		});
+
+		gameScene.setOnMouseReleased(e -> {
+		// 指/マウスを離した瞬間の座標から移動量を計算
+		double deltaX = e.getSceneX() - touchStart[0];
+		double deltaY = e.getSceneY() - touchStart[1];
+
+		// 横移動と縦移動の絶対値を比較して、どちらのスワイプかを判定する
+		double absX = Math.abs(deltaX);
+		double absY = Math.abs(deltaY);
+
+		// 一定以上の距離を動かしている場合のみスワイプとみなす
+		if (absX > FLICK_THRESHOLD || absY > FLICK_THRESHOLD) {
+			if (absX > absY) {
+				// 横方向のスワイプ
+				if (deltaX > 0) {
+					sendDirection.accept(Direction.RIGHT); // 右スワイプ
+				} else {
+					sendDirection.accept(Direction.LEFT);  // 左スワイプ
+				}
+			} else {
+				// 縦方向のスワイプ
+				if (deltaY > 0) {
+					sendDirection.accept(Direction.DOWN);  // 下スワイプ
+				} else {
+					sendDirection.accept(Direction.UP);    // 上スワイプ
+				}
+			}
+		}
+		});
+		
 		try {
 			// rootがPaneクラス（またはその子クラス）の場合だけキャストして処理する
 			if (root instanceof Pane) {
