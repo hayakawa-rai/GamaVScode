@@ -1,20 +1,26 @@
 package test3.view;
 
 import Characters.BlueEnemy;
+import Characters.Direction;
 import Characters.Enemy;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
 import Characters.Syujinkou;
 import Characters.YellowEnemy;
+import Items.Fruit;
 import Items.Item;
+import control.GameController;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import test3.model.MapData;
 
 public class MapView {
@@ -58,7 +64,7 @@ public class MapView {
 
 		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
 			if (newScene != null) {
-				control.GameController.applyMobileControls(newScene, this.model);
+				GameController.applyMobileControls(newScene, this.model);
 			}
 		});
 	}
@@ -85,7 +91,6 @@ public class MapView {
 		gc.fillRect(0, 0, canvasWidth, INFO_HEIGHT);
 
 		Color wallColor = getColorFromCSS(wallDummy, Color.BLUE);
-		Color pacmanColor = getColorFromCSS(pacmanDummy, Color.YELLOW);
 
 		// 1. ステージ本来のサイズを計算
 		int cols = model.getMap()[0].length;
@@ -111,7 +116,7 @@ public class MapView {
 		gc.translate(offsetX, offsetY);
 		gc.scale(scale, scale);
 
-		// ★【重要】パックマンが動く「ステージの四角い枠内だけ」を真っ黒に塗りつぶします
+		// パックマンが動く「ステージの四角い枠内だけ」を真っ黒に塗りつぶします
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, stageWidth, stageHeight);
 
@@ -133,8 +138,8 @@ public class MapView {
 		if (syujinkou != null) {
 
 			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
-			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
-			gc.setTextBaseline(javafx.geometry.VPos.TOP);
+			gc.setTextAlign(TextAlignment.LEFT);
+			gc.setTextBaseline(VPos.TOP);
 
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
@@ -204,7 +209,7 @@ public class MapView {
 		gc.setLineWidth(2);
 		outline.drawOutline(gc);
 
-		// ★ アイテムを描画
+		// アイテムを描画
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
 				int x = col * MapData.TILE_SIZE;
@@ -218,33 +223,29 @@ public class MapView {
 			}
 		}
 		//  フルーツを描画
-		Items.Fruit fruit = model.getCurrentFruit();
+		Fruit fruit = model.getCurrentFruit();
 		if (fruit != null) {
 			int fx = model.getFruitCol() * MapData.TILE_SIZE;
 			int fy = model.getFruitRow() * MapData.TILE_SIZE;
 			fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
 		}
 		
-		// ▼ フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
+		// フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
 		if (model.isFruitPopupActive()) {
 			double progress = model.getFruitPopupProgress(); // 0.0〜1.0
 			double riseOffset = progress * 20;
 			double alpha = 1.0 - progress;
-
 			double popupX = model.getFruitPopupX();
 			double popupY = model.getFruitPopupY() - MapData.TILE_SIZE / 2.0 - 6 - riseOffset;
 
 			gc.save();
 			gc.setGlobalAlpha(alpha);
-
-			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-
 			gc.setStroke(Color.BLACK);
 			gc.setLineWidth(3);
 			gc.strokeText("+" + model.getFruitPopupScore(), popupX, popupY);
-
 			gc.setFill(Color.WHITE);
 			gc.fillText("+" + model.getFruitPopupScore(), popupX, popupY);
 
@@ -254,9 +255,9 @@ public class MapView {
 
 	//MapViewのフィールドにPac-man画像を追加
 
-	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
+	private final Image pacmanImage = new Image(
 			getClass().getResource("/picture/syujinkou.png").toExternalForm());
-	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
+	private final Image pacmanFeverImage = new Image(
 			getClass().getResource("/picture/syujinkou_Fever.png").toExternalForm());
 
 	/**
@@ -291,7 +292,7 @@ public class MapView {
 		double pacX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
 		double pacY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
 
-		Characters.Direction dir = syujinkou.getDirection();
+		Direction dir = syujinkou.getDirection();
 		double angle = 0;
 
 		gc.save();
@@ -332,7 +333,7 @@ public class MapView {
 	 *
 	 * enemyImageView サイズ設定を行う敵の画像View
 	 */
-	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
+	public void setupEnemyView(ImageView enemyImageView) {
 		enemyImageView.setFitWidth(MapData.TILE_SIZE);
 		enemyImageView.setFitHeight(MapData.TILE_SIZE);
 		enemyImageView.setPreserveRatio(true);
@@ -379,7 +380,7 @@ public class MapView {
 		if (enemy == null)
 			return;
 
-		javafx.scene.image.Image img = null;
+		Image img = null;
 
 		if (enemy instanceof RedEnemy) {
 			img = ((RedEnemy) enemy).getEnemyImage();
@@ -398,16 +399,16 @@ public class MapView {
 			gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
 		} else {
 			if (enemy instanceof RedEnemy) {
-				gc.setFill(javafx.scene.paint.Color.RED);
+				gc.setFill(Color.RED);
 			} else if (enemy instanceof GreenEnemy) {
-				gc.setFill(javafx.scene.paint.Color.GREEN);
+				gc.setFill(Color.GREEN);
 			} else if (enemy instanceof YellowEnemy) {
-				gc.setFill(javafx.scene.paint.Color.YELLOW);
+				gc.setFill(Color.YELLOW);
 			} else if (enemy instanceof BlueEnemy) {
-				gc.setFill(javafx.scene.paint.Color.BLUE);
+				gc.setFill(Color.BLUE);
 			}
 			gc.fillOval(enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
-			gc.setFill(javafx.scene.paint.Color.BLACK);
+			gc.setFill(Color.BLACK);
 			gc.fillOval(enemy.getX() - 2, enemy.getY() - 2, 4, 4);
 		}
 		// ▼ 撃破時のスコアポップアップ表示（ふわっと上に浮かびながらフェードアウト）
@@ -426,8 +427,8 @@ public class MapView {
 			gc.save();
 			gc.setGlobalAlpha(alpha);
 
-			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
 			// 縁取り（黒）
