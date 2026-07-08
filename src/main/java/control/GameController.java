@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import start.Bgm;
+import start.Help;
 import start.Start;
 import story.Gameover;
 import story.Practice;
@@ -53,11 +54,12 @@ public class GameController {
 	// 現在のステージ番号（1〜3）を記憶する変数
 	private final int stageNumber;
 	private final boolean isPractice;
-	
+
 	//ハイスコア用
 	private static boolean newRecord = false;
+
 	public static boolean isNewRecord() {
-	    return newRecord;
+		return newRecord;
 	}
 
 	public GameController(Object model, Object view, Canvas canvas, Scene scene, Stage stage,
@@ -422,6 +424,16 @@ public class GameController {
 		try {
 			Start App = new Start();
 			App.start(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 画面遷移start→Help
+	public static void switchToHelp(Stage stage) {
+		try {
+			Help helpScreen = new Help();
+			helpScreen.start(stage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
