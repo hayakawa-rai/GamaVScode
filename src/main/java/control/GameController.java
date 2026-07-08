@@ -53,7 +53,7 @@ public class GameController {
 	
 	// フリック操作に必要な変数
 	private static final double[] touchStart = new double[2];//触った座標x,yを取得
-	private static final double FLICK_THRESHOLD = 30.0;     // 30.0ピクセル動いたらフリック判定
+	private static final double FLICK_THRESHOLD = 30.0;     // 30.0ピクセル動いたらスワイプ判定
 
 	// 現在のステージ番号（1〜3）を記憶する変数
 	private final int stageNumber;
@@ -166,7 +166,7 @@ public class GameController {
 		baseHolder.getChildren().add(dPad);
 
 		// ==========================================
-				// ✨ 追加：画面全体のフリック（スワイプ）操作を検知する処理
+				// スワイプ操作を検知する処理
 				// ==========================================
 				gameScene.setOnMousePressed(e -> {
 					// 画面に触れた瞬間の座標を記録 (X, Y)
