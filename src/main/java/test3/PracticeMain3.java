@@ -100,18 +100,45 @@ public class PracticeMain3 extends Application {
 		subLabel.setFont(Font.font("Meiryo", FontWeight.BOLD, 16));
 		subLabel.setTextFill(Color.WHITE);
 
+		// ==== 操作説明用 ====
+		Label howToPlayText = new Label(
+				"移動 : ↑↓←→ / WASD\n画面下ボタン(スマホ用)");
+		howToPlayText.setFont(Font.font("Meiryo", FontWeight.NORMAL, 14));
+		howToPlayText.setTextFill(Color.WHITE);
+		howToPlayText.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+		howToPlayText.setWrapText(true);
+		// 見やすくするための背景パネル（枠と余白をつける）
+		howToPlayText.setStyle(
+				"-fx-background-color: rgba(255, 255, 255, 0.12);" + // うっすら白背景
+						"-fx-background-radius: 8;" +
+						"-fx-border-color: rgba(255, 255, 255, 0.4);" + // 薄い枠線
+						"-fx-border-radius: 8;" +
+						"-fx-border-width: 1;" +
+						"-fx-padding: 12 20 12 20;");
+		howToPlayText.setVisible(false);
+		howToPlayText.setManaged(false); // 非表示のときレイアウトの隙間を作らない
+
+		Button howToPlayButton = new Button("操作説明");
+		howToPlayButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
+		howToPlayButton.setPrefSize(160, 40);
+		howToPlayButton.setOnAction(e -> {
+			boolean nowVisible = !howToPlayText.isVisible();
+			howToPlayText.setVisible(nowVisible);
+			howToPlayText.setManaged(nowVisible);
+		});
+
 		Button titleButton = new Button("タイトルへ戻る");
 		titleButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
 		titleButton.setPrefSize(160, 40);
 
 		titleButton.setOnAction(e -> {
-			if (controller != null) {
+			if (this.controller != null) {
 				System.out.println("タイトル画面へ戻ります");
-				controller.forceBackToTitle();
+				this.controller.forceBackToTitle();
 			}
 		});
-
-		pauseLayer.getChildren().addAll(pauseLabel, subLabel, titleButton);
+		pauseLayer.getChildren().addAll(
+				pauseLabel, subLabel, howToPlayButton, howToPlayText, titleButton);
 
 		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
 		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
