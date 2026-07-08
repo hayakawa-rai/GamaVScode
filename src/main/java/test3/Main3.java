@@ -2,8 +2,11 @@ package test3;
 
 import control.GameController;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import start.Bgm;
 import test3.model.MapData;
 import test3.view.MapView;
 
@@ -38,7 +42,7 @@ public class Main3 extends Application {
 			controller = null;
 		}
 
-		start.Bgm.stopBGM(); // リトライ・多重起動時の重複再生防止
+		Bgm.stopBGM(); // リトライ・多重起動時の重複再生防止
 
 		MapData model = new MapData();
 
@@ -80,20 +84,20 @@ public class Main3 extends Application {
 		gameBase.getChildren().add(canvas);
 
 		VBox pauseLayer = new VBox(25);
-		pauseLayer.setAlignment(javafx.geometry.Pos.CENTER);
+		pauseLayer.setAlignment(Pos.CENTER);
 		pauseLayer.setStyle("-fx-background-color: rgba(0, 0, 0, 0.65);"); // 全体を暗くする
 		pauseLayer.setVisible(false);
 		pauseLayer.setMouseTransparent(true);
 
-		javafx.scene.control.Label pauseLabel = new javafx.scene.control.Label("PAUSE");
+		Label pauseLabel = new Label("PAUSE");
 		pauseLabel.setFont(Font.font("Arial", FontWeight.BOLD, 48));
 		pauseLabel.setTextFill(Color.YELLOW);
 
-		javafx.scene.control.Label subLabel = new javafx.scene.control.Label("もう一度 Pキー を押すと再開します");
+		Label subLabel = new Label("もう一度 Pキー を押すと再開します");
 		subLabel.setFont(Font.font("Meiryo", FontWeight.BOLD, 16));
 		subLabel.setTextFill(Color.WHITE);
 
-		javafx.scene.control.Button titleButton = new javafx.scene.control.Button("タイトルへ戻る");
+		Button titleButton = new Button("タイトルへ戻る");
 		titleButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
 		titleButton.setPrefSize(160, 40);
 
@@ -110,7 +114,7 @@ public class Main3 extends Application {
 		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
 
 		// 敵描画呼び出し
-		model.initEnemy(new javafx.scene.image.ImageView());
+		model.initEnemy(new ImageView());
 
 		// 準備ができたコントローラーを生成 (stageNumber=1, isPractice=true)
 		this.controller = new GameController(model, view, canvas, scene, stage, 3, false);
