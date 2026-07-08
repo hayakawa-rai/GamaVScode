@@ -136,16 +136,12 @@ public class MapView {
 
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
-			// スコア
+			// スコア　// ハイスコア
 			gc.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 18));
 			gc.setFill(Color.WHITE);
-			gc.fillText("SCORE : " + syujinkou.getScore(), 20, 12);
-
-			// ハイスコア
-			gc.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 18));
-			gc.setFill(Color.GOLD);
-			gc.fillText("HIGH SCORE : " + HighScoreManager.loadHighScore(model.getStageNumber()), 250, 12);
-
+			gc.fillText("SCORE : " + syujinkou.getScore() + "  /  " + "HIGH SCORE : "
+					+ HighScoreManager.loadHighScore(model.getStageNumber()), 20, 12);
+			
 			// ライフ
 			gc.setFill(Color.RED);
 			gc.fillText("❤".repeat(syujinkou.getHp()), canvasWidth - 100, 12);
