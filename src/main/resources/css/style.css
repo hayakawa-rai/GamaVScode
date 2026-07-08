@@ -58,7 +58,7 @@
 	-fx-padding: 10 20;
 }
 
-/* ヘルプボタン(？) 黄色ver */
+/* ヘルプボタン(？) オレンジver */
 .help-button {
 	-fx-font-family: "PixelMplus12";
 	-fx-font-size: 20px;
@@ -76,20 +76,6 @@
 	-fx-padding: 4 4;
 }
 
-/* Help画面の戻るボタン */
-.panel-button {
-	-fx-font-family: "PixelMplus12";
-	-fx-font-size: 18px;
-
-	-fx-background-color: white;
-	-fx-text-fill: rgb(0, 0, 0);
-
-	-fx-border-color: #4FD8E8;
-	-fx-border-width: 2;
-
-	-fx-background-radius: 4;
-	-fx-border-radius: 4;
-}
 
 .panel-button:hover {
 	-fx-background-color: #eafcff;
