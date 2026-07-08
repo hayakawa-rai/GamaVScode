@@ -25,7 +25,16 @@ public enum FruitType {
         if (stream == null) {
             throw new IllegalStateException("画像が見つかりません: " + imagePath);
         }
-        this.image = new Image(stream);
+        //this.image = new Image(stream);
+        
+        this.image = new Image(
+            stream,
+            80,    // 幅50px
+            0,     // 高さは比率維持で自動計算
+            true,  // 比率維持
+            true   // 高品質リサイズ
+        );
+
     }
 
     private static final FruitType[] VALUES = values();
