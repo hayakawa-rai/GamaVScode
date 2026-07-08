@@ -18,6 +18,8 @@ import Items.FruitType;
 import Items.Item;
 import Items.Point;
 import common.GameMap;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 import start.Bgm;
 import start.SoundManager;
 
@@ -556,7 +558,12 @@ public class MapData implements GameMap {
 				if (map[currentTileY][currentTileX] == 2) {
 
 					System.out.println("FEVER開始！");
-					Bgm.playFeverBGM();
+					SoundManager.play(SoundManager.POWER_EAT); // パワーエサ効果音を先に再生
+
+					// ★0.4秒遅らせてからFEVER BGMを開始
+					PauseTransition delay = new PauseTransition(Duration.seconds(0.4));
+					delay.setOnFinished(event -> start.Bgm.playFeverBGM());
+					delay.play();
 
 					syujinkou.setFever(true);
 					// 7秒間でリセット
