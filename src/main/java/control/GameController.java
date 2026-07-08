@@ -429,7 +429,7 @@ public class GameController {
 		}
 	}
 
-	// 画面遷移start→操作説明
+	// 画面遷移start→Help
 	public static void switchToHelp(Stage stage) {
 		try {
 			Help helpScreen = new Help();
