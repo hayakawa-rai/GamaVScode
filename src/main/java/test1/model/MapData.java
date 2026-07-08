@@ -2,17 +2,24 @@ package test1.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import Characters.BlueEnemy;
+import Characters.Direction;
 import Characters.Enemy;
+import Characters.EnemyState;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
 import Characters.Syujinkou;
 import Characters.YellowEnemy;
 import Items.Chii;
+import Items.Fruit;
+import Items.FruitType;
 import Items.Item;
 import Items.Point;
 import common.GameMap;
+import javafx.scene.image.ImageView;
+import start.Bgm;
 import start.SoundManager;
 
 public class MapData implements GameMap {
@@ -81,11 +88,6 @@ public class MapData implements GameMap {
 	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
 	private int stageNumber = 1;
 
-	// 口パク
-	// private double mouthAngle = 45;
-	// private int mouthOpening = -1;
-	// private boolean isBlocked = false;
-
 	// ワープ抑止
 	private boolean justWarped = false;
 	private int lastWarpX = -1;
@@ -110,7 +112,7 @@ public class MapData implements GameMap {
 	private int fruitRow = -1;
 	private int fruitCol = -1; // map配列内でのフルーツを表す数値
 
-	private Items.Fruit currentFruit = null; // 現在出現中のフルーツ(nullなら未出現)
+	private Fruit currentFruit = null; // 現在出現中のフルーツ(nullなら未出現)
 	private long lastFruitSpawnTime = 0; // 最後にフルーツを出した時刻
 	private int lastFruitScore = 0; // 最後にフルーツを出した時点のスコア
 
@@ -227,7 +229,7 @@ public class MapData implements GameMap {
 	 * 敵キャラクター（赤・緑・黄・青）を初期化してenemiesリストに追加する。 既存のリストを一度クリアしてから追加するため、複数回呼んでも敵が重複しない。
 	 * 追加後、全ての敵の状態をSCATTER（散開）にリセットする。
 	 */
-	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
+	public void initEnemy(ImageView enemyImageView) {
 
 		// ⭕ リストを一度クリアして、敵をどんどん追加する
 		enemies.clear();
@@ -239,7 +241,7 @@ public class MapData implements GameMap {
 		// 安全対策: リスト内の全ての敵の初期状態をセット
 		for (Enemy e : enemies) {
 			if (e != null) {
-				e.setCurrentState(Characters.EnemyState.SCATTER);
+				e.setCurrentState(EnemyState.SCATTER);
 			}
 		}
 	}
@@ -256,16 +258,13 @@ public class MapData implements GameMap {
 
 			paused = true;
 			pauseStartTime = System.currentTimeMillis();
-			start.Bgm.pauseBGM(); // ★追加
-
+			Bgm.pauseBGM();
 			for (Enemy e : enemies) {
 				e.pauseTimer();
 			}
-
 		} else {
 			paused = false;
-			start.Bgm.resumeBGM(); // ★追加
-
+			Bgm.resumeBGM();
 			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
 
 			// FEVER停止
@@ -301,16 +300,12 @@ public class MapData implements GameMap {
 
 		// 死んだときのアニメーション
 		if (syujinkou.isDyingAnimation()) {
-
 			if (syujinkou.updateDyingAnimation()) {
-
 				if (syujinkou.isAlive()) {
-
 					syujinkou.resetToStartPosition();
-
 					for (Enemy enemy : enemies) {
 						enemy.resetToStartPosition();
-						enemy.setCurrentState(Characters.EnemyState.SCATTER);
+						enemy.setCurrentState(EnemyState.SCATTER);
 					}
 
 					modeStartTime = 0;
@@ -334,11 +329,11 @@ public class MapData implements GameMap {
 		if (feverEndTime > 0 && System.currentTimeMillis() >= feverEndTime) {
 			feverEndTime = 0;
 			syujinkou.setFever(false);
-			start.Bgm.stopFeverBGM(); // ★追加：ステージBGMに復帰
+			Bgm.stopFeverBGM(); // ステージBGMに復帰
 
 			for (Enemy e : enemies) {
-				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
-					e.setCurrentState(Characters.EnemyState.SCATTER);
+				if (e.getCurrentState() == EnemyState.FEVER) {
+					e.setCurrentState(EnemyState.SCATTER);
 				}
 			}
 			System.out.println("FEVER終了");
@@ -356,10 +351,10 @@ public class MapData implements GameMap {
 
 				for (Enemy e : enemies) {
 
-					if (e.getCurrentState() != Characters.EnemyState.DEAD
-							&& e.getCurrentState() != Characters.EnemyState.FEVER) {
+					if (e.getCurrentState() != EnemyState.DEAD
+							&& e.getCurrentState() != EnemyState.FEVER) {
 
-						e.setCurrentState(Characters.EnemyState.SCATTER);
+						e.setCurrentState(EnemyState.SCATTER);
 					}
 				}
 
@@ -373,10 +368,10 @@ public class MapData implements GameMap {
 
 				for (Enemy e : enemies) {
 
-					if (e.getCurrentState() != Characters.EnemyState.DEAD
-							&& e.getCurrentState() != Characters.EnemyState.FEVER) {
+					if (e.getCurrentState() != EnemyState.DEAD
+							&& e.getCurrentState() != EnemyState.FEVER) {
 
-						e.setCurrentState(Characters.EnemyState.CHASE);
+						e.setCurrentState(EnemyState.CHASE);
 					}
 				}
 
@@ -390,8 +385,6 @@ public class MapData implements GameMap {
 			checkFruitSpawn();
 			updateFruit();
 		}
-		// 口パクの更新
-		// updateMouth();
 		// パックマンと敵の当たり判定を毎フレーム確認
 		checkCollision();
 	}
@@ -433,13 +426,13 @@ public class MapData implements GameMap {
 		}
 
 		// ランダムに1マス選ぶ
-		java.util.Random random = new java.util.Random();
+		Random random = new Random();
 		int[] chosen = candidates.get(random.nextInt(candidates.size()));
 		this.fruitRow = chosen[0];
 		this.fruitCol = chosen[1];
 
-		Items.FruitType type = Items.FruitType.random(random);
-		currentFruit = new Items.Fruit(type);
+		FruitType type = FruitType.random(random);
+		currentFruit = new Fruit(type);
 		map[fruitRow][fruitCol] = FRUIT_VALUE;
 
 		System.out.println(type + "が (" + fruitRow + ", " + fruitCol + ") に出現しました！");
@@ -482,9 +475,9 @@ public class MapData implements GameMap {
 
 				// ワープ直後は、プレイヤーの入力を上書きして強制直進（先行入力を固定）
 				if (lastWarpX == 27) {
-					syujinkou.setNextDirection(Characters.Direction.LEFT);
+					syujinkou.setNextDirection(Direction.LEFT);
 				} else if (lastWarpX == 0) {
-					syujinkou.setNextDirection(Characters.Direction.RIGHT);
+					syujinkou.setNextDirection(Direction.RIGHT);
 				}
 			} else {
 				justWarped = false;
@@ -499,9 +492,9 @@ public class MapData implements GameMap {
 			if (map[tileY][tileX] == 9) {
 				int warpX = tileX;
 				int warpY = tileY;
-				Characters.Direction currentDir = syujinkou.getDirection();
+				Direction currentDir = syujinkou.getDirection();
 
-				if (currentDir != Characters.Direction.NONE) {
+				if (currentDir != Direction.NONE) {
 					if (currentDir.getDX() != 0) {
 						for (int x = 0; x < map[0].length; x++) {
 							if (map[tileY][x] == 9 && x != tileX) {
@@ -562,15 +555,15 @@ public class MapData implements GameMap {
 				if (map[currentTileY][currentTileX] == 2) {
 
 					System.out.println("FEVER開始！");
-					start.Bgm.playFeverBGM(); // ★追加
+					Bgm.playFeverBGM(); // ★追加
 
 					syujinkou.setFever(true);
 					// 毎回7秒にリセット
 					feverEndTime = System.currentTimeMillis() + 7000;
 
 					for (Enemy e : enemies) {
-						if (e.getCurrentState() != Characters.EnemyState.DEAD) {
-							e.setCurrentState(Characters.EnemyState.FEVER);
+						if (e.getCurrentState() != EnemyState.DEAD) {
+							e.setCurrentState(EnemyState.FEVER);
 						}
 					}
 
@@ -668,7 +661,7 @@ public class MapData implements GameMap {
 	 *
 	 * dir→プレイヤーに設定する次の移動方向
 	 */
-	public void setNextDirection(Characters.Direction dir) {
+	public void setNextDirection(Direction dir) {
 
 		// syujinkou.setNextDirection(dir);
 		if (syujinkou != null) {
@@ -683,7 +676,7 @@ public class MapData implements GameMap {
 
 			modeStartTime = System.currentTimeMillis();
 
-			lastFruitSpawnTime = System.currentTimeMillis(); // ★追加
+			lastFruitSpawnTime = System.currentTimeMillis();
 
 			System.out.println("ゲーム開始");
 		}
@@ -707,7 +700,7 @@ public class MapData implements GameMap {
 
 		for (Enemy e : enemies) {
 
-			if (e.getCurrentState() == Characters.EnemyState.DEAD) {
+			if (e.getCurrentState() == EnemyState.DEAD) {
 				continue;
 			}
 
@@ -716,19 +709,19 @@ public class MapData implements GameMap {
 
 			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
 				// FEVER中の敵は食べられる
-				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
+				if (e.getCurrentState() == EnemyState.FEVER) {
 
 					// 効果音
 					SoundManager.play(SoundManager.ENEMY_DEAD);
 
-					// 💡 敵を倒したのでスコアを加算し、その場にスコア表示を開始する
+					// 敵を倒したのでスコアを加算し、その場にスコア表示を開始する
 					int defeatScore = 200;
 					syujinkou.addScore(defeatScore);
 					e.onDefeated(defeatScore);
 					continue;
 				}
 
-				if (e.getCurrentState() == Characters.EnemyState.DEAD) {
+				if (e.getCurrentState() == EnemyState.DEAD) {
 					continue;
 				}
 
@@ -815,16 +808,16 @@ public class MapData implements GameMap {
 	 * 名前ベースでCharacters.Directionへの変換を試み、失敗した場合もNONEを返す。
 	 */
 	@Override
-	public Characters.Direction getPlayerDirection() {
+	public Direction getPlayerDirection() {
 		if (syujinkou == null || syujinkou.getDirection() == null) {
-			return Characters.Direction.NONE;
+			return Direction.NONE;
 		}
 
 		// Characters.Direction から 正解の test.Direction へ名前ベースで型変換
 		try {
-			return Characters.Direction.valueOf(syujinkou.getDirection().name());
+			return Direction.valueOf(syujinkou.getDirection().name());
 		} catch (IllegalArgumentException e) {
-			return Characters.Direction.NONE;
+			return Direction.NONE;
 		}
 	}
 
@@ -877,7 +870,7 @@ public class MapData implements GameMap {
 	}
 
 	//フルーツ
-	public Items.Fruit getCurrentFruit() {
+	public Fruit getCurrentFruit() {
 		return currentFruit;
 	}
 
