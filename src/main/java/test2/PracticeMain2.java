@@ -24,7 +24,7 @@ import start.Bgm;
 import test2.model.MapData;
 import test2.view.MapView;
 
-//ゲーム制御クラス
+// ゲーム制御クラス
 public class PracticeMain2 extends Application {
 
 	private GameController controller;
@@ -112,16 +112,24 @@ public class PracticeMain2 extends Application {
 		VBox pauseLayer = new VBox(25);
 		pauseLayer.setAlignment(Pos.CENTER);
 		pauseLayer.setStyle("-fx-background-color: rgba(0, 0, 0, 0.65);"); // 全体を暗くする
+
+		// 初期状態は非表示
 		pauseLayer.setVisible(false);
 		pauseLayer.setMouseTransparent(true);
 
+		// ポーズタイトル
 		Label pauseLabel = new Label("PAUSE");
 		pauseLabel.setFont(Font.font("Arial", FontWeight.BOLD, 48));
 		pauseLabel.setTextFill(Color.YELLOW);
 
+		// 説明文
 		Label subLabel = new Label("もう一度 Pキー を押すと再開します");
 		subLabel.setFont(Font.font("Meiryo", FontWeight.BOLD, 16));
 		subLabel.setTextFill(Color.WHITE);
+
+		// =====================================================
+		// 操作説明UI
+		// =====================================================
 
 		// ==== 操作説明用 ====
 		Label howToPlayText = new Label("移動 : ↑↓←→ / WASD\n画面下ボタン(スマホ用)");
@@ -129,22 +137,31 @@ public class PracticeMain2 extends Application {
 		howToPlayText.setTextFill(Color.WHITE);
 		howToPlayText.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 		howToPlayText.setWrapText(true);
+
 		// 見やすくするための背景パネル（枠と余白をつける）
 		howToPlayText.setStyle("-fx-background-color: rgba(255, 255, 255, 0.12);" + // うっすら白背景
 				"-fx-background-radius: 8;" + "-fx-border-color: rgba(255, 255, 255, 0.4);" + // 薄い枠線
 				"-fx-border-radius: 8;" + "-fx-border-width: 1;" + "-fx-padding: 12 20 12 20;");
+
+		// 初期状態は非表示
 		howToPlayText.setVisible(false);
 		howToPlayText.setManaged(false); // 非表示のときレイアウトの隙間を作らない
 
+		// 操作説明ボタン
 		Button howToPlayButton = new Button("操作説明");
 		howToPlayButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
 		howToPlayButton.setPrefSize(160, 40);
+
+		// 表示切替
 		howToPlayButton.setOnAction(e -> {
 			boolean nowVisible = !howToPlayText.isVisible();
 			howToPlayText.setVisible(nowVisible);
 			howToPlayText.setManaged(nowVisible);
 		});
 
+		// =====================================================
+		// タイトルへ戻るボタン
+		// =====================================================
 		Button titleButton = new Button("タイトルへ戻る");
 		titleButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
 		titleButton.setPrefSize(160, 40);
@@ -155,19 +172,32 @@ public class PracticeMain2 extends Application {
 				this.controller.forceBackToTitle();
 			}
 		});
+		// ポーズ画面へ追加
 		pauseLayer.getChildren().addAll(pauseLabel, subLabel, howToPlayButton, howToPlayText, titleButton);
 
+		// =====================================================
+		// レイヤー構成
+		// 背景 → ゲーム画面 → ポーズ画面
+		// =====================================================
 		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
 		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
 
-		// 敵描画呼び出し
+		// =====================================================
+		// 敵初期化
+		// =====================================================
 		model.initEnemy(new ImageView());
 
-		// 準備ができたコントローラーを生成 (stageNumber=1, isPractice=true)
+		// =====================================================
+		// コントローラー生成(stageNumber=1, isPractice=true)
+		// =====================================================
 		this.controller = new GameController(model, view, canvas, scene, stage, 2, true);
-		// コントローラーが最前面のポーズレイヤーを制御できるように登録
+
+		// ポーズ画面をコントローラーへ登録
 		this.controller.setPauseLayer(pauseLayer);
 
+		// =====================================================
+		// ステージ設定
+		// =====================================================
 		stage.setTitle("仙石さん - 練習ステージ 2");
 		stage.setScene(scene);
 
@@ -178,7 +208,7 @@ public class PracticeMain2 extends Application {
 		stage.setMaxHeight(1080);
 
 		stage.show();
-
+		// キーボード入力受付
 		canvas.requestFocus();
 	}
 
