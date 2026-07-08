@@ -26,18 +26,23 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-/**
- * 操作説明画面
- * Start画面の「？」ボタンから遷移してくる
- */
 public class Help extends Application {
 
 	private AnimationTimer timer;
+	private static final double ICON_COL_WIDTH = 40;
+
+	// ページ管理用（2ページ分）
+	private VBox[] pages;
+	private int currentPage = 0;
 
 	@Override
 	public void start(Stage stage) {
+		
+		// BGMの再生
+		Bgm.stopBGM();
+		Bgm.playBGM("/music/startbgm.mp3");
 
-		// ===== 背景（Start画面と同じ横スクロール背景） =====
+		// ===== 背景 =====
 		Image bgImage = new Image(getClass().getResource("/picture/background.png").toExternalForm());
 		double bgWidth = bgImage.getWidth();
 		double bgHeight = bgImage.getHeight();
@@ -51,8 +56,7 @@ public class Help extends Application {
 				if (scrollX[0] <= -bgWidth) {
 					scrollX[0] = 0;
 				}
-				ImagePattern pattern = new ImagePattern(
-						bgImage, scrollX[0], 0, bgWidth, bgHeight, false);
+				ImagePattern pattern = new ImagePattern(bgImage, scrollX[0], 0, bgWidth, bgHeight, false);
 				bgPane.setBackground(new Background(new BackgroundFill(pattern, null, null)));
 			}
 		};
@@ -64,11 +68,12 @@ public class Help extends Application {
 		VBox panel = new VBox(16);
 		panel.setMaxHeight(Region.USE_PREF_SIZE);
 		panel.setAlignment(Pos.CENTER);
-		panel.setMaxWidth(560);
+		panel.setMinWidth(560);   // ← 追加：最小幅を固定
+		panel.setPrefWidth(560);  // ← 追加：基準幅を固定
+		panel.setMaxWidth(560);   // 既存：最大幅
 		panel.setPadding(new Insets(35, 45, 35, 45));
 		panel.setStyle(
 				"-fx-background-color: rgba(0,0,0,0.6);"
-						+ "-fx-border-color: #4FD8E8;"
 						+ "-fx-border-width: 2;"
 						+ "-fx-background-radius: 4;"
 						+ "-fx-border-radius: 4;");
@@ -77,44 +82,101 @@ public class Help extends Application {
 		Label title = new Label("操作方法");
 		title.setTextFill(Color.web("#F4C022"));
 		title.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 40));
-		panel.getChildren().add(title);
 
-		// 操作一覧（PAUSE画面と同じ「ラベル：キー」の1行表記）
-		panel.getChildren().add(makeLine("移動： ↑ / ↓ / ← / →   または   W / A / S / D"));
-		panel.getChildren().add(makeLine("モバイルデバイスでの移動： 画面右下の矢印ボタン"));
-		Region spacer = new Region();
-		spacer.setPrefHeight(8);
-		panel.getChildren().add(spacer);
-		panel.getChildren().add(makeLine("一時停止・再開： P"));
+		// ===== ページ1：操作説明 =====
+		VBox page1 = new VBox(16);
+		page1.setAlignment(Pos.CENTER);
+		page1.getChildren().addAll(
+				makeLine("移動： ↑ / ↓ / ← / →   または   W / A / S / D"),
+				makeLine("モバイルデバイスでの移動： 画面右下の矢印ボタン"));
+
+		// ===== ページ2：アイテム説明 =====
+		VBox page2 = new VBox(10);
+		page2.setAlignment(Pos.CENTER_LEFT);
+		page2.getChildren().addAll(
+				makeNoteRow(makeDotIcon(), "エサを食べるとスコアが加算されます。"),
+				makeNoteRow(makePowerPelletIcon(), "パワーエサを食べると一定時間敵を撃退することができます。"),
+				makeNoteRow(null, "フルーツは一定数のエサを食べると出現し、一定時間が過ぎると消えてなくなります。"),
+				makeNoteRow(null, "取得するとフルーツの種類に合わせたスコアが加算されます。"));
+
+		// ===== ページ3：ルール説明 =====
+		VBox page3 = new VBox(10);
+		page3.setAlignment(Pos.CENTER_LEFT);
+		page3.getChildren().addAll(
+				makeNoteRow(null, "敵に触れるとゲームオーバーになります。"),
+				makeNoteRow(null, "全てのエサを食べると一面クリアになります。"),
+				makeNoteRow(null, "迷路の中段にある左端と右端の通路は「ワープトンネル」で、左端と右端が繫がった状態の通路になっています。"));
+
+		VBox page1Wrapped = wrapWithHeading("操作", page1);
+		VBox page2Wrapped = wrapWithHeading("アイテム", page2);
+		VBox page3Wrapped = wrapWithHeading("ルール", page3);
+
+		// pages配列・pageStackは「Wrapped」版を使う
+		pages = new VBox[] { page1Wrapped, page2Wrapped, page3Wrapped };
+		// 両ページを重ねて、表示中の1枚だけ見せる
+		StackPane pageStack = new StackPane(page1Wrapped, page2Wrapped, page3Wrapped);
+
+		// ===== ページインジケーター（● ○ のような小さい点） =====
+		HBox indicator = new HBox(8);
+		indicator.setAlignment(Pos.CENTER);
+		Circle dotP1 = new Circle(4, Color.web("#4FD8E8"));
+		Circle dotP2 = new Circle(4, Color.web("#4a4a5a"));
+		Circle dotP3 = new Circle(4, Color.web("#4a4a5a"));
+		indicator.getChildren().addAll(dotP1, dotP2, dotP3);
+
+		Circle[] dots = { dotP1, dotP2, dotP3 };
+
+		Runnable updatePage = () -> {
+			for (int i = 0; i < pages.length; i++) {
+				boolean show = (i == currentPage);
+				pages[i].setVisible(show);
+				pages[i].setManaged(show);
+				dots[i].setFill(show ? Color.web("#4FD8E8") : Color.web("#4a4a5a"));
+			}
+		};
+		updatePage.run();
 
 		// 区切り線
 		Separator divider = new Separator();
 		divider.setStyle("-fx-background-color: #4a4a5a;");
-		panel.getChildren().add(divider);
 
-		// 補足ルール（ドット・パワーエサはアイコン付きで表示）
-		panel.getChildren().add(makeNoteRow(makeDotIcon(), "ドットを食べるとスコアが加算されます"));
-		panel.getChildren().add(makeNoteRow(makePowerPelletIcon(), "パワーエサを食べると一定時間敵を食べられます"));
-		panel.getChildren().add(makeNoteRow(null, "敵に触れるとゲームオーバーになります"));
-		panel.getChildren().add(makeNoteRow(null, "一時停止画面の「タイトルへ戻る」ボタンでいつでも中断できます"));
+		panel.getChildren().addAll(title, divider, pageStack, indicator);
 
-		// 戻るボタン
+		// ===== 左右の矢印ボタン（ページ切り替え） =====
+		Button leftArrow = makeArrowButton("◀");
+		Button rightArrow = makeArrowButton("▶");
+		leftArrow.setOnAction(e -> {
+			currentPage = (currentPage - 1 + pages.length) % pages.length;
+			updatePage.run();
+		});
+		rightArrow.setOnAction(e -> {
+			currentPage = (currentPage + 1) % pages.length;
+			updatePage.run();
+		});
+
+		// ===== 戻るボタン（パネルの外・下に配置） =====
 		Button backBtn = new Button("戻る");
 		backBtn.setPrefSize(220, 60);
-		backBtn.getStyleClass().add("panel-button");
+		backBtn.getStyleClass().add("help-button");
 		backBtn.setOnAction(e -> {
 			timer.stop();
 			GameController.switchStart(stage);
 		});
-		panel.getChildren().add(backBtn);
 
-		root.getChildren().addAll(bgPane, panel);
+		// パネル本体 + 戻るボタンを縦に並べる（戻るボタンは黒枠の外）
+		VBox panelWithBack = new VBox(20, panel, backBtn);
+		panelWithBack.setAlignment(Pos.CENTER);
+
+		// 矢印ボタンをパネルの左右に配置する横並びレイアウト
+		HBox contentRow = new HBox(20, leftArrow, panelWithBack, rightArrow);
+		contentRow.setAlignment(Pos.CENTER);
+
+		root.getChildren().addAll(bgPane, contentRow);
 
 		Scene scene = new Scene(root, 1000, 800);
 		bgPane.prefWidthProperty().bind(scene.widthProperty());
 		bgPane.prefHeightProperty().bind(scene.heightProperty());
 
-		// Startと同じスタイルシート
 		try {
 			scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 		} catch (Exception ex) {
@@ -127,8 +189,36 @@ public class Help extends Application {
 		stage.setScene(scene);
 		stage.show();
 	}
+	
+	private VBox wrapWithHeading(String heading, VBox content) {
+		Label h = new Label(heading);
+		h.setTextFill(Color.web("#4FD8E8"));
+		h.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 18));
+		VBox wrapper = new VBox(12, h, content);
+		wrapper.setAlignment(Pos.CENTER_LEFT);
+		return wrapper;
+	}
+	
+	// 矢印ボタンを作る補助メソッド
+	private Button makeArrowButton(String symbol) {
+		Button btn = new Button(symbol);
+		btn.setPrefSize(48, 48);
+		btn.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 20));
+		btn.setStyle(
+				"-fx-background-color: rgba(0,0,0,0.6);"
+						+ "-fx-text-fill: #4FD8E8;"
+						+ "-fx-border-width: 2;"
+						+ "-fx-background-radius: 24;"
+						+ "-fx-border-radius: 24;");
+		return btn;
+	}
 
-	// PAUSE画面と同じ「1行テキスト」を作る補助メソッド
+	private Region spacer(double height) {
+		Region r = new Region();
+		r.setPrefHeight(height);
+		return r;
+	}
+
 	private Label makeLine(String text) {
 		Label l = new Label(text);
 		l.setTextFill(Color.WHITE);
@@ -136,11 +226,7 @@ public class Help extends Application {
 		return l;
 	}
 
-	private static final double ICON_COL_WIDTH = 40; // パワーエサ画像の幅に合わせる
-
-	// 補足行を統一して作る補助メソッド（アイコンはnull可）
 	private HBox makeNoteRow(Node icon, String text) {
-		// アイコン枠：常に同じ幅を確保する
 		StackPane iconBox = new StackPane();
 		iconBox.setMinWidth(ICON_COL_WIDTH);
 		iconBox.setPrefWidth(ICON_COL_WIDTH);
@@ -148,26 +234,24 @@ public class Help extends Application {
 		if (icon != null) {
 			iconBox.getChildren().add(icon);
 		}
-		// icon が null の場合は空のまま → 同じ幅のスペーサーとして機能する
 
 		Label l = new Label(text);
-		l.setTextFill(Color.web("#9a9ab0"));
-		l.setFont(Font.font("PixelMplus12", 13));
+		l.setTextFill(Color.WHITE);
+		l.setFont(Font.font("PixelMplus12", 14));
 		l.setWrapText(true);
+		l.setMaxWidth(400);
 
 		HBox row = new HBox(10, iconBox, l);
 		row.setAlignment(Pos.CENTER_LEFT);
 		return row;
 	}
 
-	// 本編と同じ見た目の「ドット」を図形で作る補助メソッド
 	private Circle makeDotIcon() {
 		Circle dot = new Circle(4);
 		dot.setFill(Color.web("#F4C022"));
 		return dot;
 	}
 
-	// パワーエサの画像アイコンを作る補助メソッド
 	private ImageView makePowerPelletIcon() {
 		Image img = new Image(getClass().getResource("/picture/Chii_Item.png").toExternalForm());
 		ImageView view = new ImageView(img);
@@ -176,4 +260,5 @@ public class Help extends Application {
 		view.setPreserveRatio(true);
 		return view;
 	}
+	
 }
