@@ -192,15 +192,15 @@ public class GameController {
 				} else {
 					sendDirection.accept(Direction.LEFT);  // 左スワイプ
 				}
+			} else {
+				// 縦方向のスワイプ
+				if (deltaY > 0) {
+					sendDirection.accept(Direction.DOWN);  // 下スワイプ
 				} else {
-					// 縦方向のスワイプ
-					if (deltaY > 0) {
-						sendDirection.accept(Direction.DOWN);  // 下スワイプ
-					} else {
-						sendDirection.accept(Direction.UP);    // 上スワイプ
-					}
+					sendDirection.accept(Direction.UP);    // 上スワイプ
 				}
 			}
+		}
 		});
 		
 		try {
