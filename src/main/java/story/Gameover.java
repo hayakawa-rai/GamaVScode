@@ -1,6 +1,8 @@
 package story;
 
 import control.GameController;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Gameover extends Application {
 
@@ -23,7 +26,6 @@ public class Gameover extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		stage.setScene(create(stage, null, score));
 		stage.setTitle("ゲームオーバー");
 		// WindowUtil.fillScreen(stage);  最大化
 		stage.setScene(create(stage, null, score));
@@ -32,6 +34,9 @@ public class Gameover extends Application {
 	}
 
 	public static Scene create(Stage stage, Runnable retryAction, int score) {
+		
+	    // ゲームオーバー画面が表示されたタイミングで効果音を再生
+	    start.SoundManager.play(start.SoundManager.GAMEOVER);
 
 		// GAME OVER
 		Label gameOverLabel = new Label("GAME OVER");
@@ -76,26 +81,34 @@ public class Gameover extends Application {
 		retryBtn.setPrefSize(300, 70);
 		retryBtn.getStyleClass().add("gameover-button");
 		retryBtn.setOnAction(e -> {
-			if (retryAction != null) {
-				// 渡された各ステージの createAndStart(stage) が実行される
-				retryAction.run();
-			} else {
-				System.out.println("⚠️ リトライ処理が登録されていません。");
-			}
-		});
+		    start.SoundManager.play(start.SoundManager.RETRY); 
+		    Timeline delay = new Timeline(
+		            new KeyFrame(Duration.millis(500), ev -> {
+		                if (retryAction != null) {
+		                    retryAction.run();
+		                } else {
+		                    System.out.println("⚠️ リトライ処理が登録されていません。");
+		                }
+		            }));
+		        delay.play();
+		    });
 
 		// タイトル画面へ戻る
 		Button titleBtn = new Button("タイトルへ");
 		titleBtn.setPrefSize(300, 70);
 		titleBtn.getStyleClass().add("gameover-button");
 		titleBtn.setOnAction(e -> {
-			try {
-				
-				// 画面遷移
-				GameController.switchStart(stage);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+		    start.SoundManager.play(start.SoundManager.SELECT);
+
+		    Timeline delay = new Timeline(
+		        new KeyFrame(Duration.millis(500), ev -> {
+		            try {
+		                GameController.switchStart(stage);
+		            } catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
+		        }));
+		    delay.play();
 		});
 
 		// ボタンを縦に並べる
