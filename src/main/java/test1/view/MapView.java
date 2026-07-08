@@ -1,12 +1,16 @@
 package test1.view;
 
 import Characters.BlueEnemy;
+import Characters.Direction;
 import Characters.Enemy;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
 import Characters.Syujinkou;
 import Characters.YellowEnemy;
+import Items.Fruit;
 import Items.Item;
+import control.GameController;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -15,6 +19,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import test1.model.MapData;
 
 public class MapView {
@@ -58,7 +63,7 @@ public class MapView {
 
 		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
 			if (newScene != null) {
-				control.GameController.applyMobileControls(newScene, this.model);
+				GameController.applyMobileControls(newScene, this.model);
 			}
 		});
 	}
@@ -85,7 +90,6 @@ public class MapView {
 		gc.fillRect(0, 0, canvasWidth, INFO_HEIGHT);
 
 		Color wallColor = getColorFromCSS(wallDummy, Color.BLUE);
-		Color pacmanColor = getColorFromCSS(pacmanDummy, Color.YELLOW);
 
 		// 1. ステージ本来のサイズを計算
 		int cols = model.getMap()[0].length;
@@ -218,14 +222,14 @@ public class MapView {
 			}
 		}
 		//  フルーツを描画
-		Items.Fruit fruit = model.getCurrentFruit();
+		Fruit fruit = model.getCurrentFruit();
 		if (fruit != null) {
 			int fx = model.getFruitCol() * MapData.TILE_SIZE;
 			int fy = model.getFruitRow() * MapData.TILE_SIZE;
 			fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
 		}
 
-		// ▼ フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
+		// フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
 		if (model.isFruitPopupActive()) {
 			double progress = model.getFruitPopupProgress(); // 0.0〜1.0
 			double riseOffset = progress * 20;
@@ -236,15 +240,12 @@ public class MapView {
 
 			gc.save();
 			gc.setGlobalAlpha(alpha);
-
-			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-
 			gc.setStroke(Color.BLACK);
 			gc.setLineWidth(3);
 			gc.strokeText("+" + model.getFruitPopupScore(), popupX, popupY);
-
 			gc.setFill(Color.WHITE);
 			gc.fillText("+" + model.getFruitPopupScore(), popupX, popupY);
 
@@ -254,9 +255,9 @@ public class MapView {
 
 	//MapViewのフィールドにPac-man画像を追加
 
-	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
+	private final Image pacmanImage = new Image(
 			getClass().getResource("/picture/syujinkou.png").toExternalForm());
-	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
+	private final Image pacmanFeverImage = new Image(
 			getClass().getResource("/picture/syujinkou_Fever.png").toExternalForm());
 
 	/**
@@ -291,7 +292,7 @@ public class MapView {
 		double pacX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
 		double pacY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
 
-		Characters.Direction dir = syujinkou.getDirection();
+		Direction dir = syujinkou.getDirection();
 		double angle = 0;
 
 		gc.save();
@@ -339,12 +340,6 @@ public class MapView {
 	}
 
 	/**
-	 * 互換用：敵リストの先頭（赤い敵）のみを描画する旧メソッド。
-	 * 現在は drawEnemyInstance を使った全敵描画に置き換わっており未使用。
-	 * 画像が読み込めない場合は赤い円と黒い目を代わりに描画する。
-	 *
-	 * gc 描画先のGraphicsContext
-	 */
 	private void drawEnemy(GraphicsContext gc) {
 		Enemy enemy = model.getEnemy();
 		if (enemy == null)
@@ -365,7 +360,7 @@ public class MapView {
 				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2, red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * 敵1体分を描画する。敵の種類（赤・緑・黄・青）に応じて対応する画像を取得し、
@@ -398,19 +393,19 @@ public class MapView {
 			gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
 		} else {
 			if (enemy instanceof RedEnemy) {
-				gc.setFill(javafx.scene.paint.Color.RED);
+				gc.setFill(Color.RED);
 			} else if (enemy instanceof GreenEnemy) {
-				gc.setFill(javafx.scene.paint.Color.GREEN);
+				gc.setFill(Color.GREEN);
 			} else if (enemy instanceof YellowEnemy) {
-				gc.setFill(javafx.scene.paint.Color.YELLOW);
+				gc.setFill(Color.YELLOW);
 			} else if (enemy instanceof BlueEnemy) {
-				gc.setFill(javafx.scene.paint.Color.BLUE);
+				gc.setFill(Color.BLUE);
 			}
 			gc.fillOval(enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
-			gc.setFill(javafx.scene.paint.Color.BLACK);
+			gc.setFill(Color.BLACK);
 			gc.fillOval(enemy.getX() - 2, enemy.getY() - 2, 4, 4);
 		}
-		// ▼ 撃破時のスコアポップアップ表示（ふわっと上に浮かびながらフェードアウト）
+		// 撃破時のスコアポップアップ表示（ふわっと上に浮かびながらフェードアウト）
 		if (enemy.isScorePopupActive()) {
 			double progress = enemy.getScorePopupProgress(); // 0.0〜1.0
 
@@ -426,8 +421,8 @@ public class MapView {
 			gc.save();
 			gc.setGlobalAlpha(alpha);
 
-			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
 			// 縁取り（黒）
