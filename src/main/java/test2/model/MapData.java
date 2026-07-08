@@ -1,127 +1,237 @@
+/**
+ * ステージ2のゲームデータ管理クラス
+ *
+ * 主な役割
+ * ・マップ管理
+ * ・主人公管理
+ * ・敵管理
+ * ・アイテム管理
+ * ・フルーツ管理
+ * ・FEVER管理
+ * ・ポーズ管理
+ * ・ステージクリア判定
+ */
+
 package test2.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import Characters.BlueEnemy;
 import Characters.Direction;
 import Characters.Enemy;
+import Characters.EnemyState;
 import Characters.GreenEnemy;
 import Characters.RedEnemy;
 import Characters.Syujinkou;
 import Characters.YellowEnemy;
 import Items.Chii;
+import Items.Fruit;
+import Items.FruitType;
 import Items.Item;
 import Items.Point;
 import common.GameMap;
+import javafx.animation.PauseTransition;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+import start.Bgm;
 import start.SoundManager;
 
 public class MapData implements GameMap {
 
+	// ==================================================
 	// マップ定義(28×31マス)
-	// 1マスのサイズ(30×30ピクセル)
+	// ==================================================
+
+	// 1マスのサイズ(30×30px)
 	public static final int TILE_SIZE = 30;
 
 	// 0：道 1：壁 2：パワーエサ 3:仙石さん 7:扉 8:巣 9: ワープ
 	private final int[][] map = {
 
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-			{ 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1 }, // ■　　餌　　　　　　　■■■■■■　　　　　　　餌　　■
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■　　　　　　　■■　■■■■■■　■■　　　　　　　■
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■　■■　　　　　　　　■■　■■　■■■■
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■　■■　■■■　■■　■■　■■　■■■■
-			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, // ■■■■　　　　　　　■■■　■■　　　　　　　■■■■
-			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■■■■　■■　　■■　■■■■■　■■■■
-			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, // ■　　　　■■■■■　■■　■■■　■■■■■　　　　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■■　■■　■■■　■■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, // ■　■■　　　　　　　　　　　　　　　　　　　　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 7, 7, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■■■扉扉■■■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■巣巣巣巣巣巣■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■巣巣巣巣巣巣■　■■■■　■■　■
-			{ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9 }, // ワ　　　　　　　　　■巣巣巣巣巣巣■　　　　　　　　　ワ
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■■■■■■■■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　　　　　　　　　　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■■■■■　■■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■■■■■　■■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, // ■　■■　　　　　　■■　　　　■■　　　　　　■■　■
-			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, // ■　　　　■■■■　■■　■■■■■　■■■■　　　　■
-			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■■■　■■　■■■■■　■■■■　■■■■
-			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, // ■■■■　　　　　　　　　　仙　　　　　　　　　■■■■
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■　■■　■■■■■■　■■　■■　■■■■
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■　■■　■■■■■■　■■　■■　■■■■
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■　　　　　　　■■　　　　　　　　■■　　　　　　　■
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{ 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1 }, // ■　　餌　　　　　　　■■■■■■　　　　　　　餌　　■
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }  // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			{ 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1 }, // ■ 餌 ■■■■■■ 餌 ■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■ ■■■ ■■■■ ■■■■■■
+																									// ■■■■ ■■■ ■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■ ■■■ ■■■■ ■■■■■■
+																									// ■■■■ ■■■ ■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■ ■■ ■■■■■■ ■■ ■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■ ■■ ■■ ■■
+																									// ■■■■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■ ■■ ■■■ ■■
+																									// ■■ ■■ ■■■■
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, // ■■■■ ■■■ ■■ ■■■■
+			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■■■■ ■■ ■■
+																									// ■■■■■ ■■■■
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, // ■ ■■■■■ ■■ ■■■
+																									// ■■■■■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■■ ■■ ■■■
+																									// ■■■■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, // ■ ■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 7, 7, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■
+																									// ■■■扉扉■■■ ■■■■ ■■
+																									// ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■
+																									// ■巣巣巣巣巣巣■ ■■■■ ■■
+																									// ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■
+																									// ■巣巣巣巣巣巣■ ■■■■ ■■
+																									// ■
+			{ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9 }, // ワ ■巣巣巣巣巣巣■ ワ
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■
+																									// ■■■■■■■■ ■■■■ ■■
+																									// ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■■■■ ■■
+																									// ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■■■■■
+																									// ■■ ■■■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■ ■■ ■■■■ ■■■■■
+																									// ■■ ■■■■ ■■ ■
+			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, // ■ ■■ ■■ ■■ ■■ ■
+			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, // ■ ■■■■ ■■ ■■■■■
+																									// ■■■■ ■
+			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■■■ ■■
+																									// ■■■■■ ■■■■ ■■■■
+			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, // ■■■■ 仙 ■■■■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■ ■■ ■■■■■■
+																									// ■■ ■■ ■■■■
+			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■ ■■ ■■ ■■■■■■
+																									// ■■ ■■ ■■■■
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■ ■■ ■■ ■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■ ■■■ ■■■■ ■■■■■■
+																									// ■■■■ ■■■ ■
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■ ■■■ ■■■■ ■■■■■■
+																									// ■■■■ ■■■ ■
+			{ 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1 }, // ■ 餌 ■■■■■■ 餌 ■
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	};
-	// 各マス目に配置されたアイテム(ドット・パワーエサ)を保持する二次元配列
-	private Item[][] itemMap;
 
-	// プレイヤーのキャラクターオブジェクト
+	// ==================================================
+	// キャラクター管理
+	// ==================================================
+
+	// 主人公キャラクター
 	private Syujinkou syujinkou;
 
-	// 敵のリスト管理
+	// 敵キャラクター一覧
 	private final List<Enemy> enemies = new ArrayList<>();
 
-	// ゲームが一時停止中かどうかの確認
+	// ==================================================
+	// ゲーム状態管理
+	// ==================================================
+
+	// ゲームが一時停止中か
 	private boolean paused = false;
 
-	// 初期アイテム配置（エサ復活用）
-	private Item[][] initialItemMap;
-
-	// クラスのフィールド（メンバ変数）に、最大数を記憶する変数を追加
-	private int totalItems;
-
-	// エサ復活を有効にするか？
-	private boolean enableRespawn;
-
-	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
-	private int stageNumber = 2;
-
-	// 口パク
-	// private double mouthAngle = 45;
-	// private int mouthOpening = -1;
-	// private boolean isBlocked = false;
-
-	// ワープ抑止
-	private boolean justWarped = false;
-	private int lastWarpX = -1;
-	private int lastWarpY = -1;
-
-	// 残りアイテム数をカウントする変数
-	private int remainingItems = 0;
+	// ゲームオーバー判定
 	private boolean gameOver = false;
-
-	// CHASE/SCATTER管理
-	private long modeStartTime = 0;
-	private boolean chaseMode = false;
 
 	// ゲーム開始待ち
 	private boolean waitingStart = true;
 
-	// ポーズ
+	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
+	private int stageNumber = 2;
+
+	// ==================================================
+	// アイテム管理
+	// ==================================================
+
+	// マップ上のアイテム配置
+	private Item[][] itemMap;
+
+	// 初期状態のアイテム配置（復活用)
+	private Item[][] initialItemMap;
+
+	// アイテム総数
+	private int totalItems;
+
+	// 残りアイテム数をカウントする変数
+	private int remainingItems = 0;
+
+	// エサ復活を有効にするか？
+	private boolean enableRespawn;
+
+	// ==================================================
+	// ポーズ管理
+	// ==================================================
+
+	// ポーズ開始時刻
 	private long pauseStartTime = 0;
+
+	// ==================================================
+	// ワープ管理
+	// ==================================================
+
+	// ワープ直後の連続ワープ防止
+	private boolean justWarped = false;
+
+	// 最後にワープした座標
+	private int lastWarpX = -1;
+	private int lastWarpY = -1;
+
+	// ==================================================
+	// FEVER管理
+	// ==================================================
 
 	// FEVER終了時刻
 	private long feverEndTime = 0;
-	
-	// フルーツ関連
+
+	// ==================================================
+	// 敵行動モード管理
+	// ==================================================
+
+	// モード開始時刻
+	private long modeStartTime = 0;
+
+	// true:CHASE false:SCATTER
+	private boolean chaseMode = false;
+
+	// ==================================================
+	// フルーツ管理
+	// ==================================================
+
+	// フルーツ用マップ値
 	public static final int FRUIT_VALUE = 3;
+
+	// 出現位置
 	private int fruitRow = -1;
 	private int fruitCol = -1; // map配列内でのフルーツを表す数値
 
+	// 現在出現中のフルーツ(nullなら未出現)
 	private Items.Fruit currentFruit = null;
+
+	// 最後にフルーツを出した時刻
 	private long lastFruitSpawnTime = 0;
+
+	// 最後にフルーツを出した時点のスコア
 	private int lastFruitScore = 0;
 
-	private static final long FRUIT_TIME_INTERVAL = 15000;
-	private static final int FRUIT_SCORE_INTERVAL = 1000;
+	// 出現条件
+	private static final long FRUIT_TIME_INTERVAL = 15000; // 15秒ごと
+	private static final int FRUIT_SCORE_INTERVAL = 1000; // 1000点ごと
+
+	// ==================================================
+	// フルーツスコア表示管理
+	// ==================================================
+
+	// フルーツスコアポップアップ用
+	private boolean fruitPopupActive = false;
+
+	// 表示開始時刻
+	private long fruitPopupStartTime = 0;
+
+	// 表示スコア
+	private int fruitPopupScore = 0;
+
+	// 表示時間(ms)
+	private static final long FRUIT_POPUP_DURATION = 1000;
+
+	// 表示位置
+	private double fruitPopupX = 0; // 食べた瞬間のX座標（固定・ピクセル）
+	private double fruitPopupY = 0; // 食べた瞬間のY座標（固定・ピクセル）
 
 	// booleanを受け取る新しいコンストラクターを追加
-
 	public MapData(boolean paused) {
 		this(); // 上にある引数なしのコンストラクターを呼び出して初期化を行う
 		this.paused = paused; // 受け取った値をpausedフィールドにセットする
@@ -223,7 +333,7 @@ public class MapData implements GameMap {
 	 * 敵キャラクター（赤・緑・黄・青）を初期化してenemiesリストに追加する。 既存のリストを一度クリアしてから追加するため、複数回呼んでも敵が重複しない。
 	 * 追加後、全ての敵の状態をSCATTER（散開）にリセットする。
 	 */
-	public void initEnemy(javafx.scene.image.ImageView enemyImageView) {
+	public void initEnemy(ImageView enemyImageView) {
 
 		// ⭕ リストを一度クリアして、敵をどんどん追加する
 
@@ -236,7 +346,7 @@ public class MapData implements GameMap {
 		// 安全対策: リスト内の全ての敵の初期状態をセット
 		for (Enemy e : enemies) {
 			if (e != null) {
-				e.setCurrentState(Characters.EnemyState.SCATTER);
+				e.setCurrentState(EnemyState.SCATTER);
 			}
 		}
 	}
@@ -250,12 +360,12 @@ public class MapData implements GameMap {
 
 			paused = true;
 			pauseStartTime = System.currentTimeMillis();
-			start.Bgm.pauseBGM(); // ★追加
+			Bgm.pauseBGM();
 
 		} else {
 
 			paused = false;
-			start.Bgm.resumeBGM(); // ★追加
+			Bgm.resumeBGM();
 
 			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
 
@@ -267,10 +377,9 @@ public class MapData implements GameMap {
 			if (modeStartTime > 0) {
 				modeStartTime += pauseDuration;
 			}
-			
-			
+
 			if (lastFruitSpawnTime > 0) {
-			    lastFruitSpawnTime += pauseDuration;
+				lastFruitSpawnTime += pauseDuration;
 			}
 
 			for (Enemy e : enemies) {
@@ -301,7 +410,7 @@ public class MapData implements GameMap {
 
 					for (Enemy enemy : enemies) {
 						enemy.resetToStartPosition();
-						enemy.setCurrentState(Characters.EnemyState.SCATTER);
+						enemy.setCurrentState(EnemyState.SCATTER);
 					}
 
 					modeStartTime = 0;
@@ -325,11 +434,11 @@ public class MapData implements GameMap {
 		if (feverEndTime > 0 && System.currentTimeMillis() >= feverEndTime) {
 			feverEndTime = 0;
 			syujinkou.setFever(false);
-			start.Bgm.stopFeverBGM(); // ★追加：ステージBGMに復帰
+			Bgm.stopFeverBGM(); // ステージBGMに復帰
 
 			for (Enemy e : enemies) {
-				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
-					e.setCurrentState(Characters.EnemyState.SCATTER);
+				if (e.getCurrentState() == EnemyState.FEVER) {
+					e.setCurrentState(EnemyState.SCATTER);
 				}
 			}
 			System.out.println("FEVER終了");
@@ -347,10 +456,9 @@ public class MapData implements GameMap {
 
 				for (Enemy e : enemies) {
 
-					if (e.getCurrentState() != Characters.EnemyState.DEAD
-							&& e.getCurrentState() != Characters.EnemyState.FEVER) {
+					if (e.getCurrentState() != EnemyState.DEAD && e.getCurrentState() != EnemyState.FEVER) {
 
-						e.setCurrentState(Characters.EnemyState.SCATTER);
+						e.setCurrentState(EnemyState.SCATTER);
 					}
 				}
 
@@ -364,10 +472,9 @@ public class MapData implements GameMap {
 
 				for (Enemy e : enemies) {
 
-					if (e.getCurrentState() != Characters.EnemyState.DEAD
-							&& e.getCurrentState() != Characters.EnemyState.FEVER) {
+					if (e.getCurrentState() != EnemyState.DEAD && e.getCurrentState() != EnemyState.FEVER) {
 
-						e.setCurrentState(Characters.EnemyState.CHASE);
+						e.setCurrentState(EnemyState.CHASE);
 					}
 				}
 
@@ -378,70 +485,78 @@ public class MapData implements GameMap {
 			for (Enemy e : enemies) {
 				e.move(map);
 			}
-			
-		    checkFruitSpawn();
-		    updateFruit();
+
+			checkFruitSpawn();
+			updateFruit();
 		}
-		// 口パクの更新
-		// updateMouth();
 		// パックマンと敵の当たり判定を毎フレーム確認
 		checkCollision();
 	}
-	
+
+	/**
+	 * 時間経過 または スコア到達 を条件にフルーツを固定位置に出現させる
+	 */
 	private void checkFruitSpawn() {
-	    if (currentFruit != null) return;
+		if (currentFruit != null)
+			return;// 既に出現中なら何もしない
 
-	    long now = System.currentTimeMillis();
-	    int score = syujinkou.getScore();
+		long now = System.currentTimeMillis();
+		int score = syujinkou.getScore();
 
-	    boolean timeCondition = (now - lastFruitSpawnTime) >= FRUIT_TIME_INTERVAL;
-	    boolean scoreCondition = (score - lastFruitScore) >= FRUIT_SCORE_INTERVAL;
+		boolean timeCondition = (now - lastFruitSpawnTime) >= FRUIT_TIME_INTERVAL;
+		boolean scoreCondition = (score - lastFruitScore) >= FRUIT_SCORE_INTERVAL;
 
-	    if (timeCondition || scoreCondition) {
-	        spawnFruit();
-	        lastFruitSpawnTime = now;
-	        lastFruitScore = score;
-	    }
+		if (timeCondition || scoreCondition) {
+			spawnFruit();
+			lastFruitSpawnTime = now;
+			lastFruitScore = score;
+		}
 	}
 
 	private void spawnFruit() {
-	    // 道(0)かつ、まだドットが残っていない(itemMapがnull)マスだけを候補にする
-	    List<int[]> candidates = new ArrayList<>();
-	    for (int row = 0; row < map.length; row++) {
-	        for (int col = 0; col < map[0].length; col++) {
-	            if (map[row][col] == 0 && itemMap[row][col] == null) {
-	                candidates.add(new int[]{row, col});
-	            }
-	        }
-	    }
 
-	    if (candidates.isEmpty()) {
-	        return;
-	    }
+		// 道(0)かつ、まだドットが残っていない(itemMapがnull)マスだけを候補にする
+		List<int[]> candidates = new ArrayList<>();
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[0].length; col++) {
+				if (map[row][col] == 0 && itemMap[row][col] == null) {
+					candidates.add(new int[] { row, col });
+				}
+			}
+		}
 
-	    java.util.Random random = new java.util.Random();
-	    int[] chosen = candidates.get(random.nextInt(candidates.size()));
-	    this.fruitRow = chosen[0];
-	    this.fruitCol = chosen[1];
+		if (candidates.isEmpty()) {
+			return; // 万が一、道が無ければ何もしない
+		}
 
-	    Items.FruitType type = Items.FruitType.random(random);
-	    currentFruit = new Items.Fruit(type);
-	    map[fruitRow][fruitCol] = FRUIT_VALUE;
+		// ランダムに1マス選ぶ
+		Random random = new Random();
+		int[] chosen = candidates.get(random.nextInt(candidates.size()));
+		this.fruitRow = chosen[0];
+		this.fruitCol = chosen[1];
 
-	    System.out.println(type + "が (" + fruitRow + ", " + fruitCol + ") に出現しました！");
+		FruitType type = FruitType.random(random);
+		currentFruit = new Items.Fruit(type);
+		map[fruitRow][fruitCol] = FRUIT_VALUE;
+
+		System.out.println(type + "が (" + fruitRow + ", " + fruitCol + ") に出現しました！");
 	}
 
+	/**
+	 * フルーツのタイマー更新。時間切れになったら消す。
+	 */
 	private void updateFruit() {
-	    if (currentFruit == null) return;
+		if (currentFruit == null)
+			return;
 
-	    currentFruit.update();
-	    if (currentFruit.isExpired()) {
-	        map[fruitRow][fruitCol] = 0;
-	        currentFruit = null;
-	        fruitRow = -1;
-	        fruitCol = -1;
-	        System.out.println("フルーツが消えました");
-	    }
+		currentFruit.update();
+		if (currentFruit.isExpired()) {
+			map[fruitRow][fruitCol] = 0;
+			currentFruit = null;
+			fruitRow = -1;
+			fruitCol = -1;
+			System.out.println("フルーツが消えました");
+		}
 	}
 
 	/**
@@ -544,15 +659,20 @@ public class MapData implements GameMap {
 				if (map[currentTileY][currentTileX] == 2) {
 
 					System.out.println("FEVER開始！");
-					start.Bgm.playFeverBGM(); // ★追加
+					SoundManager.play(SoundManager.POWER_EAT); // パワーエサ効果音を先に再生
+
+					// ★0.4秒遅らせてからFEVER BGMを開始
+					PauseTransition delay = new PauseTransition(Duration.seconds(0.4));
+					delay.setOnFinished(event -> start.Bgm.playFeverBGM());
+					delay.play();
 
 					syujinkou.setFever(true);
 					// 毎回7秒にリセット
 					feverEndTime = System.currentTimeMillis() + 7000;
 
 					for (Enemy e : enemies) {
-						if (e.getCurrentState() != Characters.EnemyState.DEAD) {
-							e.setCurrentState(Characters.EnemyState.FEVER);
+						if (e.getCurrentState() != EnemyState.DEAD) {
+							e.setCurrentState(EnemyState.FEVER);
 						}
 					}
 
@@ -568,14 +688,23 @@ public class MapData implements GameMap {
 				System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
 			}
 		}
-		
-		//フルーツを食べたかチェック
+		// --- updatePacman()内、既存のitemMap判定の直後あたりに追加 ---
+		// フルーツを食べたかチェック
 		if (currentFruit != null && currentTileY == fruitRow && currentTileX == fruitCol) {
-		    currentFruit.onEaten(syujinkou);
-		    map[fruitRow][fruitCol] = 0;
-		    currentFruit = null;
-		    fruitRow = -1;
-		    fruitCol = -1;
+			currentFruit.onEaten(syujinkou);
+
+			// スコアポップアップ開始
+			fruitPopupScore = currentFruit.getType().getScore();
+			fruitPopupStartTime = System.currentTimeMillis();
+			fruitPopupActive = true;
+			fruitPopupX = fruitCol * TILE_SIZE + TILE_SIZE / 2.0;
+			fruitPopupY = fruitRow * TILE_SIZE + TILE_SIZE / 2.0;
+
+			map[fruitRow][fruitCol] = 0;
+			currentFruit = null;
+			fruitRow = -1;
+			fruitCol = -1;
+
 		}
 
 		// 全部食べたかチェック（エサ復活用）
@@ -612,15 +741,15 @@ public class MapData implements GameMap {
 
 			// 2. 残りアイテム数を初期の総数にリセット（これで isCleared() が false に戻る）
 			this.remainingItems = this.totalItems;
-			
-			 if (fruitRow != -1 && fruitCol != -1) {
-		            this.map[fruitRow][fruitCol] = 0;
-		        }
-		        this.currentFruit = null;
-		        this.fruitRow = -1;
-		        this.fruitCol = -1;
-		        this.lastFruitSpawnTime = System.currentTimeMillis();
-		        this.lastFruitScore = (syujinkou != null) ? syujinkou.getScore() : 0;
+
+			if (fruitRow != -1 && fruitCol != -1) {
+				this.map[fruitRow][fruitCol] = 0;
+			}
+			this.currentFruit = null;
+			this.fruitRow = -1;
+			this.fruitCol = -1;
+			this.lastFruitSpawnTime = System.currentTimeMillis();
+			this.lastFruitScore = (syujinkou != null) ? syujinkou.getScore() : 0;
 
 			System.out.println("【練習モード】エサが再配置され、残りカウントが " + this.remainingItems + " にリセットされました。");
 		}
@@ -641,10 +770,7 @@ public class MapData implements GameMap {
 	 * dir→プレイヤーに設定する次の移動方向
 	 */
 	public void setNextDirection(Direction dir) {
-
-		// ★★syujinkou.setNextDirection(dir);
 		if (syujinkou != null) {
-			// 古い sample.Direction への変換をやめ、そのまま dir を渡します★★
 			syujinkou.setNextDirection(dir);
 		}
 
@@ -654,8 +780,8 @@ public class MapData implements GameMap {
 			waitingStart = false;
 
 			modeStartTime = System.currentTimeMillis();
-			
-		    lastFruitSpawnTime = System.currentTimeMillis(); 
+
+			lastFruitSpawnTime = System.currentTimeMillis();
 
 			System.out.println("ゲーム開始");
 		}
@@ -679,29 +805,28 @@ public class MapData implements GameMap {
 
 		for (Enemy e : enemies) {
 
-			if (e.getCurrentState() == Characters.EnemyState.DEAD) {
+			if (e.getCurrentState() == EnemyState.DEAD) {
 				continue;
 			}
 
 			double dx = pacCenterX - e.getX();
-
 			double dy = pacCenterY - e.getY();
 
 			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
 				// FEVER中の敵は食べられる
-				if (e.getCurrentState() == Characters.EnemyState.FEVER) {
+				if (e.getCurrentState() == EnemyState.FEVER) {
 
 					// 効果音
 					SoundManager.play(SoundManager.ENEMY_DEAD);
-					
-					// 💡 敵を倒したのでスコアを加算し、その場にスコア表示を開始する
+
+					// 敵を倒したのでスコアを加算し、その場にスコア表示を開始する
 					int defeatScore = 200;
 					syujinkou.addScore(defeatScore);
 					e.onDefeated(defeatScore);
 					continue;
 				}
 
-				if (e.getCurrentState() == Characters.EnemyState.DEAD) {
+				if (e.getCurrentState() == EnemyState.DEAD) {
 					continue;
 				}
 
@@ -770,7 +895,7 @@ public class MapData implements GameMap {
 		return stageNumber;
 	}
 
-	// ゲームがまだプレイヤーの初回入力を待っている状態か銅貨を返す。
+	// ゲームがまだプレイヤーの初回入力を待っている状態かどうかを返す。
 	@Override
 	public boolean isWaitingStart() {
 		return waitingStart;
@@ -788,16 +913,16 @@ public class MapData implements GameMap {
 	 * 名前ベースでCharacters.Directionへの変換を試み、失敗した場合もNONEを返す。
 	 */
 	@Override
-	public Characters.Direction getPlayerDirection() {
+	public Direction getPlayerDirection() {
 		if (syujinkou == null || syujinkou.getDirection() == null) {
-			return Characters.Direction.NONE;
+			return Direction.NONE;
 		}
 
 		// Characters.Direction から 正解の test.Direction へ名前ベースで型変換
 		try {
-			return Characters.Direction.valueOf(syujinkou.getDirection().name());
+			return Direction.valueOf(syujinkou.getDirection().name());
 		} catch (IllegalArgumentException e) {
-			return Characters.Direction.NONE;
+			return Direction.NONE;
 		}
 	}
 
@@ -848,17 +973,47 @@ public class MapData implements GameMap {
 	public boolean isGameOver() {
 		return gameOver;
 	}
-	
-	public Items.Fruit getCurrentFruit() {
-	    return currentFruit;
+
+	// フルーツ
+	public Fruit getCurrentFruit() {
+		return currentFruit;
 	}
-	
+
+	// フルーツのスコアポップアップがまだ表示中か判定する（時間経過で自動的にfalseになる）
+	public boolean isFruitPopupActive() {
+		if (fruitPopupActive && System.currentTimeMillis() - fruitPopupStartTime > FRUIT_POPUP_DURATION) {
+			fruitPopupActive = false;
+		}
+		return fruitPopupActive;
+	}
+
+	// 表示するフルーツのスコア値を返す
+	public int getFruitPopupScore() {
+		return fruitPopupScore;
+	}
+
+	// 食べた瞬間のX座標を返す（ポップアップ表示用、固定値・ピクセル）
+	public double getFruitPopupX() {
+		return fruitPopupX;
+	}
+
+	// 食べた瞬間のY座標を返す（ポップアップ表示用、固定値・ピクセル）
+	public double getFruitPopupY() {
+		return fruitPopupY;
+	}
+
+	// ポップアップの進行度を0.0(開始)〜1.0(終了)で返す
+	public double getFruitPopupProgress() {
+		long elapsed = System.currentTimeMillis() - fruitPopupStartTime;
+		return Math.min(1.0, Math.max(0.0, elapsed / (double) FRUIT_POPUP_DURATION));
+	}
+
 	public int getFruitRow() {
-	    return fruitRow;
+		return fruitRow;
 	}
 
 	public int getFruitCol() {
-	    return fruitCol;
+		return fruitCol;
 	}
 	
 	// デバックよう強制クリアボタン

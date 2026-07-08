@@ -7,18 +7,27 @@ import javafx.scene.shape.Circle;
 
 public class Point extends Item {
     
+	// ==================================================
+	// コンストラクタ
+	// ==================================================
     public Point(double pixelX, double pixelY) {
 
         // 親クラス（Item）に、10点というスコアと、半径3の黄色い円（Circle）を渡す
         super(10, new Circle(pixelX, pixelY, 3, Color.YELLOW));
     }
-
+    
+    // ==================================================
+ 	// 食べる処理
+ 	// ==================================================
     @Override
     public void onEaten(Syujinkou player) {
     		// プレイヤーのスコアを加算
         player.addScore(this.score);
     }
-
+    
+    // ==================================================
+    // 描画処理
+    // ==================================================
     @Override
     public void draw(GraphicsContext gc, double x, double y, double tileSize) {
 

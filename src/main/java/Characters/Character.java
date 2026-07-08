@@ -9,8 +9,11 @@ public abstract class Character {
 	protected int speed;
 	// キャラクターが現在向いている方向
 	protected Direction direction;
-
-	// 速さデフォルトを 1 にして、syujinkou の呼び出しと互換性を持たせる
+	
+	// ==================================================
+	// コンストラクタ
+	// ==================================================
+	// 速さデフォルトを 1 にして、主人公 の呼び出しと互換性を持たせる
 	public Character(double x, double y) {
 		this(x, y, 1);
 	}
@@ -26,6 +29,9 @@ public abstract class Character {
 		this.direction = Direction.NONE;
 	}
 	
+	// ==================================================
+	// 動き
+	// ==================================================
 	// キャラクターを移動させる処理
 	public abstract void move(int[][] map);
 

@@ -2,6 +2,7 @@ package Items;
 
 import Characters.Syujinkou;
 import javafx.scene.canvas.GraphicsContext;
+import start.SoundManager;
 
 public class Fruit extends Item {
     private final FruitType type;
@@ -9,16 +10,19 @@ public class Fruit extends Item {
     //タイマー用変数
     private int remainingTicks; // 残りフレーム数（60FPSなら600で10秒）
     private boolean isExpired = false;
-
+    
+    // ==================================================
+ 	// コンストラクタ
+ 	// ==================================================
     public Fruit(FruitType type) {
         super(type.getScore(), null);
         this.type = type;
         this.remainingTicks = 600; // 10秒間表示
     }
-
-    /**
-     * 毎フレーム呼び出される更新処理
-     */
+    
+    // ==================================================
+ 	// 更新処理
+ 	// ==================================================
     public void update() {
         if (remainingTicks > 0) {
             remainingTicks--;
@@ -26,14 +30,20 @@ public class Fruit extends Item {
             isExpired = true;
         }
     }
-
+    
+    // ==================================================
+ 	// 食べる処理
+ 	// ==================================================
     @Override
     public void onEaten(Syujinkou player) {
         player.addScore(score);
-        start.SoundManager.play(start.SoundManager.FRUIT_EAT); 
+        SoundManager.play(SoundManager.FRUIT_EAT); 
         System.out.println(type + "を食べた！ +" + score + "点");
     }
-
+    
+    // ==================================================
+ 	// 描画処理
+ 	// ==================================================
     @Override
     public void draw(GraphicsContext gc, double x, double y, double tileSize) {
         // 残り2秒（120フレーム）以下になったら点滅させる演出（お好みで）
@@ -44,12 +54,15 @@ public class Fruit extends Item {
                 type.getImage(),
                 x + tileSize * 0.1,
                 y + tileSize * 0.1,
-                tileSize * 0.8,
-                tileSize * 0.8
+                tileSize * 0.9,
+                tileSize * 0.9
         	);    
     }
 
     public boolean isExpired() { return isExpired; }
-    // ゲッター
+    
+    // ==================================================
+ 	// getter
+ 	// ==================================================
     public FruitType getType() { return type; }
 }

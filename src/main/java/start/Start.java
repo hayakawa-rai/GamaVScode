@@ -1,20 +1,25 @@
 package start;
 
+import control.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -33,10 +38,10 @@ public class Start extends Application {
 		}
 
 		// 遅延処理停止
-				if (pause != null) {
-					pause.stop();
-					pause = null;
-				}
+		if (pause != null) {
+			pause.stop();
+			pause = null;
+		}
 
 		// 効果音停止
 		if (clickSound != null) {
@@ -51,25 +56,25 @@ public class Start extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-		    // ファイルをストリームとして読み込む
-		    var fontStream = getClass().getResourceAsStream("/font/PixelMplus12-Regular.ttf");
-		    
-		    if (fontStream == null) {
-		        // コンソールにこの警告が出たら、フォントファイルの場所（パス）が間違っています
-		        System.err.println("【警告】フォントファイルが見つかりません。パスを確認してください。");
-		    } else {
-		        // 2. JavaFXにフォントを登録
-		        Font loadedFont = Font.loadFont(fontStream, 20);
-		        
-		        if (loadedFont == null) {
-		            System.err.println("【警告】フォントファイルの読み込みに失敗しました（ファイルが壊れているか形式が違います）");
-		        } else {
-		            // 成功した場合、JavaFXが認識した正確な「フォント名」をコンソールに出します
-		            System.out.println("【成功】フォントを読み込みました。名前: " + loadedFont.getName());
-		        }
-		    }
+			// ファイルをストリームとして読み込む
+			var fontStream = getClass().getResourceAsStream("/font/PixelMplus12-Regular.ttf");
+
+			if (fontStream == null) {
+				// コンソールにこの警告が出たら、フォントファイルの場所（パス）が間違っています
+				System.err.println("【警告】フォントファイルが見つかりません。パスを確認してください。");
+			} else {
+				// 2. JavaFXにフォントを登録
+				Font loadedFont = Font.loadFont(fontStream, 20);
+
+				if (loadedFont == null) {
+					System.err.println("【警告】フォントファイルの読み込みに失敗しました（ファイルが壊れているか形式が違います）");
+				} else {
+					// 成功した場合、JavaFXが認識した正確な「フォント名」をコンソールに出します
+					System.out.println("【成功】フォントを読み込みました。名前: " + loadedFont.getName());
+				}
+			}
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		// 画面を作る前にレトロフォントファイルを読み込む
@@ -88,7 +93,7 @@ public class Start extends Application {
 		double bgHeight = bgImage.getHeight();
 		// 背景をタイルのように敷き詰めるためのPaneを作成
 		Pane bgPane = new Pane();
-		final double[] scrollX = {0};
+		final double[] scrollX = { 0 };
 
 		// アニメーション
 		timer = new AnimationTimer() {
@@ -96,25 +101,24 @@ public class Start extends Application {
 			public void handle(long now) {
 				// 1pxずつ左に動かす
 				scrollX[0] -= 1;
-				
+
 				// 画像の横幅分動いたら0に戻す（これで無限ループ）
 				if (scrollX[0] <= -bgWidth) {
 					scrollX[0] = 0;
 				}
-				
+
 				// 画像は元のサイズのまま、表示位置だけをずらして背景を再描画
-				javafx.scene.paint.ImagePattern pattern = new javafx.scene.paint.ImagePattern(
-					bgImage, 
-					scrollX[0], 0,	// X座標をずらす, Y座標は固定
-					bgWidth, bgHeight, // 画像の本来のサイズを維持
-					false // 絶対座標指定
+				ImagePattern pattern = new ImagePattern(
+						bgImage,
+						scrollX[0], 0, // X座標をずらす, Y座標は固定
+						bgWidth, bgHeight, // 画像の本来のサイズを維持
+						false // 絶対座標指定
 				);
-				
+
 				// bgPane全体の背景をこのパターンで塗りつぶす
-				bgPane.setBackground(new javafx.scene.layout.Background(
-					new javafx.scene.layout.BackgroundFill(pattern, null, null)
-				));
-				
+				bgPane.setBackground(new Background(
+						new BackgroundFill(pattern, null, null)));
+
 			}
 		};
 		//ここから自動的にループ開始(AnimationTimerとペアで使用)
@@ -125,12 +129,11 @@ public class Start extends Application {
 		//縦に並べるための箱を作成
 		VBox ui = new VBox();
 		// UIが広がりすぎないよう最大幅を制限
-		ui.setMaxWidth(800); 
+		ui.setMaxWidth(800);
 		//uiによる配置の間隔を設定
 		ui.setSpacing(20);
 		//中央に設定
 		ui.setAlignment(Pos.CENTER);
-		        
 
 		//title用の画像読み込み
 		Image image = new Image(getClass().getResource("/picture/title.png").toExternalForm());
@@ -164,21 +167,21 @@ public class Start extends Application {
 		btn1.getStyleClass().add("game-button");
 		btn1.setOnAction(e -> {
 			try {
-				
+
 				// 音を鳴らす
 				clickSound.stop();
 				clickSound.play();
-				
+
 				// 0.5秒待つ
 				Timeline delay = new Timeline(
-					new KeyFrame(Duration.millis(500), ev -> {
+						new KeyFrame(Duration.millis(500), ev -> {
 
-						//音と背景停止
-						cleanup();
+							//音と背景停止
+							cleanup();
 
-						//画面遷移
-						control.GameController.startToStory(stage);
-					}));
+							//画面遷移
+							GameController.startToStory(stage);
+						}));
 				delay.play();
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -200,14 +203,14 @@ public class Start extends Application {
 
 				// 0.5秒待つ
 				Timeline delay = new Timeline(
-					new KeyFrame(Duration.millis(500), ev -> {
+						new KeyFrame(Duration.millis(500), ev -> {
 
-					// 背景停止
-					timer.stop();
+							// 背景停止
+							timer.stop();
 
-					// 画面遷移
-					control.GameController.switchToPractice(stage);
-					}));
+							// 画面遷移
+							GameController.switchToPractice(stage);
+						}));
 				delay.play();
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -234,14 +237,14 @@ public class Start extends Application {
 
 				// 他のボタンに合わせて0.5秒後にアプリを閉じる
 				Timeline delay = new Timeline(
-					new KeyFrame(Duration.millis(500), ev -> {
+						new KeyFrame(Duration.millis(500), ev -> {
 
-						// 背景アニメーションやBGMを安全に停止
-						cleanup();
+							// 背景アニメーションやBGMを安全に停止
+							cleanup();
 
-						// JavaFXアプリを終了する
-					Platform.exit();
-					}));
+							// JavaFXアプリを終了する
+							Platform.exit();
+						}));
 				delay.play();
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -253,22 +256,55 @@ public class Start extends Application {
 
 		//titleの画像と3個のボタンが入った箱を縦に並ぶ箱に入れる
 		ui.getChildren().addAll(imageView, buttonBox);
+
+		// 操作説明画面へ飛ぶ「？」アイコンボタン
+		Button btnHelp = new Button("？");
+		btnHelp.setPrefSize(50, 50);
+		btnHelp.getStyleClass().add("help-button"); // CSSで丸くする
+
+		btnHelp.setOnAction(e -> {
+			try {
+				// 音を鳴らす
+				clickSound.stop();
+				clickSound.play();
+
+				// 0.5秒待つ
+				Timeline delay = new Timeline(
+						new KeyFrame(Duration.millis(500), ev -> {
+
+							// 背景アニメーションやBGMを安全に停止
+							cleanup();
+
+							// 操作説明画面へ遷移
+							GameController.switchToHelp(stage);
+						}));
+				delay.play();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+
 		//下から背景、UIの箱に入れたものの順でレイヤー構造のrootに入れる
 		root.getChildren().addAll(bgPane, ui);
+
+		// ？ボタンを画面右上に固定表示するための配置
+		StackPane.setAlignment(btnHelp, Pos.TOP_RIGHT);
+		StackPane.setMargin(btnHelp, new Insets(20));
+		root.getChildren().add(btnHelp);
 
 		//rootを中身とした1000×800のウィンドウを作成
 		Scene scene = new Scene(root, 1000, 800);
 		//
 		bgPane.prefWidthProperty().bind(scene.widthProperty());
 		bgPane.prefHeightProperty().bind(scene.heightProperty());
-		
+
 		//CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
 		//ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(800);
 		stage.setMinHeight(600);
-		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxWidth(1920); // PC大画面やブラウザ最大化時の最大サイズ制限
 		stage.setMaxHeight(1080);
 
 		//ウィンドウの名前を設定

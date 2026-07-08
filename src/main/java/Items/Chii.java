@@ -4,6 +4,7 @@ import Characters.Syujinkou;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 // パワーエサ（Chii）
@@ -11,7 +12,10 @@ public class Chii extends Item {
 
 	// ここの数値を変更するだけで、いつでも画面上の画像の大きさを変えられます！
 	private static final double IMAGE_SIZE = 37.0;
-
+	
+	// ==================================================
+	// コンストラクタ
+	// ==================================================
 	public Chii(double pixelX, double pixelY) {
 		// 親クラス（Item）には、一旦何も持たないダミーのImageViewを渡しておく
 		super(50, new ImageView());
@@ -38,15 +42,20 @@ public class Chii extends Item {
 			System.out.println("画像の読み込みに失敗しました。パスが正しいか確認してください。");
 			
 			// 画像が読み込めなかった時の保険として、臨時の色円を表示させておく設定
-			this.view = new Circle(pixelX, pixelY, 8, javafx.scene.paint.Color.CHARTREUSE);
+			this.view = new Circle(pixelX, pixelY, 8, Color.CHARTREUSE);
 		}
 	}
-
+	// ==================================================
+	// 食べる処理
+	// ==================================================
 	@Override
 	public void onEaten(Syujinkou player) {
 		player.addScore(this.score);
 	}
-
+	
+	// ==================================================
+	// 描画処理
+	// ==================================================
 	@Override
 	public void draw(GraphicsContext gc, double x, double y, double tileSize) {
 
@@ -76,6 +85,7 @@ public class Chii extends Item {
 				y + tileSize / 2.0 - radius,
 				radius * 2, radius * 2);
 	}
+	
 	// ==================================================
 	// getter
 	// ==================================================

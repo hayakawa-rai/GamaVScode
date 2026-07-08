@@ -1,6 +1,8 @@
 package story;
 
 import control.GameController;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Gameover extends Application {
 
@@ -23,27 +26,40 @@ public class Gameover extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		stage.setScene(create(stage, null, score));
 		stage.setTitle("ゲームオーバー");
+		stage.setScene(create(stage, null, score));
 		stage.centerOnScreen();
 		stage.show();
 	}
 
 	public static Scene create(Stage stage, Runnable retryAction, int score) {
+		
+		// ゲームオーバー画面が表示されたタイミングで効果音を再生
+		start.SoundManager.play(start.SoundManager.GAMEOVER);
 
 		// GAME OVER
 		Label gameOverLabel = new Label("GAME OVER");
 		gameOverLabel.getStyleClass().add("gameover-title");
 
+		// ハイスコア表示
+		Label newRecordLabel = new Label("NEW RECORD!!");
+		newRecordLabel.setStyle("-fx-font-size: 40px;" + "-fx-font-weight: bold;" + "-fx-text-fill: gold;");
+
 		// スコア表示
 		Label scoreLabel = new Label("SCORE : " + score);
 		scoreLabel.setStyle("-fx-font-size: 32px;" + "-fx-font-weight: bold;" + "-fx-text-fill: white;");
 
-		VBox titleBox = new VBox(20, gameOverLabel, scoreLabel);
-		titleBox.setAlignment(Pos.CENTER);
-		titleBox.setStyle("-fx-padding: 150px 0 40px 0;");
+		VBox titleBox = new VBox(20);
 
-		// いらすとや
+		titleBox.getChildren().addAll(gameOverLabel, scoreLabel);
+
+		if (GameController.isNewRecord()) {
+			titleBox.getChildren().add(newRecordLabel);
+		}
+		titleBox.setAlignment(Pos.CENTER);
+
+
+		// ゲームオーバー仙石さん
 		ImageView icon = new ImageView();
 		try {
 			// ⭕【JPro対応】getResourceAsStream に変更し、安全にストリーム読み込み
@@ -56,20 +72,25 @@ public class Gameover extends Application {
 		} catch (Exception e) {
 			System.out.println("⚠️ 画像の読み込みに失敗しました。");
 		}
-		icon.setFitWidth(400);
-		icon.setFitHeight(500);
-		icon.setTranslateY(-80);
+		icon.setFitWidth(350);
+		icon.setFitHeight(455);
+		icon.setTranslateY(-70);
 
 		// 直前のステージをやり直す
 		Button retryBtn = new Button("リトライする");
 		retryBtn.setPrefSize(300, 70);
 		retryBtn.getStyleClass().add("gameover-button");
 		retryBtn.setOnAction(e -> {
-			if (retryAction != null) {
-				retryAction.run();
-			} else {
-				System.out.println("⚠️ リトライ処理が登録されていません。");
-			}
+			start.SoundManager.play(start.SoundManager.RETRY); 
+			Timeline delay = new Timeline(
+					new KeyFrame(Duration.millis(500), ev -> {
+						if (retryAction != null) {
+							retryAction.run();
+						} else {
+							System.out.println("⚠️ リトライ処理が登録されていません。");
+						}
+					}));
+			delay.play();
 		});
 
 		// タイトル画面へ戻る
@@ -77,11 +98,17 @@ public class Gameover extends Application {
 		titleBtn.setPrefSize(300, 70);
 		titleBtn.getStyleClass().add("gameover-button");
 		titleBtn.setOnAction(e -> {
-			try {
-				GameController.switchStart(stage);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+			start.SoundManager.play(start.SoundManager.SELECT);
+
+			Timeline delay = new Timeline(
+					new KeyFrame(Duration.millis(500), ev -> {
+						try {
+							GameController.switchStart(stage);
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}));
+			delay.play();
 		});
 
 		// ボタンを縦に並べる
@@ -95,8 +122,8 @@ public class Gameover extends Application {
 		// レイアウト
 		BorderPane ui = new BorderPane();
 		BorderPane.setAlignment(titleBox, Pos.CENTER);
-		BorderPane.setMargin(titleBox, new Insets(150, 0, 40, 0));
-		
+		BorderPane.setMargin(titleBox, new Insets(60, 0, 20, 0)); // 上60px、下20pxの余白
+
 		ui.setTop(titleBox);
 		ui.setCenter(centerBox);
 
@@ -128,7 +155,6 @@ public class Gameover extends Application {
 		whiteOverlay.heightProperty().bind(root.heightProperty());
 
 		root.getChildren().addAll(bg, whiteOverlay, ui);
-
 		Scene scene = new Scene(root, 1000, 800);
 		
 		// ⭕【JPro対応】CSSの安全な読み込み（Nullチェック追加 ＆ 不要な空白を除去）
@@ -137,18 +163,18 @@ public class Gameover extends Application {
 			scene.getStylesheets().add(cssUrl.toExternalForm());
 		}
 		
-		// ⭕【エラー修正】全角スペースなどの不正な隠れ文字を取り除き、すっきり整形
+		// ウィンドウの最小限・最大限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
-		stage.setMaxWidth(1920);
+		stage.setMaxWidth(1920); // PC大画面やブラウザ最大化時の最大サイズ制限
 		stage.setMaxHeight(1080);
 		return scene;
 	}
-	
+
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 	public static void main(String[] args) {
 		launch();
 	}

@@ -48,6 +48,7 @@ public class Story4 extends Application {
 	private Timeline jumptaku;
 	private Stage stage;
 
+
 	// 💡 クリックによる画像切り替えで何度も再利用するため、あらかじめフィールドとして保持
 	private Image anikiNormalImage;
 	private Image anikiAngryImage;
@@ -71,7 +72,10 @@ public class Story4 extends Application {
 		currentStage.show();
 	}
 
+	
 	private void cleanup(Scene scene, StackPane base) {
+		// 文字タイピング
+
 		if (timeline != null) {
 			timeline.stop();
 			timeline = null;

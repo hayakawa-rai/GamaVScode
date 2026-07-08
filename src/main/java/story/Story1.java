@@ -89,7 +89,6 @@ public class Story1 extends Application {
 	}
 
 	private void cleanup(Scene scene) {
-
 		// 文字タイピング
 		if (timeline != null) {
 			timeline.stop();
@@ -161,15 +160,19 @@ public class Story1 extends Application {
 	}
 
 	// 互換性維持のための引数なしメソッド
-	public Scene story() {
-		return story(this.stage);
-	}
-
-	public Scene story(Stage currentStage) {
-		if (currentStage != null) {
-			this.stage = currentStage;
+		public Scene story() {
+			return story(this.stage);
 		}
 
+		// ステージを受け取ってSceneを生成するメソッド（こちらに処理を集約）
+		public Scene story(Stage currentStage) {
+			if (currentStage != null) {
+				this.stage = currentStage;
+			}
+
+			// BGMの再生
+			Bgm.stopBGM();
+			Bgm.playBGM("/music/storybgm.mp3");
 		// BGMの再生
 		Bgm.stopBGM();
 		Bgm.playBGM("/music/storybgm.mp3");
@@ -547,7 +550,7 @@ public class Story1 extends Application {
 				fade.setFromValue(0);
 				fade.setToValue(1);
 
-				// サイズをウィンドウに合わせる
+				// 背景をウィンドウに合わせる
 				fadeRect.widthProperty().bind(scene.widthProperty());
 				fadeRect.heightProperty().bind(scene.heightProperty());
 

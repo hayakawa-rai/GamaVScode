@@ -6,15 +6,21 @@ import Characters.GreenEnemy;
 import Characters.RedEnemy;
 import Characters.Syujinkou;
 import Characters.YellowEnemy;
+import Items.Fruit;
 import Items.Item;
+import common.HighScoreManager;
+import control.GameController;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import test2.model.MapData;
 
 public class MapView {
@@ -31,12 +37,20 @@ public class MapView {
 	// JPro対応: サーバー/クライアント間のラグに影響されない安定した点滅用カウンター
 	private int blinkTick = 0;
 
-	// 互換コンストラクタ（引数1つ用）
+	/**
+	 * CSSからの色取得やモバイル操作の初期化は行わず、モデルの参照だけを保持する。
+	 * @param model 描画対象のゲームデータ
+	 */
 	public MapView(MapData model) {
 		this.model = model;
 	}
 
-	// 新しいコンストラクタ（引数2つ用）
+	/**
+	 * CSSの色をJavaFXの描画色として取り出すための「見えないダミー部品」をrootに追加し、
+	 * Sceneが設定されたタイミングでモバイル用の十字キーコントローラーを適用する。
+	 * @param model 描画対象のゲームデータ
+	 * @param root  ダミー部品を追加する親コンテナ
+	 */
 	public MapView(MapData model, Pane root) {
 		this.model = model;
 
@@ -51,11 +65,25 @@ public class MapView {
 
 		root.sceneProperty().addListener((observable, oldScene, newScene) -> {
 			if (newScene != null) {
-				control.GameController.applyMobileControls(newScene, this.model);
+				GameController.applyMobileControls(newScene, this.model);
 			}
 		});
 	}
 
+	/**
+	 * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
+	 * 
+	 * 1. キャンバスをクリアし、上部の情報バー(INFO_HEIGHT)を黒で塗りつぶす 
+	 * 2. CSSから壁色・パックマン色を取得する 
+	 * 3. ステージ全体が画面に収まるようスケール・オフセットを計算する 
+	 * 4. 変換行列を適用してステージ本体（壁・アイテム・プレイヤー・敵）を描画する 
+	 * 5. スコア・残りライフ・区切り線などのUIを描画する 
+	 * 6. 一時停止中であれば、画面を暗くして「PAUSE」の文字を表示する
+	 *
+	 * @param gc           描画先のGraphicsContext
+	 * @param canvasWidth  キャンバスの現在の幅
+	 * @param canvasHeight キャンバスの現在の高さ
+	 */
 	public void draw(GraphicsContext gc, double canvasWidth, double canvasHeight) {
 		// 内部カウンターを進める（JProでの正確なアニメーション同期用）
 		blinkTick++;
@@ -92,7 +120,7 @@ public class MapView {
 		gc.translate(offsetX, offsetY);
 		gc.scale(scale, scale);
 
-		// ★【重要】パックマンが動く「ステージの四角い枠内だけ」を真っ黒に塗りつぶします
+		// パックマンが動く「ステージの四角い枠内だけ」を真っ黒に塗りつぶします
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, stageWidth, stageHeight);
 
@@ -113,34 +141,46 @@ public class MapView {
 
 		if (syujinkou != null) {
 			// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
-			gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
-			gc.setTextBaseline(javafx.geometry.VPos.TOP);
-			
-			gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+			gc.setTextAlign(TextAlignment.LEFT);
+			gc.setTextBaseline(VPos.TOP);
 
-			// スコア
+			// スコア // ハイスコア
+			gc.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 18));
 			gc.setFill(Color.WHITE);
-			gc.fillText("SCORE : " + syujinkou.getScore(), 20, 12);
+			gc.fillText("SCORE : " + syujinkou.getScore() + "  /  " + "HIGH SCORE : "
+					+ HighScoreManager.loadHighScore(model.getStageNumber()), 20, 12);
 
 			// ライフ
 			gc.setFill(Color.RED);
 			gc.fillText("❤".repeat(syujinkou.getHp()), canvasWidth - 100, 12);
 
 			// 区切り線
+			gc.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 18));
 			gc.setStroke(Color.DARKGRAY);
 			gc.strokeLine(0, INFO_HEIGHT, canvasWidth, INFO_HEIGHT);
 		}
 	}
 
+	/**
+	 * ステージの中身（壁の輪郭とアイテム）を描画する内部メソッド。
+	 * JProでの描画ズレバグを防ぐため、壁の描画時のみ座標を一時的に等倍へ復元する処理を含む。
+	 *
+	 * @param gc          描画先のGraphicsContext
+	 * @param cols        マップの列数
+	 * @param rows        マップの行数
+	 * @param stageWidth  ステージ全体の幅（ピクセル）
+	 * @param stageHeight ステージ全体の高さ（ピクセル）
+	 * @param wallColor   壁の輪郭を描画する色
+	 * @param scale       計算された現在の拡大率
+	 * @param offsetX     中央配置用のXオフセット
+	 * @param offsetY     中央配置用のYオフセット
+	 */
 	private void drawStageContent(GraphicsContext gc, int cols, int rows, double stageWidth, double stageHeight, 
 			Color wallColor, double scale, double offsetX, double offsetY) {
 		Item[][] itemMap = model.getItemMap();
 
 		// 💡 JProの描画ズレバグ対策：壁の輪郭を描画する瞬間だけ拡大・移動を完全にリセット
 		gc.save(); 
-		gc.restore(); 
-		
-		gc.save(); // 輪郭用の一時保存
 		gc.setTransform(1, 0, 0, 1, 0, 0); // グラフィックスの拡大・移動を完全にリセット（完全に生の画面座標にする）
 
 		// 新しいWallOutlineオブジェクトを作り、幾何情報を同期
@@ -152,44 +192,79 @@ public class MapView {
 		
 		gc.restore(); // アイテムやキャラを描画するために、拡大・移動が適用された元の座標系に復元する
 
-		// ★ アイテムを描画
+		// アイテムを描画
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
 				int x = col * MapData.TILE_SIZE;
 				int y = row * MapData.TILE_SIZE;
 				Item item = itemMap[row][col];
-
 				if (item != null) {
 					item.draw(gc, x, y, MapData.TILE_SIZE);
 				}
 			}
 		}
+		
 		// フルーツを描画
-		Items.Fruit fruit = model.getCurrentFruit();
+		Fruit fruit = model.getCurrentFruit();
 		if (fruit != null) {
 			int fx = model.getFruitCol() * MapData.TILE_SIZE;
 			int fy = model.getFruitRow() * MapData.TILE_SIZE;
 			fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
 		}
+
+		// フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
+		if (model.isFruitPopupActive()) {
+			double progress = model.getFruitPopupProgress(); // 0.0〜1.0
+			double riseOffset = progress * 20;
+			double alpha = 1.0 - progress;
+
+			double popupX = model.getFruitPopupX();
+			double popupY = model.getFruitPopupY() - MapData.TILE_SIZE / 2.0 - 6 - riseOffset;
+
+			gc.save();
+			gc.setGlobalAlpha(alpha);
+
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(3);
+			gc.strokeText("+" + model.getFruitPopupScore(), popupX, popupY);
+
+			gc.setFill(Color.WHITE);
+			gc.fillText("+" + model.getFruitPopupScore(), popupX, popupY);
+
+			gc.restore();
+		}
 	}
 	
-	private final javafx.scene.image.Image pacmanImage = new javafx.scene.image.Image(
+	private final Image pacmanImage = new Image(
 			getClass().getResource("/picture/syujinkou.png").toExternalForm());
-	private final javafx.scene.image.Image pacmanFeverImage = new javafx.scene.image.Image(
+	private final Image pacmanFeverImage = new Image(
 			getClass().getResource("/picture/syujinkou_Fever.png").toExternalForm());
 
+	/**
+	 * プレイヤー（主人公）を描画する。
+	 * 死亡アニメーション中は drawDyingsyujinkou に処理を委譲して回転・縮小・フェードアウト演出を行い、
+	 * 死亡している（isAlive()がfalse）場合は何も描画しない。
+	 * FEVER中は専用画像に切り替え、FEVER終了間際（残り3秒以内）は一定間隔で点滅させる。
+	 * 画像が読み込めていない場合は代わりに黄色い円を描画する。
+	 *
+	 * @param gc 描画先のGraphicsContext
+	 */
 	public void drawPacman(GraphicsContext gc) {
 		Syujinkou syujinkou = model.getsyujinkou();
 
 		if (syujinkou == null)
 			return;
-		
-		if(syujinkou.isDyingAnimation()) {
+
+		if (syujinkou.isDyingAnimation()) {
 			drawDyingsyujinkou(gc, syujinkou);
 			return;
 		}
-		
-		if(!syujinkou.isAlive())
+
+		if (!syujinkou.isAlive())
 			return;
 
 		if (pacmanImage == null) {
@@ -200,16 +275,16 @@ public class MapView {
 
 		double pacX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
 		double pacY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
-		
+
 		gc.save();
 		gc.translate(pacX, pacY);
 
-		// JPro対応: System.currentTimeMillis() を排し、drawが呼ばれた回数ベースで安定して点滅させる
-		if(syujinkou.isFever()) {
+		// JPro対応: System.currentTimeMillis() を排し、drawが呼ばれた回数ベース(blinkTick)で安定して点滅させる
+		if (syujinkou.isFever()) {
 			long remain = model.getFeverRemainingTime();
-			if(remain <= 3000) {
+			if (remain <= 3000) {
 				// 8フレームごとに表示・非表示を切り替える
-				if((blinkTick / 8) % 2 == 0) {
+				if ((blinkTick / 8) % 2 == 0) {
 					gc.restore();
 					return;
 				}
@@ -225,17 +300,29 @@ public class MapView {
 		gc.restore();
 	}
 
-	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
+	/**
+	 * 敵用のImageViewの表示サイズをタイルサイズに合わせて設定する（アスペクト比は維持）。
+	 *
+	 * @param enemyImageView サイズ設定を行う敵の画像View
+	 */
+	public void setupEnemyView(ImageView enemyImageView) {
 		enemyImageView.setFitWidth(MapData.TILE_SIZE);
 		enemyImageView.setFitHeight(MapData.TILE_SIZE);
 		enemyImageView.setPreserveRatio(true);
 	}
 
+	/**
+	 * 敵1体分を描画する。敵の種類（赤・緑・黄・青）に応じて対応する画像を取得し、その位置に描画する。
+	 * 画像が取得できない場合は、敵の種類ごとの色で円と黒い目を描画する簡易表示にフォールバックする。
+	 *
+	 * @param gc    描画先のGraphicsContext
+	 * @param enemy 描画対象の敵（nullの場合は何もしない）
+	 */
 	private void drawEnemyInstance(GraphicsContext gc, Enemy enemy) {
 		if (enemy == null)
 			return;
 
-		javafx.scene.image.Image img = null;
+		Image img = null;
 
 		if (enemy instanceof RedEnemy) {
 			img = ((RedEnemy) enemy).getEnemyImage();
@@ -254,24 +341,24 @@ public class MapView {
 			gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
 		} else {
 			if (enemy instanceof RedEnemy) {
-				gc.setFill(javafx.scene.paint.Color.RED);
+				gc.setFill(Color.RED);
 			} else if (enemy instanceof GreenEnemy) {
-				gc.setFill(javafx.scene.paint.Color.GREEN);
+				gc.setFill(Color.GREEN);
 			} else if (enemy instanceof YellowEnemy) {
-				gc.setFill(javafx.scene.paint.Color.YELLOW);
+				gc.setFill(Color.YELLOW);
 			} else if (enemy instanceof BlueEnemy) {
-				gc.setFill(javafx.scene.paint.Color.BLUE);
+				gc.setFill(Color.BLUE);
 			}
 			gc.fillOval(enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
-			gc.setFill(javafx.scene.paint.Color.BLACK);
+			gc.setFill(Color.BLACK);
 			gc.fillOval(enemy.getX() - 2, enemy.getY() - 2, 4, 4);
 		}
 
-		// 撃破時のスコアポップアップ表示
+		// 撃破時のスコアポップアップ表示（ふわっと上に浮かびながらフェードアウト）
 		if (enemy.isScorePopupActive()) {
-			double progress = enemy.getScorePopupProgress();
-			double riseOffset = progress * 20;
-			double alpha = 1.0 - progress;
+			double progress = enemy.getScorePopupProgress(); // 0.0〜1.0
+			double riseOffset = progress * 20; // 上方向へのオフセット（最大20pxくらい浮かせる）
+			double alpha = 1.0 - progress; // フェードアウト（後半から徐々に透明に）
 
 			double popupX = enemy.getDefeatX();
 			double popupY = enemy.getDefeatY() - MapData.TILE_SIZE / 2.0 - 6 - riseOffset;
@@ -279,14 +366,16 @@ public class MapView {
 			gc.save();
 			gc.setGlobalAlpha(alpha);
 
-			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
+			// 縁取り（黒）
 			gc.setStroke(Color.BLACK);
 			gc.setLineWidth(3);
 			gc.strokeText("+" + enemy.getLastDefeatScore(), popupX, popupY);
 
+			// 本体（白文字）
 			gc.setFill(Color.WHITE);
 			gc.fillText("+" + enemy.getLastDefeatScore(), popupX, popupY);
 
@@ -294,6 +383,14 @@ public class MapView {
 		}
 	}
 
+	/**
+	 * プレイヤーの死亡（ミス）演出を描画する。
+	 * 死亡進行度(progress: 0.0〜1.0)に応じて、画像を720度回転させながら
+	 * 縮小・フェードアウトさせるアニメーションを行う。
+	 *
+	 * @param gc        描画先のGraphicsContext
+	 * @param syujinkou 死亡アニメーション中のプレイヤー
+	 */
 	private void drawDyingsyujinkou(GraphicsContext gc, Syujinkou syujinkou) {
 		double progress = syujinkou.getDyingProgress();
 
@@ -313,7 +410,16 @@ public class MapView {
 		gc.restore();
 		gc.setGlobalAlpha(1.0);
 	}
-	
+
+	/**
+	 * 非表示のダミー部品(Region)に適用されたCSSの背景色を取得する。
+	 * これにより、壁やパックマンの色をCanvas描画側でもCSSファイルから一元管理できる。
+	 * CSSクラスが設定されていない、または色の取得に失敗した場合はdefaultColorを返す。
+	 *
+	 * @param node         色を取得する対象のダミー部品
+	 * @param defaultColor 取得に失敗した場合に使うデフォルト色
+	 * @return CSSから取得した色、または defaultColor
+	 */
 	private Color getColorFromCSS(Region node, Color defaultColor) {
 		if (node.getStyleClass().isEmpty()) {
 			return defaultColor;

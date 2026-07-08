@@ -75,6 +75,7 @@ public class Story2 extends Application {
 	}
 
 	private void cleanup(Scene scene) {
+		// テキストタイピング等の各タイムラインを停止
 		if (timeline != null) {
 			timeline.stop();
 			timeline = null;

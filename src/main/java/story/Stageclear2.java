@@ -155,12 +155,16 @@ public class Stageclear2 extends Application {
 		Button next = new Button("次のステージへ");
 		next.getStyleClass().add("game-button2");
 		next.setOnAction(e -> {
+			// 音を再生（Nullチェックをして安全に再生・停止）
 			if (clickSound != null) {
 				clickSound.stop();
 				clickSound.play();
 			}
 
+			// 0.5秒待つ（タイマー開始）
 			pause = new PauseTransition(Duration.seconds(0.5));
+			
+			// 待った後に画面遷移
 			pause.setOnFinished(ev -> {
 				try {
 					cleanup();

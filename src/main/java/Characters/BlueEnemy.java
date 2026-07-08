@@ -4,6 +4,7 @@
 
 package Characters;
 
+import java.io.InputStream;
 import java.util.List;
 
 import common.GameConfig;
@@ -15,26 +16,23 @@ public class BlueEnemy extends Enemy {
 	// 初期位置（エネミーハウス中央付近）
 	private static final int START_COL = 14;
 	private static final int START_ROW = 13;
-
 	// プレイヤーの進行方向+2マス先を狙う
 	private static final int PREDICT_TILES = 2;
-
 	// SCATTER状態時の縄張り座標（右下）
 	private static final int TERRITORY_COL = 24;
 	private static final int TERRITORY_ROW = 26;
-
 	// 出撃時間管理用
 	private long startTime;
-
 	// 出撃タイマー開始フラグ
 	private boolean timerStarted = false;
-
 	// 巣から出撃済みか判定
 	private boolean released = false;
-
 	// 赤の位置を参照
 	private RedEnemy red;
 
+	// ==================================================
+	// コンストラクタ
+	// ==================================================
 	public BlueEnemy(GameMap mapData) {
 
 		// マスの中心座標を初期位置として Enemy に渡す
@@ -81,7 +79,7 @@ public class BlueEnemy extends Enemy {
 
 		// 画像の読み込み
 		try {
-			java.io.InputStream is = getClass().getResourceAsStream(imagePath);
+			InputStream is = getClass().getResourceAsStream(imagePath);
 			if (is == null) {
 				System.err.println("【エラー】画像が見つかりません: " + imagePath);
 			} else {
@@ -90,6 +88,24 @@ public class BlueEnemy extends Enemy {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	// ==================================================
+	// タイマー
+	// ==================================================
+	// ポーズ中の時間を出撃タイマーへ反映する
+	@Override
+	public void resumeTimer() {
+
+		// 出撃待機中のみ補正を行う
+		if (timerStarted && !released) {
+
+			// 出撃待機中のみ補正を行う
+			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
+
+			// タイマーをその分だけ後ろへずらす
+			startTime += pauseDuration;
 		}
 	}
 
@@ -125,7 +141,27 @@ public class BlueEnemy extends Enemy {
 		// Enemy共通の移動処理を実行
 		super.move(map);
 	}
+	
+	// ==================================================
+	// ポジション
+	// ==================================================
+	// プレイヤーが被弾時に元の場所、出撃時間をリセット
+	@Override
+	public void resetToStartPosition() {
 
+		// Enemy共通のリセット処理
+		super.resetToStartPosition();
+
+		// 出撃状態を初期化
+		released = false;
+
+		// 出撃タイマーを未開始状態へ戻す
+		timerStarted = false;
+	}
+
+	// ==================================================
+	// 方向決定
+	// ==================================================
 	@Override
 	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
 
@@ -169,7 +205,7 @@ public class BlueEnemy extends Enemy {
 		int targetRow = pacRow + vy;
 
 		// 縄張りモード
-		if (currentState == Characters.EnemyState.SCATTER) {
+		if (currentState == EnemyState.SCATTER) {
 			return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
 		}
 
@@ -179,38 +215,14 @@ public class BlueEnemy extends Enemy {
 		if (special != null) {
 			return special;
 		}
-
+		
+		// ==================================================
+		// getter
+		// ==================================================
 		// BlueEnemy固有AI
 		// RedEnemyと連携したターゲット地点へ向かう
 		return getClosestDirection(validDirections, targetCol, targetRow);
 	}
 
-	// プレイヤーが被弾時に元の場所、出撃時間をリセット
-	@Override
-	public void resetToStartPosition() {
 
-		// Enemy共通のリセット処理
-		super.resetToStartPosition();
-
-		// 出撃状態を初期化
-		released = false;
-
-		// 出撃タイマーを未開始状態へ戻す
-		timerStarted = false;
-	}
-
-	// ポーズ中の時間を出撃タイマーへ反映する
-	@Override
-	public void resumeTimer() {
-
-		// 出撃待機中のみ補正を行う
-		if (timerStarted && !released) {
-
-			// 出撃待機中のみ補正を行う
-			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
-
-			// タイマーをその分だけ後ろへずらす
-			startTime += pauseDuration;
-		}
-	}
 }
