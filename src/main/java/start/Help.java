@@ -88,6 +88,7 @@ public class Help extends Application {
 		page1.setAlignment(Pos.CENTER);
 		page1.getChildren().addAll(
 				makeLine("移動： ↑ / ↓ / ← / →   または   W / A / S / D"),
+				spacer(6),
 				makeLine("モバイルデバイスでの移動： 画面右下の矢印ボタン"));
 
 		// ===== ページ2：アイテム説明 =====
@@ -99,7 +100,7 @@ public class Help extends Application {
 				makeNoteRow(makePowerPelletIcon(), "パワーエサを食べるとスコアが加算され、一定時間敵を撃退することができます。"),
 				spacer(6),
 				makeNoteRow(null, "フルーツを食べると種類に合わせたスコアが加算されます。"),
-				makeNoteRow(null, "一定数のエサを食べると出現し、一定時間が過ぎると消えてなくなります。"),
+				makeNoteRow(null, "一定数のエサを食べるとランダムな場所に出現し、一定時間が過ぎると消えてなくなります。"),
 				spacer(6),
 				makeFruitRow());
 
@@ -107,8 +108,10 @@ public class Help extends Application {
 		VBox page3 = new VBox(10);
 		page3.setAlignment(Pos.CENTER_LEFT);
 		page3.getChildren().addAll(
-				makeNoteRow(null, "敵に触れるとゲームオーバーになります。"),
 				makeNoteRow(null, "全てのエサを食べると一面クリアになります。"),
+				spacer(6),
+				makeNoteRow(null, "敵に触れるとゲームオーバーになります。"),
+				spacer(6),
 				makeNoteRow(null, "迷路の中段にある左端と右端の通路は「ワープトンネル」で、左端と右端が繫がった状態の通路になっています。"));
 
 		VBox page1Wrapped = wrapWithHeading("操作", page1);
@@ -257,7 +260,7 @@ public class Help extends Application {
 	}
 
 	private ImageView makePowerPelletIcon() {
-		Image img = new Image(getClass().getResource("/picture/Chii_Item_Help.png").toExternalForm());
+		Image img = new Image(getClass().getResource("/picture/Chii_Item.png").toExternalForm());
 		ImageView view = new ImageView(img);
 		view.setFitWidth(55);
 		view.setFitHeight(55);
