@@ -95,7 +95,7 @@ public class Help extends Application {
 		page2.setAlignment(Pos.CENTER_LEFT);
 		page2.getChildren().addAll(
 				makeNoteRow(makeDotIcon(), "エサを食べるとスコアが加算されます。"),
-				makeNoteRow(makePowerPelletIcon(), "パワーエサを食べると一定時間敵を撃退することができます"),
+				makeNoteRow(makePowerPelletIcon(), "パワーエサを食べると一定時間敵を撃退することができます。"),
 				makeNoteRow(null, "フルーツは一定数のエサを食べると出現し、一定時間が過ぎると消えてなくなります。"),
 				makeNoteRow(null, "取得するとフルーツの種類に合わせたスコアが加算されます。"));
 
@@ -103,8 +103,8 @@ public class Help extends Application {
 		VBox page3 = new VBox(10);
 		page3.setAlignment(Pos.CENTER_LEFT);
 		page3.getChildren().addAll(
-				makeNoteRow(null, "敵に触れるとゲームオーバーになります"),
-				makeNoteRow(null, "全てのエサを食べると一面クリアになります"),
+				makeNoteRow(null, "敵に触れるとゲームオーバーになります。"),
+				makeNoteRow(null, "全てのエサを食べると一面クリアになります。"),
 				makeNoteRow(null, "迷路の中段にある左端と右端の通路は「ワープトンネル」で、左端と右端が繫がった状態の通路になっています。"));
 
 		VBox page1Wrapped = wrapWithHeading("操作", page1);
