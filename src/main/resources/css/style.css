@@ -63,10 +63,10 @@
 	-fx-font-family: "PixelMplus12";
 	-fx-font-size: 20px;
 
-	-fx-background-color: linear-gradient(rgb(255, 221, 51), rgb(244, 192, 34));
-	-fx-text-fill: rgb(0, 0, 0);
+	-fx-background-color: linear-gradient(rgb(255, 180, 80), rgb(255, 130, 40));
+	-fx-text-fill: white;
 
-	-fx-border-color: rgb(180, 130, 10);
+	-fx-border-color: rgb(180, 90, 20);
 	-fx-border-width: 3;
 
 	-fx-background-radius: 0;
