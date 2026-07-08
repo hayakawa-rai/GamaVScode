@@ -340,12 +340,7 @@ public class MapView {
 	}
 
 	/**
-	 * 互換用：敵リストの先頭（赤い敵）のみを描画する旧メソッド。
-	 * 現在は drawEnemyInstance を使った全敵描画に置き換わっており未使用。
-	 * 画像が読み込めない場合は赤い円と黒い目を代わりに描画する。
-	 *
-	 * gc 描画先のGraphicsContext
-	 */
+	 
 	private void drawEnemy(GraphicsContext gc) {
 		Enemy enemy = model.getEnemy();
 		if (enemy == null)
@@ -366,7 +361,7 @@ public class MapView {
 				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2, red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * 敵1体分を描画する。敵の種類（赤・緑・黄・青）に応じて対応する画像を取得し、
@@ -411,7 +406,7 @@ public class MapView {
 			gc.setFill(Color.BLACK);
 			gc.fillOval(enemy.getX() - 2, enemy.getY() - 2, 4, 4);
 		}
-		// ▼ 撃破時のスコアポップアップ表示（ふわっと上に浮かびながらフェードアウト）
+		// 撃破時のスコアポップアップ表示（ふわっと上に浮かびながらフェードアウト）
 		if (enemy.isScorePopupActive()) {
 			double progress = enemy.getScorePopupProgress(); // 0.0〜1.0
 
