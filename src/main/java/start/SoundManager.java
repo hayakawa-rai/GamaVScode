@@ -15,6 +15,12 @@ public class SoundManager {
 	public static final AudioClip FRUIT_EAT = load("/music/fruiteatsound.mp3");
 	// パワーエサ取得時の効果音
 	public static final AudioClip POWER_EAT = load("/music/powerup.mp3");
+	//ゲームオーバー画面表示時の効果音
+	public static final AudioClip GAMEOVER = load("/music/gameover.mp3");
+	//リトライ選択時の効果音
+	public static final AudioClip RETRY = load("/music/retry.mp3");
+	//ボタン選択時の効果音（Startクラスと同じ select.mp3 を共通利用）
+	public static final AudioClip SELECT = load("/music/select.mp3");
 
 	// 音量調節
 	static {
@@ -23,6 +29,9 @@ public class SoundManager {
 		DAMAGE.setVolume(0.1); // ダメージ
 		FRUIT_EAT.setVolume(0.4); // フルーツ取得 
 		POWER_EAT.setVolume(0.5);//パワーエサ取得
+		GAMEOVER.setVolume(0.5);//ゲームオーバー
+		RETRY.setVolume(0.4);//リトライ
+		SELECT.setVolume(0.4);//セレクト
 	}
 
 	// 指定したパスの効果音を読み込む
