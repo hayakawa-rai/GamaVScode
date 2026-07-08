@@ -132,7 +132,6 @@ public class PracticeMain1 extends Application {
 		stage.setMinHeight(800);
 		stage.setMaxWidth(1920);
 		stage.setMaxHeight(1080);
-
 		stage.show();
 
 		canvas.requestFocus();
