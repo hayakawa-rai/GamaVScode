@@ -54,8 +54,8 @@ public class Fruit extends Item {
                 type.getImage(),
                 x + tileSize * 0.1,
                 y + tileSize * 0.1,
-                tileSize * 0.8,
-                tileSize * 0.8
+                tileSize * 0.9,
+                tileSize * 0.9
         	);    
     }
 

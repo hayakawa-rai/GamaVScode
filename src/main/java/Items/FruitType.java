@@ -26,6 +26,7 @@ public enum FruitType {
             throw new IllegalStateException("画像が見つかりません: " + imagePath);
         }
         this.image = new Image(stream);
+
     }
 
     private static final FruitType[] VALUES = values();
