@@ -112,8 +112,10 @@ public class Help extends Application {
 				spacer(6),
 				makeNoteRow(null, "敵に触れるとゲームオーバーになります。"),
 				spacer(6),
-				makeNoteRow(null, "迷路の中段にある左端と右端の通路は「ワープトンネル」で、左端と右端が繫がった状態の通路になっています。"));
-
+				makeNoteRow(null, "マップにある左端と右端の通路は「ワープトンネル」で、左端と右端が繫がった状態の通路になっています。")
+					//makeWarpTunnelImage()
+				);
+		
 		VBox page1Wrapped = wrapWithHeading("操作", page1);
 		VBox page2Wrapped = wrapWithHeading("アイテム", page2);
 		VBox page3Wrapped = wrapWithHeading("ルール", page3);
@@ -296,5 +298,13 @@ public class Help extends Application {
 		row.setAlignment(Pos.CENTER);
 		return row;
 	}
+
+	/*private ImageView makeWarpTunnelImage() {
+		Image img = new Image(getClass().getResource("/picture/warp_tunnel.png").toExternalForm());
+		ImageView view = new ImageView(img);
+		view.setFitWidth(400);
+		view.setPreserveRatio(true);
+		return view;
+	}*/
 
 }
