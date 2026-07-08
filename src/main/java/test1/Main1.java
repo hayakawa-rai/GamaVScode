@@ -157,7 +157,9 @@ public class Main1 extends Application {
 			howToPlayText.setManaged(nowVisible);
 		});
 
+		// =====================================================
 		// タイトルへ戻るボタン
+		// =====================================================
 		Button titleButton = new Button("タイトルへ戻る");
 		titleButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
 		titleButton.setPrefSize(160, 40);
@@ -168,7 +170,7 @@ public class Main1 extends Application {
 				this.controller.forceBackToTitle();
 			}
 		});
-
+		// ポーズ画面へ部品追加
 		pauseLayer.getChildren().addAll(pauseLabel, subLabel, howToPlayButton, howToPlayText, titleButton);
 
 		// =====================================================
