@@ -37,7 +37,7 @@ public class Help extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		
+
 		// BGMの再生
 		Bgm.stopBGM();
 		Bgm.playBGM("/music/startbgm.mp3");
@@ -68,9 +68,9 @@ public class Help extends Application {
 		VBox panel = new VBox(16);
 		panel.setMaxHeight(Region.USE_PREF_SIZE);
 		panel.setAlignment(Pos.CENTER);
-		panel.setMinWidth(560);   // ← 追加：最小幅を固定
-		panel.setPrefWidth(560);  // ← 追加：基準幅を固定
-		panel.setMaxWidth(560);   // 既存：最大幅
+		panel.setMinWidth(560); // ← 追加：最小幅を固定
+		panel.setPrefWidth(560); // ← 追加：基準幅を固定
+		panel.setMaxWidth(560); // 既存：最大幅
 		panel.setPadding(new Insets(35, 45, 35, 45));
 		panel.setStyle(
 				"-fx-background-color: rgba(0,0,0,0.6);"
@@ -88,6 +88,7 @@ public class Help extends Application {
 		page1.setAlignment(Pos.CENTER);
 		page1.getChildren().addAll(
 				makeLine("移動： ↑ / ↓ / ← / →   または   W / A / S / D"),
+				spacer(6),
 				makeLine("モバイルデバイスでの移動： 画面右下の矢印ボタン"));
 
 		// ===== ページ2：アイテム説明 =====
@@ -95,16 +96,22 @@ public class Help extends Application {
 		page2.setAlignment(Pos.CENTER_LEFT);
 		page2.getChildren().addAll(
 				makeNoteRow(makeDotIcon(), "エサを食べるとスコアが加算されます。"),
-				makeNoteRow(makePowerPelletIcon(), "パワーエサを食べると一定時間敵を撃退することができます。"),
-				makeNoteRow(null, "フルーツは一定数のエサを食べると出現し、一定時間が過ぎると消えてなくなります。"),
-				makeNoteRow(null, "取得するとフルーツの種類に合わせたスコアが加算されます。"));
+				spacer(6),
+				makeNoteRow(makePowerPelletIcon(), "パワーエサを食べるとスコアが加算され、一定時間敵を撃退することができます。"),
+				spacer(6),
+				makeNoteRow(null, "フルーツを食べると種類に合わせたスコアが加算されます。"),
+				makeNoteRow(null, "一定数のエサを食べるとランダムな場所に出現し、一定時間が過ぎると消えてなくなります。"),
+				spacer(6),
+				makeFruitRow());
 
 		// ===== ページ3：ルール説明 =====
 		VBox page3 = new VBox(10);
 		page3.setAlignment(Pos.CENTER_LEFT);
 		page3.getChildren().addAll(
-				makeNoteRow(null, "敵に触れるとゲームオーバーになります。"),
 				makeNoteRow(null, "全てのエサを食べると一面クリアになります。"),
+				spacer(6),
+				makeNoteRow(null, "敵に触れるとゲームオーバーになります。"),
+				spacer(6),
 				makeNoteRow(null, "迷路の中段にある左端と右端の通路は「ワープトンネル」で、左端と右端が繫がった状態の通路になっています。"));
 
 		VBox page1Wrapped = wrapWithHeading("操作", page1);
@@ -189,7 +196,7 @@ public class Help extends Application {
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+
 	private VBox wrapWithHeading(String heading, VBox content) {
 		Label h = new Label(heading);
 		h.setTextFill(Color.web("#4FD8E8"));
@@ -198,7 +205,7 @@ public class Help extends Application {
 		wrapper.setAlignment(Pos.CENTER_LEFT);
 		return wrapper;
 	}
-	
+
 	// 矢印ボタンを作る補助メソッド
 	private Button makeArrowButton(String symbol) {
 		Button btn = new Button(symbol);
@@ -255,10 +262,39 @@ public class Help extends Application {
 	private ImageView makePowerPelletIcon() {
 		Image img = new Image(getClass().getResource("/picture/Chii_Item.png").toExternalForm());
 		ImageView view = new ImageView(img);
-		view.setFitWidth(40);
-		view.setFitHeight(40);
+		view.setFitWidth(55);
+		view.setFitHeight(55);
 		view.setPreserveRatio(true);
 		return view;
 	}
-	
+
+	// フルーツ1種類分のアイコン＋スコアを作る補助メソッド
+	private VBox makeFruitItem(String imagePath, int score) {
+		Image img = new Image(getClass().getResource(imagePath).toExternalForm());
+		ImageView view = new ImageView(img);
+		view.setFitWidth(36);
+		view.setFitHeight(36);
+		view.setPreserveRatio(true);
+
+		Label scoreLabel = new Label("＋" + score);
+		scoreLabel.setTextFill(Color.web("#F4C022"));
+		scoreLabel.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 12));
+
+		VBox item = new VBox(4, view, scoreLabel);
+		item.setAlignment(Pos.CENTER);
+		return item;
+	}
+
+	// フルーツ一覧（5種）を横並びにする補助メソッド
+	private HBox makeFruitRow() {
+		HBox row = new HBox(18,
+				makeFruitItem("/picture/sakuranbo.png", 100),
+				makeFruitItem("/picture/ichigo.png", 300),
+				makeFruitItem("/picture/orange.png", 500),
+				makeFruitItem("/picture/ringo.png", 700),
+				makeFruitItem("/picture/budo.png", 1000));
+		row.setAlignment(Pos.CENTER);
+		return row;
+	}
+
 }
