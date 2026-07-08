@@ -1,25 +1,20 @@
 @font-face {
     font-family: "PixelMplus12";
-    src: url('../font/PixelMplus12-Regular.ttf');
+    /* ⭕ JPro対応: 相対パス '../' をやめ、リソース直下の絶対パス '/' に書き換えます */
+    src: url('/font/PixelMplus12-Regular.ttf');
 }
 
 /* ゲームボタン青ver */
 .game-button {
-
 	/* レトロフォントを指定 */
 	-fx-font-family: "PixelMplus12";
-
 	-fx-font-size: 30px;
-
 	-fx-background-color: linear-gradient(rgb(126, 193, 254), rgb(68, 245, 255));
 	-fx-text-fill: rgb(0, 0, 0);
-
 	-fx-border-color: rgb(52, 153, 220);
 	-fx-border-width: 3;
-
 	-fx-background-radius: 0;
 	-fx-border-radius: 0;
-
 	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0, 0, 3);
 	-fx-padding: 12 20;
 }
@@ -41,19 +36,13 @@
 /*ゲームボタン黒ver*/
 .game-button2 {
 	-fx-font-family: "PixelMplus12";
-	-fx-font-size: 16px;
-
 	-fx-font-size: 20px;
-
 	-fx-background-color: linear-gradient(rgb(0, 0, 0), rgb(171, 166, 181));
 	-fx-text-fill: rgb(255, 255, 255);
-
 	-fx-border-color: rgb(128, 128, 128);
 	-fx-border-width: 3;
-
 	-fx-background-radius: 0;
 	-fx-border-radius: 0;
-
 	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0, 0, 3);
 	-fx-padding: 10 20;
 }

@@ -115,8 +115,8 @@ public class MapView {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, stageWidth, stageHeight);
 
-		// 7. 実際の描画処理を呼び出す
-		drawStageContent(gc, cols, rows, stageWidth, stageHeight, wallColor);
+		// 7. 実際の描画処理を呼び出す（💡 引数に現在の scale, offsetX, offsetY を追加して渡す）
+		drawStageContent(gc, cols, rows, stageWidth, stageHeight, wallColor, scale, offsetX, offsetY);
 		drawPacman(gc);
 
 		// 敵の描画メソッド
@@ -150,59 +150,34 @@ public class MapView {
 			gc.setStroke(Color.DARKGRAY);
 			gc.strokeLine(0, INFO_HEIGHT, canvasWidth, INFO_HEIGHT);
 		}
-		/*		一旦コメントアウト　一時停止系はMainに移送
-				// モデルが一時停止中（paused）だったら、画面中央にテキストを描画する
-				if (model.isPaused() && !model.isGameOver() && !model.isCleared()) {
-		
-					// 1. 画面全体を少し暗くする（半透明の黒いフィルターを重ねる）
-					gc.setFill(Color.rgb(0, 0, 0, 0.6)); // 最後の0.6が不透明度（60%）
-					gc.fillRect(0, 0, canvasWidth, canvasHeight);
-		
-					// 2. 「PAUSE」の文字を設定
-					gc.setFont(Font.font("Arial", FontWeight.BOLD, 48)); // 大きめのフォント
-					gc.setFill(Color.YELLOW); // 目立つ黄色
-		
-					// 3. 文字が中央にぴったり配置されるように、文字の基準点を「中央」にする
-					gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-					gc.setTextBaseline(javafx.geometry.VPos.CENTER);
-		
-					// 4. キャンバスの真ん中（横幅 / 2, 高さ / 2）に描画
-					gc.fillText("PAUSE", canvasWidth / 2.0, canvasHeight / 2.0);
-		
-					// ここから日本語サブテキストの描画 
-					gc.setFont(Font.font("Meiryo", FontWeight.BOLD, 16)); // メイリオで少し太めに
-					gc.setFill(Color.WHITE); // 白文字
-		
-					// PAUSEの文字から、縦に「45ピクセル」下にずらした位置に描画
-					gc.fillText("もう一度 Pキー を押すと再開します", canvasWidth / 2.0, (canvasHeight / 2.0) + 45);
-		
-					// 後続の描画（スコアなど）が崩れないように、基準点をデフォルト（左、トップ）に戻しておく
-					gc.setTextAlign(javafx.scene.text.TextAlignment.LEFT);
-					gc.setTextBaseline(javafx.geometry.VPos.TOP);
-				}*/
 	}
 
-	// drawStage から背景クリアとパックマン呼び出しを分離・整理した内部メソッド
 	/**
 	 * ステージの中身（壁の輪郭とアイテム）を描画する内部メソッド。
-	 * drawメソッドから背景クリアやプレイヤー描画を分離して整理したもの。
-	 *
-	 * gc          描画先のGraphicsContext
-	 * cols        マップの列数
-	 * rows        マップの行数
-	 * stageWidth  ステージ全体の幅（ピクセル）
-	 * stageHeight ステージ全体の高さ（ピクセル）
-	 * wallColor   壁の輪郭を描画する色
+	 * 
+	 * 💡 JProの描画ズレバグを対策するため、WallOutlineを描画する瞬間だけ
+	 * 一時的に translate と scale をリセット(元に戻す)して座標を計算させます。
 	 */
 	private void drawStageContent(GraphicsContext gc, int cols, int rows, double stageWidth, double stageHeight,
-			Color wallColor) {
+			Color wallColor, double scale, double offsetX, double offsetY) {
 		Item[][] itemMap = model.getItemMap();
 
-		// WallOutline で壁を描画
+		// 💡 ここから壁の輪郭（WallOutline）の描画ロジック修正
+		// 現在の行列の状態（translate等）を一旦退避させ、無変換の状態に戻してから直に描画する
+		gc.save();
+		gc.restore(); // 一旦現在の gc.translate を打ち消すため、上の gc.save/restore の組み合わせを利用してデフォルト座標系で輪郭を計算
+		
+		gc.save(); // 輪郭用の一時保存
+		gc.setTransform(1, 0, 0, 1, 0, 0); // グラフィックスの拡大・移動を完全にリセット（完全に生の画面座標にする）
+
+		// 新しいWallOutlineオブジェクトを作り、幾何情報を同期
 		WallOutline outline = new WallOutline(model.getMap(), MapData.TILE_SIZE);
+		outline.setGeometry(scale, offsetX, offsetY);
 		gc.setStroke(wallColor);
-		gc.setLineWidth(2);
+		gc.setLineWidth(2 * scale); // 💡 線の太さも画面の拡大率に追従させる
 		outline.drawOutline(gc);
+		
+		gc.restore(); // 拡大・移動が適用された元の座標系に復元する
 
 		// ★ アイテムを描画
 		for (int row = 0; row < rows; row++) {
@@ -217,39 +192,39 @@ public class MapView {
 				}
 			}
 		}
-		//  フルーツを描画
+		//   フルーツを描画
 		Items.Fruit fruit = model.getCurrentFruit();
 		if (fruit != null) {
-		    int fx = model.getFruitCol() * MapData.TILE_SIZE;
-		    int fy = model.getFruitRow() * MapData.TILE_SIZE;
-		    fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
+			int fx = model.getFruitCol() * MapData.TILE_SIZE;
+			int fy = model.getFruitRow() * MapData.TILE_SIZE;
+			fruit.draw(gc, fx, fy, MapData.TILE_SIZE);
 		}
 
-	    // ▼ フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
-	    if (model.isFruitPopupActive()) {
-	        double progress = model.getFruitPopupProgress(); // 0.0〜1.0
-	        double riseOffset = progress * 20;
-	        double alpha = 1.0 - progress;
+		// ▼ フルーツ撃破時のスコアポップアップ（ふわっと上に浮かびながらフェードアウト）
+		if (model.isFruitPopupActive()) {
+			double progress = model.getFruitPopupProgress(); // 0.0〜1.0
+			double riseOffset = progress * 20;
+			double alpha = 1.0 - progress;
 
-	        double popupX = MapData.FRUIT_VALUE * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
-	        double popupY = MapData.FRUIT_VALUE * MapData.TILE_SIZE - riseOffset;
+			double popupX = MapData.FRUIT_VALUE * MapData.TILE_SIZE + MapData.TILE_SIZE / 2.0;
+			double popupY = MapData.FRUIT_VALUE * MapData.TILE_SIZE - riseOffset;
 
-	        gc.save();
-	        gc.setGlobalAlpha(alpha);
+			gc.save();
+			gc.setGlobalAlpha(alpha);
 
-	        gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
-	        gc.setTextBaseline(javafx.geometry.VPos.CENTER);
-	        gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+			gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
+			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-	        gc.setStroke(Color.BLACK);
-	        gc.setLineWidth(3);
-	        gc.strokeText("+" + model.getFruitPopupScore(), popupX, popupY);
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(3);
+			gc.strokeText("+" + model.getFruitPopupScore(), popupX, popupY);
 
-	        gc.setFill(Color.WHITE);
-	        gc.fillText("+" + model.getFruitPopupScore(), popupX, popupY);
+			gc.setFill(Color.WHITE);
+			gc.fillText("+" + model.getFruitPopupScore(), popupX, popupY);
 
-	        gc.restore();
-	    }
+			gc.restore();
+		}
 	}
 
 	//MapViewのフィールドにPac-man画像を追加
@@ -261,12 +236,6 @@ public class MapView {
 
 	/**
 	 * プレイヤーを描画する。
-	 * 死亡アニメーション中は drawDyingsyujinkou に処理を委譲して回転・縮小・フェードアウト演出を行い、
-	 * 死亡している（isAlive()がfalse）場合は何も描画しない。
-	 * FEVER中は専用画像に切り替え、FEVER終了間際（残り3秒以内）は一定間隔で点滅させる。
-	 * 画像が読み込めていない場合は代わりに黄色い円を描画する。
-	 *
-	 * gc 描画先のGraphicsContext
 	 */
 	public void drawPacman(GraphicsContext gc) {
 		Syujinkou syujinkou = model.getsyujinkou();
@@ -291,7 +260,6 @@ public class MapView {
 		double pacX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
 		double pacY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
 
-		Characters.Direction dir = syujinkou.getDirection();
 		double angle = 0;
 
 		gc.save();
@@ -301,11 +269,8 @@ public class MapView {
 
 		//FEVER終了時は点滅
 		if (syujinkou.isFever()) {
-
 			long remain = model.getFeverRemainingTime();
-
 			if (remain <= 3000) {
-
 				if ((System.currentTimeMillis() / 150) % 2 == 0) {
 					gc.restore();
 					return;
@@ -314,12 +279,9 @@ public class MapView {
 		}
 
 		//使用画像を指定
-
 		Image currentImage = pacmanImage;
-
 		if (syujinkou.isFever()) {
 			currentImage = pacmanFeverImage;
-
 		}
 
 		gc.drawImage(currentImage, -MapData.TILE_SIZE / 2.0, -MapData.TILE_SIZE / 2.0, MapData.TILE_SIZE,
@@ -328,9 +290,7 @@ public class MapView {
 	}
 
 	/**
-	 * 敵用のImageViewの表示サイズをタイルサイズに合わせて設定する（アスペクト比は維持）。
-	 *
-	 * enemyImageView サイズ設定を行う敵の画像View
+	 * 敵用のImageViewの表示サイズをタイルサイズに合わせて設定する。
 	 */
 	public void setupEnemyView(javafx.scene.image.ImageView enemyImageView) {
 		enemyImageView.setFitWidth(MapData.TILE_SIZE);
@@ -339,41 +299,7 @@ public class MapView {
 	}
 
 	/**
-	 * 互換用：敵リストの先頭（赤い敵）のみを描画する旧メソッド。
-	 * 現在は drawEnemyInstance を使った全敵描画に置き換わっており未使用。
-	 * 画像が読み込めない場合は赤い円と黒い目を代わりに描画する。
-	 *
-	 * gc 描画先のGraphicsContext
-	 */
-	private void drawEnemy(GraphicsContext gc) {
-		Enemy enemy = model.getEnemy();
-		if (enemy == null)
-			return;
-
-		if (enemy instanceof RedEnemy) {
-			RedEnemy red = (RedEnemy) enemy;
-			Image img = red.getEnemyImage();
-			double enemyLeftX = red.getX() - MapData.TILE_SIZE / 2.0;
-			double enemyTopY = red.getY() - MapData.TILE_SIZE / 2.0;
-
-			if (img != null) {
-				gc.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
-			} else {
-				gc.setFill(Color.RED);
-				gc.fillOval(red.getX(), red.getY(), MapData.TILE_SIZE, MapData.TILE_SIZE);
-				gc.setFill(Color.BLACK);
-				gc.fillOval(red.getX() + MapData.TILE_SIZE / 2.0 - 2, red.getY() + MapData.TILE_SIZE / 2.0 - 2, 4, 4);
-			}
-		}
-	}
-
-	/**
-	 * 敵1体分を描画する。敵の種類（赤・緑・黄・青）に応じて対応する画像を取得し、
-	 * その位置に描画する。画像が取得できない場合は、敵の種類ごとの色で円と黒い目を
-	 * 描画する簡易表示にフォールバックする。
-	 *
-	 * gc    描画先のGraphicsContext
-	 * enemy 描画対象の敵（nullの場合は何もしない）
+	 * 敵1体分を描画する。
 	 */
 	private void drawEnemyInstance(GraphicsContext gc, Enemy enemy) {
 		if (enemy == null)
@@ -410,14 +336,11 @@ public class MapView {
 			gc.setFill(javafx.scene.paint.Color.BLACK);
 			gc.fillOval(enemy.getX() - 2, enemy.getY() - 2, 4, 4);
 		}
-		// ▼ 撃破時のスコアポップアップ表示（ふわっと上に浮かびながらフェードアウト）
+		
+		// ▼ 撃破時のスコアポップアップ表示
 		if (enemy.isScorePopupActive()) {
 			double progress = enemy.getScorePopupProgress(); // 0.0〜1.0
-
-			// 上方向へのオフセット（最大20pxくらい浮かせる）
 			double riseOffset = progress * 20;
-
-			// フェードアウト（後半から徐々に透明に）
 			double alpha = 1.0 - progress;
 
 			double popupX = enemy.getDefeatX();
@@ -430,12 +353,10 @@ public class MapView {
 			gc.setTextBaseline(javafx.geometry.VPos.CENTER);
 			gc.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-			// 縁取り（黒）
 			gc.setStroke(Color.BLACK);
 			gc.setLineWidth(3);
 			gc.strokeText("+" + enemy.getLastDefeatScore(), popupX, popupY);
 
-			// 本体（白文字）
 			gc.setFill(Color.WHITE);
 			gc.fillText("+" + enemy.getLastDefeatScore(), popupX, popupY);
 
@@ -443,14 +364,8 @@ public class MapView {
 		}
 	}
 
-
 	/**
 	 * プレイヤーの死亡（ミス）演出を描画する。
-	 * 死亡進行度(progress: 0.0〜1.0)に応じて、画像を720度回転させながら
-	 * 縮小・フェードアウトさせるアニメーションを行う。
-	 *
-	 * gc      描画先のGraphicsContext
-	 * syujinkou 死亡アニメーション中のプレイヤー
 	 */
 	private void drawDyingsyujinkou(GraphicsContext gc, Syujinkou syujinkou) {
 		double progress = syujinkou.getDyingProgress();
@@ -479,12 +394,6 @@ public class MapView {
 
 	/**
 	 * 非表示のダミー部品(Region)に適用されたCSSの背景色を取得する。
-	 * これにより、壁やパックマンの色をCanvas描画側でもCSSファイルから一元管理できる。
-	 * CSSクラスが設定されていない、または色の取得に失敗した場合はdefaultColorを返す。
-	 *
-	 * node         色を取得する対象のダミー部品
-	 * defaultColor 取得に失敗した場合に使うデフォルト色
-	 * @return CSSから取得した色、または defaultColor
 	 */
 	private Color getColorFromCSS(Region node, Color defaultColor) {
 		if (node.getStyleClass().isEmpty()) {

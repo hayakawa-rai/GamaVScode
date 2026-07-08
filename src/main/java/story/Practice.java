@@ -55,16 +55,15 @@ public class Practice extends Application {
 		// BGM停止
 		Bgm.stopBGM();
 	}
-	
+
 	@Override
 	public void start(Stage stage) {
-	    this.stage = stage;
-	    stage.setTitle("練習モード");
-	    //WindowUtil.fillScreen(stage);   // 最大化
-	    stage.setScene(createScene());  // その後でSceneをセット
+		this.stage = stage;
+		stage.setTitle("練習モード");
+		//WindowUtil.fillScreen(stage);   // 最大化
+		stage.setScene(createScene()); // その後でSceneをセット
 
 	}
-
 
 	public Scene createScene() {
 
@@ -181,16 +180,16 @@ public class Practice extends Application {
 		backBox.setAlignment(Pos.BOTTOM_RIGHT);
 		backBox.setStyle("-fx-padding: 20px;");
 
-		// 背景用の画像を読み込み
+		// 背景用の画像を読み込み（JPro対応）
 		Image bgImage = new Image(
-				Practice.class.getResource("/picture/background.png").toExternalForm());
+				Practice.class.getResourceAsStream("/picture/background.png"));
 
 		//画像の元のサイズを取得
 		double bgWidth = bgImage.getWidth();
 		double bgHeight = bgImage.getHeight();
 		// 背景をタイルのように敷き詰めるためのPaneを作成
 		Pane bgPane = new Pane();
-		final double[] scrollX = {0};
+		final double[] scrollX = { 0 };
 
 		// アニメーション
 		this.timer = new AnimationTimer() {
@@ -206,17 +205,16 @@ public class Practice extends Application {
 
 				// 画像は元のサイズのまま、表示位置だけをずらして背景を再描画
 				javafx.scene.paint.ImagePattern pattern = new javafx.scene.paint.ImagePattern(
-					bgImage,
-					scrollX[0], 0,	// bgPane全体の背景をこのパターンで塗りつぶす
-					bgWidth, bgHeight, // 画像の本来のサイズを維持
-					false // 絶対座標指定
+						bgImage,
+						scrollX[0], 0, // bgPane全体の背景をこのパターンで塗りつぶす
+						bgWidth, bgHeight, // 画像の本来のサイズを維持
+						false // 絶対座標指定
 				);
 
 				// bgPane全体の背景をこのパターンで塗りつぶす
 				bgPane.setBackground(new javafx.scene.layout.Background(
-					new javafx.scene.layout.BackgroundFill(pattern, null, null)
-				));
-				
+						new javafx.scene.layout.BackgroundFill(pattern, null, null)));
+
 			}
 		};
 		//ここから自動的にループ開始(AnimationTimerとペアで使用)
@@ -224,11 +222,9 @@ public class Practice extends Application {
 		//重ねて表示するためのレイアウト(レイヤー構造の作成)
 		StackPane root = new StackPane();
 
-
-
 		BorderPane ui = new BorderPane();
 		// UIが広がりすぎないよう最大幅を制限
-		ui.setMaxWidth(800); 
+		ui.setMaxWidth(800);
 		ui.setTop(title);
 		ui.setCenter(stageButtons);
 		ui.setBottom(backBox);
@@ -240,18 +236,18 @@ public class Practice extends Application {
 		root.getChildren().addAll(bgPane, ui);
 
 		//rootを中身とした1000×800のウィンドウを作成
-	  	Scene scene = new Scene(root, 1000, 800);
-	    //
-	    bgPane.prefWidthProperty().bind(scene.widthProperty());
+		Scene scene = new Scene(root, 1000, 800);
+		//
+		bgPane.prefWidthProperty().bind(scene.widthProperty());
 		bgPane.prefHeightProperty().bind(scene.heightProperty());
-	    
+
 		//CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
 		//ウィンドウの最小限のサイズを設定
 		stage.setMinWidth(1000);
 		stage.setMinHeight(800);
-		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxWidth(1920); // PC大画面やブラウザ最大化時の最大サイズ制限
 		stage.setMaxHeight(1080);
 
 		return scene;

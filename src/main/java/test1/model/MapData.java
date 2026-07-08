@@ -905,5 +905,11 @@ public class MapData implements GameMap {
 	public int getFruitCol() {
 		return fruitCol;
 	}
+	
+	// デバックよう強制クリアボタン
+	public void forceStageClear() {
+	    this.remainingItems = 0;
+	    System.out.println("【デバッグ】強制ステージクリアを実行しました。");
+	}
 
 }

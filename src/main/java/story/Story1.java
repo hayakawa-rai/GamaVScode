@@ -52,6 +52,42 @@ public class Story1 extends Application {
 	// ウィンドウを保存してどのクラスでも共通のウィンドウを使用するため
 	private Stage stage;
 
+	// 引数なしのコンストラクタ
+	public Story1() {
+	}
+	
+	// 💡 【JPro対応・追加】外部から安全に画面を切り替えるための静的メソッド
+	public static void createAndStart(Stage currentStage) {
+		if (currentStage == null) return;
+		
+		Story1 instance = new Story1();
+		instance.stage = currentStage;
+		
+		// 新しい画面のコンテナ(Root)を作成
+		Scene newScene = instance.story(currentStage);
+		javafx.scene.Parent newRoot = newScene.getRoot();
+		
+		// 現在のSceneを取得して、Root（中身）だけを総入れ替えする
+		Scene activeScene = currentStage.getScene();
+		if (activeScene != null) {
+			javafx.scene.Parent currentRoot = activeScene.getRoot();
+			// 十字キー用のStackPaneなどがすでにある場合は中身をクリアして差し替え
+			if (currentRoot instanceof StackPane) {
+				StackPane stackPane = (StackPane) currentRoot;
+				stackPane.getChildren().clear();
+				stackPane.getChildren().add(newRoot);
+			} else {
+				activeScene.setRoot(newRoot);
+			}
+		} else {
+			currentStage.setScene(newScene);
+		}
+		
+		currentStage.setTitle("story1");
+		currentStage.centerOnScreen();
+		currentStage.show();
+	}
+
 	private void cleanup(Scene scene) {
 
 		// 文字タイピング
@@ -99,14 +135,14 @@ public class Story1 extends Application {
 		}
 	}
 	
+	// 通常のJavaFX起動用（JPro経由以外での互換性保持）
 	@Override
 	public void start(Stage stage) {
 		// 受け取った変数Stageを自分のStageに保存
 		this.stage = stage;
 		// ウィンドウの中身を決定
 		stage.setTitle("story1");
-		//WindowUtil.fillScreen(stage); 最大化
-		stage.setScene(story());
+		stage.setScene(story(stage));
 		stage.centerOnScreen();
 		stage.show();
 	}
@@ -119,10 +155,20 @@ public class Story1 extends Application {
 		text.setText("");
 		// 今打ち込み中ですよという状態にする
 		isTyping = true;
-		timeline.playFromStart();
+		if (timeline != null) {
+			timeline.playFromStart();
+		}
 	}
 
+	// 互換性維持のための引数なしメソッド
 	public Scene story() {
+		return story(this.stage);
+	}
+
+	public Scene story(Stage currentStage) {
+		if (currentStage != null) {
+			this.stage = currentStage;
+		}
 
 		// BGMの再生
 		Bgm.stopBGM();
@@ -176,8 +222,6 @@ public class Story1 extends Application {
 		Text nextMark = new Text("▼");
 		// 色を白色に設定
 		nextMark.setFill(Color.WHITE);
-		// フォントサイズを設定
-		// nextMark.setStyle("-fx-font-size: 20px;");
 		// 最初は非表示にする
 		nextMark.setVisible(false);
 		// 下に下げる
@@ -410,21 +454,17 @@ public class Story1 extends Application {
 					}
 
 					// 表示しているメッセージに対して1文ずつ表示する文字数を増やしていく処理
-					// 例：メッセージがhelloのとき、h→he→hel→hell→hello
 					text.setText(d.message.substring(0, charIndex));
-					if (Math.random() < 0.5) {
-					}
 					} else {// 全て表示し終わった後の処理
-							// fales：タイピング中じゃない
 						isTyping = false;
-						// タイピング(文字を1文字ずつ表示するアニメーション)を停止
-						timeline.stop();
+						// タイピングを停止
+						if (timeline != null) timeline.stop();
 						// ▼を表示
 						nextMark.setVisible(true);
 						// ▼点滅アニメーション表示
-						blink.play();
+						if (blink != null) blink.play();
 						// ▼を上下に揺らすアニメーション表示
-						arrowMove.play();
+						if (arrowMove != null) arrowMove.play();
 					}
 		}));
 		// Timeline.INDEFINITE：無限ループ
@@ -435,14 +475,14 @@ public class Story1 extends Application {
 
 			if (menuOverlay.isVisible()) {
 				if (e.getTarget() == menuBtn)	return;
-			e.consume();
-			return;
+				e.consume();
+				return;
 			}
 
 			// 文字表示中ならスキップして全文表示する処理
 			if (isTyping) {
 				// タイピング停止
-				timeline.stop();
+				if (timeline != null) timeline.stop();
 				// 今再生されている会話テキストのリスト番号を取得
 				Dialogue d = dialogues.get(messageIndex);
 				// 一気に全文表示
@@ -452,11 +492,11 @@ public class Story1 extends Application {
 				// ▼を表示
 				nextMark.setVisible(true);
 				// ▼点滅アニメーション表示
-				blink.play();
+				if (blink != null) blink.play();
 				// ▼を上下に揺らすアニメーション停止
-				arrowMove.stop();
+				if (arrowMove != null) arrowMove.stop();
 				return;
-				}
+			}
 
 			//まだメッセージがある場合if文内のの処理を実行
 			if (messageIndex < dialogues.size() - 1) {
@@ -468,9 +508,9 @@ public class Story1 extends Application {
 				// ▼を消す
 				nextMark.setVisible(false);
 				// ▼の点滅を消す
-				blink.stop();
+				if (blink != null) blink.stop();
 				// ▼を上下に揺らすアニメーションを停止
-				arrowMove.stop();
+				if (arrowMove != null) arrowMove.stop();
 				// 今再生されている会話テキストのリスト番号を取得
 				Dialogue d = dialogues.get(messageIndex);
 				// 誰が話しているかの情報取得
@@ -480,16 +520,16 @@ public class Story1 extends Application {
 					// ジャンプを設定
 					jumpAniki = StoryUtils.createJumpAnimation(anikiView, d.sound);
 					// ジャンプアニメーションを再生
-					jumpAniki.playFromStart();
+					if (jumpAniki != null) jumpAniki.playFromStart();
 				} else if (speaker.equals("仙石さん")) {
 					// ジャンプを設定
 					jumpsyujinkou = StoryUtils.createJumpAnimation(syujinkouView, d.sound);
-					jumpsyujinkou.playFromStart();
+					if (jumpsyujinkou != null) jumpsyujinkou.playFromStart();
 				} else if (speaker.equals("なりなり")) {
 					// ジャンプを設定
 					jumpnari = StoryUtils.createJumpAnimation(nariView, d.sound);
 					// ジャンプアニメーションを再生
-					jumpnari.playFromStart();
+					if (jumpnari != null) jumpnari.playFromStart();
 				}
 			} else {// メッセージの最後まで行った後の処理
 				if (isEndingStarted)	return;
@@ -528,11 +568,14 @@ public class Story1 extends Application {
 		
 		// 最初の文章を表示
 		startTyping();
-		// ウィンドウの最小限のサイズを設定
-		stage.setMinWidth(1000);
-		stage.setMinHeight(800);
-		stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
-		stage.setMaxHeight(1080);
+		
+		if (stage != null) {
+			// ウィンドウの最小限のサイズを設定
+			stage.setMinWidth(1000);
+			stage.setMinHeight(800);
+			stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+			stage.setMaxHeight(1080);
+		}
 		return scene;
 	}
 }
