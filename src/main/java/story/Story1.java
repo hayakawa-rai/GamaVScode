@@ -378,16 +378,16 @@ public class Story1 extends Application {
 		bgView.fitWidthProperty().bind(scene.widthProperty());
 		bgView.fitHeightProperty().bind(scene.heightProperty());
 		// 人物画像(あにき)をウィンドウサイズに合わせる(右に表示)
-		anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+		anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.7));
 		anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
 		anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(なりなり)をウィンドウサイズに合わせる(右に表示)
-		nariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
+		nariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
 		nariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
 		nariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
 		// 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
-		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.37));
-		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(1.4));
+		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.3));
+		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
 		syujinkouView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
 		// boxのサイズをウィンドウに合わせる
 		box.widthProperty().bind(scene.widthProperty().multiply(0.9));
