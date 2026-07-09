@@ -311,3 +311,15 @@
 =======
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-09 15:42:54,667 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-10 - Unexpected message form client, closing session.
+2026-07-09 15:42:54,677 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 15:42:54,677 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 15:42:54,686 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 15:42:54 JST 2026      
+2026-07-09 15:42:54,687 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.001 
+2026-07-09 15:42:54,687 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.000  
+2026-07-09 15:42:54,688 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 15:42:54,688 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 15:42:54,688 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 277265
+2026-07-09 15:42:54,688 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 82577
+2026-07-09 15:42:54,688 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 15:42:55,672 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
