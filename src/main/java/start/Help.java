@@ -62,6 +62,7 @@ public class Help extends Application {
 		};
 		timer.start();
 
+		
 		StackPane root = new StackPane();
 
 		// ===== 中央の半透明パネル =====
@@ -79,7 +80,7 @@ public class Help extends Application {
 						+ "-fx-border-radius: 4;");
 
 		// タイトル
-		Label title = new Label("操作方法");
+		Label title = new Label("基本説明");
 		title.setTextFill(Color.web("#F4C022"));
 		title.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 40));
 
@@ -87,9 +88,9 @@ public class Help extends Application {
 		VBox page1 = new VBox(16);
 		page1.setAlignment(Pos.CENTER);
 		page1.getChildren().addAll(
-				makeLine("移動： ↑ / ↓ / ← / →   または   W / A / S / D"),
+				makeMoveControlRow(), // ← 「移動：  ↑ / ↓ / ← / →   または   W / A / S / D」
 				spacer(6),
-				makeLine("モバイルデバイスでの移動： 画面右下の矢印ボタン"));
+				makeMoveControlFhone());
 
 		// ===== ページ2：アイテム説明 =====
 		VBox page2 = new VBox(10);
@@ -108,46 +109,62 @@ public class Help extends Application {
 		VBox page3 = new VBox(10);
 		page3.setAlignment(Pos.CENTER_LEFT);
 		page3.getChildren().addAll(
-				makeNoteRow(null, "全てのエサを食べると一面クリアになります。"),
+				makeNoteRow(null, "全てのエサを食べるとステージクリアになります。"),
 				spacer(6),
-				makeNoteRow(null, "敵に触れるとゲームオーバーになります。"),
+				makeNoteRow(null, "敵に3回触れるとゲームオーバーになります。"),
 				spacer(6),
 				makeNoteRow(null, "マップにある左端と右端の通路は「ワープトンネル」で、左端と右端が繫がった状態の通路になっています。")
-					//makeWarpTunnelImage()
-				);
+		);
 		
+		// ===== ページ4：モード説明 =====
+		VBox page4 = new VBox(10);
+		page4.setAlignment(Pos.CENTER_LEFT);
+		page4.getChildren().addAll(
+				makeModeHeading("▶ストーリー"),
+				spacer(2),
+				makeNoteRow(null, "物語を進めながら遊ぶモードです。"),
+				makeNoteRow(null, "すべてのエサを食べると、そのステージをクリアできます。"),
+				spacer(6),
+				makeModeHeading("⚔練習モード"),
+				spacer(2),
+				makeNoteRow(null, "すべてのエサを食べるとエサが再配置され、ゲームオーバーになるまで何度でも遊べます。"),
+				makeNoteRow(null, "ハイスコアを目指しましょう！")
+		);
+
 		VBox page1Wrapped = wrapWithHeading("操作", page1);
 		VBox page2Wrapped = wrapWithHeading("アイテム", page2);
 		VBox page3Wrapped = wrapWithHeading("ルール", page3);
+		VBox page4Wrapped = wrapWithHeading("モード", page4);
 
 		// pages配列・pageStackは「Wrapped」版を使う
-		pages = new VBox[] { page1Wrapped, page2Wrapped, page3Wrapped };
+		pages = new VBox[] { page1Wrapped, page2Wrapped, page3Wrapped , page4Wrapped};
 		// 両ページを重ねて、表示中の1枚だけ見せる
-		StackPane pageStack = new StackPane(page1Wrapped, page2Wrapped, page3Wrapped);
+		StackPane pageStack = new StackPane(page1Wrapped, page2Wrapped, page3Wrapped, page4Wrapped);
 
 		// ===== ページインジケーター（● ○ のような小さい点） =====
 		HBox indicator = new HBox(8);
 		indicator.setAlignment(Pos.CENTER);
 		Circle dotP1 = new Circle(4, Color.web("#4FD8E8"));
-		Circle dotP2 = new Circle(4, Color.web("#4a4a5a"));
-		Circle dotP3 = new Circle(4, Color.web("#4a4a5a"));
-		indicator.getChildren().addAll(dotP1, dotP2, dotP3);
+		Circle dotP2 = new Circle(4, Color.web("#6e6e85"));
+		Circle dotP3 = new Circle(4, Color.web("#6e6e85"));
+		Circle dotP4 = new Circle(4, Color.web("#6e6e85"));
+		indicator.getChildren().addAll(dotP1, dotP2, dotP3, dotP4);
 
-		Circle[] dots = { dotP1, dotP2, dotP3 };
+		Circle[] dots = { dotP1, dotP2, dotP3, dotP4 };
 
 		Runnable updatePage = () -> {
 			for (int i = 0; i < pages.length; i++) {
 				boolean show = (i == currentPage);
 				pages[i].setVisible(show);
 				pages[i].setManaged(show);
-				dots[i].setFill(show ? Color.web("#4FD8E8") : Color.web("#4a4a5a"));
+				dots[i].setFill(show ? Color.web("#4FD8E8") : Color.web("#6e6e85"));
 			}
 		};
 		updatePage.run();
 
 		// 区切り線
 		Separator divider = new Separator();
-		divider.setStyle("-fx-background-color: #4a4a5a;");
+		divider.setStyle("-fx-background-color: #6e6e85");
 
 		panel.getChildren().addAll(title, divider, pageStack, indicator);
 
@@ -194,7 +211,7 @@ public class Help extends Application {
 
 		stage.setMinWidth(800);
 		stage.setMinHeight(600);
-		stage.setTitle("操作説明");
+		stage.setTitle("基本説明");
 		stage.setScene(scene);
 		stage.show();
 	}
@@ -226,13 +243,6 @@ public class Help extends Application {
 		Region r = new Region();
 		r.setPrefHeight(height);
 		return r;
-	}
-
-	private Label makeLine(String text) {
-		Label l = new Label(text);
-		l.setTextFill(Color.WHITE);
-		l.setFont(Font.font("PixelMplus12", 16));
-		return l;
 	}
 
 	private HBox makeNoteRow(Node icon, String text) {
@@ -299,12 +309,60 @@ public class Help extends Application {
 		return row;
 	}
 
-	/*private ImageView makeWarpTunnelImage() {
-		Image img = new Image(getClass().getResource("/picture/warp_tunnel.png").toExternalForm());
-		ImageView view = new ImageView(img);
-		view.setFitWidth(400);
-		view.setPreserveRatio(true);
-		return view;
-	}*/
+	// 「移動： [画像] または [画像]」の行を作る補助メソッド
+	private HBox makeMoveControlRow() {
+		Label moveLabel = new Label("移動：");
+		moveLabel.setTextFill(Color.WHITE);
+		moveLabel.setFont(Font.font("PixelMplus12", 16));
 
+		ImageView img2 = new ImageView(
+				new Image(getClass().getResource("/picture/WASD.png").toExternalForm()));
+		img2.setFitHeight(100);
+		img2.setPreserveRatio(true);
+
+		Label orLabel = new Label("または");
+		orLabel.setTextFill(Color.WHITE);
+		orLabel.setFont(Font.font("PixelMplus12", 16));
+
+		ImageView img3 = new ImageView(
+				new Image(getClass().getResource("/picture/yazirusi.png").toExternalForm()));
+		img3.setFitHeight(100);
+		img3.setPreserveRatio(true);
+
+		HBox row = new HBox(10, moveLabel, img2, orLabel, img3);
+		row.setAlignment(Pos.CENTER);
+		return row;
+	}
+
+	// 「モバイルデバイスでの移動： [画像]」の行を作る補助メソッド
+	private HBox makeMoveControlFhone() {
+		Label moveLabel = new Label("モバイルデバイスでの移動：");
+		moveLabel.setTextFill(Color.WHITE);
+		moveLabel.setFont(Font.font("PixelMplus12", 16));
+
+		ImageView img3 = new ImageView(
+				new Image(getClass().getResource("/picture/yazirusi_phone.png").toExternalForm()));
+		img3.setFitHeight(120);
+		img3.setPreserveRatio(true);
+
+		HBox row = new HBox(10, moveLabel, img3);
+		row.setAlignment(Pos.CENTER_LEFT);
+		row.setPadding(new Insets(0, 0, 0, 30));
+		return row;
+	}
+	
+	// モード見出し用の行を作る補助メソッド（アイコン記号＋太字大きめテキスト）
+	private HBox makeModeHeading(String text) {
+		StackPane iconBox = new StackPane();
+		iconBox.setMinWidth(ICON_COL_WIDTH);
+		iconBox.setPrefWidth(ICON_COL_WIDTH);
+
+		Label l = new Label(text);
+		l.setTextFill(Color.web("#FF9632"));
+		l.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 18));
+
+		HBox row = new HBox(10, iconBox, l);
+		row.setAlignment(Pos.CENTER_LEFT);
+		return row;
+	}
 }
