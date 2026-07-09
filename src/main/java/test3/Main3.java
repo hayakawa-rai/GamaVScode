@@ -129,6 +129,7 @@ public class Main3 extends Application {
 		// =====================================================
 		// 操作説明UI
 		// =====================================================
+		// 操作説明テキスト
 		Label howToPlayText = new Label("移動 : ↑↓←→ / WASD\n画面下ボタン(スマホ用)");
 		howToPlayText.setFont(Font.font("Meiryo", FontWeight.NORMAL, 14));
 		howToPlayText.setTextFill(Color.WHITE);
@@ -139,6 +140,8 @@ public class Main3 extends Application {
 		howToPlayText.setStyle("-fx-background-color: rgba(255, 255, 255, 0.12);" + // うっすら白背景
 				"-fx-background-radius: 8;" + "-fx-border-color: rgba(255, 255, 255, 0.4);" + // 薄い枠線
 				"-fx-border-radius: 8;" + "-fx-border-width: 1;" + "-fx-padding: 12 20 12 20;");
+
+		// 初期状態は非表示
 		howToPlayText.setVisible(false);
 		howToPlayText.setManaged(false); // 非表示のときレイアウトの隙間を作らない
 

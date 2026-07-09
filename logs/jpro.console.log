@@ -725,3 +725,13 @@
 2026-07-09 17:19:48,590 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - zipped         : 972777
 2026-07-09 17:19:48,590 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - 
 2026-07-09 17:19:49,591 [INFO] in scala-execution-context-global-870 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 17:20:34,204 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 17:20:34,204 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 17:20:34,204 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 17:20:34 JST 2026      
+2026-07-09 17:20:34,204 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - averageLatency : -00:00:00.007 
+2026-07-09 17:20:34,204 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.006  
+2026-07-09 17:20:34,204 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 17:20:34,205 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 17:20:34,205 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - raw            : 2246573
+2026-07-09 17:20:34,205 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - zipped         : 637088
+2026-07-09 17:20:34,205 [INFO] in scala-execution-context-global-870 - [info] c.j.i.s.ViewInfo$ - 
