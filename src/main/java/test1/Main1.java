@@ -177,6 +177,8 @@ public class Main1 extends Application {
 		// レイヤー構成
 		// 背景 → ゲーム画面 → ポーズ画面
 		// =====================================================
+		
+		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
 		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
 
 		// =====================================================
@@ -198,11 +200,9 @@ public class Main1 extends Application {
 		stage.setTitle("仙石さん - ステージ 1");
 		stage.setScene(scene);
 
-		// ウィンドウのサイズ制限
-		stage.setMinWidth(1000);
-		stage.setMinHeight(800);
-		stage.setMaxWidth(1920);
-		stage.setMaxHeight(1080);
+		// 前の画面（Story1等）の大きさをそのまま引き継いでシームレスに表示する
+		stage.setWidth(stage.getWidth());
+		stage.setHeight(stage.getHeight());
 
 		stage.show();
 

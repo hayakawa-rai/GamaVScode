@@ -344,15 +344,16 @@ public class Start extends Application {
 		stage.setMinWidth(320);
 		stage.setMinHeight(480);
 		// 最大サイズの制限は撤廃し、ブラウザ／画面いっぱいまで拡大できるようにする
-		// stage.setMaxWidth(1920);
-		// stage.setMaxHeight(1080);
+		// PCで最初に開くときはこのサイズをベースにする
+		stage.setWidth(1000);//
+		stage.setHeight(800);//追加
 
 		//ウィンドウの名前を設定
 		stage.setTitle("スタート画面");
 
 		//ウィンドウの中身を設定・表示
 		stage.setScene(scene);
-		//WindowUtil.fillScreen(stage);	//最大化
+		
 		//リセットするため、一度隠してから再表示する
 		//stage.hide();
 		stage.show();
