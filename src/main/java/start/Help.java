@@ -1,5 +1,5 @@
 package start;
-
+//更新テスト
 import control.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
