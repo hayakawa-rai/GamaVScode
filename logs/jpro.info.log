@@ -1500,3 +1500,193 @@
 2026-07-09 16:13:14,827 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 160264
 2026-07-09 16:13:14,827 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
 2026-07-09 16:13:15,821 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-09 16:16:24,950 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-5 - Slf4jLogger started
+2026-07-09 16:16:25,352 [INFO] from play.api.Play in Thread-0 - Application started (Prod) (no global state)
+2026-07-09 16:16:25,709 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Enabling HTTP/2 on Akka HTTP server...
+2026-07-09 16:16:25,709 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Listening for HTTP on /[0:0:0:0:0:0:0:0]:8080
+2026-07-09 16:16:25,882 [INFO] from com.jpro.activity in application-akka.actor.default-dispatcher-5 - Starting the server
+2026-07-09 16:16:25,882 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 -  *** Starting JPro: https://www.jpro.one/ ***
+2026-07-09 16:16:25,882 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - OS: Windows 11
+2026-07-09 16:16:25,896 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JPro: 2022.1.1
+2026-07-09 16:16:25,896 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - Java version: 17.0.18
+2026-07-09 16:16:25,896 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JVM: 17.0.18 Eclipse Adoptium
+2026-07-09 16:16:25,903 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JavaFX jar: file:/C:/Users/EMD-576/.m2/repository/org/openjfx/javafx-graphics/18.0.1-jpro+0/javafx-graphics-18.0.1-jpro+0-win.jar
+2026-07-09 16:16:25,915 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - redirected OUT / ERR
+2026-07-09 16:16:25,915 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - installed SLF4JBridge
+2026-07-09 16:16:25,968 [WARN] from javafx in application-akka.actor.default-dispatcher-5 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @6830d783'
+2026-07-09 16:16:26,355 [INFO] from com.jpro.internal.server.Initializer$ in JavaFX Application Thread - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 16:16:26,390 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - finished init!
+2026-07-09 16:16:26,653 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - application requested: default
+2026-07-09 16:16:26,659 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - Creating Application: default
+2026-07-09 16:16:26,660 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 16:16:26,661 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - host          localhost:8080
+2026-07-09 16:16:26,661 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - uri           /app/ws/default
+2026-07-09 16:16:27,629 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - application requested: 52956453!default
+2026-07-09 16:16:27,629 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - Creating Application: 52956453!default
+2026-07-09 16:16:27,629 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - remoteAddress 192.168.24.109
+2026-07-09 16:16:27,629 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - host          192.168.24.152:8080
+2026-07-09 16:16:27,629 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - uri           /app/ws/52956453!default
+2026-07-09 16:16:27,703 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 1753446920
+2026-07-09 16:16:27,816 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-13 - application requested: default
+2026-07-09 16:16:27,816 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-13 - Creating Application: default
+2026-07-09 16:16:27,816 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-13 - remoteAddress 192.168.24.109
+2026-07-09 16:16:27,816 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-13 - host          192.168.24.152:8080
+2026-07-09 16:16:27,816 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-13 - uri           /app/ws/default
+2026-07-09 16:16:27,970 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 65806945
+2026-07-09 16:16:31,365 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@53561549
+2026-07-09 16:16:31,439 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1021 userid: 65806945
+2026-07-09 16:16:32,598 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1496 userid: 65806945
+2026-07-09 16:16:34,540 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-10 - Unexpected message form client, closing session.
+2026-07-09 16:16:34,544 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:16:34,544 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 16:16:34,550 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 16:16:34 JST 2026      
+2026-07-09 16:16:34,550 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.058 
+2026-07-09 16:16:34,550 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.002  
+2026-07-09 16:16:34,551 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 16:16:34,551 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 16:16:34,551 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 390664
+2026-07-09 16:16:34,551 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 90541
+2026-07-09 16:16:34,551 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:16:35,537 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-09 16:16:36,038 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-12 - application requested: 914560652!default
+2026-07-09 16:16:36,038 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-12 - Creating Application: 914560652!default
+2026-07-09 16:16:36,039 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-12 - remoteAddress 192.168.24.109
+2026-07-09 16:16:36,039 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-12 - host          192.168.24.152:8080
+2026-07-09 16:16:36,039 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-12 - uri           /app/ws/914560652!default
+2026-07-09 16:16:36,131 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 548578982
+2026-07-09 16:16:37,908 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1761 userid: 548578982
+2026-07-09 16:17:00,289 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 5173 userid: 548578982
+2026-07-09 16:17:02,169 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 6459 userid: 548578982
+2026-07-09 16:17:04,921 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1761 userid: 1753446920
+2026-07-09 16:17:08,477 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 5173 userid: 1753446920
+2026-07-09 16:17:42,817 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 9871 userid: 548578982
+2026-07-09 16:17:46,901 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:17:46,901 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 16:17:46,901 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 16:17:46 JST 2026      
+2026-07-09 16:17:46,901 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.057 
+2026-07-09 16:17:46,902 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.002  
+2026-07-09 16:17:46,902 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 16:17:46,902 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 16:17:46,902 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 3052648
+2026-07-09 16:17:46,902 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 843933
+2026-07-09 16:17:46,902 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:17:54,357 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - application requested: default
+2026-07-09 16:17:54,358 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - Creating Application: default
+2026-07-09 16:17:54,358 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - remoteAddress 192.168.24.109
+2026-07-09 16:17:54,358 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - host          192.168.24.152:8080
+2026-07-09 16:17:54,358 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - uri           /app/ws/default
+2026-07-09 16:17:54,478 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 1765037185
+2026-07-09 16:18:00,436 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-21 - Unexpected message form client, closing session.
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 16:18:00 JST 2026      
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.000 
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.000  
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 7086309
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 1690731
+2026-07-09 16:18:00,439 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:18:01,441 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-09 16:18:02,465 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 16:18:02 JST 2026      
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.059 
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.004  
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 276751
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 74115
+2026-07-09 16:18:02,466 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:18:10,112 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-09 16:18:15,266 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-09 16:23:31,910 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-5 - Slf4jLogger started
+2026-07-09 16:23:32,311 [INFO] from play.api.Play in Thread-0 - Application started (Prod) (no global state)
+2026-07-09 16:23:32,660 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Enabling HTTP/2 on Akka HTTP server...
+2026-07-09 16:23:32,660 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Listening for HTTP on /[0:0:0:0:0:0:0:0]:8080
+2026-07-09 16:23:32,826 [INFO] from com.jpro.activity in application-akka.actor.default-dispatcher-5 - Starting the server
+2026-07-09 16:23:32,842 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 -  *** Starting JPro: https://www.jpro.one/ ***
+2026-07-09 16:23:32,842 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - OS: Windows 11
+2026-07-09 16:23:32,843 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JPro: 2022.1.1
+2026-07-09 16:23:32,843 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - Java version: 17.0.18
+2026-07-09 16:23:32,843 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JVM: 17.0.18 Eclipse Adoptium
+2026-07-09 16:23:32,861 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JavaFX jar: file:/C:/Users/EMD-576/.m2/repository/org/openjfx/javafx-graphics/18.0.1-jpro+0/javafx-graphics-18.0.1-jpro+0-win.jar
+2026-07-09 16:23:32,876 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - redirected OUT / ERR
+2026-07-09 16:23:32,876 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - installed SLF4JBridge
+2026-07-09 16:23:32,927 [WARN] from javafx in application-akka.actor.default-dispatcher-5 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @1966d07f'
+2026-07-09 16:23:33,327 [INFO] from com.jpro.internal.server.Initializer$ in JavaFX Application Thread - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 16:23:33,348 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - finished init!
+2026-07-09 16:23:33,687 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - application requested: default
+2026-07-09 16:23:33,704 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - Creating Application: default
+2026-07-09 16:23:33,707 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 16:23:33,708 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - host          localhost:8080
+2026-07-09 16:23:33,708 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - uri           /app/ws/default
+2026-07-09 16:23:34,680 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 905140928
+2026-07-09 16:23:38,323 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - application requested: 2125536340!default
+2026-07-09 16:23:38,323 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - Creating Application: 2125536340!default
+2026-07-09 16:23:38,323 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - remoteAddress 192.168.24.109
+2026-07-09 16:23:38,323 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - host          192.168.24.152:8080
+2026-07-09 16:23:38,323 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - uri           /app/ws/2125536340!default
+2026-07-09 16:23:38,863 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 1433778020
+2026-07-09 16:23:39,926 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-9 - Unexpected message form client, closing session.
+2026-07-09 16:23:39,928 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:23:39,928 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 16:23:39,934 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 16:23:39 JST 2026      
+2026-07-09 16:23:39,935 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.070 
+2026-07-09 16:23:39,935 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.012  
+2026-07-09 16:23:39,935 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 16:23:39,935 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 16:23:39,935 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 200080
+2026-07-09 16:23:39,935 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 40762
+2026-07-09 16:23:39,935 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:23:40,382 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - application requested: default
+2026-07-09 16:23:40,382 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - Creating Application: default
+2026-07-09 16:23:40,382 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - remoteAddress 192.168.24.109
+2026-07-09 16:23:40,382 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - host          192.168.24.152:8080
+2026-07-09 16:23:40,383 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - uri           /app/ws/default
+2026-07-09 16:23:40,491 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 1453066348
+2026-07-09 16:23:40,930 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-09 16:23:42,318 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1761 userid: 1453066348
+2026-07-09 16:23:43,396 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-5 - Unexpected message form client, closing session.
+2026-07-09 16:23:43,397 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:23:43,397 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 16:23:43,398 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 16:23:43 JST 2026      
+2026-07-09 16:23:43,398 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.060 
+2026-07-09 16:23:43,398 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.003  
+2026-07-09 16:23:43,398 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 16:23:43,398 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 16:23:43,398 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 369174
+2026-07-09 16:23:43,398 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 68198
+2026-07-09 16:23:43,398 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:23:44,401 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-09 16:23:44,909 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - application requested: 63617566!default
+2026-07-09 16:23:44,909 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - Creating Application: 63617566!default
+2026-07-09 16:23:44,909 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - remoteAddress 192.168.24.109
+2026-07-09 16:23:44,909 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - host          192.168.24.152:8080
+2026-07-09 16:23:44,909 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-5 - uri           /app/ws/63617566!default
+2026-07-09 16:23:44,993 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 857809969
+2026-07-09 16:23:46,812 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1761 userid: 857809969
+2026-07-09 16:23:47,634 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 2229 userid: 857809969
+2026-07-09 16:23:56,753 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-11 - Unexpected message form client, closing session.
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 16:23:56 JST 2026      
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.001 
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.000  
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 1316287
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 298034
+2026-07-09 16:23:56,755 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:23:57,761 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-09 16:24:28,806 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:24:28,806 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 16:24:28,807 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 16:24:28 JST 2026      
+2026-07-09 16:24:28,807 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.061 
+2026-07-09 16:24:28,807 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.005  
+2026-07-09 16:24:28,807 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 16:24:28,807 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 16:24:28,807 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 3304040
+2026-07-09 16:24:28,807 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 815861
+2026-07-09 16:24:28,807 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 16:24:48,283 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
