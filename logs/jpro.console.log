@@ -3371,3 +3371,21 @@
 =======
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-09 17:59:47,308 [INFO] in scala-execution-context-global-3664 - [info] c.jpro - application requested: default
+2026-07-09 17:59:47,309 [INFO] in scala-execution-context-global-3664 - [info] c.jpro - Creating Application: default
+2026-07-09 17:59:47,309 [INFO] in scala-execution-context-global-3664 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 17:59:47,309 [INFO] in scala-execution-context-global-3664 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 17:59:47,309 [INFO] in scala-execution-context-global-3664 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 17:59:47,386 [INFO] in scala-execution-context-global-3668 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 17:59:47,453 [INFO] in scala-execution-context-global-3668 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 74223649
+2026-07-09 17:59:52,828 [INFO] in scala-execution-context-global-3668 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 17:59:52,828 [INFO] in scala-execution-context-global-3668 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 17:59:52,828 [INFO] in scala-execution-context-global-3668 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 17:59:52 JST 2026      
+2026-07-09 17:59:52,828 [INFO] in scala-execution-context-global-3668 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.062 
+2026-07-09 17:59:52,828 [INFO] in scala-execution-context-global-3668 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.001  
+2026-07-09 17:59:52,828 [INFO] in scala-execution-context-global-3668 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 17:59:52,828 [INFO] in scala-execution-context-global-3668 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 17:59:52,828 [INFO] in scala-execution-context-global-3667 - [info] c.j.i.s.ViewInfo$ - raw            : 193310
+2026-07-09 17:59:52,829 [INFO] in scala-execution-context-global-3667 - [info] c.j.i.s.ViewInfo$ - zipped         : 48278
+2026-07-09 17:59:52,829 [INFO] in scala-execution-context-global-3667 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 17:59:59,612 [INFO] in scala-execution-context-global-3664 - [info] c.j.i.c.InstanceImpl - closing window!
