@@ -1239,3 +1239,38 @@
 2026-07-09 14:57:02,968 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - zipped         : 56089
 2026-07-09 14:57:02,968 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - 
 2026-07-09 14:57:03,965 [INFO] in scala-execution-context-global-290 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 15:23:20,340 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 15:23:20,341 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 15:23:20,414 [INFO] in scala-execution-context-global-51 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @7ed6a1'
+2026-07-09 15:23:20,793 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 15:23:20,832 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 15:23:21,108 [INFO] in scala-execution-context-global-51 - [info] c.jpro - application requested: default
+2026-07-09 15:23:21,115 [INFO] in scala-execution-context-global-51 - [info] c.jpro - Creating Application: default
+2026-07-09 15:23:21,117 [INFO] in scala-execution-context-global-51 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 15:23:21,118 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          localhost:8080
+2026-07-09 15:23:21,118 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 15:23:21,602 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:23:22,499 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 1049754532
+2026-07-09 15:25:34,129 [ERROR] in scala-execution-context-global-47 - java.lang.NullPointerException: Cannot invoke "java.net.URL.toExternalForm()" because the return value of "java.lang.Class.getResource(String)" is null
+2026-07-09 15:25:34,129 [ERROR] in scala-execution-context-global-47 - 	at start.Help.makeMoveControlRow(Help.java:319)
+2026-07-09 15:25:34,129 [ERROR] in scala-execution-context-global-47 - 	at start.Help.start(Help.java:91)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-51 - 	at control.GameController.switchToHelp(GameController.java:462)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-51 - 	at start.Start.lambda$start$6(Start.java:286)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-51 - 	at com.sun.scenario.animation.shared.TimelineClipCore.visitKeyFrame(TimelineClipCore.java:239)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at com.sun.scenario.animation.shared.TimelineClipCore.playTo(TimelineClipCore.java:180)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.Timeline.doPlayTo(Timeline.java:172)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.AnimationAccessorImpl.playTo(AnimationAccessorImpl.java:39)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at com.sun.scenario.animation.shared.SingleLoopClipEnvelope.timePulse(SingleLoopClipEnvelope.java:103)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.Animation.doTimePulse(Animation.java:1189)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.Animation$1.lambda$timePulse$0(Animation.java:207)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.Animation$1.timePulse(Animation.java:206)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:343)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-51 - 	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:581)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-51 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:565)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-51 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:558)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$12(QuantumToolkit.java:358)
+2026-07-09 15:25:34,130 [ERROR] in scala-execution-context-global-47 - 	at com.sun.glass.ui.monocle.RunnableProcessor.runLoop(RunnableProcessor.java:92)
+2026-07-09 15:25:34,131 [ERROR] in scala-execution-context-global-47 - 	at com.sun.glass.ui.monocle.RunnableProcessor.run(RunnableProcessor.java:51)
+2026-07-09 15:25:34,131 [ERROR] in scala-execution-context-global-47 - 	at java.base/java.lang.Thread.run(Thread.java:840)
