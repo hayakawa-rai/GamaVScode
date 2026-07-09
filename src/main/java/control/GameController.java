@@ -114,24 +114,33 @@ public class GameController {
 		Button btnRight = new Button();
 		
 		// 引数は三角形の頂点座標 (x1, y1, x2, y2, x3, y3)
-				javafx.scene.shape.Polygon arrowUp = new javafx.scene.shape.Polygon(0.0, 14.0, 8.0, 0.0, 16.0, 14.0);
-				javafx.scene.shape.Polygon arrowDown = new javafx.scene.shape.Polygon(0.0, 0.0, 16.0, 0.0, 8.0, 14.0);
-				javafx.scene.shape.Polygon arrowLeft = new javafx.scene.shape.Polygon(14.0, 0.0, 0.0, 8.0, 14.0, 16.0);
-				javafx.scene.shape.Polygon arrowRight = new javafx.scene.shape.Polygon(0.0, 0.0, 14.0, 8.0, 0.0, 16.0);
+		javafx.scene.shape.Polygon arrowUp = new javafx.scene.shape.Polygon(0.0, 14.0, 8.0, 0.0, 16.0, 14.0);
+		javafx.scene.shape.Polygon arrowDown = new javafx.scene.shape.Polygon(0.0, 0.0, 16.0, 0.0, 8.0, 14.0);
+		javafx.scene.shape.Polygon arrowLeft = new javafx.scene.shape.Polygon(14.0, 0.0, 0.0, 8.0, 14.0, 16.0);
+		javafx.scene.shape.Polygon arrowRight = new javafx.scene.shape.Polygon(0.0, 0.0, 14.0, 8.0, 0.0, 16.0);
 
-				// 🛠️ 3. すべての矢印の色を「白」に統一
-				for (javafx.scene.shape.Polygon arrow : new javafx.scene.shape.Polygon[]{arrowUp, arrowDown, arrowLeft, arrowRight}) {
-					arrow.setFill(javafx.scene.paint.Color.WHITE);
-				}
+		for (javafx.scene.shape.Polygon arrow : new javafx.scene.shape.Polygon[]{arrowUp, arrowDown, arrowLeft, arrowRight}) {
+			arrow.setFill(javafx.scene.paint.Color.WHITE);
+		}
 
-				// 🛠️ 4. ボタンの「グラフィック（アイコン）」として矢印をセット
-				btnUp.setGraphic(arrowUp);
-				btnDown.setGraphic(arrowDown);
-				btnLeft.setGraphic(arrowLeft);
-				btnRight.setGraphic(arrowRight);
+		// ボタンの「グラフィック（アイコン）」として矢印をセット
+		btnUp.setGraphic(arrowUp);
+		btnDown.setGraphic(arrowDown);
+		btnLeft.setGraphic(arrowLeft);
+		btnRight.setGraphic(arrowRight);
 
 		String buttonStyle = "-fx-font-size: 24px; -fx-min-width: 60px; -fx-min-height: 60px; "
 				+ "-fx-background-radius: 30px; -fx-background-color: rgba(255, 255, 255, 0.4); -fx-text-fill: white;";
+		
+		// スタイル適用とホバーエフェクトの追加
+		for (Button b : new Button[]{btnUp, btnDown, btnLeft, btnRight}) {
+			b.setStyle(buttonStyle);
+			b.setFocusTraversable(false);
+
+			// PCでのマウス操作時、乗せると少し明るくなるエフェクト
+			b.setOnMouseEntered(e -> b.setStyle(buttonStyle + "-fx-background-color: rgba(255, 255, 255, 0.6);"));
+			b.setOnMouseExited(e -> b.setStyle(buttonStyle));
+		}
 
 		btnUp.setStyle(buttonStyle);
 		btnDown.setStyle(buttonStyle);
