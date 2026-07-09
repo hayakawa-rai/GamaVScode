@@ -7155,3 +7155,42 @@ Caused by: java.net.MalformedURLException: unknown protocol: home
 2026-07-09 09:09:23,790 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1432 userid: 460395288
 2026-07-09 09:09:52,564 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 2440 userid: 460395288
 2026-07-09 09:11:09,969 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 4858 userid: 460395288
+2026-07-09 10:34:34,494 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-5 - Slf4jLogger started
+2026-07-09 10:34:35,132 [INFO] from play.api.Play in Thread-0 - Application started (Prod) (no global state)
+2026-07-09 10:34:35,664 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Enabling HTTP/2 on Akka HTTP server...
+2026-07-09 10:34:35,665 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Listening for HTTP on /[0:0:0:0:0:0:0:0]:8080
+2026-07-09 10:34:35,845 [INFO] from com.jpro.activity in application-akka.actor.default-dispatcher-5 - Starting the server
+2026-07-09 10:34:35,846 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 -  *** Starting JPro: https://www.jpro.one/ ***
+2026-07-09 10:34:35,846 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - OS: Windows 11
+2026-07-09 10:34:35,865 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JPro: 2022.1.1
+2026-07-09 10:34:35,865 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - Java version: 17.0.18
+2026-07-09 10:34:35,865 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JVM: 17.0.18 Eclipse Adoptium
+2026-07-09 10:34:35,875 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JavaFX jar: file:/C:/Users/EMD-576/.m2/repository/org/openjfx/javafx-graphics/18.0.1-jpro+0/javafx-graphics-18.0.1-jpro+0-win.jar
+2026-07-09 10:34:35,899 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - redirected OUT / ERR
+2026-07-09 10:34:35,900 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - installed SLF4JBridge
+2026-07-09 10:34:35,996 [WARN] from javafx in application-akka.actor.default-dispatcher-5 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @7271e104'
+2026-07-09 10:34:43,969 [INFO] from com.jpro.internal.server.Initializer$ in JavaFX Application Thread - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 10:34:43,992 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - finished init!
+2026-07-09 10:34:45,631 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-16 - application requested: default
+2026-07-09 10:34:45,645 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-16 - Creating Application: default
+2026-07-09 10:34:45,651 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-16 - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 10:34:45,655 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-16 - host          localhost:8080
+2026-07-09 10:34:45,655 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-16 - uri           /app/ws/default
+2026-07-09 10:34:55,977 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 443 userid: 1725996108
+2026-07-09 10:35:07,390 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@142c0e4c
+2026-07-09 10:35:07,628 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 995 userid: 1725996108
+2026-07-09 10:35:09,903 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1438 userid: 1725996108
+2026-07-09 10:35:13,044 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1fbdb6fb
+2026-07-09 10:35:13,108 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1984 userid: 1725996108
+2026-07-09 10:35:14,357 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 2427 userid: 1725996108
+2026-07-09 10:35:35,049 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 3435 userid: 1725996108
+2026-07-09 10:35:37,965 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 5853 userid: 1725996108
+2026-07-09 10:35:48,838 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@16f1d2e4
+2026-07-09 10:35:48,904 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 6405 userid: 1725996108
+2026-07-09 10:35:55,254 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 6848 userid: 1725996108
+2026-07-09 10:35:59,693 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 7862 userid: 1725996108
+2026-07-09 10:36:04,825 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 8299 userid: 1725996108
+2026-07-09 10:36:06,723 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@795c11d2
+2026-07-09 10:36:06,786 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 8857 userid: 1725996108
+2026-07-09 10:36:08,132 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 9294 userid: 1725996108
+2026-07-09 10:37:17,271 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-12 - Unexpected message form client, closing session.
