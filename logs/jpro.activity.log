@@ -121,3 +121,10 @@
 =======
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-09 16:26:29,751 [INFO] in application-akka.actor.default-dispatcher-7 - Starting the server
+2026-07-09 16:46:36,313 [INFO] in application-akka.actor.default-dispatcher-8 - Starting the server
+2026-07-09 16:47:55,337 [INFO] in application-akka.actor.default-dispatcher-7 - Starting the server
+2026-07-09 16:57:33,454 [INFO] in application-akka.actor.default-dispatcher-8 - Starting the server
+2026-07-09 17:14:22,209 [INFO] in application-akka.actor.default-dispatcher-5 - Starting the server
+2026-07-09 17:17:15,233 [INFO] in application-akka.actor.default-dispatcher-5 - Starting the server
+2026-07-09 17:18:39,686 [INFO] in application-akka.actor.default-dispatcher-9 - Starting the server
