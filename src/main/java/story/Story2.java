@@ -391,24 +391,24 @@ public class Story2 extends Application {
 		menuBox.getChildren().addAll(resume, titleBtn);
 		menuOverlay.getChildren().add(menuBox);
 		base.getChildren().addAll(menuBtn, menuOverlay);
-
+		// 背景画像をウィンドウサイズに合わせる
 		bgView.fitWidthProperty().bind(scene.widthProperty());
 		bgView.fitHeightProperty().bind(scene.heightProperty());
-
-		anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+		// 人物画像(あにき)をウィンドウサイズに合わせる(右に表示)
+		anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.7));
 		anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
 		anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
-
-		nariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
+		// 人物画像(なりなり)をウィンドウサイズに合わせる(右に表示)
+		nariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
 		nariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
 		nariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
-
+		// 人物画像(たく)をウィンドウサイズに合わせる(右に表示)
 		takuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
 		takuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
 		takuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
-
-		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.37));
-		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(1.4));
+		// 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
+		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.3));
+		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
 		syujinkouView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
 
 		insertView.fitWidthProperty().bind(scene.widthProperty());

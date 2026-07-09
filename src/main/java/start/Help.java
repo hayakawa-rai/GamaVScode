@@ -3,6 +3,7 @@ package start;
 import control.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -12,8 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -31,7 +30,7 @@ public class Help extends Application {
 	private AnimationTimer timer;
 	private static final double ICON_COL_WIDTH = 40;
 
-	// ページ管理用（2ページ分）
+	// ページ管理用（4ページ分）
 	private VBox[] pages;
 	private int currentPage = 0;
 
@@ -42,37 +41,35 @@ public class Help extends Application {
 		Bgm.stopBGM();
 		Bgm.playBGM("/music/startbgm.mp3");
 
-		// ===== 背景 =====
-		Image bgImage = new Image(getClass().getResource("/picture/background.png").toExternalForm());
-		double bgWidth = bgImage.getWidth();
-		double bgHeight = bgImage.getHeight();
+		// 👑【元に戻しました！】ImagePattern を使ったスクロール背景
 		Pane bgPane = new Pane();
-		final double[] scrollX = { 0 };
+		Image bgImage = new Image(getClass().getResource("/picture/background.png").toExternalForm());
+		ImagePattern pattern = new ImagePattern(bgImage, 0, 0, bgImage.getWidth(), bgImage.getHeight(), false);
+		bgPane.setBackground(new javafx.scene.layout.Background(new javafx.scene.layout.BackgroundFill(pattern, null, null)));
 
 		timer = new AnimationTimer() {
+			private double x = 0;
+			private final double speed = 1.0;
+
 			@Override
 			public void handle(long now) {
-				scrollX[0] -= 1;
-				if (scrollX[0] <= -bgWidth) {
-					scrollX[0] = 0;
-				}
-				ImagePattern pattern = new ImagePattern(bgImage, scrollX[0], 0, bgWidth, bgHeight, false);
-				bgPane.setBackground(new Background(new BackgroundFill(pattern, null, null)));
+				x -= speed;
+				ImagePattern movedPattern = new ImagePattern(bgImage, x, x, bgImage.getWidth(), bgImage.getHeight(), false);
+				bgPane.setBackground(new javafx.scene.layout.Background(new javafx.scene.layout.BackgroundFill(movedPattern, null, null)));
 			}
 		};
-		timer.start();
 
-		
 		StackPane root = new StackPane();
+		root.setStyle("-fx-background-color: black;"); // 白飛び防止用の黒背景
 
 		// ===== 中央の半透明パネル =====
 		VBox panel = new VBox(16);
 		panel.setMaxHeight(Region.USE_PREF_SIZE);
 		panel.setAlignment(Pos.CENTER);
-		panel.setMinWidth(560); // ← 追加：最小幅を固定
-		panel.setPrefWidth(560); // ← 追加：基準幅を固定
-		panel.setMaxWidth(560); // 既存：最大幅
-		panel.setPadding(new Insets(35, 45, 35, 45));
+		
+		// 🛠️【スマホ対応】狭い画面でもはみ出さないレスポンシブな最大幅に調整
+		panel.setMaxWidth(560);
+		panel.setPadding(new Insets(25, 30, 25, 30));
 		panel.setStyle(
 				"-fx-background-color: rgba(0,0,0,0.6);"
 						+ "-fx-border-width: 2;"
@@ -82,13 +79,13 @@ public class Help extends Application {
 		// タイトル
 		Label title = new Label("基本説明");
 		title.setTextFill(Color.web("#F4C022"));
-		title.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 40));
+		title.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 36));
 
 		// ===== ページ1：操作説明 =====
 		VBox page1 = new VBox(16);
 		page1.setAlignment(Pos.CENTER);
 		page1.getChildren().addAll(
-				makeMoveControlRow(), // ← 「移動：  ↑ / ↓ / ← / →   または   W / A / S / D」
+				makeMoveControlRow(), 
 				spacer(6),
 				makeMoveControlFhone());
 
@@ -136,10 +133,9 @@ public class Help extends Application {
 		VBox page3Wrapped = wrapWithHeading("ルール", page3);
 		VBox page4Wrapped = wrapWithHeading("モード", page4);
 
-		// pages配列・pageStackは「Wrapped」版を使う
 		pages = new VBox[] { page1Wrapped, page2Wrapped, page3Wrapped , page4Wrapped};
-		// 両ページを重ねて、表示中の1枚だけ見せる
 		StackPane pageStack = new StackPane(page1Wrapped, page2Wrapped, page3Wrapped, page4Wrapped);
+		pageStack.setMaxWidth(500); // 内側の要素が広がりすぎないように制限
 
 		// ===== ページインジケーター（● ○ のような小さい点） =====
 		HBox indicator = new HBox(8);
@@ -180,24 +176,28 @@ public class Help extends Application {
 			updatePage.run();
 		});
 
-		// ===== 戻るボタン（パネルの外・下に配置） =====
+		// ===== 戻るボタン =====
 		Button backBtn = new Button("戻る");
-		backBtn.setPrefSize(220, 60);
+		backBtn.setPrefSize(200, 50);
 		backBtn.getStyleClass().add("help-button");
 		backBtn.setOnAction(e -> {
-			timer.stop();
+			if (timer != null) timer.stop();
 			GameController.switchStart(stage);
 		});
 
-		// パネル本体 + 戻るボタンを縦に並べる（戻るボタンは黒枠の外）
-		VBox panelWithBack = new VBox(20, panel, backBtn);
-		panelWithBack.setAlignment(Pos.CENTER);
+		// 🛠️【スマホ対応レイアウト】
+		// 画面幅が狭いときも綺麗に縦並びで収まるコンテナ構造
+		HBox arrowRow = new HBox(40, leftArrow, rightArrow);
+		arrowRow.setAlignment(Pos.CENTER);
 
-		// 矢印ボタンをパネルの左右に配置する横並びレイアウト
-		HBox contentRow = new HBox(20, leftArrow, panelWithBack, rightArrow);
-		contentRow.setAlignment(Pos.CENTER);
+		VBox mainContainer = new VBox(15);
+		mainContainer.setAlignment(Pos.CENTER);
+		mainContainer.setPadding(new Insets(20));
+		mainContainer.setMaxWidth(560);
 
-		root.getChildren().addAll(bgPane, contentRow);
+		mainContainer.getChildren().addAll(panel, arrowRow, backBtn);
+
+		root.getChildren().addAll(bgPane, mainContainer);
 
 		Scene scene = new Scene(root, 1000, 800);
 		bgPane.prefWidthProperty().bind(scene.widthProperty());
@@ -209,11 +209,20 @@ public class Help extends Application {
 			ex.printStackTrace();
 		}
 
-		stage.setMinWidth(800);
-		stage.setMinHeight(600);
+		stage.setMinWidth(320); // スマホ基準の最小幅
+		stage.setMinHeight(568);
+		stage.setMaxWidth(1920);
+		stage.setMaxHeight(1080);
 		stage.setTitle("基本説明");
 		stage.setScene(scene);
 		stage.show();
+
+		// 完全に表示されてから背景スクロールを開始（白飛び・チカチカ対策）
+		Platform.runLater(() -> {
+			if (timer != null) {
+				timer.start();
+			}
+		});
 	}
 
 	private VBox wrapWithHeading(String heading, VBox content) {
@@ -225,17 +234,16 @@ public class Help extends Application {
 		return wrapper;
 	}
 
-	// 矢印ボタンを作る補助メソッド
 	private Button makeArrowButton(String symbol) {
 		Button btn = new Button(symbol);
-		btn.setPrefSize(48, 48);
-		btn.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 20));
+		btn.setPrefSize(50, 45);
+		btn.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 18));
 		btn.setStyle(
 				"-fx-background-color: rgba(0,0,0,0.6);"
 						+ "-fx-text-fill: #4FD8E8;"
 						+ "-fx-border-width: 2;"
-						+ "-fx-background-radius: 24;"
-						+ "-fx-border-radius: 24;");
+						+ "-fx-background-radius: 10;"
+						+ "-border-radius: 10;");
 		return btn;
 	}
 
@@ -258,7 +266,7 @@ public class Help extends Application {
 		l.setTextFill(Color.WHITE);
 		l.setFont(Font.font("PixelMplus12", 14));
 		l.setWrapText(true);
-		l.setMaxWidth(400);
+		l.setMaxWidth(420); // レスポンシブで文字が自動で折り返されるように調整
 
 		HBox row = new HBox(10, iconBox, l);
 		row.setAlignment(Pos.CENTER_LEFT);
@@ -274,32 +282,31 @@ public class Help extends Application {
 	private ImageView makePowerPelletIcon() {
 		Image img = new Image(getClass().getResource("/picture/Chii_Item.png").toExternalForm());
 		ImageView view = new ImageView(img);
-		view.setFitWidth(55);
-		view.setFitHeight(55);
+		view.setFitWidth(36);
+		view.setFitHeight(36);
 		view.setPreserveRatio(true);
 		return view;
 	}
 
-	// フルーツ1種類分のアイコン＋スコアを作る補助メソッド
 	private VBox makeFruitItem(String imagePath, int score) {
 		Image img = new Image(getClass().getResource(imagePath).toExternalForm());
 		ImageView view = new ImageView(img);
-		view.setFitWidth(36);
-		view.setFitHeight(36);
+		view.setFitWidth(32);
+		view.setFitHeight(32);
 		view.setPreserveRatio(true);
 
 		Label scoreLabel = new Label("＋" + score);
 		scoreLabel.setTextFill(Color.web("#F4C022"));
-		scoreLabel.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 12));
+		scoreLabel.setFont(Font.font("PixelMplus12", FontWeight.BOLD, 11));
 
 		VBox item = new VBox(4, view, scoreLabel);
 		item.setAlignment(Pos.CENTER);
 		return item;
 	}
 
-	// フルーツ一覧（5種）を横並びにする補助メソッド
 	private HBox makeFruitRow() {
-		HBox row = new HBox(18,
+		HBox row = new HBox(12);
+		row.getChildren().addAll(
 				makeFruitItem("/picture/sakuranbo.png", 100),
 				makeFruitItem("/picture/ichigo.png", 300),
 				makeFruitItem("/picture/orange.png", 500),
@@ -309,49 +316,42 @@ public class Help extends Application {
 		return row;
 	}
 
-	// 「移動： [画像] または [画像]」の行を作る補助メソッド
 	private HBox makeMoveControlRow() {
 		Label moveLabel = new Label("移動：");
 		moveLabel.setTextFill(Color.WHITE);
-		moveLabel.setFont(Font.font("PixelMplus12", 16));
+		moveLabel.setFont(Font.font("PixelMplus12", 15));
 
-		ImageView img2 = new ImageView(
-				new Image(getClass().getResource("/picture/WASD.png").toExternalForm()));
-		img2.setFitHeight(100);
+		ImageView img2 = new ImageView(new Image(getClass().getResource("/picture/WASD.png").toExternalForm()));
+		img2.setFitHeight(65);
 		img2.setPreserveRatio(true);
 
 		Label orLabel = new Label("または");
 		orLabel.setTextFill(Color.WHITE);
-		orLabel.setFont(Font.font("PixelMplus12", 16));
+		orLabel.setFont(Font.font("PixelMplus12", 15));
 
-		ImageView img3 = new ImageView(
-				new Image(getClass().getResource("/picture/yazirusi.png").toExternalForm()));
-		img3.setFitHeight(100);
+		ImageView img3 = new ImageView(new Image(getClass().getResource("/picture/yazirusi.png").toExternalForm()));
+		img3.setFitHeight(65);
 		img3.setPreserveRatio(true);
 
-		HBox row = new HBox(10, moveLabel, img2, orLabel, img3);
+		HBox row = new HBox(8, moveLabel, img2, orLabel, img3);
 		row.setAlignment(Pos.CENTER);
 		return row;
 	}
 
-	// 「モバイルデバイスでの移動： [画像]」の行を作る補助メソッド
 	private HBox makeMoveControlFhone() {
-		Label moveLabel = new Label("モバイルデバイスでの移動：");
+		Label moveLabel = new Label("スマホでの移動：");
 		moveLabel.setTextFill(Color.WHITE);
-		moveLabel.setFont(Font.font("PixelMplus12", 16));
+		moveLabel.setFont(Font.font("PixelMplus12", 15));
 
-		ImageView img3 = new ImageView(
-				new Image(getClass().getResource("/picture/yazirusi_phone.png").toExternalForm()));
-		img3.setFitHeight(120);
+		ImageView img3 = new ImageView(new Image(getClass().getResource("/picture/yazirusi_phone.png").toExternalForm()));
+		img3.setFitHeight(75);
 		img3.setPreserveRatio(true);
 
-		HBox row = new HBox(10, moveLabel, img3);
-		row.setAlignment(Pos.CENTER_LEFT);
-		row.setPadding(new Insets(0, 0, 0, 30));
+		HBox row = new HBox(8, moveLabel, img3);
+		row.setAlignment(Pos.CENTER);
 		return row;
 	}
 	
-	// モード見出し用の行を作る補助メソッド（アイコン記号＋太字大きめテキスト）
 	private HBox makeModeHeading(String text) {
 		StackPane iconBox = new StackPane();
 		iconBox.setMinWidth(ICON_COL_WIDTH);

@@ -1,5 +1,7 @@
 package start;
 
+import com.jpro.webapi.WebAPI;
+
 import control.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -23,6 +25,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import util.ResponsiveUtil;
 
 public class Start extends Application {
 	private AnimationTimer timer;
@@ -128,8 +131,6 @@ public class Start extends Application {
 
 		//縦に並べるための箱を作成
 		VBox ui = new VBox();
-		// UIが広がりすぎないよう最大幅を制限
-		ui.setMaxWidth(800);
 		//uiによる配置の間隔を設定
 		ui.setSpacing(20);
 		//中央に設定
@@ -139,8 +140,6 @@ public class Start extends Application {
 		Image image = new Image(getClass().getResource("/picture/title.png").toExternalForm());
 		//画像を表示、画像サイズを調整
 		ImageView imageView = new ImageView(image);
-		imageView.setFitWidth(500);
-		imageView.setFitHeight(400);
 		// 縦横比維持
 		imageView.setPreserveRatio(true);
 
@@ -161,7 +160,6 @@ public class Start extends Application {
 
 		// ストーリーモードへ飛ぶボタンを作成
 		Button btn1 = new Button("▶ストーリー");
-		btn1.setPrefSize(300, 100);
 
 		//btn1にCSSのgame-buttonを付与
 		btn1.getStyleClass().add("game-button");
@@ -190,7 +188,6 @@ public class Start extends Application {
 
 		//練習モードへ飛ぶボタン作成
 		Button btn2 = new Button("⚔練習モード");
-		btn2.setPrefSize(300, 100);
 
 		//setOnAction:クリックしたときに実行する処理を記述
 		//(e->:クリックされたら実行される処理を書いていくという記号)
@@ -222,7 +219,6 @@ public class Start extends Application {
 
 		//無限モードへ飛ぶボタン作成
 		Button btn3 = new Button("ゲーム終了");
-		btn3.setPrefSize(300, 100);
 
 		//btn3にCSSのgame-buttonを付与
 		btn3.getStyleClass().add("game-button");
@@ -242,8 +238,14 @@ public class Start extends Application {
 							// 背景アニメーションやBGMを安全に停止
 							cleanup();
 
-							// JavaFXアプリを終了する
-							Platform.exit();
+							// ブラウザ実行時：トップページへリダイレクト／デスクトップ実行時：通常終了
+							WebAPI webAPI = WebAPI.getWebAPI(stage);
+							if (webAPI != null) {
+								webAPI.executeScript("window.location.href = 'https://www.bing.com';");
+							} else {
+								Platform.exit();
+							}
+
 						}));
 				delay.play();
 			} catch (Exception ex) {
@@ -259,7 +261,6 @@ public class Start extends Application {
 
 		// 操作説明画面へ飛ぶ「？」アイコンボタン
 		Button btnHelp = new Button("？");
-		btnHelp.setPrefSize(50, 50);
 		btnHelp.getStyleClass().add("help-button"); // CSSで丸くする
 
 		btnHelp.setOnAction(e -> {
@@ -292,20 +293,59 @@ public class Start extends Application {
 		StackPane.setMargin(btnHelp, new Insets(20));
 		root.getChildren().add(btnHelp);
 
-		//rootを中身とした1000×800のウィンドウを作成
+		//rootを中身とした1000×800のウィンドウを作成（初期サイズ。以降は可変）
 		Scene scene = new Scene(root, 1000, 800);
-		//
+
+		// 背景Paneをシーンサイズに追従させる
 		bgPane.prefWidthProperty().bind(scene.widthProperty());
 		bgPane.prefHeightProperty().bind(scene.heightProperty());
+
+		// ===== ここからレスポンシブ対応の追加分 =====
+		// util.ResponsiveUtil に共通処理をまとめてあるので、他画面(Story/Practice/Help等)でも
+		// 同じ書き方で流用できる。
+
+		// UI全体の最大幅をシーン幅の90%に制限（画面幅に応じて伸縮）
+		ResponsiveUtil.bindMaxWidth(ui, scene.widthProperty(), 0.9);
+
+		// タイトル画像の幅をシーン幅の50%に、比率維持で追従させる
+		ResponsiveUtil.bindImageFitWidth(imageView, scene.widthProperty(), 0.5);
+
+		// ボタン群の幅・高さをシーンサイズの割合で追従させる（最小サイズも確保）
+		for (Button b : new Button[] { btn1, btn2, btn3 }) {
+			ResponsiveUtil.bindPrefSize(b, scene.widthProperty(), 0.35, scene.heightProperty(), 0.11, 160, 44);
+		}
+
+		// メインボタン(btn1〜3)のフォントサイズと横パディングをシーン幅に応じて可変にする
+		// （CSSの game-button クラスは -fx-font-size: 30px 固定なので、インラインstyleで上書きする）
+		for (Button b : new Button[] { btn1, btn2, btn3 }) {
+			ResponsiveUtil.bindButtonFontAndPadding(b, scene.widthProperty(),
+					14, 0.045, 30, // フォント: 14px〜30px
+					8, 0.02, 20); // 横パディング: 8px〜20px
+		}
+
+		// ？ボタンはシーンサイズに応じて小さめに追従（正方形を維持）
+		btnHelp.prefWidthProperty().bind(scene.widthProperty().multiply(0.05));
+		btnHelp.prefHeightProperty().bind(btnHelp.widthProperty());
+		btnHelp.setMinWidth(36);
+		btnHelp.setMinHeight(36);
+
+		// ？ボタンのフォントサイズもシーン幅に応じて可変にする（12px〜20px）
+		ResponsiveUtil.bindButtonFontAndPadding(btnHelp, scene.widthProperty(),
+				12, 0.02, 20, // フォント: 12px〜20px
+				4, 0.0, 4); // パディングは元のCSS(4 4)寄りに固定気味にする
+
+		// ===== レスポンシブ対応の追加分ここまで =====
 
 		//CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
-		//ウィンドウの最小限のサイズを設定
-		stage.setMinWidth(800);
-		stage.setMinHeight(600);
-		stage.setMaxWidth(1920); // PC大画面やブラウザ最大化時の最大サイズ制限
-		stage.setMaxHeight(1080);
+
+		// ウィンドウの最小限のサイズを設定（スマホの幅にも対応できるよう縮小）
+		stage.setMinWidth(320);
+		stage.setMinHeight(480);
+		// 最大サイズの制限は撤廃し、ブラウザ／画面いっぱいまで拡大できるようにする
+		// stage.setMaxWidth(1920);
+		// stage.setMaxHeight(1080);
 
 		//ウィンドウの名前を設定
 		stage.setTitle("スタート画面");
