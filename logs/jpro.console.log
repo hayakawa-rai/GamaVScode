@@ -1943,3 +1943,21 @@
 2026-07-09 17:35:26,433 [INFO] in scala-execution-context-global-1835 - [info] c.j.i.s.ViewInfo$ - 
 2026-07-09 17:35:27,436 [INFO] in scala-execution-context-global-83 - [info] c.j.i.c.InstanceImpl - closing window!
 2026-07-09 17:35:30,540 [INFO] in scala-execution-context-global-83 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 17:40:50,028 [INFO] in scala-execution-context-global-181 - [info] c.jpro - application requested: default
+2026-07-09 17:40:50,030 [INFO] in scala-execution-context-global-181 - [info] c.jpro - Creating Application: default
+2026-07-09 17:40:50,030 [INFO] in scala-execution-context-global-181 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 17:40:50,030 [INFO] in scala-execution-context-global-181 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 17:40:50,030 [INFO] in scala-execution-context-global-181 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 17:40:50,432 [INFO] in scala-execution-context-global-181 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 17:40:50,603 [INFO] in scala-execution-context-global-181 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 10224116
+2026-07-09 17:41:22,028 [INFO] in scala-execution-context-global-181 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 17:41:22,028 [INFO] in scala-execution-context-global-181 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 17:41:22,029 [INFO] in scala-execution-context-global-181 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 17:41:22 JST 2026      
+2026-07-09 17:41:22,029 [INFO] in scala-execution-context-global-181 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.054 
+2026-07-09 17:41:22,029 [INFO] in scala-execution-context-global-181 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.002  
+2026-07-09 17:41:22,029 [INFO] in scala-execution-context-global-181 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 17:41:22,029 [INFO] in scala-execution-context-global-181 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 17:41:22,029 [INFO] in scala-execution-context-global-179 - [info] c.j.i.s.ViewInfo$ - raw            : 1027869
+2026-07-09 17:41:22,029 [INFO] in scala-execution-context-global-86 - [info] c.j.i.s.ViewInfo$ - zipped         : 268536
+2026-07-09 17:41:22,029 [INFO] in scala-execution-context-global-86 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 17:41:37,453 [INFO] in scala-execution-context-global-2113 - [info] c.j.i.c.InstanceImpl - closing window!
