@@ -177,6 +177,8 @@ public class Main1 extends Application {
 		// レイヤー構成
 		// 背景 → ゲーム画面 → ポーズ画面
 		// =====================================================
+		
+		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
 		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
 
 		// =====================================================
