@@ -238,9 +238,9 @@ public class PracticeMain2 extends Application {
 		stage.setTitle("仙石さん - 練習ステージ 2");
 		stage.setScene(scene);
 
-		// ウィンドウのサイズ制限
-		stage.setMinWidth(1000);
-		stage.setMinHeight(800);
+		// ウィンドウのサイズ制限（スマホ対応版）
+		stage.setMinWidth(320);   // スマホの最小横幅（iPhone SEなど）に合わせる
+		stage.setMinHeight(568);  // スマホの最小縦幅に合わせる
 		stage.setMaxWidth(1920);
 		stage.setMaxHeight(1080);
 
