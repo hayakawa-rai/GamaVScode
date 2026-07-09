@@ -5,6 +5,7 @@ package test2;
 
 import control.GameController;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -96,7 +97,7 @@ public class Main2 extends Application {
 		// ゲーム画面生成
 		// =====================================================
 		Pane gameBase = new Pane();
-		gameBase.getStyleClass().add("stage1");
+		gameBase.getStyleClass().add("stage2");
 
 		MapView view = new MapView(model, gameBase);
 
@@ -126,6 +127,18 @@ public class Main2 extends Application {
 		Label subLabel = new Label("もう一度 Pキー を押すと再開します");
 		subLabel.setFont(Font.font("Meiryo", FontWeight.BOLD, 16));
 		subLabel.setTextFill(Color.WHITE);
+		
+		// ゲーム再開ボタン
+		Button ToPlayButton = new Button("ゲーム再開");
+		ToPlayButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
+		ToPlayButton.setPrefSize(160, 40);
+		
+		// 押すとメニューボタンと同じtogglePauseByButton()を呼んで再開する
+		ToPlayButton.setOnAction(e -> {
+			if (this.controller != null) {
+				this.controller.togglePauseByButton();
+			}
+		});
 
 		// =====================================================
 		// 操作説明UI
@@ -171,15 +184,33 @@ public class Main2 extends Application {
 			}
 		});
 		// ポーズ画面に追加
-		pauseLayer.getChildren().addAll(pauseLabel, subLabel, howToPlayButton, howToPlayText, titleButton);
+		pauseLayer.getChildren().addAll(pauseLabel, subLabel, ToPlayButton, howToPlayButton, howToPlayText,titleButton);
+		// =====================================================
+		// メニューアイコンボタン（Story1と同じ見た目・配置）
+		// =====================================================
+		Image menuImg = new Image(getClass().getResourceAsStream("/picture/menu.jpeg"));
+		ImageView menuIconView = new ImageView(menuImg);
+		menuIconView.setFitWidth(40);
+		menuIconView.setFitHeight(40);
+
+		Button menuBtn = new Button("");
+		menuBtn.setGraphic(menuIconView);
+		menuBtn.setStyle("-fx-background-color: transparent;");
+		StackPane.setAlignment(menuBtn, Pos.TOP_LEFT);
+		// Insets(top, right, bottom, left) で上の余白だけ増やす
+		StackPane.setMargin(menuBtn, new Insets(60, 0, 0, 30));
+
+		menuBtn.setOnAction(e -> {
+			if (this.controller != null) {
+				this.controller.togglePauseByButton();
+			}
+		});
 
 		// =====================================================
 		// レイヤー構成
-		// 背景 → ゲーム画面 → ポーズ画面
+		// 背景 → ゲーム画面 → メニューアイコン → ポーズ画面
 		// =====================================================
-
-		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
-		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
+		root.getChildren().addAll(backgroundView, gameBase, menuBtn, pauseLayer);
 
 		// =====================================================
 		// 敵初期化
@@ -191,12 +222,16 @@ public class Main2 extends Application {
 		// =====================================================
 		this.controller = new GameController(model, view, canvas, scene, stage, 2, false);
 
+		// 十字キー(dPad)より手前にメニューボタンを持ってくる
+		menuBtn.toFront();
+		
 		// ポーズ画面を登録
 		this.controller.setPauseLayer(pauseLayer);
 
 		// =====================================================
 		// ステージ設定
 		// =====================================================
+		
 		stage.setTitle("仙石さん - ステージ 2");
 		stage.setScene(scene);
 
