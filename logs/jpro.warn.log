@@ -4936,6 +4936,82 @@ java.lang.ClassCastException: class p.Data$Input$ClientMessageClose cannot be ca
 2026-07-09 15:31:12,133 [WARN] from javafx in application-akka.actor.default-dispatcher-5 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @70bd2d01'
 2026-07-09 15:31:19,103 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-9 - Unexpected message form client, closing session.
 2026-07-09 15:32:48,815 [WARN] from javafx in application-akka.actor.default-dispatcher-5 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @603c9d2a'
+<<<<<<< HEAD
 2026-07-09 15:55:20,056 [WARN] from javafx in application-akka.actor.default-dispatcher-5 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @684a794e'
 2026-07-09 15:56:46,466 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-5 - Unexpected message form client, closing session.
 2026-07-09 15:57:22,794 [WARN] from javafx in application-akka.actor.default-dispatcher-9 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @3ecc017b'
+=======
+2026-07-09 15:43:22,799 [WARN] from javafx in application-akka.actor.default-dispatcher-7 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @79eded2a'
+2026-07-09 15:43:26,922 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-13 - Unexpected message form client, closing session.
+2026-07-09 15:43:29,936 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-13 - Unexpected message form client, closing session.
+2026-07-09 15:47:36,801 [WARN] from javafx in application-akka.actor.default-dispatcher-7 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @5fc72831'
+2026-07-09 15:47:58,859 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-16 - Unexpected message form client, closing session.
+2026-07-09 15:49:15,986 [WARN] from javafx in application-akka.actor.default-dispatcher-8 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @1b771904'
+2026-07-09 15:49:19,078 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-9 - Unexpected message form client, closing session.
+2026-07-09 15:49:45,450 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-12 - Unexpected message form client, closing session.
+2026-07-09 15:49:47,103 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-16 - Unexpected message form client, closing session.
+2026-07-09 15:53:21,431 [WARN] from javafx in application-akka.actor.default-dispatcher-7 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @7dfcaa22'
+2026-07-09 15:53:24,147 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-7 - Unexpected message form client, closing session.
+2026-07-09 15:53:43,592 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:43,598 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:43,773 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:43,834 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:49,553 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:49,687 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:50,210 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:50,346 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:50,433 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:50,600 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:51,171 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:51,382 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:51,674 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:51,811 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:52,002 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:52,143 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:54,249 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:54,346 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:55,238 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:55,378 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:55,578 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:55,699 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:56,329 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:56,410 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:56,818 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:56,932 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:57,986 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:58,126 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:59,022 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:59,141 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:59,747 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:53:59,867 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:00,419 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:00,537 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:01,102 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:01,173 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:01,329 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:01,426 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:02,134 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:02,231 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:02,500 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:02,643 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:02,759 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:02,984 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,048 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,173 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,315 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,442 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,526 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,629 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,759 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,920 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:03,939 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:04,071 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:04,171 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:04,389 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:04,475 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:04,592 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:04,700 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:54:04,856 [WARN] from com.jpro.meta.tk.SceneInputListener in JavaFX Application Thread - Unknown Keycode: 229
+2026-07-09 15:57:51,111 [WARN] from javafx in application-akka.actor.default-dispatcher-9 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @3ea5a644'
+2026-07-09 15:58:16,051 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-5 - Unexpected message form client, closing session.
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git

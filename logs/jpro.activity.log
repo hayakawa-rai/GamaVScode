@@ -90,5 +90,13 @@
 2026-07-09 15:15:42,431 [INFO] in application-akka.actor.default-dispatcher-8 - Starting the server
 2026-07-09 15:18:35,378 [INFO] in application-akka.actor.default-dispatcher-7 - Starting the server
 2026-07-09 15:31:12,058 [INFO] in application-akka.actor.default-dispatcher-5 - Starting the server
+<<<<<<< HEAD
 2026-07-09 15:55:19,944 [INFO] in application-akka.actor.default-dispatcher-5 - Starting the server
 2026-07-09 15:57:22,682 [INFO] in application-akka.actor.default-dispatcher-9 - Starting the server
+=======
+2026-07-09 15:43:22,726 [INFO] in application-akka.actor.default-dispatcher-7 - Starting the server
+2026-07-09 15:47:36,694 [INFO] in application-akka.actor.default-dispatcher-7 - Starting the server
+2026-07-09 15:49:15,903 [INFO] in application-akka.actor.default-dispatcher-8 - Starting the server
+2026-07-09 15:53:21,356 [INFO] in application-akka.actor.default-dispatcher-7 - Starting the server
+2026-07-09 15:57:51,009 [INFO] in application-akka.actor.default-dispatcher-9 - Starting the server
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
