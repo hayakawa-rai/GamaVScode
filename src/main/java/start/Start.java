@@ -7,7 +7,6 @@ import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,18 +23,12 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import util.ResponsiveUtil;
 
 public class Start extends Application {
 	private AnimationTimer timer;
 	private AudioClip clickSound;
 	private PauseTransition pause;
-
-	/**
-	 * 値をmin〜maxの範囲に収める（フォントサイズ・パディングの可変計算用）
-	 */
-	private static double clamp(double min, double value, double max) {
-		return Math.max(min, Math.min(value, max));
-	}
 
 	private void cleanup() {
 
@@ -130,7 +123,7 @@ public class Start extends Application {
 			}
 		};
 		//ここから自動的にループ開始(AnimationTimerとペアで使用)
-		timer.start();
+		//timer.start();
 		//重ねて表示するためのレイアウト(レイヤー構造の作成)
 		StackPane root = new StackPane();
 
@@ -300,37 +293,26 @@ public class Start extends Application {
 		bgPane.prefHeightProperty().bind(scene.heightProperty());
 
 		// ===== ここからレスポンシブ対応の追加分 =====
+		// util.ResponsiveUtil に共通処理をまとめてあるので、他画面(Story/Practice/Help等)でも
+		// 同じ書き方で流用できる。
 
 		// UI全体の最大幅をシーン幅の90%に制限（画面幅に応じて伸縮）
-		ui.maxWidthProperty().bind(scene.widthProperty().multiply(0.9));
+		ResponsiveUtil.bindMaxWidth(ui, scene.widthProperty(), 0.9);
 
 		// タイトル画像の幅をシーン幅の50%に、比率維持で追従させる
-		imageView.fitWidthProperty().bind(scene.widthProperty().multiply(0.5));
+		ResponsiveUtil.bindImageFitWidth(imageView, scene.widthProperty(), 0.5);
 
-		// ボタン群の幅・高さをシーンサイズの割合で追従させる
+		// ボタン群の幅・高さをシーンサイズの割合で追従させる（最小サイズも確保）
 		for (Button b : new Button[] { btn1, btn2, btn3 }) {
-			b.prefWidthProperty().bind(scene.widthProperty().multiply(0.35));
-			b.prefHeightProperty().bind(scene.heightProperty().multiply(0.11));
-			// 小さい画面でボタンが潰れすぎないよう最小サイズを確保
-			b.setMinWidth(160);
-			b.setMinHeight(48);
+			ResponsiveUtil.bindPrefSize(b, scene.widthProperty(), 0.35, scene.heightProperty(), 0.11, 160, 44);
 		}
 
 		// メインボタン(btn1〜3)のフォントサイズと横パディングをシーン幅に応じて可変にする
-		// （CSSの game-button クラスは -fx-font-size: 30px 固定なので、
-		//   ここでインラインstyleとして上書きし、狭い画面でテキストがはみ出さないようにする）
+		// （CSSの game-button クラスは -fx-font-size: 30px 固定なので、インラインstyleで上書きする）
 		for (Button b : new Button[] { btn1, btn2, btn3 }) {
-			b.styleProperty().bind(Bindings.createStringBinding(
-					() -> {
-						double w = scene.getWidth();
-						// フォントサイズ: 14px〜30pxの範囲でシーン幅の4.5%に追従
-						double fontSize = clamp(14, w * 0.045, 30);
-						// 横パディング: 8px〜20pxの範囲でシーン幅の2%に追従
-						double paddingH = clamp(8, w * 0.02, 20);
-						return "-fx-font-size: " + fontSize + "px; "
-								+ "-fx-padding: 8 " + paddingH + " 8 " + paddingH + ";";
-					},
-					scene.widthProperty()));
+			ResponsiveUtil.bindButtonFontAndPadding(b, scene.widthProperty(),
+					14, 0.045, 30, // フォント: 14px〜30px
+					8, 0.02, 20); // 横パディング: 8px〜20px
 		}
 
 		// ？ボタンはシーンサイズに応じて小さめに追従（正方形を維持）
@@ -340,9 +322,9 @@ public class Start extends Application {
 		btnHelp.setMinHeight(36);
 
 		// ？ボタンのフォントサイズもシーン幅に応じて可変にする（12px〜20px）
-		btnHelp.styleProperty().bind(Bindings.createStringBinding(
-				() -> "-fx-font-size: " + clamp(12, scene.getWidth() * 0.02, 20) + "px;",
-				scene.widthProperty()));
+		ResponsiveUtil.bindButtonFontAndPadding(btnHelp, scene.widthProperty(),
+				12, 0.02, 20, // フォント: 12px〜20px
+				4, 0.0, 4); // パディングは元のCSS(4 4)寄りに固定気味にする
 
 		// ===== レスポンシブ対応の追加分ここまで =====
 
@@ -366,6 +348,12 @@ public class Start extends Application {
 		//リセットするため、一度隠してから再表示する
 		//stage.hide();
 		stage.show();
+		// 🛠️ 画面表示が完了した次のフレームでタイマーを開始する
+		Platform.runLater(() -> {
+			if (timer != null) {
+				timer.start();
+			}
+		});
 	}
 
 	//launchをmainで呼び出すことでjavafxのアプリが起動

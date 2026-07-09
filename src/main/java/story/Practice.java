@@ -3,8 +3,11 @@ package story;
 import common.HighScoreManager;
 import control.GameController;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,7 +17,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -23,6 +25,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import start.Bgm;
+import util.ResponsiveUtil;
 
 public class Practice extends Application {
 
@@ -67,17 +70,30 @@ public class Practice extends Application {
 		stage.setTitle("練習モード");
 		// WindowUtil.fillScreen(stage); // 最大化
 		stage.setScene(createScene()); // その後でSceneをセット
+		stage.show();
+		// 2. 画面が表示された「次のフレーム」でアニメーションを開始する
+	    Platform.runLater(() -> {
+	        if (timer != null) {
+	            timer.start();
+	        }
+	    });
 	}
 
 	public Scene createScene() {
 
+		// 重ねて表示するためのレイアウト(レイヤー構造の作成)
+		StackPane root = new StackPane();
+		
+		// 1000×800のベースウィンドウを作成（以降はレスポンシブ可変）
+		Scene scene = new Scene(root, 1000, 800);
+
 		// タイトル
 		Label title = new Label("練習モード");
-		title.setStyle("-fx-font-family: 'PixelMplus12';" + "-fx-font-size: 48px;" +
-		// "-fx-font-weight: 900;" +
+		title.getStyleClass().add("responsive-title"); // スタイルは基本的にCSSかバインドで行う
+		title.setStyle("-fx-font-family: 'PixelMplus12';" +
 				"-fx-text-fill: white;" + "-fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3);");
 
-		// ステージ選択
+		// ステージ選択ボタン
 		Button btn1 = new Button("STAGE 1");
 		Button btn2 = new Button("STAGE 2");
 		Button btn3 = new Button("STAGE 3");
@@ -86,146 +102,102 @@ public class Practice extends Application {
 		btn2.getStyleClass().add("game-button");
 		btn3.getStyleClass().add("game-button");
 
-		btn1.setPrefWidth(400);
-		btn2.setPrefWidth(400);
-		btn3.setPrefWidth(400);
-
-		btn1.setPrefHeight(80);
-		btn2.setPrefHeight(80);
-		btn3.setPrefHeight(80);
-
-		// ハイスコア表示
+		// ハイスコア表示用（トロフィーアイコン）
 		Label scoreInfo = new Label("🏆");
-		scoreInfo.setStyle("-fx-font-size: 50px;" + "-fx-text-fill: gold;");
+		
+		// 戻るボタン
+		Button backButton = new Button("タイトルへ");
+		backButton.getStyleClass().add("game-button");
 
 		// 音声読み込み
 		clickSound = new AudioClip(getClass().getResource("/music/select.mp3").toExternalForm());
-
-		// 音声読み込み
 		cancelSound = new AudioClip(getClass().getResource("/music/cancel.mp3").toExternalForm());
 
 		// 音量調整
 		clickSound.setVolume(0.4);
-
-		// 音量調整
 		cancelSound.setVolume(0.4);
 
+		// ボタンアクション設定
 		btn1.setOnAction(e -> {
-			// 音を鳴らす
 			clickSound.stop();
 			clickSound.play();
-
-			// 0.5秒待つ
-			pause = new PauseTransition(Duration.seconds(0.5));
-			// 音と背景停止
-			cleanup();
-
-			// 画面遷移
-			GameController.switchToPracticeGame1(stage);
+			Timeline delay = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
+				cleanup();
+				GameController.switchToPracticeGame1(stage);
+			}));
+			delay.play();
 		});
 
 		btn2.setOnAction(e -> {
-			// 音を鳴らす
 			clickSound.stop();
 			clickSound.play();
-
-			// 0.5秒待つ
-			pause = new PauseTransition(Duration.seconds(0.5));
-			// 音と背景停止
-			cleanup();
-			// 画面遷移！
-			GameController.switchToPracticeGame2(stage);
+			Timeline delay = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
+				cleanup();
+				GameController.switchToPracticeGame2(stage);
+			}));
+			delay.play();
 		});
 
 		btn3.setOnAction(e -> {
-
-			// 音を鳴らす
 			clickSound.stop();
 			clickSound.play();
-
-			// 0.5秒待つ
-			pause = new PauseTransition(Duration.seconds(0.5));
-			// 音と背景停止
-			cleanup();
-
-			// 画面遷移
-			GameController.switchToPracticeGame3(stage);
+			Timeline delay = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
+				cleanup();
+				GameController.switchToPracticeGame3(stage);
+			}));
+			delay.play();
 		});
-		VBox stageButtons = new VBox(20, btn1, btn2, btn3);
-		stageButtons.setAlignment(Pos.CENTER);
 
-		// 戻るボタン
-		Button backButton = new Button("タイトルへ");
-		backButton.getStyleClass().add("game-button");
-		backButton.setPrefHeight(60);
-		backButton.setPrefWidth(200);
-
-		// ★ master側の処理を残す
 		backButton.setOnAction(e -> {
 			cancelSound.stop();
 			cancelSound.play();
-
-			// 0.5秒待つ
-			pause = new PauseTransition(Duration.seconds(0.5));
-
-			// 待った後に画面遷移
-			pause.setOnFinished(ev -> {
-				// 背景停止
+			Timeline delay = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
 				cleanup();
 				try {
-					// 画面遷移
 					GameController.switchStart(stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-			});
-			// タイマー開始
-			pause.play();
+			}));
+			delay.play();
 		});
 
-		// 背景用の画像を読み込み（JPro対応：getResourceAsStreamを使用）
-		Image bgImage = new Image(Practice.class.getResourceAsStream("/picture/background.png"));
+		// ステージボタンをまとめる箱
+		VBox stageButtons = new VBox(20, btn1, btn2, btn3);
+		stageButtons.setAlignment(Pos.CENTER);
 
-		// 画像の元のサイズを取得
+		// 画面中央に並べるUI全体の箱（タイトル＋ステージボタン）
+		VBox uiContainer = new VBox(40, title, stageButtons);
+		uiContainer.setAlignment(Pos.CENTER);
+
+		// 背景用の画像を読み込み
+		Image bgImage = new Image(Practice.class.getResourceAsStream("/picture/background.png"));
 		double bgWidth = bgImage.getWidth();
 		double bgHeight = bgImage.getHeight();
 
-		// 背景をタイルのように敷き詰めるためのPaneを作成
 		Pane bgPane = new Pane();
 		final double[] scrollX = { 0 };
 
-		// アニメーション
+		// 背景アニメーション
 		this.timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				// 1pxずつ左に動かす
 				scrollX[0] -= 1;
-
-				// 画像の横幅分動いたら0に戻す（これで無限ループ）
 				if (scrollX[0] <= -bgWidth) {
 					scrollX[0] = 0;
 				}
-
-				// 画像は元のサイズのまま、表示位置だけをずらして背景を再描画
-				ImagePattern pattern = new ImagePattern(bgImage, scrollX[0], 0, // bgPane全体の背景をこのパターンで塗りつぶす
-						bgWidth, bgHeight, // 画像の本来のサイズを維持
-						false // 絶対座標指定
-				);
-
-				// bgPane全体の背景
+				ImagePattern pattern = new ImagePattern(bgImage, scrollX[0], 0, bgWidth, bgHeight, false);
 				bgPane.setBackground(new Background(new BackgroundFill(pattern, null, null)));
 			}
 		};
+		//this.timer.start();
 
-		// ハイスコア用 表示
+		// ハイスコア用ツールチップ設定
 		Tooltip highScoreTip = new Tooltip(
 				"★ HIGH SCORE ★\n\n"
 						+ "STAGE1 : " + HighScoreManager.loadHighScore(1)
 						+ "\n\nSTAGE2 : " + HighScoreManager.loadHighScore(2)
 						+ "\n\nSTAGE3 : " + HighScoreManager.loadHighScore(3));
-
-		highScoreTip.setStyle("-fx-font-family: 'PixelMplus12';" + "-fx-font-size: 32px;"
-				+ "-fx-background-color: rgba(0,0,0,0.95);" + "-fx-text-fill: white;" + "-fx-padding: 20;");
 
 		scoreInfo.setOnMouseClicked(e -> {
 			if (highScoreTip.isShowing()) {
@@ -233,8 +205,6 @@ public class Practice extends Application {
 			} else {
 				double x = e.getScreenX() - 350;
 				double y = e.getScreenY() + 20;
-
-				// 左にはみ出さない
 				if (x < 20) {
 					x = 20;
 				}
@@ -242,53 +212,66 @@ public class Practice extends Application {
 			}
 		});
 
-		// ここから自動的にループ開始(AnimationTimerとペアで使用)
-		this.timer.start();
+		// レイヤー構造の組み立て
+		root.getChildren().addAll(bgPane, uiContainer, scoreInfo, backButton);
 
-		// 重ねて表示するためのレイアウト(レイヤー構造の作成)
-		StackPane root = new StackPane();
-		BorderPane ui = new BorderPane();
-
-		BorderPane.setAlignment(scoreInfo, Pos.TOP_RIGHT);
-		BorderPane.setMargin(scoreInfo, new Insets(20, 20, 0, 0));
-
-		// UIが広がりすぎないよう最大幅を制限
-		ui.setMaxWidth(800);
-		ui.setTop(title);
-		ui.setCenter(stageButtons);
-
-		// タイトルラベル自体を上部の中央に配置する
-		BorderPane.setAlignment(title, Pos.CENTER);
-
-		// 「上200px、下20px」の余白をマージンとして直接設定する
-		BorderPane.setMargin(title, new Insets(200, 0, 20, 0));
-
-		// 下から背景、UIの箱に入れたものの順でレイヤー構造のrootに入れる
-		root.getChildren().addAll(bgPane, ui, scoreInfo, backButton);
-
+		// 右上配置の固定パーツ（トロフィー）
 		StackPane.setAlignment(scoreInfo, Pos.TOP_RIGHT);
 		StackPane.setMargin(scoreInfo, new Insets(15, 15, 0, 0));
 
+		// 右下配置の固定パーツ（戻るボタン）
 		StackPane.setAlignment(backButton, Pos.BOTTOM_RIGHT);
 		StackPane.setMargin(backButton, new Insets(0, 30, 30, 0));
 
-		// rootを中身とした1000×800のウィンドウを作成
-		Scene scene = new Scene(root, 1000, 800);
 
-		// ★初期値設定（ウィンドウサイズに基づいたフォントサイズ計算）
-		double fontSize = Math.max(18, scene.getWidth() * 0.02);
-		highScoreTip.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:" + (int) fontSize + "px;"
+		// ===== 📐 レスポンシブ対応の追加 📐 =====
+
+		// 1. 背景Paneをシーンサイズに追従させる
+		bgPane.prefWidthProperty().bind(scene.widthProperty());
+		bgPane.prefHeightProperty().bind(scene.heightProperty());
+
+		// 2. メインUIコンテナの横幅を画面の90%に制限（スマホでの横はみ出し防止）
+		ResponsiveUtil.bindMaxWidth(uiContainer, scene.widthProperty(), 0.9);
+
+		// 3. タイトル文字の大きさを画面幅の4.8%に可変（最小24px〜最大48px）
+		title.styleProperty().bind(
+			javafx.beans.binding.Bindings.concat(
+				"-fx-font-family: 'PixelMplus12'; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3); -fx-font-size: ",
+				javafx.beans.binding.Bindings.max(24, scene.widthProperty().multiply(0.048)).asString("%.0fpx;")
+			)
+		);
+
+		// 4. トロフィーアイコンの大きさを画面幅の5%に可変（最小24px〜最大50px）
+		scoreInfo.styleProperty().bind(
+			javafx.beans.binding.Bindings.concat(
+				"-fx-text-fill: gold; -fx-font-size: ",
+				javafx.beans.binding.Bindings.max(24, scene.widthProperty().multiply(0.05)).asString("%.0fpx;")
+			)
+		);
+
+		// 5. ステージボタン群（btn1〜3）を画面幅の35%、高さ10%に追従（スマホ用の最小サイズも確保）
+		for (Button b : new Button[] { btn1, btn2, btn3 }) {
+			ResponsiveUtil.bindPrefSize(b, scene.widthProperty(), 0.35, scene.heightProperty(), 0.10, 160, 44);
+			ResponsiveUtil.bindButtonFontAndPadding(b, scene.widthProperty(), 14, 0.045, 26, 8, 0.02, 20);
+		}
+
+		// 6. 戻るボタンを画面幅の20%、高さ7%に追従（最小サイズ 120x36）
+		ResponsiveUtil.bindPrefSize(backButton, scene.widthProperty(), 0.20, scene.heightProperty(), 0.07, 120, 36);
+		ResponsiveUtil.bindButtonFontAndPadding(backButton, scene.widthProperty(), 12, 0.035, 20, 6, 0.015, 14);
+
+		// 7. ツールチップのフォントサイズ動的リサイズ（元のロジックを流用）
+		double initialFontSize = Math.max(18, scene.getWidth() * 0.02);
+		highScoreTip.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:" + (int) initialFontSize + "px;"
 				+ "-fx-background-color:rgba(0,0,0,0.95);" + "-fx-text-fill:white;" + "-fx-padding:15;");
 
-		// ★リサイズ時更新
 		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
 			double newFontSize = Math.max(18, newVal.doubleValue() * 0.02);
 			highScoreTip.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:" + (int) newFontSize + "px;"
 					+ "-fx-background-color:rgba(0,0,0,0.95);" + "-fx-text-fill:white;" + "-fx-padding:15;");
 		});
 
-		bgPane.prefWidthProperty().bind(scene.widthProperty());
-		bgPane.prefHeightProperty().bind(scene.heightProperty());
+		// ===== レスポンシブ対応ここまで =====
+
 
 		// CSSを接続
 		var cssUrl = getClass().getResource("/css/style.css");
@@ -296,11 +279,10 @@ public class Practice extends Application {
 			scene.getStylesheets().add(cssUrl.toExternalForm());
 		}
 
-		// ウィンドウの最小限のサイズを設定
-		stage.setMinWidth(1000);
-		stage.setMinHeight(800);
-		stage.setMaxWidth(1920); // PC大画面やブラウザ最大化時の最大サイズ制限
-		stage.setMaxHeight(1080);
+		// ウィンドウサイズ制限をスマホ対応に変更
+		stage.setMinWidth(320);
+		stage.setMinHeight(480);
+		// 最大サイズ制限は解除し、ブラウザいっぱいに広げられるようにする
 
 		return scene;
 	}
