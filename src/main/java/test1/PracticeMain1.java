@@ -5,6 +5,7 @@ package test1;
 
 import control.GameController;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -125,11 +126,23 @@ public class PracticeMain1 extends Application {
 		Label pauseLabel = new Label("PAUSE");
 		pauseLabel.setFont(Font.font("Arial", FontWeight.BOLD, 48));
 		pauseLabel.setTextFill(Color.YELLOW);
-
+		
 		// 説明文
 		Label subLabel = new Label("もう一度 Pキー を押すと再開します");
 		subLabel.setFont(Font.font("Meiryo", FontWeight.BOLD, 16));
 		subLabel.setTextFill(Color.WHITE);
+		
+		// ゲーム再開ボタン
+		Button ToPlayButton = new Button("ゲーム再開");
+		ToPlayButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
+		ToPlayButton.setPrefSize(160, 40);
+		
+		// 押すとメニューボタンと同じtogglePauseByButton()を呼んで再開する
+		ToPlayButton.setOnAction(e -> {
+			if (this.controller != null) {
+				this.controller.togglePauseByButton();
+			}
+		});
 
 		// =====================================================
 		// 操作説明UI
@@ -175,13 +188,34 @@ public class PracticeMain1 extends Application {
 			}
 		});
 		// ポーズ画面へ部品追加
-		pauseLayer.getChildren().addAll(pauseLabel, subLabel, howToPlayButton, howToPlayText, titleButton);
+		pauseLayer.getChildren().addAll(pauseLabel, subLabel, ToPlayButton, howToPlayButton, howToPlayText,titleButton);
+
+		// =====================================================
+		// メニューアイコンボタン（Story1と同じ見た目・配置）
+		// =====================================================
+		Image menuImg = new Image(getClass().getResourceAsStream("/picture/menu.jpeg"));
+		ImageView menuIconView = new ImageView(menuImg);
+		menuIconView.setFitWidth(40);
+		menuIconView.setFitHeight(40);
+
+		Button menuBtn = new Button("");
+		menuBtn.setGraphic(menuIconView);
+		menuBtn.setStyle("-fx-background-color: transparent;");
+		StackPane.setAlignment(menuBtn, Pos.TOP_LEFT);
+		// Insets(top, right, bottom, left) で上の余白だけ増やす
+		StackPane.setMargin(menuBtn, new Insets(60, 0, 0, 30));
+
+		menuBtn.setOnAction(e -> {
+			if (this.controller != null) {
+				this.controller.togglePauseByButton();
+			}
+		});
 
 		// =====================================================
 		// レイヤー構成
-		// 背景 → ゲーム画面 → ポーズ画面
+		// 背景 → ゲーム画面 → メニューアイコン → ポーズ画面
 		// =====================================================
-		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
+		root.getChildren().addAll(backgroundView, gameBase, menuBtn, pauseLayer);
 
 		// =====================================================
 		// 敵初期化
@@ -193,12 +227,16 @@ public class PracticeMain1 extends Application {
 		// =====================================================
 		this.controller = new GameController(model, view, canvas, scene, stage, 1, true);
 
+		// 十字キー(dPad)より手前にメニューボタンを持ってくる
+		menuBtn.toFront();
+		
 		// ポーズ画面を登録
 		this.controller.setPauseLayer(pauseLayer);
 
 		// =====================================================
 		// ステージ設定
 		// =====================================================
+		
 		stage.setTitle("仙石さん - 練習ステージ 1");
 		stage.setScene(scene);
 
@@ -207,6 +245,7 @@ public class PracticeMain1 extends Application {
 		stage.setMinHeight(800);
 		stage.setMaxWidth(1920);
 		stage.setMaxHeight(1080);
+		
 		stage.show();
 
 		// キーボード入力受付

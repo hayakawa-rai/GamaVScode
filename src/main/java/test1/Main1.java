@@ -77,6 +77,7 @@ public class Main1 extends Application {
 		ImageView backgroundView = new ImageView();
 
 		try {
+			// 背景画像読込
 			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/emd-nottori.jpg"));
 			backgroundView = new ImageView(backgroundImage);
 

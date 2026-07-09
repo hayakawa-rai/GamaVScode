@@ -5,6 +5,7 @@ package test2;
 
 import control.GameController;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -46,28 +47,28 @@ public class PracticeMain2 extends Application {
 		// =====================================================
 		// 再起動時の後始末
 		// =====================================================
+		
 		// 多重起動防止
 		if (this.controller != null) {
 			this.controller.stop();
 			controller = null;
 		}
+		
 		// BGM重複再生防止
 		Bgm.stopBGM(); // リトライ・多重起動時の重複再生防止
 
 		// =====================================================
-		// モデル生成
+		// モデル・ルートノード生成
 		// =====================================================
-		// 練習モード用モデル
 		MapData model = new MapData(false);
 
-		// =====================================================
-		// Scene・Root生成
-		// =====================================================
 		StackPane root = new StackPane();
 		root.getStyleClass().add("stage2");
 
-		// CSS適用
+		// ウィンドウサイズ
 		Scene scene = new Scene(root, 1000, 800);
+		
+		// CSS適用
 		scene.getStylesheets().add(getClass().getResource("/css/test.css").toExternalForm());
 
 		// =====================================================
@@ -126,11 +127,22 @@ public class PracticeMain2 extends Application {
 		Label subLabel = new Label("もう一度 Pキー を押すと再開します");
 		subLabel.setFont(Font.font("Meiryo", FontWeight.BOLD, 16));
 		subLabel.setTextFill(Color.WHITE);
+		
+		// ゲーム再開ボタン
+		Button ToPlayButton = new Button("ゲーム再開");
+		ToPlayButton.setFont(Font.font("Meiryo", FontWeight.BOLD, 14));
+		ToPlayButton.setPrefSize(160, 40);
+		
+		// 押すとメニューボタンと同じtogglePauseByButton()を呼んで再開する
+		ToPlayButton.setOnAction(e -> {
+			if (this.controller != null) {
+				this.controller.togglePauseByButton();
+			}
+		});
 
 		// =====================================================
 		// 操作説明UI
 		// =====================================================
-
 		// ==== 操作説明用 ====
 		Label howToPlayText = new Label("移動 : ↑↓←→ / WASD\n画面下ボタン(スマホ用)");
 		howToPlayText.setFont(Font.font("Meiryo", FontWeight.NORMAL, 14));
@@ -172,15 +184,37 @@ public class PracticeMain2 extends Application {
 				this.controller.forceBackToTitle();
 			}
 		});
-		// ポーズ画面へ追加
-		pauseLayer.getChildren().addAll(pauseLabel, subLabel, howToPlayButton, howToPlayText, titleButton);
+		// ポーズ画面へ部品追加
+		pauseLayer.getChildren().addAll(pauseLabel, subLabel, ToPlayButton, howToPlayButton, howToPlayText,titleButton);
+
+		// =====================================================
+		// メニューアイコンボタン（Story1と同じ見た目・配置）
+		// =====================================================
+		Image menuImg = new Image(getClass().getResourceAsStream("/picture/menu.jpeg"));
+		ImageView menuIconView = new ImageView(menuImg);
+		menuIconView.setFitWidth(40);
+		menuIconView.setFitHeight(40);
+
+		Button menuBtn = new Button("");
+		menuBtn.setGraphic(menuIconView);
+		menuBtn.setStyle("-fx-background-color: transparent;");
+		StackPane.setAlignment(menuBtn, Pos.TOP_LEFT);
+		// Insets(top, right, bottom, left) で上の余白だけ増やす
+		StackPane.setMargin(menuBtn, new Insets(60, 0, 0, 30));
+
+		menuBtn.setOnAction(e -> {
+			if (this.controller != null) {
+				this.controller.togglePauseByButton();
+			}
+		});
 
 		// =====================================================
 		// レイヤー構成
 		// 背景 → ゲーム画面 → ポーズ画面
 		// =====================================================
+		
 		// StackPaneに下から「ゲームUI本編」→「ポーズ最前面レイヤー」の順で重ねる
-		root.getChildren().addAll(backgroundView, gameBase, pauseLayer);
+		root.getChildren().addAll(backgroundView, gameBase, menuBtn, pauseLayer);
 
 		// =====================================================
 		// 敵初期化
@@ -192,6 +226,9 @@ public class PracticeMain2 extends Application {
 		// =====================================================
 		this.controller = new GameController(model, view, canvas, scene, stage, 2, true);
 
+		// 十字キー(dPad)より手前にメニューボタンを持ってくる
+		menuBtn.toFront();
+		
 		// ポーズ画面をコントローラーへ登録
 		this.controller.setPauseLayer(pauseLayer);
 
@@ -208,6 +245,7 @@ public class PracticeMain2 extends Application {
 		stage.setMaxHeight(1080);
 
 		stage.show();
+		
 		// キーボード入力受付
 		canvas.requestFocus();
 	}
