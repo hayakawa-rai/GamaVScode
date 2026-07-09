@@ -46,6 +46,12 @@
 			<artifactId>javafx-media</artifactId>
 			<version>${javafx.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.sandec.jpro</groupId>
+			<artifactId>jpro-webapi</artifactId>
+			<version>2022.1.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -73,4 +79,3 @@
 	</build>
 
 </project>
-

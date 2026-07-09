@@ -129,6 +129,8 @@ public class Start extends Application {
 
 		//縦に並べるための箱を作成
 		VBox ui = new VBox();
+		// UIが広がりすぎないよう最大幅を制限
+		ui.setMaxWidth(800);
 		//uiによる配置の間隔を設定
 		ui.setSpacing(20);
 		//中央に設定
@@ -138,6 +140,8 @@ public class Start extends Application {
 		Image image = new Image(getClass().getResource("/picture/title.png").toExternalForm());
 		//画像を表示、画像サイズを調整
 		ImageView imageView = new ImageView(image);
+		imageView.setFitWidth(500);
+		imageView.setFitHeight(400);
 		// 縦横比維持
 		imageView.setPreserveRatio(true);
 
@@ -158,6 +162,7 @@ public class Start extends Application {
 
 		// ストーリーモードへ飛ぶボタンを作成
 		Button btn1 = new Button("▶ストーリー");
+		btn1.setPrefSize(300, 100);
 
 		//btn1にCSSのgame-buttonを付与
 		btn1.getStyleClass().add("game-button");
@@ -186,6 +191,7 @@ public class Start extends Application {
 
 		//練習モードへ飛ぶボタン作成
 		Button btn2 = new Button("⚔練習モード");
+		btn2.setPrefSize(300, 100);
 
 		//setOnAction:クリックしたときに実行する処理を記述
 		//(e->:クリックされたら実行される処理を書いていくという記号)
@@ -217,6 +223,7 @@ public class Start extends Application {
 
 		//無限モードへ飛ぶボタン作成
 		Button btn3 = new Button("ゲーム終了");
+		btn3.setPrefSize(300, 100);
 
 		//btn3にCSSのgame-buttonを付与
 		btn3.getStyleClass().add("game-button");
@@ -253,6 +260,7 @@ public class Start extends Application {
 
 		// 操作説明画面へ飛ぶ「？」アイコンボタン
 		Button btnHelp = new Button("？");
+		btnHelp.setPrefSize(50, 50);
 		btnHelp.getStyleClass().add("help-button"); // CSSで丸くする
 
 		btnHelp.setOnAction(e -> {
@@ -285,10 +293,9 @@ public class Start extends Application {
 		StackPane.setMargin(btnHelp, new Insets(20));
 		root.getChildren().add(btnHelp);
 
-		//rootを中身とした1000×800のウィンドウを作成（初期サイズ。以降は可変）
+		//rootを中身とした1000×800のウィンドウを作成
 		Scene scene = new Scene(root, 1000, 800);
-
-		// 背景Paneをシーンサイズに追従させる
+		//
 		bgPane.prefWidthProperty().bind(scene.widthProperty());
 		bgPane.prefHeightProperty().bind(scene.heightProperty());
 
@@ -328,16 +335,15 @@ public class Start extends Application {
 
 		// ===== レスポンシブ対応の追加分ここまで =====
 
+
 		//CSSを接続
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
-
-		// ウィンドウの最小限のサイズを設定（スマホの幅にも対応できるよう縮小）
-		stage.setMinWidth(320);
-		stage.setMinHeight(480);
-		// 最大サイズの制限は撤廃し、ブラウザ／画面いっぱいまで拡大できるようにする
-		// stage.setMaxWidth(1920);
-		// stage.setMaxHeight(1080);
+		//ウィンドウの最小限のサイズを設定
+		stage.setMinWidth(800);
+		stage.setMinHeight(600);
+		stage.setMaxWidth(1920); // PC大画面やブラウザ最大化時の最大サイズ制限
+		stage.setMaxHeight(1080);
 
 		//ウィンドウの名前を設定
 		stage.setTitle("スタート画面");

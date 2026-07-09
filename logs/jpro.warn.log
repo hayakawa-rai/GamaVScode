@@ -4874,6 +4874,7 @@ java.lang.ClassCastException: class p.Data$Input$ClientMessageClose cannot be ca
 =======
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+<<<<<<< HEAD
 2026-07-09 11:26:39,159 [WARN] from javafx in application-akka.actor.default-dispatcher-8 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @32894947'
 2026-07-09 11:30:57,427 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-8 - Unexpected message form client, closing session.
 2026-07-09 11:38:48,354 [WARN] from javafx in application-akka.actor.default-dispatcher-5 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @70bd2d01'
@@ -4919,3 +4920,10 @@ java.lang.ClassCastException: class p.Data$Input$ClientMessageClose cannot be ca
 	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
 2026-07-09 13:37:25,700 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-22 - Unexpected message form client, closing session.
 2026-07-09 13:54:23,706 [WARN] from javafx in application-akka.actor.default-dispatcher-8 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @74827bc7'
+=======
+2026-07-09 13:44:54,422 [WARN] from javafx in application-akka.actor.default-dispatcher-7 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @3b8f5211'
+2026-07-09 13:44:58,618 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-8 - Unexpected message form client, closing session.
+2026-07-09 13:45:11,481 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-11 - Unexpected message form client, closing session.
+2026-07-09 13:46:10,086 [WARN] from javafx in application-akka.actor.default-dispatcher-7 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @5e8f408e'
+2026-07-09 13:46:14,784 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-5 - Unexpected message form client, closing session.
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
