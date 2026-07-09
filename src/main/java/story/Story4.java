@@ -48,7 +48,6 @@ public class Story4 extends Application {
 	private Timeline jumptaku;
 	private Stage stage;
 
-
 	// 💡 クリックによる画像切り替えで何度も再利用するため、あらかじめフィールドとして保持
 	private Image anikiNormalImage;
 	private Image anikiAngryImage;
@@ -72,7 +71,6 @@ public class Story4 extends Application {
 		currentStage.show();
 	}
 
-	
 	private void cleanup(Scene scene, StackPane base) {
 		// 文字タイピング
 
@@ -166,15 +164,23 @@ public class Story4 extends Application {
 		// ⭕【JPro対応】各効果音を個別に try-catch 保護し安全化
 		try {
 			var res = getClass().getResource("/music/jump06.mp3");
-			if (res != null) jumpSound = new AudioClip(res.toExternalForm());
-		} catch (Exception e) { System.err.println("jumpSoundの読み込みに失敗"); }
-		if (jumpSound != null) jumpSound.setVolume(0.2);
+			if (res != null)
+				jumpSound = new AudioClip(res.toExternalForm());
+		} catch (Exception e) {
+			System.err.println("jumpSoundの読み込みに失敗");
+		}
+		if (jumpSound != null)
+			jumpSound.setVolume(0.2);
 
 		try {
 			var res = getClass().getResource("/music/damage2.mp3");
-			if (res != null) aSound = new AudioClip(res.toExternalForm());
-		} catch (Exception e) { System.err.println("aSoundの読み込みに失敗"); }
-		if (aSound != null) aSound.setVolume(0.4);
+			if (res != null)
+				aSound = new AudioClip(res.toExternalForm());
+		} catch (Exception e) {
+			System.err.println("aSoundの読み込みに失敗");
+		}
+		if (aSound != null)
+			aSound.setVolume(0.4);
 
 		List<Dialogue> dialogues = Arrays.asList(
 				new Dialogue("あにき", "……!?。", aSound, Color.RED),
@@ -226,41 +232,58 @@ public class Story4 extends Application {
 		ImageView bgView = new ImageView();
 		try {
 			var stream = getClass().getResourceAsStream("/picture/shatyoroom.jpg");
-			if (stream != null) bgView.setImage(new Image(stream));
-		} catch (Exception e) { System.err.println("背景画像の読み込みに失敗"); }
+			if (stream != null)
+				bgView.setImage(new Image(stream));
+		} catch (Exception e) {
+			System.err.println("背景画像の読み込みに失敗");
+		}
 		bgView.setPreserveRatio(false);
 
 		// 💡 あにき画像のバリエーションを事前にストリーム経由でロード
 		try {
 			var stream1 = getClass().getResourceAsStream("/picture/aniki-udekumi.png");
-			if (stream1 != null) anikiNormalImage = new Image(stream1);
+			if (stream1 != null)
+				anikiNormalImage = new Image(stream1);
 			var stream2 = getClass().getResourceAsStream("/picture/aniki2.png");
-			if (stream2 != null) anikiAngryImage = new Image(stream2);
-		} catch (Exception e) { System.err.println("あにき用各種画像の読み込みに失敗"); }
+			if (stream2 != null)
+				anikiAngryImage = new Image(stream2);
+		} catch (Exception e) {
+			System.err.println("あにき用各種画像の読み込みに失敗");
+		}
 
 		ImageView anikiView = new ImageView();
-		if (anikiNormalImage != null) anikiView.setImage(anikiNormalImage);
+		if (anikiNormalImage != null)
+			anikiView.setImage(anikiNormalImage);
 		anikiView.setPreserveRatio(true);
 
 		ImageView syujinkouView = new ImageView();
 		try {
 			var stream = getClass().getResourceAsStream("/picture/syujinkou(hello).png");
-			if (stream != null) syujinkouView.setImage(new Image(stream));
-		} catch (Exception e) { System.err.println("主人公画像の読み込みに失敗"); }
+			if (stream != null)
+				syujinkouView.setImage(new Image(stream));
+		} catch (Exception e) {
+			System.err.println("主人公画像の読み込みに失敗");
+		}
 		syujinkouView.setPreserveRatio(true);
 
 		ImageView nariView = new ImageView();
 		try {
 			var stream = getClass().getResourceAsStream("/picture/nari.png");
-			if (stream != null) nariView.setImage(new Image(stream));
-		} catch (Exception e) { System.err.println("なりなり画像の読み込みに失敗"); }
+			if (stream != null)
+				nariView.setImage(new Image(stream));
+		} catch (Exception e) {
+			System.err.println("なりなり画像の読み込みに失敗");
+		}
 		nariView.setPreserveRatio(true);
 
 		ImageView takuView = new ImageView();
 		try {
 			var stream = getClass().getResourceAsStream("/picture/taku2.png");
-			if (stream != null) takuView.setImage(new Image(stream));
-		} catch (Exception e) { System.err.println("わだたく画像の読み込みに失敗"); }
+			if (stream != null)
+				takuView.setImage(new Image(stream));
+		} catch (Exception e) {
+			System.err.println("わだたく画像の読み込みに失敗");
+		}
 		takuView.setPreserveRatio(true);
 
 		nariView.setVisible(false);
@@ -277,8 +300,11 @@ public class Story4 extends Application {
 		ImageView menuView = new ImageView();
 		try {
 			var stream = getClass().getResourceAsStream("/picture/menu.jpeg");
-			if (stream != null) menuView.setImage(new Image(stream));
-		} catch (Exception e) { System.err.println("メニュー画像の読み込みに失敗"); }
+			if (stream != null)
+				menuView.setImage(new Image(stream));
+		} catch (Exception e) {
+			System.err.println("メニュー画像の読み込みに失敗");
+		}
 		menuView.setFitWidth(40);
 		menuView.setFitHeight(40);
 
@@ -340,20 +366,21 @@ public class Story4 extends Application {
 		bgView.fitHeightProperty().bind(scene.heightProperty());
 
 		// キャラクターサイズとX軸オフセットの最適化
-		anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.65));
-		anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(0.85));
-		anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.20));
-
-		nariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.45));
-		nariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.75));
-		nariView.translateXProperty().bind(scene.widthProperty().multiply(0.20));
-
-		takuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.65));
-		takuView.fitHeightProperty().bind(scene.heightProperty().multiply(0.85));
-		takuView.translateXProperty().bind(scene.widthProperty().multiply(0.20));
-
-		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.35));
-		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(0.85));
+		// 人物画像(あにき)をウィンドウサイズに合わせる(右に表示)
+		anikiView.fitWidthProperty().bind(scene.widthProperty().multiply(0.7));
+		anikiView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
+		anikiView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+		// 人物画像(なりなり)をウィンドウサイズに合わせる(右に表示)
+		nariView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+		nariView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
+		nariView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+		// 人物画像(たく)をウィンドウサイズに合わせる(右に表示)
+		takuView.fitWidthProperty().bind(scene.widthProperty().multiply(0.8));
+		takuView.fitHeightProperty().bind(scene.heightProperty().multiply(1.2));
+		takuView.translateXProperty().bind(scene.widthProperty().multiply(0.25));
+		// 人物画像(仙石)をウィンドウサイズに合わせる(左に表示)(下に調整)
+		syujinkouView.fitWidthProperty().bind(scene.widthProperty().multiply(0.3));
+		syujinkouView.fitHeightProperty().bind(scene.heightProperty().multiply(0.9));
 		syujinkouView.translateXProperty().bind(scene.widthProperty().multiply(-0.25));
 
 		// メッセージウィンドウ全体のパディング・サイズバインディング
@@ -407,7 +434,8 @@ public class Story4 extends Application {
 			if (charIndex < d.message.length()) {
 				charIndex++;
 				if (messageIndex == 0 && charIndex == 1) {
-					if (fall != null) fall.playFromStart();
+					if (fall != null)
+						fall.playFromStart();
 				}
 				String speaker = d.speaker;
 				nameText.setText(speaker);
@@ -475,9 +503,11 @@ public class Story4 extends Application {
 
 				// ⭕【JPro対応】毎回new Imageせず、事前に安全にロードしたインスタンスを切り替える
 				if (messageIndex >= 2 && messageIndex <= 10) {
-					if (anikiAngryImage != null) anikiView.setImage(anikiAngryImage);
+					if (anikiAngryImage != null)
+						anikiView.setImage(anikiAngryImage);
 				} else {
-					if (anikiNormalImage != null) anikiView.setImage(anikiNormalImage);
+					if (anikiNormalImage != null)
+						anikiView.setImage(anikiNormalImage);
 				}
 
 				if (d.sound != null && d.sound != jumpSound) {
