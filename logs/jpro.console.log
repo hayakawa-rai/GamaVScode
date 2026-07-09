@@ -527,3 +527,305 @@
 2026-07-09 13:46:14,796 [INFO] in scala-execution-context-global-177 - [info] c.j.i.s.ViewInfo$ - 
 2026-07-09 13:46:15,786 [INFO] in scala-execution-context-global-47 - [info] c.j.i.c.InstanceImpl - closing window!
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-09 13:59:30,959 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 13:59:30,960 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 13:59:31,029 [INFO] in scala-execution-context-global-49 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @378a521b'
+2026-07-09 13:59:31,424 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 13:59:31,448 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 13:59:31,762 [INFO] in scala-execution-context-global-49 - [info] c.jpro - application requested: default
+2026-07-09 13:59:31,776 [INFO] in scala-execution-context-global-49 - [info] c.jpro - Creating Application: default
+2026-07-09 13:59:31,777 [INFO] in scala-execution-context-global-49 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 13:59:31,777 [INFO] in scala-execution-context-global-49 - [info] c.jpro - host          localhost:8080
+2026-07-09 13:59:31,777 [INFO] in scala-execution-context-global-49 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 13:59:32,141 [INFO] in scala-execution-context-global-49 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 13:59:32,839 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 706132763
+2026-07-09 13:59:37,788 [INFO] in scala-execution-context-global-47 - [info] c.jpro - application requested: default
+2026-07-09 13:59:37,788 [INFO] in scala-execution-context-global-47 - [info] c.jpro - Creating Application: default
+2026-07-09 13:59:37,788 [INFO] in scala-execution-context-global-49 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 13:59:37,788 [INFO] in scala-execution-context-global-47 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 13:59:37,788 [INFO] in scala-execution-context-global-47 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 13:59:37,873 [INFO] in scala-execution-context-global-88 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 13:59:37,967 [INFO] in scala-execution-context-global-88 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 325784024
+2026-07-09 13:59:41,780 [INFO] in scala-execution-context-global-47 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 13:59:41,784 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 13:59:41,784 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 13:59:41,790 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 13:59:41 JST 2026      
+2026-07-09 13:59:41,790 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.059 
+2026-07-09 13:59:41,790 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.010  
+2026-07-09 13:59:41,790 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 13:59:41,790 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 13:59:41,790 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - raw            : 143375
+2026-07-09 13:59:41,790 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - zipped         : 31756
+2026-07-09 13:59:41,790 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 13:59:41,820 [INFO] in scala-execution-context-global-47 - [info] c.jpro - application requested: default
+2026-07-09 13:59:41,821 [INFO] in scala-execution-context-global-47 - [info] c.jpro - Creating Application: default
+2026-07-09 13:59:41,821 [INFO] in scala-execution-context-global-47 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 13:59:41,821 [INFO] in scala-execution-context-global-47 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 13:59:41,821 [INFO] in scala-execution-context-global-47 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 13:59:41,873 [INFO] in scala-execution-context-global-88 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 13:59:41,965 [INFO] in scala-execution-context-global-88 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 905229265
+2026-07-09 13:59:42,788 [INFO] in scala-execution-context-global-47 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 13:59:44,618 [INFO] in scala-execution-context-global-88 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1597892f
+2026-07-09 13:59:44,685 [INFO] in scala-execution-context-global-88 - [info] com.jpro.JS - received msg: new MainID: 1021 userid: 905229265
+2026-07-09 13:59:46,525 [INFO] in scala-execution-context-global-47 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 13:59:46,605 [INFO] in scala-execution-context-global-88 - [info] com.jpro.JS - received msg: new MainID: 1496 userid: 905229265
+2026-07-09 13:59:52,052 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 13:59:52,052 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 13:59:52,052 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 13:59:52 JST 2026      
+2026-07-09 13:59:52,052 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.050 
+2026-07-09 13:59:52,053 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.002  
+2026-07-09 13:59:52,053 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 13:59:52,053 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 13:59:52,053 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - raw            : 1984392
+2026-07-09 13:59:52,053 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - zipped         : 421060
+2026-07-09 13:59:52,053 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:00:00,404 [INFO] in scala-execution-context-global-274 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:00:34,111 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 14:00:34,111 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 14:00:34,161 [INFO] in scala-execution-context-global-51 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @2064d219'
+2026-07-09 14:00:34,544 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 14:00:34,578 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 14:00:34,612 [INFO] in scala-execution-context-global-51 - [info] c.jpro - application requested: 1523474582!default
+2026-07-09 14:00:34,626 [INFO] in scala-execution-context-global-51 - [info] c.jpro - Creating Application: 1523474582!default
+2026-07-09 14:00:34,629 [INFO] in scala-execution-context-global-51 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 14:00:34,634 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          localhost:8080
+2026-07-09 14:00:34,634 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/1523474582!default
+2026-07-09 14:00:34,926 [INFO] in scala-execution-context-global-49 - [info] c.jpro - application requested: default
+2026-07-09 14:00:34,926 [INFO] in scala-execution-context-global-49 - [info] c.jpro - Creating Application: default
+2026-07-09 14:00:34,926 [INFO] in scala-execution-context-global-49 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 14:00:34,926 [INFO] in scala-execution-context-global-49 - [info] c.jpro - host          localhost:8080
+2026-07-09 14:00:34,926 [INFO] in scala-execution-context-global-49 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 14:00:35,002 [INFO] in scala-execution-context-global-49 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:00:35,736 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:00:35,816 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 2131431320
+2026-07-09 14:00:35,828 [INFO] in scala-execution-context-global-49 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 1981182562
+2026-07-09 14:00:37,529 [INFO] in scala-execution-context-global-79 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 14:00:37,533 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:00:37,533 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:00:37,542 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:00:37 JST 2026      
+2026-07-09 14:00:37,542 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.002 
+2026-07-09 14:00:37,543 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 14:00:37,544 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:00:37,546 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:00:37,546 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - raw            : 248625
+2026-07-09 14:00:37,546 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - zipped         : 51866
+2026-07-09 14:00:37,546 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:00:38,527 [INFO] in scala-execution-context-global-51 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:00:38,839 [INFO] in scala-execution-context-global-51 - [info] c.jpro - application requested: 960204059!default
+2026-07-09 14:00:38,839 [INFO] in scala-execution-context-global-51 - [info] c.jpro - Creating Application: 960204059!default
+2026-07-09 14:00:38,839 [INFO] in scala-execution-context-global-51 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 14:00:38,839 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 14:00:38,840 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/960204059!default
+2026-07-09 14:00:39,316 [INFO] in scala-execution-context-global-79 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:00:39,441 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 778608560
+2026-07-09 14:00:40,211 [INFO] in scala-execution-context-global-79 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 14:00:40,212 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:00:40,212 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:00:40,212 [INFO] in scala-execution-context-global-79 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:00:40 JST 2026      
+2026-07-09 14:00:40,212 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:28.096 
+2026-07-09 14:00:40,212 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:22.417  
+2026-07-09 14:00:40,213 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:00:40,213 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:00:40,213 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - raw            : 191118
+2026-07-09 14:00:40,213 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - zipped         : 39163
+2026-07-09 14:00:40,213 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:00:40,339 [INFO] in scala-execution-context-global-94 - [info] c.jpro - application requested: default
+2026-07-09 14:00:40,339 [INFO] in scala-execution-context-global-94 - [info] c.jpro - Creating Application: default
+2026-07-09 14:00:40,340 [INFO] in scala-execution-context-global-94 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 14:00:40,340 [INFO] in scala-execution-context-global-94 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 14:00:40,340 [INFO] in scala-execution-context-global-94 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 14:00:40,377 [INFO] in scala-execution-context-global-93 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:00:40,473 [INFO] in scala-execution-context-global-93 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 1444441744
+2026-07-09 14:00:41,216 [INFO] in scala-execution-context-global-94 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:00:43,246 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:00:43 JST 2026      
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.048 
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.002  
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - raw            : 405296
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - zipped         : 85317
+2026-07-09 14:00:43,247 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:00:49,183 [INFO] in scala-execution-context-global-93 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:00:55,488 [INFO] in scala-execution-context-global-93 - [info] c.jpro - application requested: default
+2026-07-09 14:00:55,490 [INFO] in scala-execution-context-global-93 - [info] c.jpro - Creating Application: default
+2026-07-09 14:00:55,490 [INFO] in scala-execution-context-global-93 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 14:00:55,490 [INFO] in scala-execution-context-global-93 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 14:00:55,490 [INFO] in scala-execution-context-global-93 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 14:00:55,802 [INFO] in scala-execution-context-global-94 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:00:55,916 [INFO] in scala-execution-context-global-93 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 174783814
+2026-07-09 14:01:01,758 [INFO] in scala-execution-context-global-93 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:01:01 JST 2026      
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.053 
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.009  
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - raw            : 1324912
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - zipped         : 278166
+2026-07-09 14:01:01,759 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:01:08,718 [INFO] in scala-execution-context-global-79 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:02:49,076 [INFO] in scala-execution-context-global-79 - [info] c.jpro - application requested: 1838462546!default
+2026-07-09 14:02:49,076 [INFO] in scala-execution-context-global-79 - [info] c.jpro - Creating Application: 1838462546!default
+2026-07-09 14:02:49,078 [INFO] in scala-execution-context-global-79 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 14:02:49,078 [INFO] in scala-execution-context-global-79 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 14:02:49,078 [INFO] in scala-execution-context-global-79 - [info] c.jpro - uri           /app/ws/1838462546!default
+2026-07-09 14:02:49,106 [INFO] in scala-execution-context-global-79 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:02:49,186 [INFO] in scala-execution-context-global-79 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 2012286581
+2026-07-09 14:02:50,028 [INFO] in scala-execution-context-global-92 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 14:02:50,029 [INFO] in scala-execution-context-global-92 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:02:50,029 [INFO] in scala-execution-context-global-92 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:02:50,029 [INFO] in scala-execution-context-global-92 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:02:50 JST 2026      
+2026-07-09 14:02:50,029 [INFO] in scala-execution-context-global-92 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.064 
+2026-07-09 14:02:50,029 [INFO] in scala-execution-context-global-92 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.018  
+2026-07-09 14:02:50,029 [INFO] in scala-execution-context-global-92 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:02:50,029 [INFO] in scala-execution-context-global-92 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:02:50,029 [INFO] in scala-execution-context-global-49 - [info] c.j.i.s.ViewInfo$ - raw            : 213743
+2026-07-09 14:02:50,030 [INFO] in scala-execution-context-global-92 - [info] c.j.i.s.ViewInfo$ - zipped         : 44853
+2026-07-09 14:02:50,030 [INFO] in scala-execution-context-global-94 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:02:50,145 [INFO] in scala-execution-context-global-256 - [info] c.jpro - application requested: default
+2026-07-09 14:02:50,146 [INFO] in scala-execution-context-global-256 - [info] c.jpro - Creating Application: default
+2026-07-09 14:02:50,146 [INFO] in scala-execution-context-global-256 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 14:02:50,146 [INFO] in scala-execution-context-global-256 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 14:02:50,146 [INFO] in scala-execution-context-global-256 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 14:02:50,289 [INFO] in scala-execution-context-global-257 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:02:50,355 [INFO] in scala-execution-context-global-255 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 583669642
+2026-07-09 14:02:51,026 [INFO] in scala-execution-context-global-257 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:03:12,600 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 14:03:12,600 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 14:03:12,651 [INFO] in scala-execution-context-global-47 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @7c6c9c82'
+2026-07-09 14:03:13,044 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 14:03:13,073 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 14:03:13,275 [INFO] in scala-execution-context-global-47 - [info] c.jpro - application requested: 1255762669!default
+2026-07-09 14:03:13,306 [INFO] in scala-execution-context-global-47 - [info] c.jpro - Creating Application: 1255762669!default
+2026-07-09 14:03:13,313 [INFO] in scala-execution-context-global-47 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 14:03:13,315 [INFO] in scala-execution-context-global-47 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 14:03:13,315 [INFO] in scala-execution-context-global-47 - [info] c.jpro - uri           /app/ws/1255762669!default
+2026-07-09 14:03:13,408 [INFO] in scala-execution-context-global-47 - [info] c.jpro - application requested: default
+2026-07-09 14:03:13,409 [INFO] in scala-execution-context-global-47 - [info] c.jpro - Creating Application: default
+2026-07-09 14:03:13,409 [INFO] in scala-execution-context-global-47 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 14:03:13,417 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          localhost:8080
+2026-07-09 14:03:13,417 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 14:03:13,904 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:03:14,673 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:03:14,807 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 469329532
+2026-07-09 14:03:14,922 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 1939492261
+2026-07-09 14:03:32,414 [INFO] in scala-execution-context-global-51 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 14:03:32,417 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:03:32,417 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:03:32,423 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:03:32 JST 2026      
+2026-07-09 14:03:32,423 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.046 
+2026-07-09 14:03:32,424 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.002  
+2026-07-09 14:03:32,424 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:03:32,424 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:03:32,424 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - raw            : 2683663
+2026-07-09 14:03:32,424 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - zipped         : 502143
+2026-07-09 14:03:32,424 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:03:33,419 [INFO] in scala-execution-context-global-107 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:03:35,562 [INFO] in scala-execution-context-global-107 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:03:35 JST 2026      
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.001 
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - raw            : 799364
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - zipped         : 178180
+2026-07-09 14:03:35,564 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:03:35,589 [INFO] in scala-execution-context-global-113 - [info] c.jpro - application requested: 712620361!default
+2026-07-09 14:03:35,590 [INFO] in scala-execution-context-global-113 - [info] c.jpro - Creating Application: 712620361!default
+2026-07-09 14:03:35,590 [INFO] in scala-execution-context-global-113 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 14:03:35,590 [INFO] in scala-execution-context-global-113 - [info] c.jpro - host          localhost:8080
+2026-07-09 14:03:35,590 [INFO] in scala-execution-context-global-113 - [info] c.jpro - uri           /app/ws/712620361!default
+2026-07-09 14:03:35,609 [INFO] in scala-execution-context-global-47 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:03:35,677 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 1816157854
+2026-07-09 14:03:36,147 [INFO] in scala-execution-context-global-47 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 14:03:36,147 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:03:36 JST 2026      
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.001 
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - raw            : 35344
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-107 - [info] c.j.i.s.ViewInfo$ - zipped         : 7011
+2026-07-09 14:03:36,148 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:03:36,557 [INFO] in scala-execution-context-global-47 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:03:37,148 [INFO] in scala-execution-context-global-47 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:08:45,583 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 14:08:45,583 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 14:08:45,652 [INFO] in scala-execution-context-global-51 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @2fd5b828'
+2026-07-09 14:08:46,057 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 14:08:46,081 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 14:08:46,446 [INFO] in scala-execution-context-global-51 - [info] c.jpro - application requested: default
+2026-07-09 14:08:46,460 [INFO] in scala-execution-context-global-51 - [info] c.jpro - Creating Application: default
+2026-07-09 14:08:46,460 [INFO] in scala-execution-context-global-51 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 14:08:46,460 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          localhost:8080
+2026-07-09 14:08:46,460 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 14:08:46,776 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:08:47,415 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 590870255
+2026-07-09 14:08:57,023 [INFO] in scala-execution-context-global-51 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 14:08:57,027 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:08:57,027 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:08:57,033 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:08:57 JST 2026      
+2026-07-09 14:08:57,034 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.001 
+2026-07-09 14:08:57,034 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 14:08:57,034 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:08:57,036 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:08:57,036 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - raw            : 340047
+2026-07-09 14:08:57,036 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - zipped         : 82610
+2026-07-09 14:08:57,036 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:08:58,025 [INFO] in scala-execution-context-global-94 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 14:09:07,435 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 14:09:07,435 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 14:09:07,489 [INFO] in scala-execution-context-global-47 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @2f6fa51e'
+2026-07-09 14:09:07,867 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 14:09:07,893 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 14:09:08,194 [INFO] in scala-execution-context-global-47 - [info] c.jpro - application requested: default
+2026-07-09 14:09:08,199 [INFO] in scala-execution-context-global-47 - [info] c.jpro - Creating Application: default
+2026-07-09 14:09:08,201 [INFO] in scala-execution-context-global-47 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 14:09:08,202 [INFO] in scala-execution-context-global-47 - [info] c.jpro - host          localhost:8080
+2026-07-09 14:09:08,202 [INFO] in scala-execution-context-global-47 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 14:09:08,755 [INFO] in scala-execution-context-global-47 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:09:09,410 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 1198279554
+2026-07-09 14:09:25,717 [INFO] in scala-execution-context-global-47 - [info] c.jpro - application requested: default
+2026-07-09 14:09:25,717 [INFO] in scala-execution-context-global-47 - [info] c.jpro - Creating Application: default
+2026-07-09 14:09:25,717 [INFO] in scala-execution-context-global-47 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-09 14:09:25,717 [INFO] in scala-execution-context-global-47 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-09 14:09:25,717 [INFO] in scala-execution-context-global-47 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 14:09:26,076 [INFO] in scala-execution-context-global-102 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:09:26,215 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 1884345428
+2026-07-09 14:09:51,223 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3c2eed89
+2026-07-09 14:09:51,291 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 1021 userid: 1884345428
+2026-07-09 14:09:53,316 [INFO] in scala-execution-context-global-47 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 14:09:53,470 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 1496 userid: 1884345428
+2026-07-09 14:09:55,777 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:09:55,777 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 14:09:55,783 [INFO] in scala-execution-context-global-102 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 14:09:55 JST 2026      
+2026-07-09 14:09:55,783 [INFO] in scala-execution-context-global-102 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.046 
+2026-07-09 14:09:55,783 [INFO] in scala-execution-context-global-102 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.006  
+2026-07-09 14:09:55,783 [INFO] in scala-execution-context-global-102 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 14:09:55,784 [INFO] in scala-execution-context-global-102 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 14:09:55,784 [INFO] in scala-execution-context-global-102 - [info] c.j.i.s.ViewInfo$ - raw            : 1083167
+2026-07-09 14:09:55,784 [INFO] in scala-execution-context-global-102 - [info] c.j.i.s.ViewInfo$ - zipped         : 240552
+2026-07-09 14:09:55,784 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 14:09:59,141 [ERROR] in scala-execution-context-global-302 - Exception in thread "JavaFX Application Thread" java.lang.IllegalStateException: Not on FX application thread; currentThread = JavaFX Application Thread
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.Toolkit.checkFxUserThread(Toolkit.java:297)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.checkFxUserThread(QuantumToolkit.java:464)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at javafx.scene.Scene$ScenePulseListener.synchronizeSceneNodes(Scene.java:2408)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at javafx.scene.Scene.synchronizeSceneNodesWithLock(Scene.java:1323)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at javafx.scene.Scene.lambda$new$0(Scene.java:749)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.Toolkit.lambda$runPulse$2(Toolkit.java:408)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.Toolkit.runPulse(Toolkit.java:407)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.Toolkit.firePulse(Toolkit.java:447)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:585)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:565)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:558)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$12(QuantumToolkit.java:358)
+2026-07-09 14:09:59,142 [ERROR] in scala-execution-context-global-302 - 	at com.sun.glass.ui.monocle.RunnableProcessor.runLoop(RunnableProcessor.java:92)
+2026-07-09 14:09:59,143 [ERROR] in scala-execution-context-global-302 - 	at com.sun.glass.ui.monocle.RunnableProcessor.run(RunnableProcessor.java:51)
+2026-07-09 14:09:59,143 [ERROR] in scala-execution-context-global-302 - 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-09 14:09:59,899 [INFO] in scala-execution-context-global-47 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
