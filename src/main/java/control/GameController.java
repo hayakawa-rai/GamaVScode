@@ -108,10 +108,10 @@ public class GameController {
 		dPad.setPickOnBounds(false);
 
 		// ボタン作成とスタイル適用
-		Button btnUp = new Button("▲");
-		Button btnDown = new Button("▼");
-		Button btnLeft = new Button("◀");
-		Button btnRight = new Button("▶");
+		Button btnUp = new Button("⇑");
+		Button btnDown = new Button("⇓");
+		Button btnLeft = new Button("⇐");
+		Button btnRight = new Button("⇒");
 
 		String buttonStyle = "-fx-font-size: 24px; -fx-min-width: 60px; -fx-min-height: 60px; "
 				+ "-fx-background-radius: 30px; -fx-background-color: rgba(255, 255, 255, 0.4); -fx-text-fill: white;";
