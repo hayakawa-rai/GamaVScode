@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2026-07-09 15:43:22,745 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
 2026-07-09 15:43:22,779 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
 2026-07-09 15:43:22,800 [INFO] in scala-execution-context-global-53 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @79eded2a'
@@ -399,3 +400,1043 @@
 2026-07-09 15:47:58,871 [INFO] in scala-execution-context-global-475 - [info] c.j.i.s.ViewInfo$ - zipped         : 2408223
 2026-07-09 15:47:58,871 [INFO] in scala-execution-context-global-475 - [info] c.j.i.s.ViewInfo$ - 
 2026-07-09 15:47:59,858 [INFO] in scala-execution-context-global-50 - [info] c.j.i.c.InstanceImpl - closing window!
+=======
+2026-07-09 15:42:54,668 [INFO] in scala-execution-context-global-180 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 15:42:54,690 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:42:54,690 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 15:42:54,690 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 15:42:54 JST 2026      
+2026-07-09 15:42:54,690 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.001 
+2026-07-09 15:42:54,690 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 15:42:54,691 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 15:42:54,691 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 15:42:54,691 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - raw            : 277265
+2026-07-09 15:42:54,691 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - zipped         : 82577
+2026-07-09 15:42:54,691 [INFO] in scala-execution-context-global-180 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:42:55,672 [INFO] in scala-execution-context-global-180 - [info] c.j.i.c.InstanceImpl - closing window!
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-09 15:49:15,941 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 15:49:15,942 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 15:49:15,986 [INFO] in scala-execution-context-global-51 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @1b771904'
+2026-07-09 15:49:16,423 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 15:49:16,446 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 15:49:16,688 [INFO] in scala-execution-context-global-51 - [info] c.jpro - application requested: 1305280567!default
+2026-07-09 15:49:16,705 [INFO] in scala-execution-context-global-51 - [info] c.jpro - Creating Application: 1305280567!default
+2026-07-09 15:49:16,711 [INFO] in scala-execution-context-global-51 - [info] c.jpro - remoteAddress 192.168.102.6
+2026-07-09 15:49:16,713 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          192.168.102.16:8080
+2026-07-09 15:49:16,713 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/1305280567!default
+2026-07-09 15:49:16,813 [INFO] in scala-execution-context-global-51 - [info] c.jpro - application requested: default
+2026-07-09 15:49:16,813 [INFO] in scala-execution-context-global-51 - [info] c.jpro - Creating Application: default
+2026-07-09 15:49:16,814 [INFO] in scala-execution-context-global-51 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 15:49:16,815 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          localhost:8080
+2026-07-09 15:49:16,815 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 15:49:17,135 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:49:17,723 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:49:17,857 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 237563195
+2026-07-09 15:49:17,977 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 1996298898
+2026-07-09 15:49:19,078 [INFO] in scala-execution-context-global-82 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 15:49:19,084 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:49:19,084 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 15:49:19,098 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 15:49:19 JST 2026      
+2026-07-09 15:49:19,098 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.062 
+2026-07-09 15:49:19,098 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.011  
+2026-07-09 15:49:19,100 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 15:49:19,100 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 15:49:19,100 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - raw            : 249859
+2026-07-09 15:49:19,100 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - zipped         : 47469
+2026-07-09 15:49:19,101 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:49:19,378 [INFO] in scala-execution-context-global-82 - [info] c.jpro - application requested: default
+2026-07-09 15:49:19,378 [INFO] in scala-execution-context-global-82 - [info] c.jpro - Creating Application: default
+2026-07-09 15:49:19,378 [INFO] in scala-execution-context-global-82 - [info] c.jpro - remoteAddress 192.168.102.6
+2026-07-09 15:49:19,378 [INFO] in scala-execution-context-global-82 - [info] c.jpro - host          192.168.102.16:8080
+2026-07-09 15:49:19,378 [INFO] in scala-execution-context-global-82 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 15:49:19,419 [INFO] in scala-execution-context-global-47 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:49:19,637 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 911404444
+2026-07-09 15:49:20,083 [INFO] in scala-execution-context-global-51 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 15:49:26,185 [INFO] in scala-execution-context-global-51 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@45cb7b05
+2026-07-09 15:49:26,252 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 989 userid: 911404444
+2026-07-09 15:49:27,567 [INFO] in scala-execution-context-global-47 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:27,569 [INFO] in scala-execution-context-global-47 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:27,572 [INFO] in scala-execution-context-global-47 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:27,577 [INFO] in scala-execution-context-global-47 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:27,579 [INFO] in scala-execution-context-global-47 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:27,583 [INFO] in scala-execution-context-global-47 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:27,587 [INFO] in scala-execution-context-global-47 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:27,589 [INFO] in scala-execution-context-global-47 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:27,593 [INFO] in scala-execution-context-global-47 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:27,597 [INFO] in scala-execution-context-global-47 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:27,599 [INFO] in scala-execution-context-global-47 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:27,603 [INFO] in scala-execution-context-global-47 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:27,658 [INFO] in scala-execution-context-global-47 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:27,660 [INFO] in scala-execution-context-global-47 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:27,664 [INFO] in scala-execution-context-global-47 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:27,667 [INFO] in scala-execution-context-global-47 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:27,669 [INFO] in scala-execution-context-global-47 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:27,673 [INFO] in scala-execution-context-global-47 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:27,676 [INFO] in scala-execution-context-global-47 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:27,678 [INFO] in scala-execution-context-global-47 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:27,682 [INFO] in scala-execution-context-global-47 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:27,686 [INFO] in scala-execution-context-global-47 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:27,688 [INFO] in scala-execution-context-global-47 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:27,692 [INFO] in scala-execution-context-global-47 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:27,726 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5d43fe93
+2026-07-09 15:49:27,797 [INFO] in scala-execution-context-global-47 - 残りのドット数: 305
+2026-07-09 15:49:27,810 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3b86b93c
+2026-07-09 15:49:27,873 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7f8af0d2
+2026-07-09 15:49:27,925 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@32812db9
+2026-07-09 15:49:27,971 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@54e4e019
+2026-07-09 15:49:28,005 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7eb5a333
+2026-07-09 15:49:28,025 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@10465cb3
+2026-07-09 15:49:28,046 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4cc99763
+2026-07-09 15:49:28,066 [INFO] in scala-execution-context-global-47 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5b1bbebe
+2026-07-09 15:49:28,203 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 1795 userid: 911404444
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-47 - java.lang.NullPointerException: Cannot invoke "javafx.stage.Window.getProperties()" because "$this" is null
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-47 - 	at simplefx.cores.interfaces.parts.javafx.AllowsExtensionWindow$.extensionMap$extension(CoreJavaFXExtensionSupport.scala:18)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-47 - 	at com.jpro.meta.stream.Util$.toExtWindow(Util.scala:720)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-51 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInputInWindow$1(SceneInputListener.scala:122)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-47 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInput$1(SceneInputListener.scala:139)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-47 - 	at com.jpro.meta.tk.SceneInputListener.processInput(SceneInputListener.scala:177)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-82 - 	at com.jpro.meta.tk.SceneInputListener.$anonfun$new$5(SceneInputListener.scala:49)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-47 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$Disposer$$anon$1.dispose(CoreTypesDisposer.scala:20)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-82 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1(CoreTypesDisposer.scala:29)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-47 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1$adapted(CoreTypesDisposer.scala:29)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-82 - 	at scala.collection.immutable.List.foreach(List.scala:431)
+2026-07-09 15:49:32,393 [ERROR] in scala-execution-context-global-47 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.dispose(CoreTypesDisposer.scala:29)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-82 - 	at simplefx.cores.interfaces.parts.CoreImply$ImplyOperatorForEvent.$anonfun$$eq$eq$greater$4(CoreImply.scala:20)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreTypesBindable$BindableImpl.$anonfun$triggerOnChange$3(CoreTypesBindable.scala:208)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-47 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl(CoreScheduler.scala:73)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl$(CoreScheduler.scala:52)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at simplefx.cores.standard.Core.runSchedulerImpl(Core.scala:9)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop(CoreScheduler.scala:44)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop$(CoreScheduler.scala:42)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at simplefx.cores.standard.Core.tryStartSchedulerStop(Core.scala:9)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at simplefx.cores.interfaces.parts.javafx.CoreJavaFXBindable$$anon$2.changed(CoreJavaFXBindable.scala:52)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at com.sun.javafx.binding.ExpressionHelper$Generic.fireValueChangedEvent(ExpressionHelper.java:360)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at com.sun.javafx.binding.ExpressionHelper.fireValueChangedEvent(ExpressionHelper.java:80)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at javafx.beans.property.ReadOnlyObjectPropertyBase.fireValueChangedEvent(ReadOnlyObjectPropertyBase.java:80)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at javafx.beans.property.ReadOnlyObjectWrapper.fireValueChangedEvent(ReadOnlyObjectWrapper.java:102)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at javafx.beans.property.ObjectPropertyBase.markInvalid(ObjectPropertyBase.java:113)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at javafx.beans.property.ObjectPropertyBase.set(ObjectPropertyBase.java:147)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at javafx.stage.Window.setScene(Window.java:823)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at javafx.stage.Stage.setScene(Stage.java:270)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at story.Practice.start(Practice.java:72)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at control.GameController.switchToPractice(GameController.java:474)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at start.Start.lambda$start$2(Start.java:157)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at com.sun.scenario.animation.shared.TimelineClipCore.visitKeyFrame(TimelineClipCore.java:239)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at com.sun.scenario.animation.shared.TimelineClipCore.playTo(TimelineClipCore.java:180)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at javafx.animation.Timeline.doPlayTo(Timeline.java:172)
+2026-07-09 15:49:32,394 [ERROR] in scala-execution-context-global-382 - 	at javafx.animation.AnimationAccessorImpl.playTo(AnimationAccessorImpl.java:39)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.scenario.animation.shared.SingleLoopClipEnvelope.timePulse(SingleLoopClipEnvelope.java:103)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at javafx.animation.Animation.doTimePulse(Animation.java:1189)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at javafx.animation.Animation$1.lambda$timePulse$0(Animation.java:207)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at javafx.animation.Animation$1.timePulse(Animation.java:206)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:343)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:581)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:565)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:558)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$12(QuantumToolkit.java:358)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.glass.ui.monocle.RunnableProcessor.runLoop(RunnableProcessor.java:92)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at com.sun.glass.ui.monocle.RunnableProcessor.run(RunnableProcessor.java:51)
+2026-07-09 15:49:32,395 [ERROR] in scala-execution-context-global-382 - 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-09 15:49:32,412 [INFO] in scala-execution-context-global-379 - [info] com.jpro.JS - received msg: new MainID: 989 userid: 237563195
+2026-07-09 15:49:32,429 [INFO] in scala-execution-context-global-379 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7f638464
+2026-07-09 15:49:37,008 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,012 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,015 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,019 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,021 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,025 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,028 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,031 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,034 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,038 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,040 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,044 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,066 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,068 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,071 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,075 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,077 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,081 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,084 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,086 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,089 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,093 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,095 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,098 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-82 - java.lang.NullPointerException: Cannot invoke "javafx.stage.Window.getProperties()" because "$this" is null
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-82 - 	at simplefx.cores.interfaces.parts.javafx.AllowsExtensionWindow$.extensionMap$extension(CoreJavaFXExtensionSupport.scala:18)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-82 - 	at com.jpro.meta.stream.Util$.toExtWindow(Util.scala:720)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-82 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInputInWindow$1(SceneInputListener.scala:122)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-82 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInput$1(SceneInputListener.scala:139)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-82 - 	at com.jpro.meta.tk.SceneInputListener.processInput(SceneInputListener.scala:177)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-82 - 	at com.jpro.meta.tk.SceneInputListener.$anonfun$new$5(SceneInputListener.scala:49)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-82 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$Disposer$$anon$1.dispose(CoreTypesDisposer.scala:20)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1(CoreTypesDisposer.scala:29)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1$adapted(CoreTypesDisposer.scala:29)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at scala.collection.immutable.List.foreach(List.scala:431)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.dispose(CoreTypesDisposer.scala:29)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreImply$ImplyOperatorForEvent.$anonfun$$eq$eq$greater$4(CoreImply.scala:20)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreTypesBindable$BindableImpl.$anonfun$triggerOnChange$3(CoreTypesBindable.scala:208)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl(CoreScheduler.scala:73)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl$(CoreScheduler.scala:52)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.Core.runSchedulerImpl(Core.scala:9)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop(CoreScheduler.scala:44)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop$(CoreScheduler.scala:42)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at simplefx.cores.standard.Core.tryStartSchedulerStop(Core.scala:9)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at simplefx.cores.interfaces.parts.javafx.CoreJavaFXBindable$$anon$2.changed(CoreJavaFXBindable.scala:52)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at com.sun.javafx.binding.ExpressionHelper$Generic.fireValueChangedEvent(ExpressionHelper.java:360)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at com.sun.javafx.binding.ExpressionHelper.fireValueChangedEvent(ExpressionHelper.java:80)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at javafx.beans.property.ReadOnlyObjectPropertyBase.fireValueChangedEvent(ReadOnlyObjectPropertyBase.java:80)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at javafx.beans.property.ReadOnlyObjectWrapper.fireValueChangedEvent(ReadOnlyObjectWrapper.java:102)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at javafx.beans.property.ObjectPropertyBase.markInvalid(ObjectPropertyBase.java:113)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-388 - 	at javafx.beans.property.ObjectPropertyBase.set(ObjectPropertyBase.java:147)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-386 - 	at javafx.stage.Window.setScene(Window.java:823)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-386 - 	at javafx.stage.Stage.setScene(Stage.java:270)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-386 - 	at test1.PracticeMain1.starts(PracticeMain1.java:203)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-386 - 	at test1.PracticeMain1.start(PracticeMain1.java:35)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-387 - 	at control.GameController.switchToPracticeGame1(GameController.java:609)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-387 - 	at story.Practice.lambda$createScene$1(Practice.java:126)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-387 - 	at com.sun.scenario.animation.shared.TimelineClipCore.visitKeyFrame(TimelineClipCore.java:239)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-387 - 	at com.sun.scenario.animation.shared.TimelineClipCore.playTo(TimelineClipCore.java:180)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-387 - 	at javafx.animation.Timeline.doPlayTo(Timeline.java:172)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-379 - 	at javafx.animation.AnimationAccessorImpl.playTo(AnimationAccessorImpl.java:39)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at com.sun.scenario.animation.shared.SingleLoopClipEnvelope.timePulse(SingleLoopClipEnvelope.java:103)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at javafx.animation.Animation.doTimePulse(Animation.java:1189)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at javafx.animation.Animation$1.lambda$timePulse$0(Animation.java:207)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+2026-07-09 15:49:37,110 [ERROR] in scala-execution-context-global-378 - 	at javafx.animation.Animation$1.timePulse(Animation.java:206)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-378 - 	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:343)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-378 - 	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:581)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:565)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:558)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$12(QuantumToolkit.java:358)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-378 - 	at com.sun.glass.ui.monocle.RunnableProcessor.runLoop(RunnableProcessor.java:92)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-382 - 	at com.sun.glass.ui.monocle.RunnableProcessor.run(RunnableProcessor.java:51)
+2026-07-09 15:49:37,112 [ERROR] in scala-execution-context-global-82 - 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-09 15:49:37,117 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3fda519a
+2026-07-09 15:49:37,182 [INFO] in scala-execution-context-global-82 - 残りのドット数: 305
+2026-07-09 15:49:37,184 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7bd29c6f
+2026-07-09 15:49:37,219 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@30641443
+2026-07-09 15:49:37,256 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@23fc9050
+2026-07-09 15:49:37,290 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4d60b83f
+2026-07-09 15:49:37,324 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@55d080cf
+2026-07-09 15:49:37,345 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@36e953bb
+2026-07-09 15:49:37,363 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@bc3f47d
+2026-07-09 15:49:37,382 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@60b1bc2b
+2026-07-09 15:49:37,409 [INFO] in scala-execution-context-global-82 - [info] com.jpro.JS - received msg: new MainID: 1801 userid: 237563195
+2026-07-09 15:49:37,555 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,557 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,560 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,564 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,565 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,569 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,572 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,574 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,577 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,581 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,585 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,589 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,605 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,607 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,610 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,613 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,615 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,619 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,622 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,624 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,627 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,630 [INFO] in scala-execution-context-global-82 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:37,633 [INFO] in scala-execution-context-global-82 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:37,636 [INFO] in scala-execution-context-global-82 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:37,655 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@22c6f541
+2026-07-09 15:49:37,723 [INFO] in scala-execution-context-global-82 - 残りのドット数: 305
+2026-07-09 15:49:37,725 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3d5b9e
+2026-07-09 15:49:37,760 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3c48ff55
+2026-07-09 15:49:37,797 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@459026d4
+2026-07-09 15:49:37,831 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1a23eee6
+2026-07-09 15:49:37,866 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7499d846
+2026-07-09 15:49:37,887 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@33f6551a
+2026-07-09 15:49:37,909 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@33851ffe
+2026-07-09 15:49:37,932 [INFO] in scala-execution-context-global-82 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1254585a
+2026-07-09 15:49:37,956 [INFO] in scala-execution-context-global-82 - [info] com.jpro.JS - received msg: new MainID: 2640 userid: 237563195
+2026-07-09 15:49:39,802 [INFO] in scala-execution-context-global-82 - ゲーム開始
+2026-07-09 15:49:45,451 [INFO] in scala-execution-context-global-82 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 15:49:45 JST 2026      
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.055 
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - raw            : 12463894
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - zipped         : 3071279
+2026-07-09 15:49:45,452 [INFO] in scala-execution-context-global-82 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:49:45,499 [INFO] in scala-execution-context-global-383 - [info] c.jpro - application requested: default
+2026-07-09 15:49:45,499 [INFO] in scala-execution-context-global-383 - [info] c.jpro - Creating Application: default
+2026-07-09 15:49:45,499 [INFO] in scala-execution-context-global-383 - [info] c.jpro - remoteAddress 192.168.102.6
+2026-07-09 15:49:45,499 [INFO] in scala-execution-context-global-383 - [info] c.jpro - host          192.168.102.16:8080
+2026-07-09 15:49:45,500 [INFO] in scala-execution-context-global-383 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 15:49:45,532 [INFO] in scala-execution-context-global-383 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:49:45,629 [INFO] in scala-execution-context-global-383 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 763179277
+2026-07-09 15:49:46,452 [INFO] in scala-execution-context-global-378 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 15:49:46,803 [INFO] in scala-execution-context-global-383 - CHASE開始
+2026-07-09 15:49:47,103 [INFO] in scala-execution-context-global-378 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 15:49:47,105 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:49:47,105 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 15:49:47,105 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 15:49:47 JST 2026      
+2026-07-09 15:49:47,105 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.053 
+2026-07-09 15:49:47,105 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 15:49:47,106 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 15:49:47,106 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 15:49:47,106 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - raw            : 66738
+2026-07-09 15:49:47,106 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - zipped         : 15153
+2026-07-09 15:49:47,106 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:49:47,130 [INFO] in scala-execution-context-global-383 - [info] c.jpro - application requested: default
+2026-07-09 15:49:47,131 [INFO] in scala-execution-context-global-383 - [info] c.jpro - Creating Application: default
+2026-07-09 15:49:47,131 [INFO] in scala-execution-context-global-383 - [info] c.jpro - remoteAddress 192.168.102.6
+2026-07-09 15:49:47,131 [INFO] in scala-execution-context-global-386 - [info] c.jpro - host          192.168.102.16:8080
+2026-07-09 15:49:47,131 [INFO] in scala-execution-context-global-386 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 15:49:47,164 [INFO] in scala-execution-context-global-383 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:49:47,225 [INFO] in scala-execution-context-global-386 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 560972516
+2026-07-09 15:49:48,101 [INFO] in scala-execution-context-global-383 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 15:49:48,235 [INFO] in scala-execution-context-global-383 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@995d98e
+2026-07-09 15:49:48,275 [INFO] in scala-execution-context-global-386 - [info] com.jpro.JS - received msg: new MainID: 989 userid: 560972516
+2026-07-09 15:49:49,476 [INFO] in scala-execution-context-global-386 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:49,478 [INFO] in scala-execution-context-global-386 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:49,481 [INFO] in scala-execution-context-global-386 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:49,484 [INFO] in scala-execution-context-global-386 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:49,486 [INFO] in scala-execution-context-global-386 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:49,489 [INFO] in scala-execution-context-global-386 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:49,492 [INFO] in scala-execution-context-global-386 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:49,494 [INFO] in scala-execution-context-global-386 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:49,498 [INFO] in scala-execution-context-global-386 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:49,502 [INFO] in scala-execution-context-global-386 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:49,506 [INFO] in scala-execution-context-global-386 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:49,509 [INFO] in scala-execution-context-global-386 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:49,523 [INFO] in scala-execution-context-global-386 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:49,525 [INFO] in scala-execution-context-global-386 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:49,528 [INFO] in scala-execution-context-global-386 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:49,532 [INFO] in scala-execution-context-global-386 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:49,534 [INFO] in scala-execution-context-global-386 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:49,537 [INFO] in scala-execution-context-global-386 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:49,541 [INFO] in scala-execution-context-global-386 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:49,543 [INFO] in scala-execution-context-global-386 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:49,546 [INFO] in scala-execution-context-global-386 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:49,550 [INFO] in scala-execution-context-global-386 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:49:49,552 [INFO] in scala-execution-context-global-386 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:49:49,555 [INFO] in scala-execution-context-global-386 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:49:49,567 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5cb2eda9
+2026-07-09 15:49:49,628 [INFO] in scala-execution-context-global-386 - 残りのドット数: 305
+2026-07-09 15:49:49,629 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5e4638c9
+2026-07-09 15:49:49,661 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4f6d0988
+2026-07-09 15:49:49,693 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@af4557d
+2026-07-09 15:49:49,727 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3c2bbf00
+2026-07-09 15:49:49,759 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@19f1d6fd
+2026-07-09 15:49:49,777 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@6d240ac0
+2026-07-09 15:49:49,795 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7f03a944
+2026-07-09 15:49:49,813 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@76c53fc1
+2026-07-09 15:49:49,938 [INFO] in scala-execution-context-global-382 - [info] com.jpro.JS - received msg: new MainID: 1801 userid: 560972516
+2026-07-09 15:49:51,737 [INFO] in scala-execution-context-global-386 - ゲーム開始
+2026-07-09 15:49:51,861 [INFO] in scala-execution-context-global-386 - 残りのドット数: 304
+2026-07-09 15:49:52,100 [INFO] in scala-execution-context-global-383 - 残りのドット数: 303
+2026-07-09 15:49:52,340 [INFO] in scala-execution-context-global-386 - 残りのドット数: 302
+2026-07-09 15:49:52,581 [INFO] in scala-execution-context-global-386 - 残りのドット数: 301
+2026-07-09 15:49:52,980 [INFO] in scala-execution-context-global-386 - 💥敵に捕まった！
+2026-07-09 15:49:52,983 [INFO] in scala-execution-context-global-386 - SE読込: /music/warp.mp3
+2026-07-09 15:49:52,983 [INFO] in scala-execution-context-global-386 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/warp.mp3
+2026-07-09 15:49:52,990 [INFO] in scala-execution-context-global-383 - SE読込: /music/enemydeadsound.mp3
+2026-07-09 15:49:52,990 [INFO] in scala-execution-context-global-383 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/enemydeadsound.mp3
+2026-07-09 15:49:52,997 [INFO] in scala-execution-context-global-386 - SE読込: /music/syujinkoudeadsound.mp3
+2026-07-09 15:49:52,997 [INFO] in scala-execution-context-global-386 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/syujinkoudeadsound.mp3
+2026-07-09 15:49:53,006 [INFO] in scala-execution-context-global-383 - SE読込: /music/fruiteatsound.mp3
+2026-07-09 15:49:53,006 [INFO] in scala-execution-context-global-383 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/fruiteatsound.mp3
+2026-07-09 15:49:53,010 [INFO] in scala-execution-context-global-386 - SE読込: /music/powerup.mp3
+2026-07-09 15:49:53,011 [INFO] in scala-execution-context-global-386 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/powerup.mp3
+2026-07-09 15:49:53,022 [INFO] in scala-execution-context-global-383 - SE読込: /music/gameover.mp3
+2026-07-09 15:49:53,022 [INFO] in scala-execution-context-global-383 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/gameover.mp3
+2026-07-09 15:49:53,030 [INFO] in scala-execution-context-global-386 - SE読込: /music/retry.mp3
+2026-07-09 15:49:53,031 [INFO] in scala-execution-context-global-386 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/retry.mp3
+2026-07-09 15:49:53,032 [INFO] in scala-execution-context-global-386 - SE読込: /music/select.mp3
+2026-07-09 15:49:53,032 [INFO] in scala-execution-context-global-386 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/select.mp3
+2026-07-09 15:49:53,203 [INFO] in scala-execution-context-global-386 - 残りのドット数: 300
+2026-07-09 15:49:53,445 [INFO] in scala-execution-context-global-386 - 残りのドット数: 299
+2026-07-09 15:49:53,685 [INFO] in scala-execution-context-global-383 - 残りのドット数: 298
+2026-07-09 15:49:55,269 [INFO] in scala-execution-context-global-386 - 残りのドット数: 297
+2026-07-09 15:49:55,508 [INFO] in scala-execution-context-global-386 - 残りのドット数: 296
+2026-07-09 15:49:55,749 [INFO] in scala-execution-context-global-383 - 残りのドット数: 295
+2026-07-09 15:49:55,989 [INFO] in scala-execution-context-global-383 - 残りのドット数: 294
+2026-07-09 15:49:56,228 [INFO] in scala-execution-context-global-386 - 残りのドット数: 293
+2026-07-09 15:49:56,468 [INFO] in scala-execution-context-global-386 - 残りのドット数: 292
+2026-07-09 15:49:56,708 [INFO] in scala-execution-context-global-383 - 残りのドット数: 291
+2026-07-09 15:49:56,947 [INFO] in scala-execution-context-global-386 - 残りのドット数: 290
+2026-07-09 15:49:57,188 [INFO] in scala-execution-context-global-383 - 残りのドット数: 289
+2026-07-09 15:49:57,429 [INFO] in scala-execution-context-global-383 - 残りのドット数: 288
+2026-07-09 15:49:57,668 [INFO] in scala-execution-context-global-386 - 残りのドット数: 287
+2026-07-09 15:49:57,908 [INFO] in scala-execution-context-global-383 - 残りのドット数: 286
+2026-07-09 15:49:58,292 [INFO] in scala-execution-context-global-386 - 残りのドット数: 285
+2026-07-09 15:49:58,533 [INFO] in scala-execution-context-global-386 - 残りのドット数: 284
+2026-07-09 15:49:58,740 [INFO] in scala-execution-context-global-386 - CHASE開始
+2026-07-09 15:50:00,119 [INFO] in scala-execution-context-global-386 - 残りのドット数: 283
+2026-07-09 15:50:00,356 [INFO] in scala-execution-context-global-386 - 残りのドット数: 282
+2026-07-09 15:50:00,596 [INFO] in scala-execution-context-global-383 - 残りのドット数: 281
+2026-07-09 15:50:00,836 [INFO] in scala-execution-context-global-386 - 残りのドット数: 280
+2026-07-09 15:50:01,076 [INFO] in scala-execution-context-global-383 - 残りのドット数: 279
+2026-07-09 15:50:01,316 [INFO] in scala-execution-context-global-383 - 残りのドット数: 278
+2026-07-09 15:50:01,557 [INFO] in scala-execution-context-global-383 - 残りのドット数: 277
+2026-07-09 15:50:01,797 [INFO] in scala-execution-context-global-386 - 残りのドット数: 276
+2026-07-09 15:50:02,036 [INFO] in scala-execution-context-global-386 - 残りのドット数: 275
+2026-07-09 15:50:02,276 [INFO] in scala-execution-context-global-383 - 残りのドット数: 274
+2026-07-09 15:50:02,516 [INFO] in scala-execution-context-global-383 - 残りのドット数: 273
+2026-07-09 15:50:02,756 [INFO] in scala-execution-context-global-383 - 残りのドット数: 272
+2026-07-09 15:50:02,996 [INFO] in scala-execution-context-global-386 - 残りのドット数: 271
+2026-07-09 15:50:03,236 [INFO] in scala-execution-context-global-386 - 残りのドット数: 270
+2026-07-09 15:50:03,476 [INFO] in scala-execution-context-global-383 - 残りのドット数: 269
+2026-07-09 15:50:03,717 [INFO] in scala-execution-context-global-386 - 残りのドット数: 268
+2026-07-09 15:50:03,956 [INFO] in scala-execution-context-global-386 - 残りのドット数: 267
+2026-07-09 15:50:04,196 [INFO] in scala-execution-context-global-383 - 残りのドット数: 266
+2026-07-09 15:50:04,436 [INFO] in scala-execution-context-global-383 - 残りのドット数: 265
+2026-07-09 15:50:06,759 [INFO] in scala-execution-context-global-386 - STRAWBERRYが (20, 7) に出現しました！
+2026-07-09 15:50:06,760 [INFO] in scala-execution-context-global-386 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@76036ff5
+2026-07-09 15:50:09,973 [INFO] in scala-execution-context-global-383 - 💥敵に捕まった！
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 15:50:47 JST 2026      
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.056 
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.002  
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-383 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - raw            : 36824333
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - zipped         : 9739916
+2026-07-09 15:50:47,989 [INFO] in scala-execution-context-global-382 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:51:13,061 [INFO] in scala-execution-context-global-382 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 15:53:21,375 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 15:53:21,375 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 15:53:21,431 [INFO] in scala-execution-context-global-51 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @7dfcaa22'
+2026-07-09 15:53:21,862 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 15:53:21,886 [INFO] in scala-execution-context-global-51 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 15:53:22,163 [INFO] in scala-execution-context-global-51 - [info] c.jpro - application requested: 1392227100!default
+2026-07-09 15:53:22,186 [INFO] in scala-execution-context-global-51 - [info] c.jpro - Creating Application: 1392227100!default
+2026-07-09 15:53:22,190 [INFO] in scala-execution-context-global-51 - [info] c.jpro - remoteAddress 192.168.102.6
+2026-07-09 15:53:22,191 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          192.168.102.16:8080
+2026-07-09 15:53:22,191 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/1392227100!default
+2026-07-09 15:53:22,201 [INFO] in scala-execution-context-global-47 - [info] c.jpro - application requested: default
+2026-07-09 15:53:22,201 [INFO] in scala-execution-context-global-47 - [info] c.jpro - Creating Application: default
+2026-07-09 15:53:22,202 [INFO] in scala-execution-context-global-47 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 15:53:22,203 [INFO] in scala-execution-context-global-47 - [info] c.jpro - host          localhost:8080
+2026-07-09 15:53:22,203 [INFO] in scala-execution-context-global-47 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 15:53:22,332 [INFO] in scala-execution-context-global-51 - [info] c.jpro - application requested: default
+2026-07-09 15:53:22,332 [INFO] in scala-execution-context-global-51 - [info] c.jpro - Creating Application: default
+2026-07-09 15:53:22,332 [INFO] in scala-execution-context-global-51 - [info] c.jpro - remoteAddress 192.168.102.6
+2026-07-09 15:53:22,333 [INFO] in scala-execution-context-global-51 - [info] c.jpro - host          192.168.102.16:8080
+2026-07-09 15:53:22,333 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 15:53:22,636 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:53:23,461 [INFO] in scala-execution-context-global-51 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:53:23,670 [INFO] in scala-execution-context-global-51 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 733833948
+2026-07-09 15:53:23,776 [INFO] in scala-execution-context-global-47 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 1397522584
+2026-07-09 15:53:24,147 [INFO] in scala-execution-context-global-88 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 15:53:24,151 [INFO] in scala-execution-context-global-88 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:53:24,151 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 15:53:24,157 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 15:53:24 JST 2026      
+2026-07-09 15:53:24,158 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.000 
+2026-07-09 15:53:24,158 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 15:53:24,158 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 15:53:24,158 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 15:53:24,158 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - raw            : 31922
+2026-07-09 15:53:24,158 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - zipped         : 6212
+2026-07-09 15:53:24,158 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:53:25,123 [INFO] in scala-execution-context-global-88 - [info] c.jpro - application requested: 1501416854!default
+2026-07-09 15:53:25,123 [INFO] in scala-execution-context-global-88 - [info] c.jpro - Creating Application: 1501416854!default
+2026-07-09 15:53:25,123 [INFO] in scala-execution-context-global-88 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 15:53:25,123 [INFO] in scala-execution-context-global-88 - [info] c.jpro - host          localhost:8080
+2026-07-09 15:53:25,123 [INFO] in scala-execution-context-global-51 - [info] c.jpro - uri           /app/ws/1501416854!default
+2026-07-09 15:53:25,155 [INFO] in scala-execution-context-global-91 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:53:25,219 [INFO] in scala-execution-context-global-91 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-09 15:53:25,237 [INFO] in scala-execution-context-global-88 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 2137303676
+2026-07-09 15:53:27,116 [INFO] in scala-execution-context-global-91 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1aec2137
+2026-07-09 15:53:27,197 [INFO] in scala-execution-context-global-88 - [info] com.jpro.JS - received msg: new MainID: 989 userid: 1397522584
+2026-07-09 15:53:27,937 [ERROR] in scala-execution-context-global-88 - java.lang.NullPointerException: Cannot invoke "javafx.stage.Window.getProperties()" because "$this" is null
+2026-07-09 15:53:27,938 [ERROR] in scala-execution-context-global-88 - 	at simplefx.cores.interfaces.parts.javafx.AllowsExtensionWindow$.extensionMap$extension(CoreJavaFXExtensionSupport.scala:18)
+2026-07-09 15:53:27,938 [ERROR] in scala-execution-context-global-88 - 	at com.jpro.meta.stream.Util$.toExtWindow(Util.scala:720)
+2026-07-09 15:53:27,938 [ERROR] in scala-execution-context-global-88 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInputInWindow$1(SceneInputListener.scala:122)
+2026-07-09 15:53:27,938 [ERROR] in scala-execution-context-global-88 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInput$1(SceneInputListener.scala:139)
+2026-07-09 15:53:27,938 [ERROR] in scala-execution-context-global-47 - 	at com.jpro.meta.tk.SceneInputListener.processInput(SceneInputListener.scala:177)
+2026-07-09 15:53:27,938 [ERROR] in scala-execution-context-global-91 - 	at com.jpro.meta.tk.SceneInputListener.$anonfun$new$5(SceneInputListener.scala:49)
+2026-07-09 15:53:27,938 [ERROR] in scala-execution-context-global-51 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$Disposer$$anon$1.dispose(CoreTypesDisposer.scala:20)
+2026-07-09 15:53:27,941 [ERROR] in scala-execution-context-global-88 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1(CoreTypesDisposer.scala:29)
+2026-07-09 15:53:27,941 [ERROR] in scala-execution-context-global-47 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1$adapted(CoreTypesDisposer.scala:29)
+2026-07-09 15:53:27,941 [ERROR] in scala-execution-context-global-47 - 	at scala.collection.immutable.List.foreach(List.scala:431)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-91 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.dispose(CoreTypesDisposer.scala:29)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-91 - 	at simplefx.cores.interfaces.parts.CoreImply$ImplyOperatorForEvent.$anonfun$$eq$eq$greater$4(CoreImply.scala:20)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-91 - 	at simplefx.cores.standard.parts.CoreTypesBindable$BindableImpl.$anonfun$triggerOnChange$3(CoreTypesBindable.scala:208)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-91 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl(CoreScheduler.scala:73)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-91 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl$(CoreScheduler.scala:52)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-91 - 	at simplefx.cores.standard.Core.runSchedulerImpl(Core.scala:9)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-51 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop(CoreScheduler.scala:44)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-51 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop$(CoreScheduler.scala:42)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-51 - 	at simplefx.cores.standard.Core.tryStartSchedulerStop(Core.scala:9)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-51 - 	at simplefx.cores.interfaces.parts.javafx.CoreJavaFXBindable$$anon$2.changed(CoreJavaFXBindable.scala:52)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-47 - 	at com.sun.javafx.binding.ExpressionHelper$Generic.fireValueChangedEvent(ExpressionHelper.java:360)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-275 - 	at com.sun.javafx.binding.ExpressionHelper.fireValueChangedEvent(ExpressionHelper.java:80)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-275 - 	at javafx.beans.property.ReadOnlyObjectPropertyBase.fireValueChangedEvent(ReadOnlyObjectPropertyBase.java:80)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-275 - 	at javafx.beans.property.ReadOnlyObjectWrapper.fireValueChangedEvent(ReadOnlyObjectWrapper.java:102)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-275 - 	at javafx.beans.property.ObjectPropertyBase.markInvalid(ObjectPropertyBase.java:113)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-275 - 	at javafx.beans.property.ObjectPropertyBase.set(ObjectPropertyBase.java:147)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-275 - 	at javafx.stage.Window.setScene(Window.java:823)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-275 - 	at javafx.stage.Stage.setScene(Stage.java:270)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-276 - 	at story.Practice.start(Practice.java:72)
+2026-07-09 15:53:27,942 [ERROR] in scala-execution-context-global-276 - 	at control.GameController.switchToPractice(GameController.java:480)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-276 - 	at start.Start.lambda$start$2(Start.java:157)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-276 - 	at com.sun.scenario.animation.shared.TimelineClipCore.visitKeyFrame(TimelineClipCore.java:239)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-276 - 	at com.sun.scenario.animation.shared.TimelineClipCore.playTo(TimelineClipCore.java:180)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-276 - 	at javafx.animation.Timeline.doPlayTo(Timeline.java:172)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-276 - 	at javafx.animation.AnimationAccessorImpl.playTo(AnimationAccessorImpl.java:39)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.scenario.animation.shared.SingleLoopClipEnvelope.timePulse(SingleLoopClipEnvelope.java:103)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.Animation.doTimePulse(Animation.java:1189)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.Animation$1.lambda$timePulse$0(Animation.java:207)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.Animation$1.timePulse(Animation.java:206)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:343)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:581)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:565)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:558)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$12(QuantumToolkit.java:358)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.glass.ui.monocle.RunnableProcessor.runLoop(RunnableProcessor.java:92)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at com.sun.glass.ui.monocle.RunnableProcessor.run(RunnableProcessor.java:51)
+2026-07-09 15:53:27,943 [ERROR] in scala-execution-context-global-47 - 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-09 15:53:27,959 [INFO] in scala-execution-context-global-283 - [info] com.jpro.JS - received msg: new MainID: 989 userid: 2137303676
+2026-07-09 15:53:27,964 [INFO] in scala-execution-context-global-283 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@b13db95
+2026-07-09 15:53:29,443 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:29,445 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:29,449 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:29,453 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:29,458 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:29,463 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:29,468 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:29,470 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:29,473 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:29,478 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:29,481 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:29,485 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:29,542 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:29,544 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:29,548 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:29,552 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:29,555 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:29,558 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:29,561 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:29,565 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:29,569 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:29,572 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:29,575 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:29,579 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:29,607 [ERROR] in scala-execution-context-global-282 - java.lang.NullPointerException: Cannot invoke "javafx.stage.Window.getProperties()" because "$this" is null
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at simplefx.cores.interfaces.parts.javafx.AllowsExtensionWindow$.extensionMap$extension(CoreJavaFXExtensionSupport.scala:18)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at com.jpro.meta.stream.Util$.toExtWindow(Util.scala:720)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInputInWindow$1(SceneInputListener.scala:122)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInput$1(SceneInputListener.scala:139)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at com.jpro.meta.tk.SceneInputListener.processInput(SceneInputListener.scala:177)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at com.jpro.meta.tk.SceneInputListener.$anonfun$new$5(SceneInputListener.scala:49)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$Disposer$$anon$1.dispose(CoreTypesDisposer.scala:20)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1(CoreTypesDisposer.scala:29)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1$adapted(CoreTypesDisposer.scala:29)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at scala.collection.immutable.List.foreach(List.scala:431)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.dispose(CoreTypesDisposer.scala:29)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at simplefx.cores.interfaces.parts.CoreImply$ImplyOperatorForEvent.$anonfun$$eq$eq$greater$4(CoreImply.scala:20)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-282 - 	at simplefx.cores.standard.parts.CoreTypesBindable$BindableImpl.$anonfun$triggerOnChange$3(CoreTypesBindable.scala:208)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-280 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl(CoreScheduler.scala:73)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-280 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl$(CoreScheduler.scala:52)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-280 - 	at simplefx.cores.standard.Core.runSchedulerImpl(Core.scala:9)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-280 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop(CoreScheduler.scala:44)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-280 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop$(CoreScheduler.scala:42)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-280 - 	at simplefx.cores.standard.Core.tryStartSchedulerStop(Core.scala:9)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-280 - 	at simplefx.cores.interfaces.parts.javafx.CoreJavaFXBindable$$anon$2.changed(CoreJavaFXBindable.scala:52)
+2026-07-09 15:53:29,608 [ERROR] in scala-execution-context-global-280 - 	at com.sun.javafx.binding.ExpressionHelper$Generic.fireValueChangedEvent(ExpressionHelper.java:360)
+2026-07-09 15:53:29,611 [ERROR] in scala-execution-context-global-280 - 	at com.sun.javafx.binding.ExpressionHelper.fireValueChangedEvent(ExpressionHelper.java:80)
+2026-07-09 15:53:29,611 [ERROR] in scala-execution-context-global-280 - 	at javafx.beans.property.ReadOnlyObjectPropertyBase.fireValueChangedEvent(ReadOnlyObjectPropertyBase.java:80)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.beans.property.ReadOnlyObjectWrapper.fireValueChangedEvent(ReadOnlyObjectWrapper.java:102)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.beans.property.ObjectPropertyBase.markInvalid(ObjectPropertyBase.java:113)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.beans.property.ObjectPropertyBase.set(ObjectPropertyBase.java:147)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.stage.Window.setScene(Window.java:823)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.stage.Stage.setScene(Stage.java:270)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at test1.PracticeMain1.starts(PracticeMain1.java:203)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at test1.PracticeMain1.start(PracticeMain1.java:35)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at control.GameController.switchToPracticeGame1(GameController.java:615)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at story.Practice.lambda$createScene$1(Practice.java:126)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.scenario.animation.shared.TimelineClipCore.visitKeyFrame(TimelineClipCore.java:239)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.scenario.animation.shared.TimelineClipCore.playTo(TimelineClipCore.java:180)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.animation.Timeline.doPlayTo(Timeline.java:172)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.animation.AnimationAccessorImpl.playTo(AnimationAccessorImpl.java:39)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.scenario.animation.shared.SingleLoopClipEnvelope.timePulse(SingleLoopClipEnvelope.java:103)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.animation.Animation.doTimePulse(Animation.java:1189)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.animation.Animation$1.lambda$timePulse$0(Animation.java:207)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at javafx.animation.Animation$1.timePulse(Animation.java:206)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:343)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:581)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:565)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:558)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$12(QuantumToolkit.java:358)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.glass.ui.monocle.RunnableProcessor.runLoop(RunnableProcessor.java:92)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at com.sun.glass.ui.monocle.RunnableProcessor.run(RunnableProcessor.java:51)
+2026-07-09 15:53:29,612 [ERROR] in scala-execution-context-global-280 - 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-09 15:53:29,617 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2cd4d5f
+2026-07-09 15:53:29,690 [INFO] in scala-execution-context-global-282 - 残りのドット数: 305
+2026-07-09 15:53:29,702 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7129721f
+2026-07-09 15:53:29,756 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@57aec51a
+2026-07-09 15:53:29,800 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4f3605d3
+2026-07-09 15:53:29,835 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@236401bf
+2026-07-09 15:53:29,871 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@e7a2555
+2026-07-09 15:53:29,891 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3f36957e
+2026-07-09 15:53:29,914 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2b9bbac3
+2026-07-09 15:53:29,933 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5993be56
+2026-07-09 15:53:29,959 [INFO] in scala-execution-context-global-282 - [info] com.jpro.JS - received msg: new MainID: 1795 userid: 2137303676
+2026-07-09 15:53:30,027 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:30,031 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:30,035 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:30,039 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:30,042 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:30,045 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:30,050 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:30,053 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:30,056 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:30,060 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:30,062 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:30,066 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:30,082 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:30,084 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:30,088 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:30,092 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:30,095 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:30,099 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:30,102 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:30,104 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:30,107 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:30,111 [INFO] in scala-execution-context-global-282 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:53:30,114 [INFO] in scala-execution-context-global-282 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:53:30,118 [INFO] in scala-execution-context-global-282 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:53:30,132 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3c62d8d8
+2026-07-09 15:53:30,194 [INFO] in scala-execution-context-global-282 - 残りのドット数: 305
+2026-07-09 15:53:30,218 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5ca4ebaa
+2026-07-09 15:53:30,253 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2f9718a3
+2026-07-09 15:53:30,286 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4786e53f
+2026-07-09 15:53:30,323 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@678b5b4d
+2026-07-09 15:53:30,356 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@41735982
+2026-07-09 15:53:30,375 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2f782804
+2026-07-09 15:53:30,394 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@46c2d20d
+2026-07-09 15:53:30,413 [INFO] in scala-execution-context-global-282 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@68c5e6a9
+2026-07-09 15:53:30,481 [INFO] in scala-execution-context-global-282 - [info] com.jpro.JS - received msg: new MainID: 1795 userid: 1397522584
+2026-07-09 15:53:33,540 [INFO] in scala-execution-context-global-282 - ゲーム開始
+2026-07-09 15:53:33,658 [INFO] in scala-execution-context-global-278 - 残りのドット数: 304
+2026-07-09 15:53:33,900 [INFO] in scala-execution-context-global-282 - 残りのドット数: 303
+2026-07-09 15:53:34,138 [INFO] in scala-execution-context-global-282 - 残りのドット数: 302
+2026-07-09 15:53:34,379 [INFO] in scala-execution-context-global-278 - 残りのドット数: 301
+2026-07-09 15:53:35,803 [INFO] in scala-execution-context-global-282 - 残りのドット数: 300
+2026-07-09 15:53:36,042 [INFO] in scala-execution-context-global-282 - 残りのドット数: 299
+2026-07-09 15:53:36,284 [INFO] in scala-execution-context-global-282 - 残りのドット数: 298
+2026-07-09 15:53:36,523 [INFO] in scala-execution-context-global-278 - 残りのドット数: 297
+2026-07-09 15:53:36,762 [INFO] in scala-execution-context-global-278 - 残りのドット数: 296
+2026-07-09 15:53:37,003 [INFO] in scala-execution-context-global-282 - 残りのドット数: 295
+2026-07-09 15:53:37,243 [INFO] in scala-execution-context-global-282 - 残りのドット数: 294
+2026-07-09 15:53:37,482 [INFO] in scala-execution-context-global-278 - 残りのドット数: 293
+2026-07-09 15:53:37,723 [INFO] in scala-execution-context-global-282 - 残りのドット数: 292
+2026-07-09 15:53:39,090 [INFO] in scala-execution-context-global-278 - ゲーム開始
+2026-07-09 15:53:39,962 [INFO] in scala-execution-context-global-278 - 残りのドット数: 304
+2026-07-09 15:53:40,202 [INFO] in scala-execution-context-global-282 - 残りのドット数: 303
+2026-07-09 15:53:40,458 [INFO] in scala-execution-context-global-278 - 残りのドット数: 302
+2026-07-09 15:53:40,555 [INFO] in scala-execution-context-global-278 - CHASE開始
+2026-07-09 15:53:40,700 [INFO] in scala-execution-context-global-278 - 残りのドット数: 301
+2026-07-09 15:53:41,019 [INFO] in scala-execution-context-global-279 - 残りのドット数: 300
+2026-07-09 15:53:41,259 [INFO] in scala-execution-context-global-279 - 残りのドット数: 299
+2026-07-09 15:53:41,500 [INFO] in scala-execution-context-global-279 - 残りのドット数: 298
+2026-07-09 15:53:41,754 [INFO] in scala-execution-context-global-278 - 残りのドット数: 297
+2026-07-09 15:53:41,994 [INFO] in scala-execution-context-global-279 - 残りのドット数: 296
+2026-07-09 15:53:43,050 [INFO] in scala-execution-context-global-278 - 残りのドット数: 295
+2026-07-09 15:53:43,291 [INFO] in scala-execution-context-global-279 - 残りのドット数: 294
+2026-07-09 15:53:43,530 [INFO] in scala-execution-context-global-279 - 残りのドット数: 293
+2026-07-09 15:53:43,593 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:43,599 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:43,773 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:43,834 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:44,426 [INFO] in scala-execution-context-global-279 - 💥敵に捕まった！
+2026-07-09 15:53:44,429 [INFO] in scala-execution-context-global-279 - SE読込: /music/warp.mp3
+2026-07-09 15:53:44,429 [INFO] in scala-execution-context-global-279 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/warp.mp3
+2026-07-09 15:53:44,445 [INFO] in scala-execution-context-global-278 - SE読込: /music/enemydeadsound.mp3
+2026-07-09 15:53:44,445 [INFO] in scala-execution-context-global-278 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/enemydeadsound.mp3
+2026-07-09 15:53:44,456 [INFO] in scala-execution-context-global-279 - SE読込: /music/syujinkoudeadsound.mp3
+2026-07-09 15:53:44,456 [INFO] in scala-execution-context-global-279 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/syujinkoudeadsound.mp3
+2026-07-09 15:53:44,471 [INFO] in scala-execution-context-global-278 - SE読込: /music/fruiteatsound.mp3
+2026-07-09 15:53:44,471 [INFO] in scala-execution-context-global-278 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/fruiteatsound.mp3
+2026-07-09 15:53:44,481 [INFO] in scala-execution-context-global-278 - SE読込: /music/powerup.mp3
+2026-07-09 15:53:44,481 [INFO] in scala-execution-context-global-278 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/powerup.mp3
+2026-07-09 15:53:44,499 [INFO] in scala-execution-context-global-279 - SE読込: /music/gameover.mp3
+2026-07-09 15:53:44,499 [INFO] in scala-execution-context-global-279 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/gameover.mp3
+2026-07-09 15:53:44,515 [INFO] in scala-execution-context-global-278 - SE読込: /music/retry.mp3
+2026-07-09 15:53:44,515 [INFO] in scala-execution-context-global-278 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/retry.mp3
+2026-07-09 15:53:44,517 [INFO] in scala-execution-context-global-279 - SE読込: /music/select.mp3
+2026-07-09 15:53:44,517 [INFO] in scala-execution-context-global-279 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/select.mp3
+2026-07-09 15:53:45,162 [INFO] in scala-execution-context-global-279 - 残りのドット数: 292
+2026-07-09 15:53:45,402 [INFO] in scala-execution-context-global-278 - 残りのドット数: 291
+2026-07-09 15:53:45,642 [INFO] in scala-execution-context-global-279 - 残りのドット数: 290
+2026-07-09 15:53:45,882 [INFO] in scala-execution-context-global-279 - 残りのドット数: 289
+2026-07-09 15:53:46,124 [INFO] in scala-execution-context-global-279 - 残りのドット数: 288
+2026-07-09 15:53:46,282 [INFO] in scala-execution-context-global-278 - CHASE開始
+2026-07-09 15:53:46,363 [INFO] in scala-execution-context-global-279 - 残りのドット数: 287
+2026-07-09 15:53:46,602 [INFO] in scala-execution-context-global-278 - 残りのドット数: 286
+2026-07-09 15:53:46,843 [INFO] in scala-execution-context-global-278 - 残りのドット数: 285
+2026-07-09 15:53:47,082 [INFO] in scala-execution-context-global-278 - 残りのドット数: 284
+2026-07-09 15:53:47,322 [INFO] in scala-execution-context-global-278 - 残りのドット数: 283
+2026-07-09 15:53:47,562 [INFO] in scala-execution-context-global-278 - 残りのドット数: 282
+2026-07-09 15:53:47,948 [INFO] in scala-execution-context-global-278 - 残りのドット数: 281
+2026-07-09 15:53:48,186 [INFO] in scala-execution-context-global-279 - 残りのドット数: 280
+2026-07-09 15:53:48,426 [INFO] in scala-execution-context-global-278 - 残りのドット数: 279
+2026-07-09 15:53:48,666 [INFO] in scala-execution-context-global-279 - 残りのドット数: 278
+2026-07-09 15:53:48,907 [INFO] in scala-execution-context-global-278 - 残りのドット数: 277
+2026-07-09 15:53:49,146 [INFO] in scala-execution-context-global-278 - 残りのドット数: 276
+2026-07-09 15:53:49,386 [INFO] in scala-execution-context-global-279 - 残りのドット数: 275
+2026-07-09 15:53:49,554 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:49,626 [INFO] in scala-execution-context-global-279 - 残りのドット数: 274
+2026-07-09 15:53:49,687 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:50,212 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:50,346 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:50,434 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:50,601 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:51,171 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:51,308 [INFO] in scala-execution-context-global-278 - 残りのドット数: 273
+2026-07-09 15:53:51,383 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:51,674 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:51,812 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:52,002 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:52,026 [INFO] in scala-execution-context-global-279 - 残りのドット数: 272
+2026-07-09 15:53:52,143 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:52,266 [INFO] in scala-execution-context-global-278 - 💥敵に捕まった！
+2026-07-09 15:53:54,249 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:54,346 [INFO] in scala-execution-context-global-279 - ゲーム開始
+2026-07-09 15:53:54,346 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:55,239 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:55,378 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:55,579 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:55,699 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:56,329 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:56,410 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:56,818 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:56,932 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:57,243 [INFO] in scala-execution-context-global-278 - 残りのドット数: 271
+2026-07-09 15:53:57,484 [INFO] in scala-execution-context-global-279 - 残りのドット数: 270
+2026-07-09 15:53:57,722 [INFO] in scala-execution-context-global-279 - 残りのドット数: 269
+2026-07-09 15:53:57,963 [INFO] in scala-execution-context-global-278 - 残りのドット数: 268
+2026-07-09 15:53:57,986 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:58,127 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:58,202 [INFO] in scala-execution-context-global-278 - 残りのドット数: 267
+2026-07-09 15:53:58,443 [INFO] in scala-execution-context-global-279 - 残りのドット数: 266
+2026-07-09 15:53:58,682 [INFO] in scala-execution-context-global-278 - 残りのドット数: 265
+2026-07-09 15:53:58,922 [INFO] in scala-execution-context-global-279 - 残りのドット数: 264
+2026-07-09 15:53:59,023 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:59,142 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:59,747 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:53:59,867 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:00,419 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:00,537 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:01,102 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:01,173 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:01,329 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:01,356 [INFO] in scala-execution-context-global-278 - CHASE開始
+2026-07-09 15:54:01,427 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:02,134 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:02,231 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:02,500 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:02,643 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:02,759 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:02,984 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,048 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,173 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,317 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,442 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,526 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,629 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,759 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,920 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:03,941 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:04,071 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:04,171 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:04,389 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:04,475 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:04,592 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:04,700 [INFO] in scala-execution-context-global-278 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:04,856 [INFO] in scala-execution-context-global-279 - [warn] c.j.m.t.SceneInputListener - Unknown Keycode: 229
+2026-07-09 15:54:09,369 [INFO] in scala-execution-context-global-279 - CHERRYが (17, 1) に出現しました！
+2026-07-09 15:54:09,373 [INFO] in scala-execution-context-global-279 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@26948442
+2026-07-09 15:54:11,243 [INFO] in scala-execution-context-global-279 - 残りのドット数: 263
+2026-07-09 15:54:11,484 [INFO] in scala-execution-context-global-279 - 残りのドット数: 262
+2026-07-09 15:54:11,627 [INFO] in scala-execution-context-global-278 - 💥敵に捕まった！
+2026-07-09 15:57:51,034 [INFO] in scala-execution-context-global-48 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-09 15:57:51,035 [INFO] in scala-execution-context-global-48 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-09 15:57:51,111 [INFO] in scala-execution-context-global-52 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @3ea5a644'
+2026-07-09 15:57:51,497 [INFO] in scala-execution-context-global-52 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-09 15:57:51,515 [INFO] in scala-execution-context-global-52 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-09 15:57:51,546 [INFO] in scala-execution-context-global-52 - [info] c.jpro - application requested: 1013245416!default
+2026-07-09 15:57:51,556 [INFO] in scala-execution-context-global-52 - [info] c.jpro - Creating Application: 1013245416!default
+2026-07-09 15:57:51,561 [INFO] in scala-execution-context-global-52 - [info] c.jpro - remoteAddress 192.168.102.6
+2026-07-09 15:57:51,562 [INFO] in scala-execution-context-global-52 - [info] c.jpro - host          192.168.102.16:8080
+2026-07-09 15:57:51,562 [INFO] in scala-execution-context-global-52 - [info] c.jpro - uri           /app/ws/1013245416!default
+2026-07-09 15:57:51,921 [INFO] in scala-execution-context-global-48 - [info] c.jpro - application requested: default
+2026-07-09 15:57:51,921 [INFO] in scala-execution-context-global-48 - [info] c.jpro - Creating Application: default
+2026-07-09 15:57:51,922 [INFO] in scala-execution-context-global-48 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-09 15:57:51,923 [INFO] in scala-execution-context-global-48 - [info] c.jpro - host          localhost:8080
+2026-07-09 15:57:51,923 [INFO] in scala-execution-context-global-48 - [info] c.jpro - uri           /app/ws/default
+2026-07-09 15:57:52,105 [INFO] in scala-execution-context-global-48 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:57:52,614 [INFO] in scala-execution-context-global-52 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-09 15:57:52,694 [INFO] in scala-execution-context-global-48 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 977686954
+2026-07-09 15:57:52,830 [INFO] in scala-execution-context-global-48 - [info] com.jpro.JS - received msg: new MainID: 443 userid: 280604029
+2026-07-09 15:57:54,184 [INFO] in scala-execution-context-global-52 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@a6b02ee
+2026-07-09 15:57:54,251 [INFO] in scala-execution-context-global-52 - [info] com.jpro.JS - received msg: new MainID: 989 userid: 280604029
+2026-07-09 15:57:55,461 [INFO] in scala-execution-context-global-80 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:57:55,463 [INFO] in scala-execution-context-global-80 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:57:55,468 [INFO] in scala-execution-context-global-80 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:57:55,474 [INFO] in scala-execution-context-global-80 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:57:55,477 [INFO] in scala-execution-context-global-80 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:57:55,481 [INFO] in scala-execution-context-global-80 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:57:55,486 [INFO] in scala-execution-context-global-80 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:57:55,489 [INFO] in scala-execution-context-global-80 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:57:55,492 [INFO] in scala-execution-context-global-80 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:57:55,497 [INFO] in scala-execution-context-global-80 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:57:55,499 [INFO] in scala-execution-context-global-80 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:57:55,504 [INFO] in scala-execution-context-global-80 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:57:55,560 [INFO] in scala-execution-context-global-80 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:57:55,562 [INFO] in scala-execution-context-global-80 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:57:55,565 [INFO] in scala-execution-context-global-80 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:57:55,570 [INFO] in scala-execution-context-global-80 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:57:55,572 [INFO] in scala-execution-context-global-80 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:57:55,575 [INFO] in scala-execution-context-global-80 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:57:55,578 [INFO] in scala-execution-context-global-80 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:57:55,581 [INFO] in scala-execution-context-global-80 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:57:55,585 [INFO] in scala-execution-context-global-80 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:57:55,589 [INFO] in scala-execution-context-global-80 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:57:55,591 [INFO] in scala-execution-context-global-80 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:57:55,595 [INFO] in scala-execution-context-global-80 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:57:55,629 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@fd39505
+2026-07-09 15:57:55,712 [INFO] in scala-execution-context-global-80 - 残りのドット数: 305
+2026-07-09 15:57:55,728 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3d96ed4a
+2026-07-09 15:57:55,785 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2fedc0ef
+2026-07-09 15:57:55,830 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@582ff265
+2026-07-09 15:57:55,867 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4b719e41
+2026-07-09 15:57:55,907 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@13619b3c
+2026-07-09 15:57:55,928 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@701928c5
+2026-07-09 15:57:55,949 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@8bcbc42
+2026-07-09 15:57:55,970 [INFO] in scala-execution-context-global-80 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@42ea89a0
+2026-07-09 15:57:56,123 [INFO] in scala-execution-context-global-52 - [info] com.jpro.JS - received msg: new MainID: 1723 userid: 280604029
+2026-07-09 15:57:57,426 [INFO] in scala-execution-context-global-52 - ゲーム開始
+2026-07-09 15:57:57,542 [INFO] in scala-execution-context-global-52 - 残りのドット数: 304
+2026-07-09 15:57:57,782 [INFO] in scala-execution-context-global-52 - 残りのドット数: 303
+2026-07-09 15:57:58,021 [INFO] in scala-execution-context-global-52 - 残りのドット数: 302
+2026-07-09 15:57:58,261 [INFO] in scala-execution-context-global-52 - 残りのドット数: 301
+2026-07-09 15:57:59,431 [INFO] in scala-execution-context-global-80 - 残りのドット数: 300
+2026-07-09 15:57:59,669 [INFO] in scala-execution-context-global-80 - 残りのドット数: 299
+2026-07-09 15:57:59,909 [INFO] in scala-execution-context-global-52 - 残りのドット数: 298
+2026-07-09 15:58:00,581 [INFO] in scala-execution-context-global-80 - 残りのドット数: 297
+2026-07-09 15:58:00,822 [INFO] in scala-execution-context-global-80 - 残りのドット数: 296
+2026-07-09 15:58:01,062 [INFO] in scala-execution-context-global-80 - 残りのドット数: 295
+2026-07-09 15:58:01,301 [INFO] in scala-execution-context-global-80 - 残りのドット数: 294
+2026-07-09 15:58:01,541 [INFO] in scala-execution-context-global-52 - 残りのドット数: 293
+2026-07-09 15:58:01,781 [INFO] in scala-execution-context-global-52 - 残りのドット数: 292
+2026-07-09 15:58:02,306 [ERROR] in scala-execution-context-global-52 - java.lang.NullPointerException: Cannot invoke "javafx.stage.Window.getProperties()" because "$this" is null
+2026-07-09 15:58:02,306 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.interfaces.parts.javafx.AllowsExtensionWindow$.extensionMap$extension(CoreJavaFXExtensionSupport.scala:18)
+2026-07-09 15:58:02,306 [ERROR] in scala-execution-context-global-52 - 	at com.jpro.meta.stream.Util$.toExtWindow(Util.scala:720)
+2026-07-09 15:58:02,306 [ERROR] in scala-execution-context-global-52 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInputInWindow$1(SceneInputListener.scala:122)
+2026-07-09 15:58:02,306 [ERROR] in scala-execution-context-global-48 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInput$1(SceneInputListener.scala:139)
+2026-07-09 15:58:02,306 [ERROR] in scala-execution-context-global-80 - 	at com.jpro.meta.tk.SceneInputListener.processInput(SceneInputListener.scala:177)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-80 - 	at com.jpro.meta.tk.SceneInputListener.$anonfun$new$5(SceneInputListener.scala:49)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-80 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$Disposer$$anon$1.dispose(CoreTypesDisposer.scala:20)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-80 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1(CoreTypesDisposer.scala:29)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-48 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1$adapted(CoreTypesDisposer.scala:29)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-48 - 	at scala.collection.immutable.List.foreach(List.scala:431)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-48 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.dispose(CoreTypesDisposer.scala:29)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.interfaces.parts.CoreImply$ImplyOperatorForEvent.$anonfun$$eq$eq$greater$4(CoreImply.scala:20)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.standard.parts.CoreTypesBindable$BindableImpl.$anonfun$triggerOnChange$3(CoreTypesBindable.scala:208)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl(CoreScheduler.scala:73)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl$(CoreScheduler.scala:52)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.standard.Core.runSchedulerImpl(Core.scala:9)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop(CoreScheduler.scala:44)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop$(CoreScheduler.scala:42)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.standard.Core.tryStartSchedulerStop(Core.scala:9)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at simplefx.cores.interfaces.parts.javafx.CoreJavaFXBindable$$anon$2.changed(CoreJavaFXBindable.scala:52)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at com.sun.javafx.binding.ExpressionHelper$Generic.fireValueChangedEvent(ExpressionHelper.java:360)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-52 - 	at com.sun.javafx.binding.ExpressionHelper.fireValueChangedEvent(ExpressionHelper.java:80)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-48 - 	at javafx.beans.property.ReadOnlyObjectPropertyBase.fireValueChangedEvent(ReadOnlyObjectPropertyBase.java:80)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-370 - 	at javafx.beans.property.ReadOnlyObjectWrapper.fireValueChangedEvent(ReadOnlyObjectWrapper.java:102)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-371 - 	at javafx.beans.property.ObjectPropertyBase.markInvalid(ObjectPropertyBase.java:113)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-371 - 	at javafx.beans.property.ObjectPropertyBase.set(ObjectPropertyBase.java:147)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-371 - 	at javafx.stage.Window.setScene(Window.java:823)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-371 - 	at javafx.stage.Stage.setScene(Stage.java:270)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-371 - 	at story.Practice.start(Practice.java:72)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-371 - 	at control.GameController.switchToPractice(GameController.java:491)
+2026-07-09 15:58:02,307 [ERROR] in scala-execution-context-global-371 - 	at start.Start.lambda$start$2(Start.java:157)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-371 - 	at com.sun.scenario.animation.shared.TimelineClipCore.visitKeyFrame(TimelineClipCore.java:239)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-371 - 	at com.sun.scenario.animation.shared.TimelineClipCore.playTo(TimelineClipCore.java:180)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-371 - 	at javafx.animation.Timeline.doPlayTo(Timeline.java:172)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-52 - 	at javafx.animation.AnimationAccessorImpl.playTo(AnimationAccessorImpl.java:39)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-80 - 	at com.sun.scenario.animation.shared.SingleLoopClipEnvelope.timePulse(SingleLoopClipEnvelope.java:103)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-80 - 	at javafx.animation.Animation.doTimePulse(Animation.java:1189)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-80 - 	at javafx.animation.Animation$1.lambda$timePulse$0(Animation.java:207)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-80 - 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-80 - 	at javafx.animation.Animation$1.timePulse(Animation.java:206)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-80 - 	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:343)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-80 - 	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-372 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:581)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-80 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:565)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-372 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:558)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-368 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$12(QuantumToolkit.java:358)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-373 - 	at com.sun.glass.ui.monocle.RunnableProcessor.runLoop(RunnableProcessor.java:92)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-373 - 	at com.sun.glass.ui.monocle.RunnableProcessor.run(RunnableProcessor.java:51)
+2026-07-09 15:58:02,308 [ERROR] in scala-execution-context-global-373 - 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-09 15:58:02,332 [INFO] in scala-execution-context-global-378 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@77afe0d
+2026-07-09 15:58:02,374 [INFO] in scala-execution-context-global-378 - [info] com.jpro.JS - received msg: new MainID: 989 userid: 977686954
+2026-07-09 15:58:03,369 [INFO] in scala-execution-context-global-374 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:58:03,371 [INFO] in scala-execution-context-global-374 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:58:03,375 [INFO] in scala-execution-context-global-374 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:58:03,379 [INFO] in scala-execution-context-global-374 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:58:03,381 [INFO] in scala-execution-context-global-374 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:58:03,384 [INFO] in scala-execution-context-global-374 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:58:03,387 [INFO] in scala-execution-context-global-374 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:58:03,389 [INFO] in scala-execution-context-global-374 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:58:03,392 [INFO] in scala-execution-context-global-374 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:58:03,396 [INFO] in scala-execution-context-global-374 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:58:03,397 [INFO] in scala-execution-context-global-374 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:58:03,401 [INFO] in scala-execution-context-global-374 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:58:03,416 [INFO] in scala-execution-context-global-374 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:58:03,418 [INFO] in scala-execution-context-global-374 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:58:03,421 [INFO] in scala-execution-context-global-374 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:58:03,425 [INFO] in scala-execution-context-global-374 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:58:03,428 [INFO] in scala-execution-context-global-374 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:58:03,430 [INFO] in scala-execution-context-global-374 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:58:03,435 [INFO] in scala-execution-context-global-374 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:58:03,438 [INFO] in scala-execution-context-global-374 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:58:03,440 [INFO] in scala-execution-context-global-374 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:58:03,444 [INFO] in scala-execution-context-global-374 - FEVER画像読込成功: /picture/nari_EnemyFever.png
+2026-07-09 15:58:03,446 [INFO] in scala-execution-context-global-374 - DEAD画像読込成功: /picture/nari_EnemyDead.png
+2026-07-09 15:58:03,450 [INFO] in scala-execution-context-global-374 - 【成功】ステージ1用の画像を読み込みました！
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-374 - java.lang.NullPointerException: Cannot invoke "javafx.stage.Window.getProperties()" because "$this" is null
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-374 - 	at simplefx.cores.interfaces.parts.javafx.AllowsExtensionWindow$.extensionMap$extension(CoreJavaFXExtensionSupport.scala:18)
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-374 - 	at com.jpro.meta.stream.Util$.toExtWindow(Util.scala:720)
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-374 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInputInWindow$1(SceneInputListener.scala:122)
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-374 - 	at com.jpro.meta.tk.SceneInputListener.getWindowOfInput$1(SceneInputListener.scala:139)
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-378 - 	at com.jpro.meta.tk.SceneInputListener.processInput(SceneInputListener.scala:177)
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-378 - 	at com.jpro.meta.tk.SceneInputListener.$anonfun$new$5(SceneInputListener.scala:49)
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$Disposer$$anon$1.dispose(CoreTypesDisposer.scala:20)
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1(CoreTypesDisposer.scala:29)
+2026-07-09 15:58:03,462 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.$anonfun$dispose$1$adapted(CoreTypesDisposer.scala:29)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at scala.collection.immutable.List.foreach(List.scala:431)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreTypesDisposer$ListDisposer.dispose(CoreTypesDisposer.scala:29)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.CoreImply$ImplyOperatorForEvent.$anonfun$$eq$eq$greater$4(CoreImply.scala:20)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreTypesBindable$BindableImpl.$anonfun$triggerOnChange$3(CoreTypesBindable.scala:208)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl(CoreScheduler.scala:73)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreScheduler.runSchedulerImpl$(CoreScheduler.scala:52)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.Core.runSchedulerImpl(Core.scala:9)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop(CoreScheduler.scala:44)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.parts.CoreScheduler.tryStartSchedulerStop$(CoreScheduler.scala:42)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.standard.Core.tryStartSchedulerStop(Core.scala:9)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at simplefx.cores.interfaces.parts.javafx.CoreJavaFXBindable$$anon$2.changed(CoreJavaFXBindable.scala:52)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.binding.ExpressionHelper$Generic.fireValueChangedEvent(ExpressionHelper.java:360)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.binding.ExpressionHelper.fireValueChangedEvent(ExpressionHelper.java:80)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.beans.property.ReadOnlyObjectPropertyBase.fireValueChangedEvent(ReadOnlyObjectPropertyBase.java:80)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.beans.property.ReadOnlyObjectWrapper.fireValueChangedEvent(ReadOnlyObjectWrapper.java:102)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.beans.property.ObjectPropertyBase.markInvalid(ObjectPropertyBase.java:113)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.beans.property.ObjectPropertyBase.set(ObjectPropertyBase.java:147)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.stage.Window.setScene(Window.java:823)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.stage.Stage.setScene(Stage.java:270)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at test1.PracticeMain1.starts(PracticeMain1.java:203)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at test1.PracticeMain1.start(PracticeMain1.java:35)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at control.GameController.switchToPracticeGame1(GameController.java:626)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at story.Practice.lambda$createScene$1(Practice.java:126)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.scenario.animation.shared.TimelineClipCore.visitKeyFrame(TimelineClipCore.java:239)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.scenario.animation.shared.TimelineClipCore.playTo(TimelineClipCore.java:180)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.animation.Timeline.doPlayTo(Timeline.java:172)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.animation.AnimationAccessorImpl.playTo(AnimationAccessorImpl.java:39)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.scenario.animation.shared.SingleLoopClipEnvelope.timePulse(SingleLoopClipEnvelope.java:103)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.animation.Animation.doTimePulse(Animation.java:1189)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.animation.Animation$1.lambda$timePulse$0(Animation.java:207)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at javafx.animation.Animation$1.timePulse(Animation.java:206)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.scenario.animation.AbstractPrimaryTimer.timePulseImpl(AbstractPrimaryTimer.java:343)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.scenario.animation.AbstractPrimaryTimer$MainLoop.run(AbstractPrimaryTimer.java:266)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:581)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulse(QuantumToolkit.java:565)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.pulseFromQueue(QuantumToolkit.java:558)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.javafx.tk.quantum.QuantumToolkit.lambda$runToolkit$12(QuantumToolkit.java:358)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.glass.ui.monocle.RunnableProcessor.runLoop(RunnableProcessor.java:92)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at com.sun.glass.ui.monocle.RunnableProcessor.run(RunnableProcessor.java:51)
+2026-07-09 15:58:03,463 [ERROR] in scala-execution-context-global-378 - 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-09 15:58:03,466 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@29c9d4c5
+2026-07-09 15:58:03,527 [INFO] in scala-execution-context-global-368 - 残りのドット数: 305
+2026-07-09 15:58:03,529 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5daf1372
+2026-07-09 15:58:03,566 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@37848470
+2026-07-09 15:58:03,602 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@23e2e614
+2026-07-09 15:58:03,635 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7b66739a
+2026-07-09 15:58:03,667 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@46ffd86c
+2026-07-09 15:58:03,686 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4b8fa10e
+2026-07-09 15:58:03,705 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@61f62a73
+2026-07-09 15:58:03,726 [INFO] in scala-execution-context-global-368 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@433da658
+2026-07-09 15:58:03,757 [INFO] in scala-execution-context-global-368 - [info] com.jpro.JS - received msg: new MainID: 1723 userid: 977686954
+2026-07-09 15:58:04,438 [INFO] in scala-execution-context-global-368 - CHASE開始
+2026-07-09 15:58:06,295 [INFO] in scala-execution-context-global-378 - 残りのドット数: 291
+2026-07-09 15:58:06,534 [INFO] in scala-execution-context-global-368 - 残りのドット数: 290
+2026-07-09 15:58:06,774 [INFO] in scala-execution-context-global-368 - 残りのドット数: 289
+2026-07-09 15:58:07,013 [INFO] in scala-execution-context-global-368 - 残りのドット数: 288
+2026-07-09 15:58:07,254 [INFO] in scala-execution-context-global-368 - 残りのドット数: 287
+2026-07-09 15:58:07,493 [INFO] in scala-execution-context-global-378 - 残りのドット数: 286
+2026-07-09 15:58:07,750 [INFO] in scala-execution-context-global-378 - SE読込: /music/warp.mp3
+2026-07-09 15:58:07,752 [INFO] in scala-execution-context-global-378 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/warp.mp3
+2026-07-09 15:58:07,765 [INFO] in scala-execution-context-global-368 - SE読込: /music/enemydeadsound.mp3
+2026-07-09 15:58:07,765 [INFO] in scala-execution-context-global-368 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/enemydeadsound.mp3
+2026-07-09 15:58:07,774 [INFO] in scala-execution-context-global-378 - SE読込: /music/syujinkoudeadsound.mp3
+2026-07-09 15:58:07,774 [INFO] in scala-execution-context-global-378 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/syujinkoudeadsound.mp3
+2026-07-09 15:58:07,784 [INFO] in scala-execution-context-global-368 - SE読込: /music/fruiteatsound.mp3
+2026-07-09 15:58:07,784 [INFO] in scala-execution-context-global-368 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/fruiteatsound.mp3
+2026-07-09 15:58:07,795 [INFO] in scala-execution-context-global-378 - SE読込: /music/powerup.mp3
+2026-07-09 15:58:07,795 [INFO] in scala-execution-context-global-378 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/powerup.mp3
+2026-07-09 15:58:07,810 [INFO] in scala-execution-context-global-368 - SE読込: /music/gameover.mp3
+2026-07-09 15:58:07,810 [INFO] in scala-execution-context-global-368 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/gameover.mp3
+2026-07-09 15:58:07,828 [INFO] in scala-execution-context-global-378 - SE読込: /music/retry.mp3
+2026-07-09 15:58:07,828 [INFO] in scala-execution-context-global-378 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/retry.mp3
+2026-07-09 15:58:07,830 [INFO] in scala-execution-context-global-368 - SE読込: /music/select.mp3
+2026-07-09 15:58:07,830 [INFO] in scala-execution-context-global-368 - URL = file:/C:/Users/EMD-571/git/GameApplication/target/classes/music/select.mp3
+2026-07-09 15:58:07,957 [INFO] in scala-execution-context-global-368 - 残りのドット数: 285
+2026-07-09 15:58:08,198 [INFO] in scala-execution-context-global-378 - 残りのドット数: 284
+2026-07-09 15:58:08,917 [INFO] in scala-execution-context-global-368 - 残りのドット数: 283
+2026-07-09 15:58:12,325 [INFO] in scala-execution-context-global-368 - 残りのドット数: 282
+2026-07-09 15:58:12,451 [INFO] in scala-execution-context-global-378 - CHERRYが (23, 11) に出現しました！
+2026-07-09 15:58:12,453 [INFO] in scala-execution-context-global-378 - [info] c.j.m.s.Util$ - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1354388
+2026-07-09 15:58:12,597 [INFO] in scala-execution-context-global-368 - 残りのドット数: 281
+2026-07-09 15:58:12,837 [INFO] in scala-execution-context-global-378 - 残りのドット数: 280
+2026-07-09 15:58:13,078 [INFO] in scala-execution-context-global-368 - 残りのドット数: 279
+2026-07-09 15:58:13,318 [INFO] in scala-execution-context-global-368 - 残りのドット数: 278
+2026-07-09 15:58:13,558 [INFO] in scala-execution-context-global-368 - 残りのドット数: 277
+2026-07-09 15:58:13,797 [INFO] in scala-execution-context-global-368 - 残りのドット数: 276
+2026-07-09 15:58:14,037 [INFO] in scala-execution-context-global-378 - 残りのドット数: 275
+2026-07-09 15:58:14,278 [INFO] in scala-execution-context-global-368 - 残りのドット数: 274
+2026-07-09 15:58:14,517 [INFO] in scala-execution-context-global-378 - 残りのドット数: 273
+2026-07-09 15:58:14,757 [INFO] in scala-execution-context-global-378 - 残りのドット数: 272
+2026-07-09 15:58:14,998 [INFO] in scala-execution-context-global-368 - 残りのドット数: 271
+2026-07-09 15:58:15,237 [INFO] in scala-execution-context-global-368 - 残りのドット数: 270
+2026-07-09 15:58:15,479 [INFO] in scala-execution-context-global-378 - 残りのドット数: 269
+2026-07-09 15:58:15,717 [INFO] in scala-execution-context-global-368 - 残りのドット数: 268
+2026-07-09 15:58:15,958 [INFO] in scala-execution-context-global-368 - 残りのドット数: 267
+2026-07-09 15:58:16,051 [INFO] in scala-execution-context-global-368 - [warn] c.j.i.s.ViewSerializerActor - Unexpected message form client, closing session.
+2026-07-09 15:58:16,056 [INFO] in scala-execution-context-global-368 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:58:16,056 [INFO] in scala-execution-context-global-368 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-09 15:58:16,061 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - startTime      : Thu Jul 09 15:58:16 JST 2026      
+2026-07-09 15:58:16,062 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - averageLatency : 00:00:00.002 
+2026-07-09 15:58:16,062 [INFO] in scala-execution-context-global-378 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.000  
+2026-07-09 15:58:16,062 [INFO] in scala-execution-context-global-377 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-09 15:58:16,062 [INFO] in scala-execution-context-global-377 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-09 15:58:16,062 [INFO] in scala-execution-context-global-377 - [info] c.j.i.s.ViewInfo$ - raw            : 8656961
+2026-07-09 15:58:16,062 [INFO] in scala-execution-context-global-377 - [info] c.j.i.s.ViewInfo$ - zipped         : 2208944
+2026-07-09 15:58:16,062 [INFO] in scala-execution-context-global-377 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-09 15:58:16,197 [INFO] in scala-execution-context-global-368 - 残りのドット数: 266
+2026-07-09 15:58:16,438 [INFO] in scala-execution-context-global-368 - 残りのドット数: 265
+2026-07-09 15:58:16,677 [INFO] in scala-execution-context-global-368 - 残りのドット数: 264
+2026-07-09 15:58:17,046 [INFO] in scala-execution-context-global-368 - [info] c.j.i.c.InstanceImpl - closing window!
