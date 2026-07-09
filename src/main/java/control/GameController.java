@@ -465,6 +465,32 @@ public class GameController {
 			}
 		}
 	}
+	
+	// ★新規追加：メニューボタンから呼び出す用
+	// Pキー処理と同じ内容をボタン用にも用意（Pキー側のコードは変更しない）
+	public void togglePauseByButton() {
+		try {
+			Method togglePauseMethod = model.getClass().getMethod("togglePause");
+			Method isPausedMethod = model.getClass().getMethod("isPaused");
+
+			togglePauseMethod.invoke(model);
+
+			if (pauseLayer != null) {
+				boolean isPaused = (boolean) isPausedMethod.invoke(model);
+				if (isPaused) {
+					pauseLayer.setMouseTransparent(false);
+					pauseLayer.setVisible(true);
+					pauseLayer.requestFocus();
+				} else {
+					pauseLayer.setMouseTransparent(true);
+					pauseLayer.setVisible(false);
+					canvas.requestFocus();
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
 	public void stop() {
 		if (timer != null)
