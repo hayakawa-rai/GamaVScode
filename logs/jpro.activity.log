@@ -109,3 +109,5 @@
 2026-07-09 15:57:51,009 [INFO] in application-akka.actor.default-dispatcher-9 - Starting the server
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-09 16:07:06,999 [INFO] in application-akka.actor.default-dispatcher-6 - Starting the server
+2026-07-09 16:12:55,709 [INFO] in application-akka.actor.default-dispatcher-5 - Starting the server

@@ -1,5 +1,7 @@
 package start;
 
+import com.jpro.webapi.WebAPI;
+
 import control.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -236,8 +238,14 @@ public class Start extends Application {
 							// 背景アニメーションやBGMを安全に停止
 							cleanup();
 
-							// JavaFXアプリを終了する
-							Platform.exit();
+							// ブラウザ実行時：トップページへリダイレクト／デスクトップ実行時：通常終了
+							WebAPI webAPI = WebAPI.getWebAPI(stage);
+							if (webAPI != null) {
+								webAPI.executeScript("window.location.href = 'https://www.bing.com';");
+							} else {
+								Platform.exit();
+							}
+
 						}));
 				delay.play();
 			} catch (Exception ex) {
@@ -311,8 +319,8 @@ public class Start extends Application {
 		// （CSSの game-button クラスは -fx-font-size: 30px 固定なので、インラインstyleで上書きする）
 		for (Button b : new Button[] { btn1, btn2, btn3 }) {
 			ResponsiveUtil.bindButtonFontAndPadding(b, scene.widthProperty(),
-					14, 0.045, 30,   // フォント: 14px〜30px
-					8, 0.02, 20);    // 横パディング: 8px〜20px
+					14, 0.045, 30, // フォント: 14px〜30px
+					8, 0.02, 20); // 横パディング: 8px〜20px
 		}
 
 		// ？ボタンはシーンサイズに応じて小さめに追従（正方形を維持）
@@ -323,8 +331,8 @@ public class Start extends Application {
 
 		// ？ボタンのフォントサイズもシーン幅に応じて可変にする（12px〜20px）
 		ResponsiveUtil.bindButtonFontAndPadding(btnHelp, scene.widthProperty(),
-				12, 0.02, 20,  // フォント: 12px〜20px
-				4, 0.0, 4);    // パディングは元のCSS(4 4)寄りに固定気味にする
+				12, 0.02, 20, // フォント: 12px〜20px
+				4, 0.0, 4); // パディングは元のCSS(4 4)寄りに固定気味にする
 
 		// ===== レスポンシブ対応の追加分ここまで =====
 
