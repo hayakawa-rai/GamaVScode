@@ -3718,3 +3718,15 @@
 2026-07-10 16:47:38,008 [INFO] in scala-execution-context-global-194 - [info] c.j.i.s.ViewInfo$ - zipped         : 195739
 2026-07-10 16:47:38,008 [INFO] in scala-execution-context-global-194 - [info] c.j.i.s.ViewInfo$ - 
 2026-07-10 16:47:38,999 [INFO] in scala-execution-context-global-192 - [info] c.j.i.c.InstanceImpl - closing window!
+2026-07-10 16:49:23,388 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-10 16:49:23,388 [INFO] in scala-execution-context-global-47 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-10 16:49:23,455 [INFO] in scala-execution-context-global-50 - [warn] javafx - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @3a28016a'
+2026-07-10 16:49:23,825 [INFO] in scala-execution-context-global-50 - [info] c.j.i.s.Initializer$ - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-10 16:49:23,857 [INFO] in scala-execution-context-global-50 - [info] c.j.i.s.Initializer$ - finished init!
+2026-07-10 16:49:24,123 [INFO] in scala-execution-context-global-50 - [info] c.jpro - application requested: default
+2026-07-10 16:49:24,130 [INFO] in scala-execution-context-global-50 - [info] c.jpro - Creating Application: default
+2026-07-10 16:49:24,132 [INFO] in scala-execution-context-global-50 - [info] c.jpro - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-10 16:49:24,133 [INFO] in scala-execution-context-global-50 - [info] c.jpro - host          localhost:8080
+2026-07-10 16:49:24,133 [INFO] in scala-execution-context-global-50 - [info] c.jpro - uri           /app/ws/default
+2026-07-10 16:49:24,452 [INFO] in scala-execution-context-global-50 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-10 16:49:25,550 [INFO] in scala-execution-context-global-50 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 823525077
