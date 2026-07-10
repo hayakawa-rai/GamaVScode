@@ -2681,3 +2681,17 @@
 2026-07-10 13:23:11,342 [INFO] in scala-execution-context-global-424 - [info] com.jpro.JS - received msg: new MainID: 3937 userid: 1847912579
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-10 14:02:06,123 [INFO] in scala-execution-context-global-67 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-10 14:02:06,124 [INFO] in scala-execution-context-global-67 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-71 - [error] c.j.i.s.Initializer$ - error while applying configuration Install SecurityManager: 
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-71 - java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-71 - 	at java.base/java.lang.System.setSecurityManager(System.java:430)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-71 - 	at com.jpro.internal.server.Initializer$.$anonfun$initialize$7(Initializer.scala:170)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-71 - 	at com.jpro.internal.server.Initializer$.execute(Initializer.scala:65)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-67 - 	at com.jpro.internal.server.Initializer$.initialize(Initializer.scala:144)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-67 - 	at com.jpro.internal.server.Initializer$.init(Initializer.scala:36)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-67 - 	at controllers.jpro.<init>(jpro.scala:53)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-67 - 	at controllers.jpro$$FastClassByGuice$$22044477.GUICE$TRAMPOLINE(<generated>)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-67 - 	at controllers.jpro$$FastClassByGuice$$22044477.apply(<generated>)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-67 - 	at com.google.inject.internal.DefaultConstructionProxyFactory$FastClassProxy.newInstance(DefaultConstructionProxyFactory.java:82)
+2026-07-10 14:02:06,125 [INFO] in scala-execution-context-global-67 - 	at com.google.inject.internal.ConstructorInjector.provision(ConstructorInjector.java:114)
