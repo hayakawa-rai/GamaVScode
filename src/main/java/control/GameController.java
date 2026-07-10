@@ -7,15 +7,12 @@ import Characters.Direction;
 import common.HighScoreManager;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -98,65 +95,6 @@ public class GameController {
 			baseHolder.getChildren().add(root);
 		}
 
-		// 十字キー（GridPane）を作成
-		GridPane dPad = new GridPane();
-		dPad.setAlignment(Pos.BOTTOM_LEFT);
-		dPad.setPadding(new Insets(0, 0, 40, 40));
-		dPad.setHgap(10);
-		dPad.setVgap(10);
-		dPad.setStyle("-fx-background-color: transparent;");
-		dPad.setPickOnBounds(false);
-
-		// ボタン作成とスタイル適用
-		Button btnUp = new Button();
-		Button btnDown = new Button();
-		Button btnLeft = new Button();
-		Button btnRight = new Button();
-		
-		// 引数は三角形の頂点座標 (x1, y1, x2, y2, x3, y3)
-		javafx.scene.shape.Polygon arrowUp = new javafx.scene.shape.Polygon(0.0, 14.0, 8.0, 0.0, 16.0, 14.0);
-		javafx.scene.shape.Polygon arrowDown = new javafx.scene.shape.Polygon(0.0, 0.0, 16.0, 0.0, 8.0, 14.0);
-		javafx.scene.shape.Polygon arrowLeft = new javafx.scene.shape.Polygon(14.0, 0.0, 0.0, 8.0, 14.0, 16.0);
-		javafx.scene.shape.Polygon arrowRight = new javafx.scene.shape.Polygon(0.0, 0.0, 14.0, 8.0, 0.0, 16.0);
-
-		for (javafx.scene.shape.Polygon arrow : new javafx.scene.shape.Polygon[]{arrowUp, arrowDown, arrowLeft, arrowRight}) {
-			arrow.setFill(javafx.scene.paint.Color.WHITE);
-		}
-
-		// ボタンの「グラフィック（アイコン）」として矢印をセット
-		btnUp.setGraphic(arrowUp);
-		btnDown.setGraphic(arrowDown);
-		btnLeft.setGraphic(arrowLeft);
-		btnRight.setGraphic(arrowRight);
-
-		String buttonStyle = "-fx-font-size: 24px; -fx-min-width: 60px; -fx-min-height: 60px; "
-				+ "-fx-background-radius: 30px; -fx-background-color: rgba(255, 255, 255, 0.4); -fx-text-fill: white;";
-		
-		// スタイル適用とホバーエフェクトの追加
-		for (Button b : new Button[]{btnUp, btnDown, btnLeft, btnRight}) {
-			b.setStyle(buttonStyle);
-			b.setFocusTraversable(false);
-
-			// PCでのマウス操作時、乗せると少し明るくなるエフェクト
-			b.setOnMouseEntered(e -> b.setStyle(buttonStyle + "-fx-background-color: rgba(255, 255, 255, 0.6);"));
-			b.setOnMouseExited(e -> b.setStyle(buttonStyle));
-		}
-
-		btnUp.setStyle(buttonStyle);
-		btnDown.setStyle(buttonStyle);
-		btnLeft.setStyle(buttonStyle);
-		btnRight.setStyle(buttonStyle);
-
-		btnUp.setFocusTraversable(false);
-		btnDown.setFocusTraversable(false);
-		btnLeft.setFocusTraversable(false);
-		btnRight.setFocusTraversable(false);
-
-		dPad.add(btnUp, 1, 0);
-		dPad.add(btnLeft, 0, 1);
-		dPad.add(btnRight, 2, 1);
-		dPad.add(btnDown, 1, 2);
-
 		// どのMapDataからでも安全にメソッドを呼び出す共通処理
 		Consumer<Direction> sendDirection = (dir) -> {
 			try {
@@ -173,14 +111,6 @@ public class GameController {
 				ex.printStackTrace();
 			}
 		};
-
-		// タップイベント（上記の共通処理を呼び出す）
-		btnUp.setOnMousePressed(e -> sendDirection.accept(Direction.UP));
-		btnDown.setOnMousePressed(e -> sendDirection.accept(Direction.DOWN));
-		btnLeft.setOnMousePressed(e -> sendDirection.accept(Direction.LEFT));
-		btnRight.setOnMousePressed(e -> sendDirection.accept(Direction.RIGHT));
-
-		baseHolder.getChildren().add(dPad);
 
 		// ==========================================
 		// スワイプ操作を検知する処理
