@@ -572,17 +572,12 @@ public class Story1 extends Application {
 		// 最初の文章を表示
 		startTyping();
 		
-		// 最小サイズはスマホサイズを許容（前の画面から縮んで遷移してきてもバグらない）
-		stage.setMinWidth(320);
-		stage.setMinHeight(480);
-
-		// ただし、もしPCなどの広い画面にいるなら、現在のウィンドウサイズ（または1000x800）を維持する
-		if (stage.getWidth() < 1000) {
-		    // すでにスマホサイズで動いているならそのまま
-		} else {
-		    // PCサイズを維持
-		    stage.setWidth(Math.max(stage.getWidth(), 1000));
-		    stage.setHeight(Math.max(stage.getHeight(), 800));
+		if (stage != null) {
+			// ウィンドウの最小限のサイズを設定
+			stage.setMinWidth(1000);
+			stage.setMinHeight(800);
+			stage.setMaxWidth(1920);  // PC大画面やブラウザ最大化時の最大サイズ制限
+			stage.setMaxHeight(1080);
 		}
 		return scene;
 	}

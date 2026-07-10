@@ -3648,7 +3648,27 @@ java.lang.ClassCastException: class p.Data$Input$ClientMessageClose cannot be ca
 2026-07-09 17:35:26,432 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
 2026-07-09 17:35:27,436 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
 2026-07-09 17:35:30,540 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+<<<<<<< HEAD
+2026-07-09 17:40:50,028 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - application requested: default
+2026-07-09 17:40:50,028 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - Creating Application: default
+2026-07-09 17:40:50,030 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - remoteAddress 192.168.24.109
+2026-07-09 17:40:50,030 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - host          192.168.24.152:8080
+2026-07-09 17:40:50,030 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - uri           /app/ws/default
+2026-07-09 17:40:50,603 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 10224116
+2026-07-09 17:41:22,027 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 17:41:22,027 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 17:41:22,028 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 17:41:22 JST 2026      
+2026-07-09 17:41:22,028 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.054 
+2026-07-09 17:41:22,028 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.002  
+2026-07-09 17:41:22,028 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 17:41:22,028 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 17:41:22,028 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 1027869
+2026-07-09 17:41:22,028 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 268536
+2026-07-09 17:41:22,028 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 17:41:37,451 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+=======
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+<<<<<<< HEAD
 2026-07-09 17:55:07,281 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-5 - Slf4jLogger started
 2026-07-09 17:55:07,723 [INFO] from play.api.Play in Thread-0 - Application started (Prod) (no global state)
 2026-07-09 17:55:08,068 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Enabling HTTP/2 on Akka HTTP server...
@@ -3747,3 +3767,23 @@ java.lang.ClassCastException: class p.Data$Input$ClientMessageClose cannot be ca
 2026-07-09 17:59:08,226 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 6408703
 2026-07-09 17:59:08,227 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
 2026-07-09 17:59:09,230 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+=======
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-09 17:59:47,306 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-43 - application requested: default
+2026-07-09 17:59:47,306 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-43 - Creating Application: default
+2026-07-09 17:59:47,307 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-43 - remoteAddress 192.168.24.109
+2026-07-09 17:59:47,307 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-43 - host          192.168.24.152:8080
+2026-07-09 17:59:47,307 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-43 - uri           /app/ws/default
+2026-07-09 17:59:47,453 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 74223649
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Thu Jul 09 17:59:52 JST 2026      
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.062 
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.001  
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 193310
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 48278
+2026-07-09 17:59:52,828 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-09 17:59:59,612 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git

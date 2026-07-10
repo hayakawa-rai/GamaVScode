@@ -77,6 +77,7 @@ public class Main1 extends Application {
 		ImageView backgroundView = new ImageView();
 
 		try {
+			// 背景画像読込
 			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/emd-nottori.jpg"));
 			backgroundView = new ImageView(backgroundImage);
 
@@ -237,9 +238,11 @@ public class Main1 extends Application {
 		stage.setTitle("仙石さん - ステージ 1");
 		stage.setScene(scene);
 
-		// 前の画面（Story1等）の大きさをそのまま引き継いでシームレスに表示する
-		stage.setWidth(stage.getWidth());
-		stage.setHeight(stage.getHeight());
+		// ウィンドウのサイズ制限
+		stage.setMinWidth(1000);
+		stage.setMinHeight(800);
+		stage.setMaxWidth(1920);
+		stage.setMaxHeight(1080);
 
 		stage.show();
 
