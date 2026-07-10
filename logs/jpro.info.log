@@ -6841,3 +6841,23 @@ java.lang.UnsupportedOperationException: The Security Manager is deprecated and 
 2026-07-10 13:23:05,377 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 3222 userid: 1847912579
 2026-07-10 13:23:05,395 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7a8fe489
 2026-07-10 13:23:11,342 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 3937 userid: 1847912579
+2026-07-10 13:26:27,362 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@190c4272
+2026-07-10 13:26:27,408 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 4489 userid: 1847912579
+2026-07-10 13:26:33,597 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 4970 userid: 1847912579
+2026-07-10 13:26:57,692 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 5914 userid: 1847912579
+2026-07-10 13:26:58,764 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 6730 userid: 1847912579
+2026-07-10 13:27:00,272 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 7042 userid: 1847912579
+2026-07-10 13:27:00,292 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@66d05e6c
+2026-07-10 13:27:05,148 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 7906 userid: 1847912579
+2026-07-10 13:30:11,218 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-9 - Unexpected message form client, closing session.
+2026-07-10 13:30:11,226 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 13:30:11,226 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-10 13:30:11,246 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Fri Jul 10 13:30:11 JST 2026      
+2026-07-10 13:30:11,246 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.001 
+2026-07-10 13:30:11,246 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.000  
+2026-07-10 13:30:11,248 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-10 13:30:11,248 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-10 13:30:11,248 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 19841286
+2026-07-10 13:30:11,248 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 5883053
+2026-07-10 13:30:11,248 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 13:30:12,217 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
