@@ -222,7 +222,7 @@ public class Main1 extends Application {
 		// =====================================================
 		this.controller = new GameController(model, view, canvas, scene, stage, 1, false);
 
-		// 十字キー(dPad)より手前にメニューボタンを持ってくる
+		// スライド判定より手前にメニューボタンを持ってくる
 		menuBtn.toFront();
 		
 		// ポーズ画面をコントローラーへ登録

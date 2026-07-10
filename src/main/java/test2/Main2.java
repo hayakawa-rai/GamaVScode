@@ -138,7 +138,7 @@ public class Main2 extends Application {
 		// =====================================================
 		// 操作説明UI
 		// =====================================================
-		Label howToPlayText = new Label("移動 : ↑↓←→ / WASD\n画面下ボタン(スマホ用)");
+		Label howToPlayText = new Label("移動 : ↑↓←→ / WASD\n画面スワイプ(スマホ用)");
 		howToPlayText.setFont(Font.font("Meiryo", FontWeight.NORMAL, 14));
 		howToPlayText.setTextFill(Color.WHITE);
 		howToPlayText.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
@@ -217,7 +217,7 @@ public class Main2 extends Application {
 		// =====================================================
 		this.controller = new GameController(model, view, canvas, scene, stage, 2, false);
 
-		// 十字キー(dPad)より手前にメニューボタンを持ってくる
+		// スライド判定より手前にメニューボタンを持ってくる
 		menuBtn.toFront();
 		
 		// ポーズ画面を登録
