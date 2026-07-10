@@ -1,6 +1,5 @@
 package util;
 
-//このコードが今までで一番いい出来です
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -21,7 +20,7 @@ public class WindowUtil {
 	 * ウィンドウを画面いっぱいに広げる処理。
 	 * 画面遷移のたびに毎回呼び出される想定。
 	 */
-	public static void fillScreen(Stage stage) {
+	public static void fullScreen(Stage stage) {
 		// 万が一OSレベルの全画面モードになっていたら解除しておく
 		if (stage.isFullScreen()) {
 			stage.setFullScreen(false);
