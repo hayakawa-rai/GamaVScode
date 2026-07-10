@@ -308,11 +308,11 @@ public class Story1 extends Application {
 
 		// メニューボタン作成
 		Image menuImg = new Image(
-				getClass().getResourceAsStream("/picture/menu.jpeg"));
+				getClass().getResourceAsStream("/picture/menu.png"));
 
 		ImageView menuView = new ImageView(menuImg);
-		menuView.setFitWidth(40);
-		menuView.setFitHeight(40);
+		menuView.setFitWidth(100);
+		menuView.setFitHeight(90);
 
 		Button menuBtn = new Button("");
 		menuBtn.setGraphic(menuView);
