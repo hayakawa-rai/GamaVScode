@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Stageclear3 extends Application {
-	
 	private AudioClip clearSound;
 	private AudioClip clickSound;
 	private AudioClip cancelSound;
@@ -33,17 +32,15 @@ public class Stageclear3 extends Application {
 
 	// 💡【JPro対応】外部からStageとスコアを安全に引き継いで開始する静的メソッド
 	public static void createAndStart(Stage currentStage, int finalScore) {
-		if (currentStage == null) 
-			return;
+		if (currentStage == null) return;
 
 		Stageclear3 instance = new Stageclear3();
 		instance.stage = currentStage;
 		instance.setScore(finalScore); // スコアを確実に格納
 
-		// 1. ボタンやテキストが含まれる新しいSceneを完全に作成
+		// Stageとスコアがセットされた状態でSceneを構築
 		Scene newScene = instance.clear(currentStage);
 
-		// 2. setRootではなく、Stageに対してSceneごと安全に丸ごと差し替える
 		currentStage.setScene(newScene);
 		currentStage.setTitle("stage3CLEAR");
 		currentStage.centerOnScreen();
@@ -110,7 +107,7 @@ public class Stageclear3 extends Application {
 		});
 		delay.play();
 
-		// テキスト類
+		// ⭕【エラー修正】全角スペースや特殊な非表示スペースを除去し、安全な半角スペースに統一
 		Text title = new Text("STAGE3    CLEAR!");
 		title.setStyle("-fx-fill: rgb(180,180,180);");
 		
@@ -154,20 +151,15 @@ public class Stageclear3 extends Application {
 			System.err.println("キャンセルSEの読み込みに失敗しました: " + e.getMessage());
 		}
 
-		// 次に進むボタン
 		Button next = new Button("次のステージへ");
 		next.getStyleClass().add("game-button2");
 		next.setOnAction(e -> {
-			// 音を再生（Nullチェックをして安全に再生・停止）
 			if (clickSound != null) {
 				clickSound.stop();
 				clickSound.play();
 			}
 
-			// 0.5秒待つ（タイマー開始）
 			pause = new PauseTransition(Duration.seconds(0.5));
-			
-			// 待った後に画面遷移
 			pause.setOnFinished(ev -> {
 				try {
 					cleanup();
@@ -179,11 +171,10 @@ public class Stageclear3 extends Application {
 			pause.play();
 		});
 
-		// スコア表示
+		// 💡 インスタンスに保存された最新のスコアを確実に反映
 		Text scoreLabel = new Text("SCORE: " + this.score);
 		scoreLabel.setStyle("-fx-fill: gray;");
 
-		// 戻るボタン
 		Button backButton = new Button("タイトルへ");
 		backButton.getStyleClass().add("game-button2");
 		backButton.setOnAction(e -> {
@@ -191,7 +182,7 @@ public class Stageclear3 extends Application {
 				cancelSound.stop();
 				cancelSound.play();
 			}
-			
+
 			pause = new PauseTransition(Duration.seconds(0.5));
 			pause.setOnFinished(ev -> {
 				try {
@@ -204,13 +195,13 @@ public class Stageclear3 extends Application {
 			pause.play();
 		});
 
-		// 全パーツを格納するコンテナ
 		VBox buttonBox = new VBox(20);
 		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
 
 		StackPane root = new StackPane();
 		root.getChildren().add(buttonBox);
+		root.setStyle("-fx-background-color: #1a1a1a;");
 		
 		Scene scene = new Scene(root, 1000, 800);
 		
@@ -220,22 +211,23 @@ public class Stageclear3 extends Application {
 			scene.getStylesheets().add(cssUrl.toExternalForm());
 		}
 
-		// ブラウザの画面リサイズに追従する動的バインディング
-		title.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: rgb(180,180,180); -fx-font-weight: bold;",scene.widthProperty().multiply(0.06)));
-		text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray;", scene.widthProperty().multiply(0.015)));
-		scoreLabel.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray; -fx-font-weight: bold;",scene.widthProperty().multiply(0.02)));
-
+		// 💡 【JPro対応】ブラウザの画面リサイズに追従する動的バインディング
+		title.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: rgb(180,180,180); -fx-font-weight: bold;", scene.widthProperty().multiply(0.08)));
+		text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray;", scene.widthProperty().multiply(0.025)));
+		scoreLabel.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray; -fx-font-weight: bold;", scene.widthProperty().multiply(0.03)));
+		
 		imageView.fitWidthProperty().bind(scene.widthProperty().multiply(0.15));
 		imageView.fitHeightProperty().bind(scene.heightProperty().multiply(0.18));
 		imageView.setPreserveRatio(true);
 
-		next.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
-		next.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
-		backButton.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
-		backButton.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
+		next.prefWidthProperty().bind(scene.widthProperty().multiply(0.25));
+		next.prefHeightProperty().bind(scene.heightProperty().multiply(0.1));
+		backButton.prefWidthProperty().bind(scene.widthProperty().multiply(0.25));
+		backButton.prefHeightProperty().bind(scene.heightProperty().multiply(0.1));
 
-		next.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
-		backButton.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
+		// フォントサイズもボタンサイズに合わせてリサイズ
+		next.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.022)));
+		backButton.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.022)));
 
 		if (this.stage != null) {
 			this.stage.setMinWidth(1000);
