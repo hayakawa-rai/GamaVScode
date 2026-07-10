@@ -30,17 +30,17 @@ public class Stageclear1 extends Application {
 	private Stage stage;
 
 	public Stageclear1() {
-		// 引数なしコンストラクタ
+		// 引数なしコンストラクタ（JProの動的生成に必須）
 	}
 
-	// 💡 【修正】重複エラーとボタン消滅を完璧に防ぐ修正版メソッド
+	// 💡【JPro対応】外部からStageとスコアを安全に引き継いで開始する静的メソッド
 	public static void createAndStart(Stage currentStage, int finalScore) {
 		if (currentStage == null)
 			return;
 
 		Stageclear1 instance = new Stageclear1();
 		instance.setScore(finalScore);
-		instance.stage = currentStage;
+		instance.stage = currentStage;// スコアを確実に格納
 
 		// 1. ボタンやテキストが含まれる新しいSceneを完全に作成
 		Scene newScene = instance.clear(currentStage);
@@ -105,17 +105,18 @@ public class Stageclear1 extends Application {
 				clearSound.play();
 		});
 		delay.play();
+
 		// -------------------------------------------------
-		// ベースコンテナとScene設定
+		// 📦 ベースコンテナとScene設定
 		// -------------------------------------------------
 		StackPane root = new StackPane();
-				
-		// 固定値(1000, 800)の生成制限を排除！ 柔軟にサイズが引き継がれるようにする
+		
+		// 💡 固定値(1000, 800)の生成制限を排除！ 柔軟にサイズが引き継がれるようにする
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
 
-		// 画面の縦横で「短いほうの長さ」を基準
+		// 💡 画面の縦横で「短いほうの長さ」を基準にする（スマホの縦持ちでも画面外にはみ出さなくなる魔法）
 		NumberBinding minSide = Bindings.min(scene.widthProperty(), scene.heightProperty());
 
 		VBox buttonBox = new VBox();
@@ -125,7 +126,7 @@ public class Stageclear1 extends Application {
 		root.getChildren().add(buttonBox);
 
 		// -------------------------------------------------
-		// 各UI要素のレスポンシブ化（フォント・画像の自動伸縮）
+		// 🔤 各UI要素のレスポンシブ化（フォント・画像の自動伸縮）
 		// -------------------------------------------------
 		Text title = new Text("STAGE1    CLEAR!");
 		// 💡 画面の大きさに合わせて、文字サイズが自動計算されるようにバインド
@@ -158,17 +159,17 @@ public class Stageclear1 extends Application {
 		cancelSound.setVolume(0.4);
 
 		// -------------------------------------------------
-		// ボタンコンポーネント（固定値を廃止してレスポンシブ化）
+		// 🖱️ ボタンコンポーネント（固定値を廃止してレスポンシブ化）
 		// -------------------------------------------------
 		// 次に進むボタン
 		Button next = new Button("次のステージへ");
 		next.getStyleClass().add("game-button2");
-
-		// ボタンの横幅・縦幅・文字の大きさを画面に合わせて自動伸縮
+		
+		// 💡 ボタンの横幅・縦幅・文字の大きさを画面に合わせて自動伸縮
 		next.prefWidthProperty().bind(minSide.multiply(0.4));
 		next.prefHeightProperty().bind(minSide.multiply(0.12));
 		next.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-font-weight: bold;", minSide.multiply(0.028)));
-
+		
 		next.setOnAction(e -> {
 			if (clickSound != null) {
 				clickSound.stop();
@@ -193,7 +194,7 @@ public class Stageclear1 extends Application {
 		// 戻るボタン
 		Button backButton = new Button("タイトルへ");
 		backButton.getStyleClass().add("game-button2");
-
+		
 		// サイズと文字の大きさは上のボタンと同じ比率で追従
 		backButton.prefWidthProperty().bind(minSide.multiply(0.4));
 		backButton.prefHeightProperty().bind(minSide.multiply(0.12));
