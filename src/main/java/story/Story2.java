@@ -332,7 +332,7 @@ public class Story2 extends Application {
 
 		ImageView menuView = new ImageView();
 		try {
-			var stream = getClass().getResourceAsStream("/picture/menu.jpeg");
+			var stream = getClass().getResourceAsStream("/picture/menu.png");
 			if (stream != null) menuView.setImage(new Image(stream));
 		} catch (Exception e) { System.err.println("メニュー画像の読み込みに失敗"); }
 		menuView.setFitWidth(40);
