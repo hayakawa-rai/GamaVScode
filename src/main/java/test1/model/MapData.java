@@ -243,7 +243,7 @@ public class MapData implements GameMap {
 	 */
 	public void SampleModel(boolean enableRespawn) {
 		this.enableRespawn = enableRespawn; // これで練習/ストーリーを切り替えられる（エサ復活用）
-		this.syujinkou = new Syujinkou(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
+		this.syujinkou = new Syujinkou(10 * TILE_SIZE, 14 * TILE_SIZE, 5);
 		this.itemMap = new Item[map.length][map[0].length];
 		this.remainingItems = 0;
 		this.lastFruitSpawnTime = System.currentTimeMillis();
@@ -294,7 +294,7 @@ public class MapData implements GameMap {
 	public MapData() {
 		// 初期設定
 		this.enableRespawn = false;
-		this.syujinkou = new Syujinkou(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
+		this.syujinkou = new Syujinkou(14 * TILE_SIZE, 23 * TILE_SIZE, 5);
 		this.itemMap = new Item[map.length][map[0].length];
 		this.remainingItems = 0;
 		this.lastFruitSpawnTime = System.currentTimeMillis();
