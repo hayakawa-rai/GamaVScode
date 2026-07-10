@@ -5915,3 +5915,341 @@ Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.media.Aud
 2026-07-10 16:20:11,802 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 39455496
 2026-07-10 16:20:11,802 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 11276099
 2026-07-10 16:20:11,802 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:20:12,782 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-10 16:21:19,842 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-5 - Slf4jLogger started
+2026-07-10 16:21:20,268 [INFO] from play.api.Play in Thread-0 - Application started (Prod) (no global state)
+2026-07-10 16:21:20,624 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Enabling HTTP/2 on Akka HTTP server...
+2026-07-10 16:21:20,625 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Listening for HTTP on /[0:0:0:0:0:0:0:0]:8080
+2026-07-10 16:21:20,803 [INFO] from com.jpro.activity in application-akka.actor.default-dispatcher-5 - Starting the server
+2026-07-10 16:21:20,804 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 -  *** Starting JPro: https://www.jpro.one/ ***
+2026-07-10 16:21:20,804 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - OS: Windows 11
+2026-07-10 16:21:20,820 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JPro: 2022.1.1
+2026-07-10 16:21:20,820 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - Java version: 17.0.18
+2026-07-10 16:21:20,820 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JVM: 17.0.18 Eclipse Adoptium
+2026-07-10 16:21:20,834 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - JavaFX jar: file:/C:/Users/EMD-576/.m2/repository/org/openjfx/javafx-graphics/18.0.1-jpro+0/javafx-graphics-18.0.1-jpro+0-win.jar
+2026-07-10 16:21:20,847 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - redirected OUT / ERR
+2026-07-10 16:21:20,847 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - installed SLF4JBridge
+2026-07-10 16:21:20,904 [WARN] from javafx in application-akka.actor.default-dispatcher-5 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @48c94828'
+2026-07-10 16:21:21,301 [INFO] from com.jpro.internal.server.Initializer$ in JavaFX Application Thread - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-10 16:21:21,321 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-5 - finished init!
+2026-07-10 16:21:21,620 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - application requested: default
+2026-07-10 16:21:21,633 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - Creating Application: default
+2026-07-10 16:21:21,633 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-10 16:21:21,633 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - host          localhost:8080
+2026-07-10 16:21:21,633 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-10 - uri           /app/ws/default
+2026-07-10 16:21:23,121 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 1841112553
+2026-07-10 16:21:24,304 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3cd3cf6d
+2026-07-10 16:21:24,382 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@6e7c011e
+2026-07-10 16:21:24,438 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@85fe67d
+2026-07-10 16:21:24,522 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1dc36570
+2026-07-10 16:21:24,912 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@128ac802
+2026-07-10 16:21:25,048 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 962 userid: 1841112553
+2026-07-10 16:21:31,575 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1a2ce8eb
+2026-07-10 16:21:31,650 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@71a92dd1
+2026-07-10 16:21:31,677 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7fc09d9f
+2026-07-10 16:21:31,711 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7d4521b
+2026-07-10 16:21:31,744 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3b7db350
+2026-07-10 16:21:31,781 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@282d7a1b
+2026-07-10 16:21:31,816 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@46096e42
+2026-07-10 16:21:31,835 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3cbe7f2d
+2026-07-10 16:21:31,855 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@8e0f68a
+2026-07-10 16:21:31,878 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@6849ebb
+2026-07-10 16:21:32,002 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1540 userid: 1841112553
+2026-07-10 16:21:34,374 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@52e2500e
+2026-07-10 16:21:34,880 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 2296 userid: 1841112553
+2026-07-10 16:21:36,174 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3b7c598a
+2026-07-10 16:21:36,320 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5c9e1975
+2026-07-10 16:21:36,356 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@20a2d1d6
+2026-07-10 16:21:36,410 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5a8c7999
+2026-07-10 16:21:36,787 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@436af90d
+2026-07-10 16:21:37,190 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@53604ffc
+2026-07-10 16:21:37,235 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2b381cc8
+2026-07-10 16:21:37,261 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 2924 userid: 1841112553
+2026-07-10 16:21:55,646 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7f4761bd
+2026-07-10 16:21:55,796 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@334c6d53
+2026-07-10 16:21:55,819 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@15f82fbc
+2026-07-10 16:21:55,852 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1b02a048
+2026-07-10 16:21:55,887 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@25f496b3
+2026-07-10 16:21:55,925 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@645d1617
+2026-07-10 16:21:55,958 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@55e78824
+2026-07-10 16:21:55,978 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4fdfbfd3
+2026-07-10 16:21:55,998 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3d1ce115
+2026-07-10 16:21:56,018 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@312375ea
+2026-07-10 16:21:56,145 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 3771 userid: 1841112553
+2026-07-10 16:21:58,073 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@77280a6
+2026-07-10 16:22:00,385 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 4287 userid: 1841112553
+2026-07-10 16:22:02,907 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7e377fa5
+2026-07-10 16:22:03,107 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@63844fcd
+2026-07-10 16:22:03,158 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1b001f89
+2026-07-10 16:22:03,192 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4d6d5e16
+2026-07-10 16:22:03,563 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4c47c60b
+2026-07-10 16:22:04,055 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4e563ffb
+2026-07-10 16:22:04,080 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 4837 userid: 1841112553
+2026-07-10 16:22:13,221 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1195b94d
+2026-07-10 16:22:13,421 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5312d533
+2026-07-10 16:22:13,444 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2c2ddd26
+2026-07-10 16:22:13,483 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@34da3c4f
+2026-07-10 16:22:13,518 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@59fa04ce
+2026-07-10 16:22:13,546 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@57fc8e82
+2026-07-10 16:22:13,570 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2e70c6c8
+2026-07-10 16:22:13,592 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@767130ec
+2026-07-10 16:22:13,717 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 5655 userid: 1841112553
+2026-07-10 16:22:25,254 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@33775fd0
+2026-07-10 16:22:25,745 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 6790 userid: 1841112553
+2026-07-10 16:22:32,992 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3327788d
+2026-07-10 16:22:33,201 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7ce674dc
+2026-07-10 16:22:33,232 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1a072b59
+2026-07-10 16:22:33,291 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@37f7b43a
+2026-07-10 16:22:33,674 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@52d5e042
+2026-07-10 16:22:34,162 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@61470a11
+2026-07-10 16:22:34,186 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 7340 userid: 1841112553
+2026-07-10 16:22:37,094 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7100998d
+2026-07-10 16:22:47,425 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@616e53a4
+2026-07-10 16:22:48,280 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 7514 userid: 1841112553
+2026-07-10 16:23:14,429 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@76ded210
+2026-07-10 16:23:14,472 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@763c90b8
+2026-07-10 16:23:17,557 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 8322 userid: 1841112553
+2026-07-10 16:23:23,923 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 9266 userid: 1841112553
+2026-07-10 16:23:37,265 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 13020 userid: 1841112553
+2026-07-10 16:23:44,268 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-9 - Unexpected message form client, closing session.
+2026-07-10 16:23:44,277 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:23:44,277 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-10 16:23:44,287 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Fri Jul 10 16:23:44 JST 2026      
+2026-07-10 16:23:44,287 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.000 
+2026-07-10 16:23:44,287 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.000  
+2026-07-10 16:23:44,287 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-10 16:23:44,287 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-10 16:23:44,287 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 12787642
+2026-07-10 16:23:44,287 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 3543115
+2026-07-10 16:23:44,287 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:23:45,268 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-10 16:27:53,941 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - application requested: default
+2026-07-10 16:27:53,942 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - Creating Application: default
+2026-07-10 16:27:53,942 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - remoteAddress 192.168.24.109
+2026-07-10 16:27:53,943 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - host          192.168.24.152:8080
+2026-07-10 16:27:53,943 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-21 - uri           /app/ws/default
+2026-07-10 16:27:54,383 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 1053495183
+2026-07-10 16:27:57,177 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4d0189db
+2026-07-10 16:27:57,222 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1021 userid: 1053495183
+2026-07-10 16:27:59,767 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@6071ebbb
+2026-07-10 16:27:59,826 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4fc7f3dc
+2026-07-10 16:27:59,847 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4948f288
+2026-07-10 16:27:59,882 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5e35d22e
+2026-07-10 16:27:59,918 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@33011da3
+2026-07-10 16:27:59,953 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4a512906
+2026-07-10 16:27:59,990 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@58661359
+2026-07-10 16:28:00,011 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@69219287
+2026-07-10 16:28:00,032 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@8c7b8e3
+2026-07-10 16:28:00,052 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@407b33f
+2026-07-10 16:28:00,158 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1814 userid: 1053495183
+2026-07-10 16:28:06,449 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-11 - Unexpected message form client, closing session.
+2026-07-10 16:28:06,450 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:28:06,450 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-10 16:28:06,451 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Fri Jul 10 16:28:06 JST 2026      
+2026-07-10 16:28:06,451 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.062 
+2026-07-10 16:28:06,451 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.002  
+2026-07-10 16:28:06,451 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-10 16:28:06,451 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-10 16:28:06,451 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 4501118
+2026-07-10 16:28:06,451 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 1141047
+2026-07-10 16:28:06,451 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:28:06,494 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-11 - application requested: default
+2026-07-10 16:28:06,494 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-11 - Creating Application: default
+2026-07-10 16:28:06,494 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-11 - remoteAddress 192.168.24.109
+2026-07-10 16:28:06,494 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-11 - host          192.168.24.152:8080
+2026-07-10 16:28:06,494 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-11 - uri           /app/ws/default
+2026-07-10 16:28:06,779 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 908091874
+2026-07-10 16:28:07,445 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-10 16:28:25,148 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-5 - Slf4jLogger started
+2026-07-10 16:28:25,547 [INFO] from play.api.Play in Thread-0 - Application started (Prod) (no global state)
+2026-07-10 16:28:25,914 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Enabling HTTP/2 on Akka HTTP server...
+2026-07-10 16:28:25,914 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Listening for HTTP on /[0:0:0:0:0:0:0:0]:8080
+2026-07-10 16:28:26,086 [INFO] from com.jpro.activity in application-akka.actor.default-dispatcher-8 - Starting the server
+2026-07-10 16:28:26,087 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 -  *** Starting JPro: https://www.jpro.one/ ***
+2026-07-10 16:28:26,087 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 - OS: Windows 11
+2026-07-10 16:28:26,097 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 - JPro: 2022.1.1
+2026-07-10 16:28:26,097 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 - Java version: 17.0.18
+2026-07-10 16:28:26,097 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 - JVM: 17.0.18 Eclipse Adoptium
+2026-07-10 16:28:26,100 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 - JavaFX jar: file:/C:/Users/EMD-576/.m2/repository/org/openjfx/javafx-graphics/18.0.1-jpro+0/javafx-graphics-18.0.1-jpro+0-win.jar
+2026-07-10 16:28:26,109 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 - redirected OUT / ERR
+2026-07-10 16:28:26,109 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 - installed SLF4JBridge
+2026-07-10 16:28:26,161 [WARN] from javafx in application-akka.actor.default-dispatcher-8 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @7d05b2a8'
+2026-07-10 16:28:26,540 [INFO] from com.jpro.internal.server.Initializer$ in JavaFX Application Thread - JavaFX version: 18.0.1-jpro+0-2022-04-04-072947
+2026-07-10 16:28:26,574 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-8 - finished init!
+2026-07-10 16:28:26,864 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - application requested: default
+2026-07-10 16:28:26,880 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - Creating Application: default
+2026-07-10 16:28:26,882 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - remoteAddress 0:0:0:0:0:0:0:1
+2026-07-10 16:28:26,882 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - host          localhost:8080
+2026-07-10 16:28:26,882 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-9 - uri           /app/ws/default
+2026-07-10 16:28:27,313 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-7 - application requested: 1568546002!default
+2026-07-10 16:28:27,313 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-7 - Creating Application: 1568546002!default
+2026-07-10 16:28:27,320 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-7 - remoteAddress 192.168.24.109
+2026-07-10 16:28:27,320 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-7 - host          192.168.24.152:8080
+2026-07-10 16:28:27,320 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-7 - uri           /app/ws/1568546002!default
+2026-07-10 16:28:28,636 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 1034863764
+2026-07-10 16:28:28,774 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 1829382418
+2026-07-10 16:30:00,759 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@52833ec3
+2026-07-10 16:30:00,830 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1021 userid: 1829382418
+2026-07-10 16:30:03,874 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@63c94f0
+2026-07-10 16:30:03,950 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@501ebc36
+2026-07-10 16:30:04,006 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@37ea58dd
+2026-07-10 16:30:04,052 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@e99f8ac
+2026-07-10 16:30:04,096 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@66ee68f
+2026-07-10 16:30:04,132 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@151d3850
+2026-07-10 16:30:04,171 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@48754db1
+2026-07-10 16:30:04,190 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1b9e7bb1
+2026-07-10 16:30:04,211 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@618b1716
+2026-07-10 16:30:04,231 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3e513830
+2026-07-10 16:30:04,341 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1814 userid: 1829382418
+2026-07-10 16:30:11,866 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@6cec30c3
+2026-07-10 16:30:33,170 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@473280c2
+2026-07-10 16:30:33,191 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7ea736a4
+2026-07-10 16:30:33,214 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@35cf47b9
+2026-07-10 16:30:33,236 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4379d05d
+2026-07-10 16:30:34,602 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@22602faa
+2026-07-10 16:30:37,403 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5591c996
+2026-07-10 16:30:37,436 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@358938d5
+2026-07-10 16:30:41,133 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2e4bc524
+2026-07-10 16:30:50,763 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@335a3936
+2026-07-10 16:31:25,307 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4f7d9907
+2026-07-10 16:31:45,963 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@11678ffe
+2026-07-10 16:33:16,927 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@496914b4
+2026-07-10 16:33:16,946 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4daf2af4
+2026-07-10 16:33:17,039 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 14783 userid: 1829382418
+2026-07-10 16:33:17,053 [ERROR] from com.jpro.JS in JavaFX Application Thread - received msg: Unexpected exception: DLinearGradient((0,0),(0,1),true,DCycle_NO_CYCLE,List((0,RGBA(1,0.37254902720451355,0.37254902720451355,1)), (1,RGBA(0.7764706015586853,0.1568627506494522,0.1568627506494522,1)))) (of class p.Data$DLinearGradient)
+2026-07-10 16:33:17,065 [ERROR] from com.jpro.JS in JavaFX Application Thread - received msg: Unexpected exception: DLinearGradient((0,0),(0,1),true,DCycle_NO_CYCLE,List((0,RGBA(1,0.37254902720451355,0.37254902720451355,1)), (1,RGBA(0.7764706015586853,0.1568627506494522,0.1568627506494522,1)))) (of class p.Data$DLinearGradient)
+2026-07-10 16:33:18,450 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@d546456
+2026-07-10 16:33:18,510 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@ee0d765
+2026-07-10 16:33:18,530 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4a39fea7
+2026-07-10 16:33:18,564 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@284d053f
+2026-07-10 16:33:18,601 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2611771f
+2026-07-10 16:33:18,641 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@39d04566
+2026-07-10 16:33:18,675 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@647149d
+2026-07-10 16:33:18,694 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1cb6bc54
+2026-07-10 16:33:18,712 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@147c1872
+2026-07-10 16:33:18,732 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@48867f2c
+2026-07-10 16:33:18,839 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 15569 userid: 1829382418
+2026-07-10 16:33:59,531 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2dc3b998
+2026-07-10 16:33:59,551 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@790d22c1
+2026-07-10 16:33:59,725 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 18761 userid: 1829382418
+2026-07-10 16:33:59,732 [ERROR] from com.jpro.JS in JavaFX Application Thread - received msg: Unexpected exception: DLinearGradient((0,0),(0,1),true,DCycle_NO_CYCLE,List((0,RGBA(1,0.37254902720451355,0.37254902720451355,1)), (1,RGBA(0.7764706015586853,0.1568627506494522,0.1568627506494522,1)))) (of class p.Data$DLinearGradient)
+2026-07-10 16:33:59,748 [ERROR] from com.jpro.JS in JavaFX Application Thread - received msg: Unexpected exception: DLinearGradient((0,0),(0,1),true,DCycle_NO_CYCLE,List((0,RGBA(1,0.37254902720451355,0.37254902720451355,1)), (1,RGBA(0.7764706015586853,0.1568627506494522,0.1568627506494522,1)))) (of class p.Data$DLinearGradient)
+2026-07-10 16:34:02,688 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@76e134c5
+2026-07-10 16:34:02,747 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@48ad8253
+2026-07-10 16:34:02,766 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@97b5b97
+2026-07-10 16:34:02,797 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@26da2b77
+2026-07-10 16:34:02,829 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1b2a1283
+2026-07-10 16:34:02,873 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5314e023
+2026-07-10 16:34:02,913 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@ca485ec
+2026-07-10 16:34:02,931 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@9832597
+2026-07-10 16:34:02,948 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5e3f8633
+2026-07-10 16:34:02,968 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@2b0ec320
+2026-07-10 16:34:03,075 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 19547 userid: 1829382418
+2026-07-10 16:34:23,275 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7601a06b
+2026-07-10 16:34:23,294 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3d944cee
+2026-07-10 16:34:23,315 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@77e62586
+2026-07-10 16:34:23,333 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@20ac0dee
+2026-07-10 16:34:28,702 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1b0f381
+2026-07-10 16:34:38,779 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5e5999f7
+2026-07-10 16:35:08,553 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7d2458e0
+2026-07-10 16:35:08,567 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@e06a113
+2026-07-10 16:35:08,661 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 24283 userid: 1829382418
+2026-07-10 16:35:08,661 [ERROR] from com.jpro.JS in JavaFX Application Thread - received msg: Unexpected exception: DLinearGradient((0,0),(0,1),true,DCycle_NO_CYCLE,List((0,RGBA(1,0.37254902720451355,0.37254902720451355,1)), (1,RGBA(0.7764706015586853,0.1568627506494522,0.1568627506494522,1)))) (of class p.Data$DLinearGradient)
+2026-07-10 16:35:08,661 [ERROR] from com.jpro.JS in JavaFX Application Thread - received msg: Unexpected exception: DLinearGradient((0,0),(0,1),true,DCycle_NO_CYCLE,List((0,RGBA(1,0.37254902720451355,0.37254902720451355,1)), (1,RGBA(0.7764706015586853,0.1568627506494522,0.1568627506494522,1)))) (of class p.Data$DLinearGradient)
+2026-07-10 16:35:09,911 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@556892be
+2026-07-10 16:35:09,975 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3a09343a
+2026-07-10 16:35:09,995 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1e49f209
+2026-07-10 16:35:10,030 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5b642ea2
+2026-07-10 16:35:10,066 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1e27e759
+2026-07-10 16:35:10,099 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@15cf5652
+2026-07-10 16:35:10,132 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@17d1a428
+2026-07-10 16:35:10,156 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@9eebb9b
+2026-07-10 16:35:10,176 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@41097ba1
+2026-07-10 16:35:10,198 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@392088f8
+2026-07-10 16:35:10,252 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 25069 userid: 1829382418
+2026-07-10 16:36:02,531 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 29147 userid: 1829382418
+2026-07-10 16:36:04,224 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:36:04,224 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-10 16:36:04,230 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Fri Jul 10 16:36:04 JST 2026      
+2026-07-10 16:36:04,230 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.118 
+2026-07-10 16:36:04,230 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.043  
+2026-07-10 16:36:04,230 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-10 16:36:04,231 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-10 16:36:04,231 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 184290736
+2026-07-10 16:36:04,231 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 52239399
+2026-07-10 16:36:04,231 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:38:39,643 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-10 16:47:20,601 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-17 - application requested: default
+2026-07-10 16:47:20,602 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-17 - Creating Application: default
+2026-07-10 16:47:20,602 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-17 - remoteAddress 192.168.24.109
+2026-07-10 16:47:20,602 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-17 - host          192.168.24.152:8080
+2026-07-10 16:47:20,602 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-17 - uri           /app/ws/default
+2026-07-10 16:47:20,747 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 3307697
+2026-07-10 16:47:22,146 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@38612f1d
+2026-07-10 16:47:22,190 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1021 userid: 3307697
+2026-07-10 16:47:23,390 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@16350fe5
+2026-07-10 16:47:23,447 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1396ac0d
+2026-07-10 16:47:23,466 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@4df1a9b8
+2026-07-10 16:47:23,497 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@78ecc985
+2026-07-10 16:47:23,531 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@571ca226
+2026-07-10 16:47:23,566 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7eac964f
+2026-07-10 16:47:23,602 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@555e2165
+2026-07-10 16:47:23,624 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@567598d7
+2026-07-10 16:47:23,644 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@329a022c
+2026-07-10 16:47:23,663 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@7e30aa66
+2026-07-10 16:47:23,713 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 1814 userid: 3307697
+2026-07-10 16:47:57,086 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5ae4fb95
+2026-07-10 16:47:57,119 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@1768d33f
+2026-07-10 16:47:57,142 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@12375800
+2026-07-10 16:47:57,160 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@3959e915
+2026-07-10 16:48:38,446 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@5bd29979
+2026-07-10 16:48:38,462 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@42fc5d91
+2026-07-10 16:48:38,620 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 7124 userid: 3307697
+2026-07-10 16:48:38,636 [ERROR] from com.jpro.JS in JavaFX Application Thread - received msg: Unexpected exception: DLinearGradient((0,0),(0,1),true,DCycle_NO_CYCLE,List((0,RGBA(1,0.37254902720451355,0.37254902720451355,1)), (1,RGBA(0.7764706015586853,0.1568627506494522,0.1568627506494522,1)))) (of class p.Data$DLinearGradient)
+2026-07-10 16:48:38,650 [ERROR] from com.jpro.JS in JavaFX Application Thread - received msg: Unexpected exception: DLinearGradient((0,0),(0,1),true,DCycle_NO_CYCLE,List((0,RGBA(1,0.37254902720451355,0.37254902720451355,1)), (1,RGBA(0.7764706015586853,0.1568627506494522,0.1568627506494522,1)))) (of class p.Data$DLinearGradient)
+2026-07-10 16:48:40,142 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 7592 userid: 3307697
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Fri Jul 10 16:48:42 JST 2026      
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.056 
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.001  
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 39894195
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 11209452
+2026-07-10 16:48:42,125 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:49:13,995 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-10 16:52:54,090 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - application requested: default
+2026-07-10 16:52:54,090 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - Creating Application: default
+2026-07-10 16:52:54,091 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - remoteAddress 192.168.24.109
+2026-07-10 16:52:54,091 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - host          192.168.24.152:8080
+2026-07-10 16:52:54,091 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - uri           /app/ws/default
+2026-07-10 16:52:54,268 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 855475948
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Fri Jul 10 16:53:22 JST 2026      
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.061 
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.008  
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 937149
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 282491
+2026-07-10 16:53:22,843 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:53:37,292 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+2026-07-10 16:54:09,353 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - application requested: 682056696!default
+2026-07-10 16:54:09,354 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - Creating Application: 682056696!default
+2026-07-10 16:54:09,354 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - remoteAddress 192.168.24.109
+2026-07-10 16:54:09,354 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - host          192.168.24.152:8080
+2026-07-10 16:54:09,354 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-18 - uri           /app/ws/682056696!default
+2026-07-10 16:54:09,445 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 382834889
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Fri Jul 10 16:54:12 JST 2026      
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : 00:00:00.060 
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.005  
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 115375
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 31397
+2026-07-10 16:54:12,333 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 16:54:18,300 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
