@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 2026-07-10 13:57:18,425 [INFO] from play.api.Play in Thread-0 - Application started (Prod) (no global state)
 2026-07-10 13:57:18,877 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Enabling HTTP/2 on Akka HTTP server...
 2026-07-10 13:57:18,877 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Listening for HTTP on /[0:0:0:0:0:0:0:0]:8080
@@ -12,6 +13,8 @@
 2026-07-10 13:57:19,128 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-9 - redirected OUT / ERR
 2026-07-10 13:57:19,128 [INFO] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-9 - installed SLF4JBridge
 2026-07-10 13:57:19,130 [ERROR] from com.jpro.internal.server.Initializer$ in application-akka.actor.default-dispatcher-9 - error while applying configuration Install SecurityManager: 
+=======
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 =======
 <<<<<<< HEAD
 2026-07-10 13:52:17,215 [INFO] from com.jpro.meta.stream.Util$ in JavaFX Application Thread - workaround for image, lossless: true filetype: png img: javafx.scene.image.Image@994d638
@@ -4585,6 +4588,7 @@ java.lang.ClassCastException: class p.Data$Input$ClientMessageClose cannot be ca
 2026-07-10 10:47:22,124 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
 2026-07-10 10:47:23,093 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
 =======
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 2026-07-10 09:15:57,495 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-13 - application requested: 1902472556!default
 2026-07-10 09:15:57,496 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-13 - Creating Application: 1902472556!default
 2026-07-10 09:15:57,496 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-13 - remoteAddress 192.168.102.6
@@ -5944,6 +5948,8 @@ java.lang.ClassCastException: class p.Data$Input$ClientMessageClose cannot be ca
 2026-07-10 11:18:18,740 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 9539593
 2026-07-10 11:18:18,740 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
 2026-07-10 11:18:19,745 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
+<<<<<<< HEAD
+=======
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 <<<<<<< HEAD
 2026-07-10 12:01:15,203 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-5 - Slf4jLogger started
@@ -6878,6 +6884,7 @@ java.lang.UnsupportedOperationException: The Security Manager is deprecated and 
 2026-07-10 13:23:11,342 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 3937 userid: 1847912579
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+<<<<<<< HEAD
 2026-07-10 14:02:05,103 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-5 - Slf4jLogger started
 2026-07-10 14:02:05,548 [INFO] from play.api.Play in Thread-0 - Application started (Prod) (no global state)
 2026-07-10 14:02:05,898 [INFO] from play.core.server.AkkaHttpServer in Thread-0 - Enabling HTTP/2 on Akka HTTP server...
@@ -6962,3 +6969,5 @@ java.lang.UnsupportedOperationException: The Security Manager is deprecated and 
 	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1843)
 	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1808)
 	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188)
+=======
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git

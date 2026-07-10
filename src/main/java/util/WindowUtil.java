@@ -22,18 +22,26 @@ public class WindowUtil {
 	// デフォルトの最大サイズ制限（ブラウザ最大化等に対応）
 	private static final double DEFAULT_MAX_WIDTH = 1920.0;
 	private static final double DEFAULT_MAX_HEIGHT = 1080.0;
+	// JPro環境（Webブラウザ）で動作しているかを判定する内部チェック
+	private static final boolean IS_JPRO = System.getProperty("jpro.version") != null 
+			|| System.getProperty("java.vendor").contains("WebFX")
+			|| ClassLoader.getSystemResource("com/jpro/webapi/WebAPI.class") != null;
 
 	/**
-	 * 【追加】ウィンドウサイズ制限を個別に指定して全画面化するメソッド
+	 * ウィンドウサイズ制限を個別に指定して全画面化するメソッド
 	 */
 	public static void fullScreen(Stage stage, double minWidth, double minHeight, double maxWidth, double maxHeight) {
 		if (stage == null) return;
 
-		// 💡 前の画面の制限を引きずらないように、遷移直後にサイズ制限を一回リセット・上書きする
+		// 前の画面の制限を引きずらないように、遷移直後にサイズ制限を一回リセット・上書きする
 		stage.setMinWidth(minWidth);
 		stage.setMinHeight(minHeight);
 		stage.setMaxWidth(maxWidth);
 		stage.setMaxHeight(maxHeight);
+		// 強制サイズ変更を止める
+		if (IS_JPRO) {
+			return; 
+		}
 
 		// 万が一OSレベルの全画面モードになっていたら解除しておく
 		if (stage.isFullScreen()) {
@@ -58,7 +66,6 @@ public class WindowUtil {
 
 	/**
 	 * ウィンドウを画面いっぱいに広げる処理。（通常用：スマホ対応サイズにリセット）
-	 * 画面遷移のたびに毎回呼び出される想定。
 	 */
 	public static void fullScreen(Stage stage) {
 		// デフォルトのモバイル両対応サイズ（320x480 〜 1920x1080）を適用する
