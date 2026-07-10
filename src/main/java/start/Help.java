@@ -87,7 +87,7 @@ public class Help extends Application {
 		page1.getChildren().addAll(
 				makeMoveControlRow(), 
 				spacer(6),
-				makeMoveControlFhone());
+				makeNoteRow(null, "スマホでの移動：画面スワイプ"));
 
 		// ===== ページ2：アイテム説明 =====
 		VBox page2 = new VBox(10);
@@ -337,8 +337,10 @@ public class Help extends Application {
 		row.setAlignment(Pos.CENTER);
 		return row;
 	}
+	
+	
 
-	private HBox makeMoveControlFhone() {
+	/*private HBox makeMoveControlFhone() {
 		Label moveLabel = new Label("スマホでの移動：");
 		moveLabel.setTextFill(Color.WHITE);
 		moveLabel.setFont(Font.font("PixelMplus12", 15));
@@ -350,7 +352,7 @@ public class Help extends Application {
 		HBox row = new HBox(8, moveLabel, img3);
 		row.setAlignment(Pos.CENTER);
 		return row;
-	}
+	}*/
 	
 	private HBox makeModeHeading(String text) {
 		StackPane iconBox = new StackPane();
