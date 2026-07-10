@@ -7211,3 +7211,15 @@
 2026-07-10 14:42:17,796 [INFO] in scala-execution-context-global-74 - 	at controllers.jpro$$FastClassByGuice$$22044477.apply(<generated>)
 2026-07-10 14:42:17,796 [INFO] in scala-execution-context-global-71 - 	at com.google.inject.internal.DefaultConstructionProxyFactory$FastClassProxy.newInstance(DefaultConstructionProxyFactory.java:82)
 2026-07-10 14:42:17,796 [INFO] in scala-execution-context-global-74 - 	at com.google.inject.internal.ConstructorInjector.provision(ConstructorInjector.java:114)
+2026-07-10 14:54:36,151 [INFO] in scala-execution-context-global-67 - [info] c.j.i.s.Initializer$ - redirected OUT / ERR
+2026-07-10 14:54:36,151 [INFO] in scala-execution-context-global-67 - [info] c.j.i.s.Initializer$ - installed SLF4JBridge
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-70 - [error] c.j.i.s.Initializer$ - error while applying configuration Install SecurityManager: 
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-70 - java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-70 - 	at java.base/java.lang.System.setSecurityManager(System.java:430)
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-70 - 	at com.jpro.internal.server.Initializer$.$anonfun$initialize$7(Initializer.scala:170)
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-70 - 	at com.jpro.internal.server.Initializer$.execute(Initializer.scala:65)
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-70 - 	at com.jpro.internal.server.Initializer$.initialize(Initializer.scala:144)
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-70 - 	at com.jpro.internal.server.Initializer$.init(Initializer.scala:36)
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-67 - 	at controllers.jpro.<init>(jpro.scala:53)
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-70 - 	at controllers.jpro$$FastClassByGuice$$19277944.GUICE$TRAMPOLINE(<generated>)
+2026-07-10 14:54:36,153 [INFO] in scala-execution-context-global-67 - 	at controllers.jpro$$FastClassByGuice$$19277944.apply(<generated>)
