@@ -69,13 +69,15 @@
 				<groupId>com.sandec.jpro</groupId>
 				<artifactId>jpro-maven-plugin</artifactId>
 				<version>2022.1.1</version>
-				<!-- ⬇️ 正しいパラメーター名でメインクラスを指定！ ⬇️ -->
 				<configuration>
 					<mainClassName>start.Start</mainClassName>
+					<!-- ⬇️ JPro専用の引数として強制的に許可を出します ⬇️ -->
+					<vmArgs>
+						<vmArg>-Djava.security.manager=allow</vmArg>
+					</vmArgs>
 				</configuration>
 			</plugin>
 		</plugins>
-
 	</build>
 
 </project>

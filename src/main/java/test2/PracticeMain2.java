@@ -122,11 +122,6 @@ public class PracticeMain2 extends Application {
 		Label pauseLabel = new Label("PAUSE");
 		pauseLabel.setFont(Font.font("Arial", FontWeight.BOLD, 48));
 		pauseLabel.setTextFill(Color.YELLOW);
-
-		// 説明文
-		Label subLabel = new Label("もう一度 Pキー を押すと再開します");
-		subLabel.setFont(Font.font("Meiryo", FontWeight.BOLD, 16));
-		subLabel.setTextFill(Color.WHITE);
 		
 		// ゲーム再開ボタン
 		Button ToPlayButton = new Button("ゲーム再開");
@@ -185,7 +180,7 @@ public class PracticeMain2 extends Application {
 			}
 		});
 		// ポーズ画面へ部品追加
-		pauseLayer.getChildren().addAll(pauseLabel, subLabel, ToPlayButton, howToPlayButton, howToPlayText,titleButton);
+		pauseLayer.getChildren().addAll(pauseLabel, ToPlayButton, howToPlayButton, howToPlayText,titleButton);
 
 		// =====================================================
 		// メニューアイコンボタン（Story1と同じ見た目・配置）
