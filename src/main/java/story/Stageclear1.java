@@ -15,6 +15,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import util.WindowUtil;
 
 public class Stageclear1 extends Application {
 
@@ -44,9 +45,9 @@ public class Stageclear1 extends Application {
 
 		// 2. setRootではなく、Stageに対してSceneごと安全に丸ごと差し替える
 		currentStage.setScene(newScene);
-
 		currentStage.setTitle("stage1CLEAR");
 		currentStage.centerOnScreen();
+		WindowUtil.fullScreen(currentStage);
 		currentStage.show();
 	}
 
@@ -79,6 +80,7 @@ public class Stageclear1 extends Application {
 		stage.setTitle("stage1CLEAR");
 		stage.setScene(clear(stage));
 		stage.centerOnScreen();
+		WindowUtil.fullScreen(stage);
 		stage.show();
 	}
 
@@ -187,12 +189,7 @@ public class Stageclear1 extends Application {
 		scene.getStylesheets().add(
 				getClass().getResource("/css/style.css").toExternalForm());
 
-		if (stage != null) {
-			stage.setMinWidth(1000);
-			stage.setMinHeight(800);
-			stage.setMaxWidth(1920);
-			stage.setMaxHeight(1080);
-		}
+		WindowUtil.fullScreen(stage);
 		return scene;
 	}
 

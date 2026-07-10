@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import start.Bgm;
 import test1.model.MapData;
 import test1.view.MapView;
+import util.WindowUtil;
 
 public class Main1 extends Application {
 
@@ -238,11 +239,7 @@ public class Main1 extends Application {
 		stage.setTitle("仙石さん - ステージ 1");
 		stage.setScene(scene);
 
-		// ウィンドウのサイズ制限
-		stage.setMinWidth(1000);
-		stage.setMinHeight(800);
-		stage.setMaxWidth(1920);
-		stage.setMaxHeight(1080);
+		WindowUtil.fullScreen(stage);
 
 		stage.show();
 
