@@ -193,10 +193,10 @@ public class PracticeMain1 extends Application {
 		// =====================================================
 		// メニューアイコンボタン（Story1と同じ見た目・配置）
 		// =====================================================
-		Image menuImg = new Image(getClass().getResourceAsStream("/picture/menu.jpeg"));
+		Image menuImg = new Image(getClass().getResourceAsStream("/picture/menu.png"));
 		ImageView menuIconView = new ImageView(menuImg);
-		menuIconView.setFitWidth(40);
-		menuIconView.setFitHeight(40);
+		menuIconView.setFitWidth(100);
+		menuIconView.setFitHeight(90);
 
 		Button menuBtn = new Button("");
 		menuBtn.setGraphic(menuIconView);
