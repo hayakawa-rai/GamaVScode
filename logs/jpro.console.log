@@ -7205,3 +7205,21 @@
 2026-07-10 11:18:18,740 [INFO] in scala-execution-context-global-102 - [info] c.j.i.s.ViewInfo$ - 
 2026-07-10 11:18:19,745 [INFO] in scala-execution-context-global-102 - [info] c.j.i.c.InstanceImpl - closing window!
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-10 12:08:37,232 [INFO] in scala-execution-context-global-653 - [info] c.jpro - application requested: default
+2026-07-10 12:08:37,232 [INFO] in scala-execution-context-global-653 - [info] c.jpro - Creating Application: default
+2026-07-10 12:08:37,248 [INFO] in scala-execution-context-global-654 - [info] c.jpro - remoteAddress 192.168.24.109
+2026-07-10 12:08:37,248 [INFO] in scala-execution-context-global-655 - [info] c.jpro - host          192.168.24.152:8080
+2026-07-10 12:08:37,248 [INFO] in scala-execution-context-global-655 - [info] c.jpro - uri           /app/ws/default
+2026-07-10 12:08:37,567 [INFO] in scala-execution-context-global-654 - 【成功】フォントを読み込みました。名前: PixelMplus12 Regular
+2026-07-10 12:08:37,963 [INFO] in scala-execution-context-global-655 - [info] com.jpro.JS - received msg: new MainID: 469 userid: 121295233
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-655 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-655 - [info] c.j.i.s.ViewInfo$ - Application closed:
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-654 - [info] c.j.i.s.ViewInfo$ - startTime      : Fri Jul 10 12:09:08 JST 2026      
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-654 - [info] c.j.i.s.ViewInfo$ - averageLatency : -00:00:00.001 
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-654 - [info] c.j.i.s.ViewInfo$ - averageJitter  : 00:00:00.012  
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-654 - [info] c.j.i.s.ViewInfo$ - framerateServer: 00:00:00.000
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-655 - [info] c.j.i.s.ViewInfo$ - framerateClient: 00:00:00.000
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-653 - [info] c.j.i.s.ViewInfo$ - raw            : 968462
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-654 - [info] c.j.i.s.ViewInfo$ - zipped         : 260767
+2026-07-10 12:09:08,105 [INFO] in scala-execution-context-global-653 - [info] c.j.i.s.ViewInfo$ - 
+2026-07-10 12:09:23,174 [INFO] in scala-execution-context-global-708 - [info] c.j.i.c.InstanceImpl - closing window!

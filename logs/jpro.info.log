@@ -5913,3 +5913,20 @@ java.lang.ClassCastException: class p.Data$Input$ClientMessageClose cannot be ca
 2026-07-10 11:18:18,740 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
 2026-07-10 11:18:19,745 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
 >>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
+2026-07-10 12:08:37,232 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-31 - application requested: default
+2026-07-10 12:08:37,232 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-31 - Creating Application: default
+2026-07-10 12:08:37,232 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-31 - remoteAddress 192.168.24.109
+2026-07-10 12:08:37,248 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-31 - host          192.168.24.152:8080
+2026-07-10 12:08:37,248 [INFO] from controllers.jpro in application-akka.actor.default-dispatcher-31 - uri           /app/ws/default
+2026-07-10 12:08:37,963 [INFO] from com.jpro.JS in JavaFX Application Thread - received msg: new MainID: 469 userid: 121295233
+2026-07-10 12:09:08,104 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 12:09:08,104 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - Application closed:
+2026-07-10 12:09:08,105 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - startTime      : Fri Jul 10 12:09:08 JST 2026      
+2026-07-10 12:09:08,105 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageLatency : -00:00:00.001 
+2026-07-10 12:09:08,105 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - averageJitter  : 00:00:00.012  
+2026-07-10 12:09:08,105 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateServer: 00:00:00.000
+2026-07-10 12:09:08,105 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - framerateClient: 00:00:00.000
+2026-07-10 12:09:08,105 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - raw            : 968462
+2026-07-10 12:09:08,105 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - zipped         : 260767
+2026-07-10 12:09:08,105 [INFO] from com.jpro.internal.stats.ViewInfo$ in JavaFX Application Thread - 
+2026-07-10 12:09:23,174 [INFO] from com.jpro.internal.communicator.InstanceImpl in JavaFX Application Thread - closing window!
