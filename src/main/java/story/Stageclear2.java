@@ -33,15 +33,17 @@ public class Stageclear2 extends Application {
 
 	// 💡【JPro対応】外部からStageとスコアを安全に引き継いで開始する静的メソッド
 	public static void createAndStart(Stage currentStage, int finalScore) {
-		if (currentStage == null) return;
+		if (currentStage == null) 
+			return;
 
 		Stageclear2 instance = new Stageclear2();
 		instance.stage = currentStage;
 		instance.setScore(finalScore); // スコアを確実に格納
 
-		// Stageとスコアがセットされた状態でSceneを構築
+		// 1. ボタンやテキストが含まれる新しいSceneを完全に作成
 		Scene newScene = instance.clear(currentStage);
 
+		// 2. setRootではなく、Stageに対してSceneごと安全に丸ごと差し替える
 		currentStage.setScene(newScene);
 		currentStage.setTitle("stage2CLEAR");
 		currentStage.centerOnScreen();
@@ -108,7 +110,7 @@ public class Stageclear2 extends Application {
 		});
 		delay.play();
 
-		// ⭕【エラー修正】全角スペースや特殊な非表示スペースを除去し、安全な半角スペースに統一
+		// テキスト類
 		Text title = new Text("STAGE2    CLEAR!");
 		title.setStyle("-fx-fill: rgb(180,180,180);");
 
@@ -152,6 +154,7 @@ public class Stageclear2 extends Application {
 			System.err.println("キャンセルSEの読み込みに失敗しました: " + e.getMessage());
 		}
 
+		// 次に進むボタン
 		Button next = new Button("次のステージへ");
 		next.getStyleClass().add("game-button2");
 		next.setOnAction(e -> {
@@ -176,9 +179,11 @@ public class Stageclear2 extends Application {
 			pause.play();
 		});
 
+		// スコア表示
 		Text scoreLabel = new Text("SCORE: " + this.score);
 		scoreLabel.setStyle("-fx-fill: gray;");
 		
+		// 戻るボタン
 		Button backButton = new Button("タイトルへ");
 		backButton.getStyleClass().add("game-button2");
 		backButton.setOnAction(e -> {
@@ -199,13 +204,13 @@ public class Stageclear2 extends Application {
 			pause.play();
 		});
 
+		// 全パーツを格納するコンテナ
 		VBox buttonBox = new VBox(20);
 		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
 
 		StackPane root = new StackPane();
 		root.getChildren().add(buttonBox);
-		root.setStyle("-fx-background-color: #1a1a1a;");
 		
 		Scene scene = new Scene(root, 1000, 800);
 		
@@ -216,21 +221,21 @@ public class Stageclear2 extends Application {
 		}
 
 		// ブラウザの画面リサイズに追従する動的バインディング
-		title.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: rgb(180,180,180); -fx-font-weight: bold;", scene.widthProperty().multiply(0.08)));
-		text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray;", scene.widthProperty().multiply(0.025)));
-		scoreLabel.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray; -fx-font-weight: bold;", scene.widthProperty().multiply(0.03)));
+		title.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: rgb(180,180,180); -fx-font-weight: bold;", scene.widthProperty().multiply(0.06)));
+		text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray;", scene.widthProperty().multiply(0.015)));
+		scoreLabel.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray; -fx-font-weight: bold;", scene.widthProperty().multiply(0.02)));
 		
 		imageView.fitWidthProperty().bind(scene.widthProperty().multiply(0.15));
 		imageView.fitHeightProperty().bind(scene.heightProperty().multiply(0.18));
 		imageView.setPreserveRatio(true);
 
-		next.prefWidthProperty().bind(scene.widthProperty().multiply(0.25));
-		next.prefHeightProperty().bind(scene.heightProperty().multiply(0.1));
-		backButton.prefWidthProperty().bind(scene.widthProperty().multiply(0.25));
-		backButton.prefHeightProperty().bind(scene.heightProperty().multiply(0.1));
+		next.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
+		next.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
+		backButton.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
+		backButton.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
 
-		next.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.022)));
-		backButton.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.022)));
+		next.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
+		backButton.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
 
 		if (this.stage != null) {
 			this.stage.setMinWidth(1000);
@@ -238,7 +243,6 @@ public class Stageclear2 extends Application {
 			this.stage.setMaxWidth(1920);
 			this.stage.setMaxHeight(1080);
 		}
-
 		return scene;
 	}
 	

@@ -3,6 +3,7 @@ package story;
 import control.GameController;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,24 +28,23 @@ public class Stageclear1 extends Application {
 	private Stage stage;
 
 	public Stageclear1() {
-		// 引数なしコンストラクタ
+		// 引数なしコンストラクタ（JProの動的生成に必須）
 	}
 
-	// 💡 【修正】重複エラーとボタン消滅を完璧に防ぐ修正版メソッド
+	// 💡【JPro対応】外部からStageとスコアを安全に引き継いで開始する静的メソッド
 	public static void createAndStart(Stage currentStage, int finalScore) {
 		if (currentStage == null)
 			return;
 
 		Stageclear1 instance = new Stageclear1();
 		instance.setScore(finalScore);
-		instance.stage = currentStage;
+		instance.stage = currentStage;// スコアを確実に格納
 
 		// 1. ボタンやテキストが含まれる新しいSceneを完全に作成
 		Scene newScene = instance.clear(currentStage);
 
 		// 2. setRootではなく、Stageに対してSceneごと安全に丸ごと差し替える
 		currentStage.setScene(newScene);
-
 		currentStage.setTitle("stage1CLEAR");
 		currentStage.centerOnScreen();
 		currentStage.show();
@@ -90,55 +90,84 @@ public class Stageclear1 extends Application {
 		if (currentStage != null) {
 			this.stage = currentStage;
 		}
-		// クリア音
-		clearSound = new AudioClip(
-				getClass().getResource("/music/yay.mp3").toExternalForm());
-		clearSound.setVolume(0.5);
+
+		// ⭕【JPro対応】クリア音の読み込みをtry-catchで保護
+		try {
+			var yayUrl = getClass().getResource("/music/yay.mp3");
+			if (yayUrl != null) {
+				clearSound = new AudioClip(yayUrl.toExternalForm());
+				clearSound.setVolume(0.5);
+			}
+		} catch (Exception e) {
+			System.err.println("クリア音の読み込みに失敗しました: " + e.getMessage());
+		}
 
 		delay = new PauseTransition(Duration.seconds(0.5));
 		delay.setOnFinished(e -> {
-			if (clearSound != null)
+			if (clearSound != null) {
 				clearSound.play();
+			}
 		});
 		delay.play();
 
 		// テキスト類
 		Text title = new Text("STAGE1    CLEAR!");
-		title.setStyle("-fx-font-size: 80px; -fx-fill: rgb(180,180,180);");
+		title.setStyle("-fx-fill: rgb(180,180,180);");
 
 		Text text = new Text("鍵を獲得しました！！");
-		text.setStyle("-fx-font-size: 20px; -fx-fill: gray;");
+		text.setStyle("-fx-fill: gray;");
 
-		// 鍵の画像を読み込み（JPro対応）
-		Image image = new Image(
-				getClass().getResourceAsStream("/picture/kagi.png"));
-		ImageView imageView = new ImageView(image);
-		imageView.setFitWidth(150);
-		imageView.setFitHeight(150);
+		// ⭕【JPro対応】getResourceAsStream に修正して画像の生読み込みを安全化
+		ImageView imageView = new ImageView();
+		try {
+			var imgStream = getClass().getResourceAsStream("/picture/kagi.png");
+			if (imgStream != null) {
+				imageView.setImage(new Image(imgStream));
+			}
+		} catch (Exception e) {
+			System.err.println("鍵画像の読み込みに失敗しました: " + e.getMessage());
+		}
 
 		HBox textAndImage = new HBox();
 		textAndImage.setSpacing(10);
 		textAndImage.setAlignment(Pos.CENTER);
 		textAndImage.getChildren().addAll(imageView, text);
 
-		clickSound = new AudioClip(
-				getClass().getResource("/music/select.mp3").toExternalForm());
-		clickSound.setVolume(0.4);
+		// ⭕【JPro対応】効果音（クリック・キャンセル）の読み込みをtry-catchで一括保護
+		try {
+			var selectUrl = getClass().getResource("/music/select.mp3");
+			if (selectUrl != null) {
+				clickSound = new AudioClip(selectUrl.toExternalForm());
+				clickSound.setVolume(0.4);
+			}
+		} catch (Exception e) {
+			System.err.println("選択SEの読み込みに失敗しました: " + e.getMessage());
+		}
 
-		cancelSound = new AudioClip(
-				getClass().getResource("/music/cancel.mp3").toExternalForm());
-		cancelSound.setVolume(0.4);
+		try {
+			var cancelUrl = getClass().getResource("/music/cancel.mp3");
+			if (cancelUrl != null) {
+				cancelSound = new AudioClip(cancelUrl.toExternalForm());
+				cancelSound.setVolume(0.4);
+			}
+		} catch (Exception e) {
+			System.err.println("キャンセルSEの読み込みに失敗しました: " + e.getMessage());
+		}
 
 		// 次に進むボタン
 		Button next = new Button("次のステージへ");
 		next.getStyleClass().add("game-button2");
-		next.setPrefSize(250, 80);
 		next.setOnAction(e -> {
+			// 音を再生（Nullチェックをして安全に再生・停止）
 			if (clickSound != null) {
 				clickSound.stop();
 				clickSound.play();
 			}
+
+			// 0.5秒待つ（タイマー開始）
 			pause = new PauseTransition(Duration.seconds(0.5));
+
+			// 待った後に画面遷移
 			pause.setOnFinished(ev -> {
 				try {
 					cleanup();
@@ -152,22 +181,22 @@ public class Stageclear1 extends Application {
 
 		// スコア表示
 		Text scoreLabel = new Text("SCORE: " + this.score);
-		scoreLabel.setStyle("-fx-font-size: 30px; -fx-fill:  gray;");
+		scoreLabel.setStyle("-fx-fill:  gray;");
 
 		// 戻るボタン
 		Button backButton = new Button("タイトルへ");
 		backButton.getStyleClass().add("game-button2");
-		backButton.setPrefSize(250, 80);
 		backButton.setOnAction(e -> {
 			if (cancelSound != null) {
 				cancelSound.stop();
 				cancelSound.play();
 			}
+			
 			pause = new PauseTransition(Duration.seconds(0.5));
 			pause.setOnFinished(ev -> {
 				try {
 					cleanup();
-					GameController.switchStart(stage);
+					GameController.switchStart(this.stage);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -184,14 +213,35 @@ public class Stageclear1 extends Application {
 		root.getChildren().add(buttonBox);
 
 		Scene scene = new Scene(root, 1000, 800);
-		scene.getStylesheets().add(
-				getClass().getResource("/css/style.css").toExternalForm());
 
-		if (stage != null) {
-			stage.setMinWidth(1000);
-			stage.setMinHeight(800);
-			stage.setMaxWidth(1920);
-			stage.setMaxHeight(1080);
+		// ⭕【JPro対応】CSS読み込みに安全対策を追加
+		var cssUrl = getClass().getResource("/css/style.css");
+		if (cssUrl != null) {
+			scene.getStylesheets().add(cssUrl.toExternalForm());
+		}
+
+		// ブラウザの画面リサイズに追従する動的バインディング
+		title.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: rgb(180,180,180); -fx-font-weight: bold;",scene.widthProperty().multiply(0.06)));
+		text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray;", scene.widthProperty().multiply(0.015)));
+		scoreLabel.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray; -fx-font-weight: bold;",scene.widthProperty().multiply(0.02)));
+
+		imageView.fitWidthProperty().bind(scene.widthProperty().multiply(0.15));
+		imageView.fitHeightProperty().bind(scene.heightProperty().multiply(0.18));
+		imageView.setPreserveRatio(true);
+
+		next.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
+		next.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
+		backButton.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
+		backButton.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
+
+		next.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
+		backButton.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
+
+		if (this.stage != null) {
+			this.stage.setMinWidth(1000);
+			this.stage.setMinHeight(800);
+			this.stage.setMaxWidth(1920);
+			this.stage.setMaxHeight(1080);
 		}
 		return scene;
 	}
