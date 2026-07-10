@@ -27,3 +27,7 @@
 2026-07-10 10:15:18,553 [WARN] from javafx in application-akka.actor.default-dispatcher-10 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @68b49e34'
 2026-07-10 10:16:10,729 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-7 - Unexpected message form client, closing session.
 2026-07-10 10:16:10,731 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-22 - Unexpected message form client, closing session.
+2026-07-10 10:52:28,443 [WARN] from javafx in application-akka.actor.default-dispatcher-7 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @79eded2a'
+2026-07-10 10:55:57,609 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-8 - Unexpected message form client, closing session.
+2026-07-10 11:03:18,232 [WARN] from javafx in application-akka.actor.default-dispatcher-6 - Unsupported JavaFX configuration: classes were loaded from 'unnamed module @61f4ac9d'
+2026-07-10 11:18:18,738 [WARN] from com.jpro.internal.server.ViewSerializerActor in application-akka.actor.default-dispatcher-10 - Unexpected message form client, closing session.

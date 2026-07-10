@@ -26,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import util.ResponsiveUtil;
+import util.WindowUtil;
 
 public class Start extends Application {
 	private AnimationTimer timer;
@@ -352,9 +353,7 @@ public class Start extends Application {
 
 		//ウィンドウの中身を設定・表示
 		stage.setScene(scene);
-		//WindowUtil.fillScreen(stage);	//最大化
-		//リセットするため、一度隠してから再表示する
-		//stage.hide();
+		WindowUtil.fullScreen(stage);
 		stage.show();
 	}
 
