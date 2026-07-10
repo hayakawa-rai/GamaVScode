@@ -140,7 +140,7 @@ public class Main1 extends Application {
 		// 操作説明UI
 		// =====================================================
 		// 操作説明テキスト
-		Label howToPlayText = new Label("移動 : ↑↓←→ / WASD\n画面下ボタン(スマホ用)");
+		Label howToPlayText = new Label("移動 : ↑↓←→ / WASD\n画面スワイプ(スマホ用)");
 		howToPlayText.setFont(Font.font("Meiryo", FontWeight.NORMAL, 14));
 		howToPlayText.setTextFill(Color.WHITE);
 		howToPlayText.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
