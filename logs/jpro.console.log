@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 2026-07-09 16:36:24,209 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.AnimationAccessorImpl.playTo(AnimationAccessorImpl.java:39)
 2026-07-09 16:36:24,245 [ERROR] in scala-execution-context-global-47 - 	at com.sun.scenario.animation.shared.FiniteClipEnvelope.timePulse(FiniteClipEnvelope.java:140)
 2026-07-09 16:36:24,245 [ERROR] in scala-execution-context-global-47 - 	at javafx.animation.Animation.doTimePulse(Animation.java:1189)
@@ -3755,3 +3756,5 @@
 2026-07-10 09:12:09,840 [INFO] in scala-execution-context-global-72 - 	at controllers.jpro$$FastClassByGuice$$22044477.apply(<generated>)
 2026-07-10 09:12:09,840 [INFO] in scala-execution-context-global-72 - 	at com.google.inject.internal.DefaultConstructionProxyFactory$FastClassProxy.newInstance(DefaultConstructionProxyFactory.java:82)
 2026-07-10 09:12:09,840 [INFO] in scala-execution-context-global-72 - 	at com.google.inject.internal.ConstructorInjector.provision(ConstructorInjector.java:114)
+=======
+>>>>>>> branch 'jpro' of https://github.com/hayakawa-rai/GameApplication.git
