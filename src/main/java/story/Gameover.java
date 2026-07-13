@@ -1,191 +1,220 @@
-package story;
+/**
+ * GameOver画面
+ * JavaFX版 Gameover.java を JavaScript化したもの
+ */
+class GameOver {
 
-import control.GameController;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+    /**
+     * ゲームオーバー画面を生成
+     * @param {Function} retryAction リトライ時の処理
+     * @param {number} score スコア
+     * @param {boolean} isNewRecord 新記録かどうか
+     */
+    static create(retryAction, score, isNewRecord) {
 
-public class Gameover extends Application {
+        // =====================================
+        // 効果音再生（ゲームオーバー）
+        // =====================================
+        SoundManager.play(SoundManager.GAMEOVER);
 
-	private int score = 0;
+        // =====================================
+        // ルートコンテナ
+        // =====================================
+        const root = document.createElement("div");
+        root.className = "gameover-root";
 
-	@Override
-	public void start(Stage stage) {
-		stage.setTitle("ゲームオーバー");
-		stage.setScene(create(stage, null, score));
-		stage.centerOnScreen();
-		stage.show();
-	}
+        // =====================================
+        // 背景画像
+        // =====================================
+        const bg = document.createElement("img");
+        bg.src = "picture/gameover.jpg";
+        bg.className = "gameover-background";
 
-public static Scene create(Stage stage, Runnable retryAction, int score) {
-		
-		// ゲームオーバー画面が表示されたタイミングで効果音を再生
-		start.SoundManager.play(start.SoundManager.GAMEOVER);
+        // =====================================
+        // 白いオーバーレイ
+        // =====================================
+        const overlay = document.createElement("div");
+        overlay.className = "white-overlay";
 
-		// ===== ベースとなるルートコンテナ =====
-		StackPane root = new StackPane();
+        // =====================================
+        // メインコンテンツ
+        // =====================================
+        const contentLayout = document.createElement("div");
+        contentLayout.className = "content-layout";
 
-		// ===== 1. タイトル・スコア部 =====
-		Label gameText = new Label("GAME");
-		Label overText = new Label("OVER");
-		gameText.getStyleClass().add("gameover-title");
-		overText.getStyleClass().add("gameover-title");
+        // =====================================
+        // GAME OVER タイトル
+        // =====================================
+        const gameText = document.createElement("h1");
+        gameText.textContent = "GAME";
 
-		Label scoreLabel = new Label("SCORE : " + score);
-		scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
+        const overText = document.createElement("h1");
+        overText.textContent = "OVER";
 
-		Label newRecordLabel = new Label("NEW RECORD!!");
-		newRecordLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: gold;");
+        // =====================================
+        // スコア表示
+        // =====================================
+        const scoreLabel = document.createElement("div");
+        scoreLabel.textContent = `SCORE : ${score}`;
 
-		VBox titleBox = new VBox(5);
-		titleBox.getChildren().addAll(gameText, overText, scoreLabel);
-		if (GameController.isNewRecord()) {
-			titleBox.getChildren().add(newRecordLabel);
-		}
-		titleBox.setAlignment(Pos.CENTER);
+        // =====================================
+        // 新記録表示
+        // =====================================
+        const newRecordLabel = document.createElement("div");
+        newRecordLabel.textContent = "NEW RECORD!!";
 
-		// ===== 2. キャラクター画像（仙石さん）=====
-		ImageView icon = new ImageView();
-		try {
-			var imgStream = Gameover.class.getResourceAsStream("/picture/syujinkou(gameover).png");
-			if (imgStream != null) {
-				icon.setImage(new Image(imgStream));
-			}
-		} catch (Exception e) {
-			System.out.println("⚠️ 画像の読み込みに失敗しました。");
-		}
-		icon.setPreserveRatio(true);
+        // =====================================
+        // タイトル部分コンテナ
+        // =====================================
+        const titleBox = document.createElement("div");
+        titleBox.className = "title-box";
 
-		// ===== 3. 操作ボタン部 =====
-		Button retryBtn = new Button("リトライする");
-		retryBtn.getStyleClass().add("gameover-button");
-		retryBtn.setOnAction(e -> {
-			start.SoundManager.play(start.SoundManager.RETRY); 
-			Timeline delay = new Timeline(
-					new KeyFrame(Duration.millis(500), ev -> {
-						if (retryAction != null) {
-							retryAction.run();
-						}
-					}));
-			delay.play();
-		});
+        titleBox.appendChild(gameText);
+        titleBox.appendChild(overText);
+        titleBox.appendChild(scoreLabel);
 
-		Button titleBtn = new Button("タイトルへ");
-		titleBtn.getStyleClass().add("gameover-button");
-		titleBtn.setOnAction(e -> {
-			start.SoundManager.play(start.SoundManager.SELECT);
-			Timeline delay = new Timeline(
-					new KeyFrame(Duration.millis(500), ev -> {
-						GameController.switchStart(stage);
-					}));
-			delay.play();
-		});
+        // 新記録なら表示
+        if (isNewRecord) {
+            titleBox.appendChild(newRecordLabel);
+        }
 
-		VBox buttonColumn = new VBox(12, retryBtn, titleBtn);
-		buttonColumn.setAlignment(Pos.CENTER);
+        // =====================================
+        // キャラクター画像（仙石さん）
+        // =====================================
+        const icon = document.createElement("img");
+        icon.src = "picture/syujinkou(gameover).png";
+        icon.className = "character-image";
 
-		// ===== 4. メインレイアウト =====
-		VBox contentLayout = new VBox(20);
-		contentLayout.setAlignment(Pos.CENTER);
-		contentLayout.setPadding(new Insets(20));
-		contentLayout.setMaxWidth(800); // PCでも見栄えが良い最大幅
-		contentLayout.getChildren().addAll(titleBox, icon, buttonColumn);
+        // =====================================
+        // リトライボタン
+        // =====================================
+        const retryBtn = document.createElement("button");
+        retryBtn.textContent = "リトライする";
 
-		StackPane uiContainer = new StackPane(contentLayout);
-		uiContainer.setAlignment(Pos.CENTER);
+        retryBtn.addEventListener("click", () => {
 
-		// ==========================================
-		// 🛠️【ここが魔法！】画面幅に応じた動的レスポンシブ処理
-		// ==========================================
-		root.widthProperty().addListener((obs, oldVal, newVal) -> {
-			double width = newVal.doubleValue();
-			
-			if (width < 600) {
-				// 📱 スマホ画面（幅600px未満）のときの設定
-				gameText.setStyle("-fx-font-size: 42px;");
-				overText.setStyle("-fx-font-size: 42px;");
-				scoreLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
-				newRecordLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: gold;");
-				
-				// 仙石さんをスマホサイズに
-				icon.setFitWidth(180);
-				icon.setFitHeight(230);
-				
-				// ボタンをスマホサイズに
-				retryBtn.setPrefSize(260, 55);
-				titleBtn.setPrefSize(260, 55);
-				
-				// 全体を少し上に引き上げる
-				contentLayout.setTranslateY(-30);
-				contentLayout.setSpacing(15);
-			} else {
-				// 💻 PC画面（幅600px以上）のときの設定（迫力ある大画面モード！）
-				gameText.setStyle("-fx-font-size: 70px;");
-				overText.setStyle("-fx-font-size: 70px;");
-				scoreLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: white;");
-				newRecordLabel.setStyle("-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: gold;");
-				
-				// 仙石さんをPC用に大きく復活！
-				icon.setFitWidth(320);
-				icon.setFitHeight(416);
-				
-				// ボタンも押しやすいPCサイズに拡大
-				retryBtn.setPrefSize(320, 70);
-				titleBtn.setPrefSize(320, 70);
-				
-				// PCは画面が広いので中央にどっしり構える
-				contentLayout.setTranslateY(0);
-				contentLayout.setSpacing(25);
-			}
-		});
+            // 効果音
+            SoundManager.play(SoundManager.RETRY);
 
-		// ===== 5. 背景・ルート構成 =====
-		ImageView bg = new ImageView();
-		try {
-			var bgStream = Gameover.class.getResourceAsStream("/picture/gameover.jpg");
-			if (bgStream != null) {
-				bg.setImage(new Image(bgStream));
-			}
-		} catch (Exception e) {
-			System.out.println("⚠️ 背景画像の読み込みに失敗しました。");
-		}
-		bg.setPreserveRatio(false);
+            // 500ms後にリトライ処理
+            setTimeout(() => {
+                if (retryAction) {
+                    retryAction();
+                }
+            }, 500);
 
-		Rectangle whiteOverlay = new Rectangle();
-		whiteOverlay.setFill(Color.rgb(255, 255, 255, 0.15));
+        });
 
-		bg.fitWidthProperty().bind(root.widthProperty());
-		bg.fitHeightProperty().bind(root.heightProperty());
-		whiteOverlay.widthProperty().bind(root.widthProperty());
-		whiteOverlay.heightProperty().bind(root.heightProperty());
+        // =====================================
+        // タイトルへ戻るボタン
+        // =====================================
+        const titleBtn = document.createElement("button");
+        titleBtn.textContent = "タイトルへ";
 
-		root.getChildren().addAll(bg, whiteOverlay, uiContainer);
-		
-		Scene scene = new Scene(root);
-		
-		var cssUrl = Gameover.class.getResource("/css/gameover.css");
-		if (cssUrl != null) {
-			scene.getStylesheets().add(cssUrl.toExternalForm());
-		}
-		
-		stage.setMinWidth(320);
-		stage.setMinHeight(568);
-		stage.setMaxWidth(1920);
-		stage.setMaxHeight(1080);
-		
-		return scene;
-	}
+        titleBtn.addEventListener("click", () => {
+
+            // 効果音
+            SoundManager.play(SoundManager.SELECT);
+
+            // 500ms待機
+            setTimeout(() => {
+                GameController.switchStart();
+            }, 500);
+
+        });
+
+        // =====================================
+        // ボタンエリア
+        // =====================================
+        const buttonColumn = document.createElement("div");
+        buttonColumn.className = "button-column";
+
+        buttonColumn.appendChild(retryBtn);
+        buttonColumn.appendChild(titleBtn);
+
+        // =====================================
+        // メインレイアウトに追加
+        // =====================================
+        contentLayout.appendChild(titleBox);
+        contentLayout.appendChild(icon);
+        contentLayout.appendChild(buttonColumn);
+
+        // =====================================
+        // レスポンシブ対応
+        // JavaFXの widthProperty の代替
+        // =====================================
+        function updateLayout() {
+
+            const width = window.innerWidth;
+
+            if (width < 600) {
+
+                // ==========================
+                // スマホ表示
+                // ==========================
+                gameText.style.fontSize = "42px";
+                overText.style.fontSize = "42px";
+
+                scoreLabel.style.fontSize = "24px";
+
+                newRecordLabel.style.fontSize = "28px";
+                newRecordLabel.style.color = "gold";
+
+                icon.style.width = "180px";
+                icon.style.height = "230px";
+
+                retryBtn.style.width = "260px";
+                retryBtn.style.height = "55px";
+
+                titleBtn.style.width = "260px";
+                titleBtn.style.height = "55px";
+
+                contentLayout.style.transform = "translateY(-30px)";
+                contentLayout.style.gap = "15px";
+
+            } else {
+
+                // ==========================
+                // PC表示
+                // ==========================
+                gameText.style.fontSize = "70px";
+                overText.style.fontSize = "70px";
+
+                scoreLabel.style.fontSize = "36px";
+
+                newRecordLabel.style.fontSize = "40px";
+                newRecordLabel.style.color = "gold";
+
+                icon.style.width = "320px";
+                icon.style.height = "416px";
+
+                retryBtn.style.width = "320px";
+                retryBtn.style.height = "70px";
+
+                titleBtn.style.width = "320px";
+                titleBtn.style.height = "70px";
+
+                contentLayout.style.transform = "translateY(0)";
+                contentLayout.style.gap = "25px";
+            }
+
+        }
+
+        // 初回実行
+        updateLayout();
+
+        // ウィンドウサイズ変更時
+        window.addEventListener("resize", updateLayout);
+
+        // =====================================
+        // 画面構築
+        // =====================================
+        root.appendChild(bg);
+        root.appendChild(overlay);
+        root.appendChild(contentLayout);
+
+        // bodyへ追加
+        document.body.innerHTML = "";
+        document.body.appendChild(root);
+    }
 }

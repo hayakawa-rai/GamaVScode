@@ -1,49 +1,48 @@
 //敵キャラクターの共通処理を管理する抽象クラス
 //移動処理、状態管理（SCATTER、FEVER、DEAD）、画像管理、巣への帰還処理
+import{Character}from "./Character.js";
+import{Direction,DirectionValues}from "./Direction.js";
+import{EnemyState}from "./EnemyState.js";
+import{GameConfig}from "../common/GameConfig.js";
+import{loadImage}from "../common/loadImage.js";
 
-package Characters;
+export class Enemy extends Character {
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import common.GameConfig;
-import common.GameMap;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-public abstract class Enemy extends Character {
-
-	// 敵キャラクターの画像表示用
-	protected ImageView imageView;
+	// 敵キャラクターの画像表示用(実質未使用)
+	ImageView = null;
 	// 現在のステージ情報
-	protected GameMap mapData;
+	mapData;
 	// 現在の敵の状態（通常・FEVER・DEAD）
-	protected EnemyState currentState = EnemyState.SCATTER;
+	currentState = EnemyState.SCATTER;
 	// 通常時の画像
-	protected Image normalImage;
+	normalImage;
 	// FEVER状態時の画像
-	protected Image feverImage;
+	feverImage;
 	// DEAD状態時の画像
-	protected Image deadImage;
+	deadImage;
 	// ポーズ時間
-	protected long pauseStartTime = 0;
+	pauseStartTime = 0;
 	// 敵の初期位置（リスポーン用）
-	protected final double startX;
-	protected final double startY;
+	startX;
+	startY;
 	// スコアポップアップ表示用
-	protected int lastDefeatScore = 0;
-	protected long scorePopupStartTime = 0;
-	protected boolean scorePopupActive = false;
-	protected static final long SCORE_POPUP_DURATION = 1000; // 表示時間(ms)
-	protected double defeatX = 0; // 倒された瞬間のX座標（固定）
-	protected double defeatY = 0; // 倒された瞬間のY座標（固定）
+	lastDefeatScore = 0;
+	scorePopupStartTime = 0;
+	scorePopupActive = false;
+	static SCORE_POPUP_DURATION = 1000; // 表示時間(ms)
+	defeatX = 0; // 倒された瞬間のX座標（固定）
+	defeatY = 0; // 倒された瞬間のY座標（固定）
 
 	// ==================================================
 	// コンストラクタ
 	// ==================================================
-	public Enemy(double startX, double startY, int speed) {
+	constructor(startX, startY,speed) {
 		super(startX, startY, speed);
+
+	// Enemy も直接 new させない（abstract class の再現）
+    if (new.target === Enemy) {
+      throw new TypeError("Enemy は抽象クラスなので直接生成できません");
+    }
 
 		// 初期位置を保存
 		this.startX = startX;
@@ -54,26 +53,27 @@ public abstract class Enemy extends Character {
 	// タイマー
 	// ==================================================
 	// ポーズ開始時間を記録する、出撃タイマーや状態タイマー停止用
-	public void pauseTimer() {
-		pauseStartTime = System.currentTimeMillis();
+	pauseTimer() {
+		this.pauseStartTime = Date.now();
 	}
 
 	// ポーズ解除時の処理、必要に応じてタイマー補正を行う
-	public void resumeTimer() {
+	resumeTimer() {
 	}
 
 	// ==================================================
 	// 画像読み込み
 	// ==================================================
 	// FEVER状態で使用する画像をステージごとに読み込む
-	protected void loadFeverImage() {
+	// ※ブラウザの画像読み込みは非同期のため async/await にしている
+	async loadFeverImage() {
 
 		// デフォルト画像（ステージ1）
-		String feverPath = "/picture/nari_EnemyFever.png";
+		let feverPath = "/picture/nari_EnemyFever.png";
 
 		// 現在のステージ番号に応じて画像を切り替える
-		if (mapData != null) {
-			switch (mapData.getStageNumber()) {
+		if (this.mapData != null) {
+			switch (this.mapData.getStageNumber()) {
 			case 1:
 				feverPath = "/picture/nari_EnemyFever.png";
 				break;
@@ -86,33 +86,23 @@ public abstract class Enemy extends Character {
 			}
 		}
 
-		try {
-			// 指定したパスから画像を取得
-			InputStream is = getClass().getResourceAsStream(feverPath);
-
-			// 読み込み成功時
-			if (is != null) {
-				feverImage = new Image(is);
-				System.out.println("FEVER画像読込成功: " + feverPath);
-			}
-			// 読み込み失敗時
-			else {
-				System.err.println("FEVER画像が見つかりません: " + feverPath);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    try {
+      this.feverImage = await loadImage(feverPath);
+      console.log(`FEVER画像読込成功: ${feverPath}`);
+    } catch (e) {
+      console.error(e.message);
+    }
+  }
 	
 	// DEAD状態で使用する画像をステージごとに読み込む
-		protected void loadDeadImage() {
+		async loadDeadImage() {
 
 			// デフォルトはステージ1
-			String deadPath = "/picture/nari_EnemyDead.png";
+			let deadPath = "/picture/nari_EnemyDead.png";
 
 			// 現在のステージ番号に応じて画像を切り替える
-			if (mapData != null) {
-				switch (mapData.getStageNumber()) {
+			if (this.mapData != null) {
+				switch (this.mapData.getStageNumber()) {
 				case 1:
 					deadPath = "/picture/nari_EnemyDead.png";
 					break;
@@ -125,50 +115,42 @@ public abstract class Enemy extends Character {
 				}
 			}
 
-			try {
-				// リソースから画像を読み込む
-				InputStream is = getClass().getResourceAsStream(deadPath);
-				// 読み込み成功
-				if (is != null) {
-					deadImage = new Image(is);
-					System.out.println("DEAD画像読込成功: " + deadPath);
-				} else {
-					// 読み込み失敗
-					System.err.println("DEAD画像が見つかりません: " + deadPath);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+    try {
+      this.deadImage = await loadImage(deadPath);
+      console.log(`DEAD画像読込成功: ${deadPath}`);
+    } catch (e) {
+      console.error(e.message);
+    }
+  }
 		
 	// ==================================================
 	// スコア表示
 	// ==================================================
 	// ポップアップをまだ表示すべきか判定する（時間経過で自動的にfalseになる）
-	public boolean isScorePopupActive() {
-		if (scorePopupActive && System.currentTimeMillis() - scorePopupStartTime > SCORE_POPUP_DURATION) {
-			scorePopupActive = false;
+	isScorePopupActive() {
+		if (this.scorePopupActive && Date.now() - this.scorePopupStartTime > Enemy.SCORE_POPUP_DURATION) {
+			this.scorePopupActive = false;
 		}
-		return scorePopupActive;
+		return this.scorePopupActive;
 	}
 		
 	// 敵をDEAD状態にし、撃破スコアの表示を開始する
-	public void onDefeated(int score) {
+	onDefeated(score) {
 		this.lastDefeatScore = score;
-		this.scorePopupStartTime = System.currentTimeMillis();
+		this.scorePopupStartTime = Date.now();
 		this.scorePopupActive = true;
 		this.defeatX = this.x; // 倒された瞬間の位置を固定
 		this.defeatY = this.y;
-		setCurrentState(EnemyState.DEAD);
+		this.setCurrentState(EnemyState.DEAD);
 	}
 		
 	// ==================================================
 	// ポジション
 	// ==================================================
 	// プレイヤーが被弾時に元の場所、出撃時間をリセット、状態を縄張りモード(SCATTER)へ戻す
-	public void resetToStartPosition() {
-		this.x = startX;
-		this.y = startY;
+	resetToStartPosition() {
+		this.x = this.startX;
+		this.y = this.startY;
 		this.direction = Direction.NONE;
 		this.currentState = EnemyState.SCATTER;
 	}
@@ -176,11 +158,11 @@ public abstract class Enemy extends Character {
 	// ==================================================
 	// 動き
 	// ==================================================
-	@Override
-	public void move(int[][] map) {
+	
+	move(map) {
 		// 現在位置をタイル座標へ変換
-		int tileX = (int) (this.x / GameConfig.TILE_SIZE);
-		int tileY = (int) (this.y / GameConfig.TILE_SIZE);
+		const tileX = Math.floor(this.x / GameConfig.TILE_SIZE);
+		const tileY = Math.floor(this.y / GameConfig.TILE_SIZE);
 
 		// 範囲外防止
 		if (tileY < 0 || tileY >= map.length || tileX < 0 || tileX >= map[0].length) {
@@ -188,22 +170,22 @@ public abstract class Enemy extends Character {
 		}
 
 		// 現在いるタイルの中心座標を計算
-		double cx = tileX * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0;
-		double cy = tileY * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0;
+		const cx = tileX * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2;
+		const cy = tileY * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2;
 
 		// 現在のマス情報を取得
-		int currentTileType = map[tileY][tileX];
+		const currentTileType = map[tileY][tileX];
 
 		// DEAD状態で巣の床(8)に戻ったら復活
-		if (currentState == EnemyState.DEAD) {
+		if (this.currentState == EnemyState.DEAD) {
 			if (currentTileType == 8) {
-				currentState = EnemyState.SCATTER;
-				System.out.println(getClass().getSimpleName() + "が巣に帰還し、復活しました");
+				this.currentState = EnemyState.SCATTER;
+				console.log(`${this.constructor.name}が巣に帰還し、復活しました`);			
 			}
 		}
 
 		// 現在のスピードの計算
-		double currentSpeed = this.getSpeed();
+		let currentSpeed = this.getSpeed();
 		// FEVER時は減速
 		if (this.currentState == EnemyState.FEVER) {
 			currentSpeed = this.getSpeed() * 0.5;
@@ -213,21 +195,22 @@ public abstract class Enemy extends Character {
 			currentSpeed = this.getSpeed() * 3;
 		}
 		// タイルの中心に近づいたか判定
-		boolean atCenter = Math.abs(this.x - cx) < currentSpeed && Math.abs(this.y - cy) < currentSpeed;
+		const atCenter = Math.abs(this.x - cx) < currentSpeed && Math.abs(this.y - cy) < currentSpeed;
 
 		// 完全に停止している(NONE)か、マスの中心に到達したら方向転換
 		if (this.direction == Direction.NONE || atCenter) {
 
 			// 現在進行可能な方向を取得
-			List<Direction> validDirections = getValidDirections(map);
-			if (!validDirections.isEmpty()) {
+			const validDirections = this.#getValidDirections(map);
+
+			if (validDirections.length > 0) {
 
 				// 現在のタイル座標を一時的に取得（条件判定用）
-				int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
-				int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
+				const currentRow = Math.floor (this.y / GameConfig.TILE_SIZE);
+				const currentCol = Math.floor (this.x / GameConfig.TILE_SIZE);
 
 				// 巣の中にいる間は、ターゲットを強制的に巣のすぐ外に移動する
-				if (currentState != EnemyState.DEAD && currentRow >= 12 && currentRow <= 15
+				if (this.currentState !== EnemyState.DEAD && currentRow >= 12 && currentRow <= 15
 						&& currentCol >= 12 && currentCol <= 15) {
 					this.y = cy;
 					this.x = cx;
@@ -235,7 +218,7 @@ public abstract class Enemy extends Character {
 				} else {
 
 					// 敵固有AIで次の移動方向を決定
-					Direction chosenDirection = decideNextDirection(validDirections, map, this.mapData);
+					const chosenDirection = this.decideNextDirection(validDirections, map, this.mapData);
 
 					// 中心にぴったり位置補正（軸ズレによるスタック防止）
 					this.x = cx;
@@ -249,53 +232,53 @@ public abstract class Enemy extends Character {
 		}
 
 		// 決定した方向に実際に移動する処理
-		if (this.direction != Direction.NONE) {
-			this.x += this.direction.getDX() * currentSpeed;
-			this.y += this.direction.getDY() * currentSpeed;
+		if (this.direction !== Direction.NONE) {
+			this.x += this.direction.dx * currentSpeed;
+			this.y += this.direction.dy * currentSpeed;
 			// 横移動時はY座標を中心へ補正
-			if (this.direction.getDX() != 0) {
+			if (this.direction.dx !== 0) {
 				this.y += (cy - this.y) * 0.2;
 			}
 			// 縦移動時はX座標を中心へ補正
-			if (this.direction.getDY() != 0) {
+			if (this.direction.dy !== 0) {
 				this.x += (cx - this.x) * 0.2;
 			}
 		}
 	}
 
 	// 指定した方向へ移動できるか判定する
-	private boolean canmove(Direction direction, int[][] map) {
+	#canmove(direction,map) {
 
 		// 移動しない場合は不可
-		if (direction == Direction.NONE)
+		if (direction === Direction.NONE)
 			return false;
 
 		// 現在位置のタイル座標を取得
-		int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
-		int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
+		const currentCol = Math.floor (this.x / GameConfig.TILE_SIZE);
+		const currentRow = Math.floor (this.y / GameConfig.TILE_SIZE);
 
 		// 移動先のタイル座標を計算
-		int nextCol = currentCol + (int) direction.getDX();
-		int nextRow = currentRow + (int) direction.getDY();
+		const nextCol = currentCol + direction.dx;
+		const nextRow = currentRow + direction.dy;
 
 		// マップ範囲外は移動不可
 		if (nextRow < 0 || nextRow >= map.length || nextCol < 0 || nextCol >= map[0].length) {
 			return false;
 		}
 		// 壁(1)には進めない
-		if (map[nextRow][nextCol] == 1) {
+		if (map[nextRow][nextCol] === 1) {
 			return false;
 		}
 
 		// 現在地と移動先のマス情報を取得
-		int currentTileType = map[currentRow][currentCol];
-		int nextTileType = map[nextRow][nextCol];
+		const currentTileType = map[currentRow][currentCol];
+		const nextTileType = map[nextRow][nextCol];
 
 		// 通常状態の敵の「巣（扉含む）」への侵入制限
-		if (this.currentState != EnemyState.DEAD) {
+		if (this.currentState !== EnemyState.DEAD) {
 
 			// 外(8以外)から、扉(7)や床(8)に入ろうとしたら通行不可
-			if (currentTileType != 8 && (nextTileType == 7 || nextTileType == 8)) {
+			if (currentTileType !== 8 && (nextTileType === 7 || nextTileType === 8)) {
 				return false;
 			}
 		}
@@ -303,28 +286,28 @@ public abstract class Enemy extends Character {
 	}
 	
 	// DEAD・FEVERの共通処理移動処理
-	protected Direction handleSpecialState(List<Direction> validDirections, int targetCol, int targetRow, int[][] map) {
+	handleSpecialState(validDirections,targetCol, targetRow, map) {
 
 		// DEAD状態なら、自動的にマップ内の「7（扉）」の中から【一番近い場所】を探してそこへ帰る
-		if (currentState == EnemyState.DEAD) {
-			int[][] currentMap = map;
+		if (this.currentState === EnemyState.DEAD) {
+			const currentMap = map;
 
 			// デフォルトのバックアップ座標
-			int bestGateCol = 14;
-			int bestGateRow = 13;
-			double minDistanceSq = Double.MAX_VALUE;
+			let bestGateCol = 14;
+			let bestGateRow = 13;
+			let minDistanceSq = Infinity;
 
 			// 今の自分の位置（マス単位）
-			int myCol = (int) (this.x / GameConfig.TILE_SIZE);
-			int myRow = (int) (this.y / GameConfig.TILE_SIZE);
+			const myCol = Math.floor (this.x / GameConfig.TILE_SIZE);
+			const myRow = Math.floor (this.y / GameConfig.TILE_SIZE);
 
 			// マップ全体からすべての「7」を探し、一番近いものを選択する
-			for (int r = 0; r < currentMap.length; r++) {
-				for (int c = 0; c < currentMap[r].length; c++) {
-					if (currentMap[r][c] == 7) {
+			for (let r = 0; r < currentMap.length; r++) {
+				for (let c = 0; c < currentMap[r].length; c++) {
+					if (currentMap[r][c] === 7) {
 
 						// 自分の現在地からの距離を計算（三平方の定理）
-						double distSq = Math.pow(c - myCol, 2) + Math.pow(r - myRow, 2);
+						const distSq = (c - myCol) ** 2 + (r - myRow) ** 2;
 						if (distSq < minDistanceSq) {
 							minDistanceSq = distSq;
 							bestGateCol = c;
@@ -335,11 +318,11 @@ public abstract class Enemy extends Character {
 			}
 
 			// 最も近い扉（右半分にいるときは右側の7、左半分にいるときは左側の7）に向かわせる
-			return getClosestDirection(validDirections, bestGateCol, bestGateRow);
+			return this.getClosestDirection(validDirections, bestGateCol, bestGateRow);
 		}
 
-		if (currentState == EnemyState.FEVER) {
-			return getFarthestDirection(validDirections, targetCol, targetRow);
+		if (this.currentState === EnemyState.FEVER) {
+			return this.getFarthestDirection(validDirections, targetCol, targetRow);
 		}
 		return null;
 	}
@@ -348,47 +331,47 @@ public abstract class Enemy extends Character {
 	// 方向決定
 	// ==================================================
 	// 三平方の定理を使って目的地に一番近い方向を選ぶ共通処理
-	protected Direction getClosestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
-		Direction bestDirection = Direction.NONE;
-		double minDistance = Double.MAX_VALUE;
-		int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
-		int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
+	getClosestDirection(validDirections, targetCol, targetRow) {
+		let bestDirection = Direction.NONE;
+		let minDistance = Infinity;
+		const currentCol = Math.floor (this.x / GameConfig.TILE_SIZE);
+		const currentRow = Math.floor (this.y / GameConfig.TILE_SIZE);
 
-		for (Direction dir : validDirections) {
-			int nextCol = currentCol + (int) dir.getDX();
-			int nextRow = currentRow + (int) dir.getDY();
-			double distanceSq = Math.pow(nextCol - targetCol, 2) + Math.pow(nextRow - targetRow, 2);
+		for (const dir of validDirections) {
+			const nextCol = currentCol +  dir.dx;
+			const nextRow = currentRow +  dir.dy;
+			const distanceSq = (nextCol - targetCol) ** 2 + (nextRow - targetRow) ** 2;
 
 			if (distanceSq < minDistance) {
 				minDistance = distanceSq;
 				bestDirection = dir;
 			}
 		}
-		return bestDirection != Direction.NONE ? bestDirection : validDirections.get(0);
+		return bestDirection !== Direction.NONE ? bestDirection : validDirections[0];
 	}
 
 	// 目標地点から最も遠ざかる方向を選択する
-	protected Direction getFarthestDirection(List<Direction> validDirections, int targetCol, int targetRow) {
+	getFarthestDirection(validDirections,targetCol,targetRow) {
 
 		// 最終的に選択する方向
-		Direction bestDirection = Direction.NONE;
+		let bestDirection = Direction.NONE;
 
 		// 最大距離を記録する変数
-		double maxDistance = -1;
+		let maxDistance = -1;
 
 		// 現在のタイル座標を取得
-		int currentCol = (int) (this.x / GameConfig.TILE_SIZE);
-		int currentRow = (int) (this.y / GameConfig.TILE_SIZE);
+		const currentCol = Math.floor (this.x / GameConfig.TILE_SIZE);
+		const currentRow = Math.floor (this.y / GameConfig.TILE_SIZE);
 
 		// 移動可能な全方向を調べる
-		for (Direction dir : validDirections) {
+		for (const dir of validDirections) {
 
 			// 1マス移動後の座標を計算
-			int nextCol = currentCol + (int) dir.getDX();
-			int nextRow = currentRow + (int) dir.getDY();
+			const nextCol = currentCol +  dir.dx;
+			const nextRow = currentRow +  dir.dy;
 
 			// 目標地点までの距離の二乗を計算
-			double distanceSq = Math.pow(nextCol - targetCol, 2) + Math.pow(nextRow - targetRow, 2);
+			const distanceSq = (nextCol - targetCol) ** 2 + (nextRow - targetRow) ** 2;
 
 			// 今までで最も遠くなる方向なら更新
 			if (distanceSq > maxDistance) {
@@ -398,39 +381,39 @@ public abstract class Enemy extends Character {
 		}
 		// 選択された方向を返す
 		// 万が一見つからなければ先頭の方向を返す
-		return bestDirection != Direction.NONE ? bestDirection : validDirections.get(0);
+		return bestDirection !== Direction.NONE ? bestDirection : validDirections[0];
 	}
 
 	// 2つの方向が互いに反対方向（Uターン方向）か判定する
-	private boolean isOppositeDirection(Direction dir1, Direction dir2) {
+	#isOppositeDirection(dir1, dir2) {
 
 		// NONE は反対方向として扱わない
-		if (dir1 == Direction.NONE || dir2 == Direction.NONE)
+		if (dir1 === Direction.NONE || dir2 === Direction.NONE)
 			return false;
 
 		// ベクトルの和が(0,0)なら反対方向
-		return (dir1.getDX() + dir2.getDX() == 0) && (dir1.getDY() + dir2.getDY() == 0);
+		return dir1.dx + dir2.dx === 0 && dir1.dy + dir2.dy === 0;
 	}
 
 	// 現在位置から移動可能な方向一覧を取得する
-	private List<Direction> getValidDirections(int[][] map) {
+	#getValidDirections(map) {
 
 		// 移動可能な方向を格納するリスト
-		List<Direction> list = new ArrayList<>();
+		const list = [];
 
 		// 全方向をチェック
-		for (Direction dir : Direction.values()) {
+		for (const dir of DirectionValues) {
 			// NONE は判定対象外
-			if (dir == Direction.NONE)
+			if (dir === Direction.NONE)
 				continue;
 
 			// 常にUターン禁止
-			if (isOppositeDirection(dir, this.direction))
+			if (this.#isOppositeDirection(dir, this.direction))
 				continue;
 
 			// 実際に移動可能なら候補に追加
-			if (canmove(dir, map)) {
-				list.add(dir);
+			if (this.#canmove(dir, map)) {
+				list.push(dir);
 			}
 		}
 		return list;
@@ -438,65 +421,67 @@ public abstract class Enemy extends Character {
 	}
 	
 	// 敵ごとのAIで次の進行方向を決定する
-	protected abstract Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData);
+	decideNextDirection(validDirections, map, mapData) {
+    throw new Error("decideNextDirection() はサブクラスで実装してください");
+  }
 	
 	// ==================================================
 	// getter
 	// ==================================================
 	// 現在の状態に対応した画像を返す
-	public Image getEnemyImage() {
+	getEnemyImage() {
 		// 撃破状態
-		if (currentState == EnemyState.DEAD) {
-			return deadImage;
+		if (this.currentState === EnemyState.DEAD) {
+			return this.deadImage;
 		}
 		// FEVER状態
-		if (currentState == EnemyState.FEVER) {
-			return feverImage;
+		if (this.currentState === EnemyState.FEVER) {
+			return this.feverImage;
 		}
 		// 通常状態
-		return normalImage;
+		return this.normalImage;
 	}
 
 	// ポップアップの進行度を0.0(開始)〜1.0(終了)で返す
-	public double getScorePopupProgress() {
-		long elapsed = System.currentTimeMillis() - scorePopupStartTime;
-		return Math.min(1.0, Math.max(0.0, elapsed / (double) SCORE_POPUP_DURATION));
+	getScorePopupProgress() {
+		const elapsed = Date.now() - this.scorePopupStartTime;
+		return Math.min(1.0, Math.max(0.0, elapsed / Enemy.SCORE_POPUP_DURATION));
 	}
 	
 	// 現在の敵の状態を取得する
-	public EnemyState getCurrentState() {
-		return currentState;
+	getCurrentState() {
+		return this.currentState;
 	}
 
 	// 現在のX座標を取得する
-	public double getX() {
-		return x;
+	getX() {
+		return this.x;
 	}
 
 	// 現在のY座標を取得する
-	public double getY() {
-		return y;
+	getY() {
+		return this.y;
 	}
 	// 表示するスコア値を返す
-	public int getLastDefeatScore() {
-		return lastDefeatScore;
+	getLastDefeatScore() {
+		return this.lastDefeatScore;
 	}
 
 	// 倒された瞬間のX座標を返す（ポップアップ表示用、固定値）
-	public double getDefeatX() {
-		return defeatX;
+	getDefeatX() {
+		return this.defeatX;
 	}
 
 	// 倒された瞬間のY座標を返す（ポップアップ表示用、固定値）
-	public double getDefeatY() {
-		return defeatY;
+	getDefeatY() {
+		return this.defeatY;
 	}
 
 	// ==================================================
 	// setter
 	// ==================================================
 	//　敵の状態を変更する
-	public void setCurrentState(Characters.EnemyState state) {
+	setCurrentState(state) {
 		this.currentState = state;
 	}
 		

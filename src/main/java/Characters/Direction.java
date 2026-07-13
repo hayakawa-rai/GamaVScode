@@ -1,51 +1,46 @@
-package Characters;
+function createDirection(name.dx,dy){
+	return Object.freeze({
+		name,
+		dx,
+		dy,
+		getDX(){return dx;},
+		getDY(){return dy;},
+	});
+}
 
-import javafx.scene.input.KeyCode;
+export const Direction = Object.freeze({
+  // 上下左右に1ピクセル移動
+  UP: createDirection("UP", 0, -1),
+  DOWN: createDirection("DOWN", 0, 1),
+  LEFT: createDirection("LEFT", -1, 0),
+  RIGHT: createDirection("RIGHT", 1, 0),
+  // 押されていない停止状態。始まるまでキャラクターを停止させるため
+  NONE: createDirection("NONE", 0, 0),
+});
 
-public enum Direction {
-	// JavaFXの画面座標は「上がマイナスの値、下がプラスの値」になっている
-	
-	// 上下左右に1ピクセル移動
-	UP(0,-1),
-	DOWN(0,1),
-	LEFT(-1,0),
-	RIGHT(1,0),
-	// 押されていない停止状態。始まるまで仙石さんを停止させるため
-	NONE(0,0);
-	private final double dx;
-	private final double dy;
-	
-	// ==================================================
-	// コンストラクタ
-	// ==================================================
-	Direction(double dx, double dy){
-		this.dx = dx;
-		this.dy = dy;
-	}
+export const DirectionValues = Object.freeze(Object.values(Direction));
 	
 	// ==================================================
 	// 方向決定
 	// ==================================================
 	// JavaFXのキー入力(KeyCode)から対応するDirection(動き)を返すメソッド
-	public static Direction fromKeyCode(KeyCode code) {
-		return switch(code) {
-		// 矢印上
-		case UP -> UP;		
-		// 矢印下
-		case DOWN -> DOWN;
-		// 矢印左
-		case LEFT -> LEFT;
-		// 矢印右
-		case RIGHT -> RIGHT;
-		// それ以外のキー
-		default -> NONE;
-		
-		};
-	}
-	// ==================================================
-	// getter
-	// ==================================================
-	public double getDX() {return dx;}
-	public double getDY() {return dy;}
-	
+	export function fromKeyCode(key) {
+
+	switch(key){
+    // 矢印上
+    case "ArrowUp":
+      return Direction.UP;
+    // 矢印下
+    case "ArrowDown":
+      return Direction.DOWN;
+    // 矢印左
+    case "ArrowLeft":
+      return Direction.LEFT;
+    // 矢印右
+    case "ArrowRight":
+      return Direction.RIGHT;
+    // それ以外のキー
+    default:
+      return Direction.NONE;
+  }
 }
