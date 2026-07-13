@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基本説明</title>
+    <!-- ご提示いただいた外部CSSファイルを読み込み -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* 画面レイアウト用の基本スタイル */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: black; /* 白飛び防止用 */
+            /* フォントは外部CSSの PixelMplus12 を優先 */
+            font-family: "PixelMplus12", 'Courier New', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 👑 ImagePatternを再現した無限スクロール背景 */
+        #bg-pane {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/picture/background.png');
+            background-repeat: repeat;
+            background-position: 0px 0px;
+            z-index: 1;
+        }
+
+        /* メインコンテナ（スマホ対応レイアウト） */
+        .main-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 560px;
+            padding: 20px;
+        }
+
+        /* 中央の半透明パネル */
+        .panel {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: 2px solid #6e6e85;
+            border-radius: 4px;
+            padding: 25px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+        }
+
+        /* タイトル */
+        .title {
+            color: #F4C022;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        /* 区切り線 */
+        .divider {
+            width: 100%;
+            height: 2px;
+            background-color: #6e6e85;
+            border: none;
+        }
+
+        /* ページスタック */
+        .page-stack {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* 各ページのラッパー（見出し付き） */
+        .page-wrapper {
+            display: none; /* 初期状態は非表示 */
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+            width: 100%;
+        }
+        .page-wrapper.active {
+            display: flex;
+        }
+
+        .page-heading {
+            color: #4FD8E8;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        #page-0 .page-content { gap: 16px; align-items: center; } /* ページ1は中央寄せ */
+
+        /* 行のレイアウト */
+        .note-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .icon-box {
+            width: 40px;
+            min-width: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .note-text {
+            color: white;
+            font-size: 14px;
+            line-height: 1.4;
+            max-width: 420px;
+            word-wrap: break-word;
+        }
+
+        /* モード用見出し */
+        .mode-heading {
+            color: #FF9632;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* 特定のパーツ再現 */
+        .dot-icon {
+            width: 8px;
+            height: 8px;
+            background-color: #F4C022;
+            border-radius: 50%;
+        }
+
+        .power-pellet-icon {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        /* フルーツ行 */
+        .fruit-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            width: 100%;
+        }
+        .fruit-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .fruit-item img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+        .fruit-item span {
+            color: #F4C022;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* 操作説明行 */
+        .move-control-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+        }
+        .move-control-row img {
+            height: 65px;
+            object-fit: contain;
+        }
+
+        /* スペーサー（Javaのspacerメソッドの再現） */
+        .spacer { width: 100%; }
+
+        /* インジケーター（● ○ ○ ○） */
+        .indicator {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #6e6e85;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+        .indicator-dot.active {
+            background-color: #4FD8E8;
+        }
+
+        /* 左右矢印ボタン行 */
+        .arrow-row {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* 矢印ボタン専用スタイル */
+        .arrow-btn {
+            width: 50px;
+            height: 45px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #4FD8E8;
+            border: 2px solid currentColor;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* 戻るボタンのサイズ調整 (JavaFXの setPrefSize(200, 50) を反映) */
+        .back-button-layout {
+            width: 200px;
+            height: 50px;
+            font-size: 20px; /* style.css側の指定と連動 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景パネル -->
+    <div id="bg-pane"></div>
+
+    <!-- メインレイアウト -->
+    <div class="main-container">
+        
+        <!-- 中央パネル -->
+        <div class="panel">
+            <div class="title">基本説明</div>
+            <hr class="divider">
+            
+            <!-- ページスタック -->
+            <div class="page-stack">
+                
+                <!-- ページ1：操作 -->
+                <div class="page-wrapper" id="page-0">
+                    <div class="page-heading">操作</div>
+                    <div class="page-content">
+                        <div class="move-control-row">
+                            <span>移動：</span>
+                            <img src="/picture/WASD.png" alt="WASD">
+                            <span>または</span>
+                            <img src="/picture/yazirusi.png" alt="矢印">
+                        </div>
+                        <div class="spacer" style="height: 6px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">スマホでの移動：画面スワイプ</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ページ2：アイテム -->
+                <div class="page-wrapper" id="page-1">
+                    <div class="page-heading">アイテム</div>
+                    <div class="page-content">
+                        <div class="note-row">
+                            <div class="icon-box"><div class="dot-icon"></div></div>
+                            <div class="note-text">エサを食べるとスコアが加算されます。</div>
+                        </div>
+                        <div class="spacer" style="height: 6px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"><img src="/picture/Chii_Item.png" class="power-pellet-icon" alt="パワーエサ"></div>
+                            <div class="note-text">パワーエサを食べるとスコアが加算され、一定時間敵を撃退することができます。</div>
+                        </div>
+                        <div class="spacer" style="height: 6px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">フルーツを食べると種類に合わせたスコアが加算されます。</div>
+                        </div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">一定数のエサを食べるとランダムな場所に出現し、一定時間が過ぎると消えてなくなります。</div>
+                        </div>
+                        <div class="spacer" style="height: 6px;"></div>
+                        <div class="fruit-row">
+                            <div class="fruit-item"><img src="/picture/sakuranbo.png"><span>＋100</span></div>
+                            <div class="fruit-item"><img src="/picture/ichigo.png"><span>＋300</span></div>
+                            <div class="fruit-item"><img src="/picture/orange.png"><span>＋500</span></div>
+                            <div class="fruit-item"><img src="/picture/ringo.png"><span>＋700</span></div>
+                            <div class="fruit-item"><img src="/picture/budo.png"><span>＋1000</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ページ3：ルール -->
+                <div class="page-wrapper" id="page-2">
+                    <div class="page-heading">ルール</div>
+                    <div class="page-content">
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">全てのエサを食べるとステージクリアになります。</div>
+                        </div>
+                        <div class="spacer" style="height: 6px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">敵に3回触れるとゲームオーバーになります。</div>
+                        </div>
+                        <div class="spacer" style="height: 6px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">マップにある左端と右端の通路は「ワープトンネル」で、左端と右端が繫がった状態の通路になっています。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ページ4：モード -->
+                <div class="page-wrapper" id="page-3">
+                    <div class="page-heading">モード</div>
+                    <div class="page-content">
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="mode-heading">▶ストーリー</div>
+                        </div>
+                        <div class="spacer" style="height: 2px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">物語を進めながら遊ぶモードです。</div>
+                        </div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">すべてのエサを食べると、そのステージをクリアできます。</div>
+                        </div>
+                        <div class="spacer" style="height: 6px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="mode-heading">⚔練習モード</div>
+                        </div>
+                        <div class="spacer" style="height: 2px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">すべてのエサを食べるとエサが再配置され、ゲームオーバーになるまで何度でも遊べます。</div>
+                        </div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">ハイスコアを目指しましょう！</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- インジケータードット -->
+            <div class="indicator">
+                <div class="indicator-dot active"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+            </div>
+        </div>
+
+        <!-- 矢印ナビゲーション -->
+        <div class="arrow-row">
+            <button class="arrow-btn" id="prev-btn">◀</button>
+            <button class="arrow-btn" id="next-btn">▶</button>
+        </div>
+
+        <!-- 戻るボタンに style.css の .help-button クラスを適用 -->
+        <button class="help-button back-button-layout" id="back-btn">戻る</button>
+    </div>
+
+    <!-- 音楽管理用 -->
+    <audio id="bgm" src="/music/startbgm.mp3" loop></audio>
+
+    <script>
+        // ===== 1. BGMの再生制御 =====
+        const bgm = document.getElementById('bgm');
+        document.addEventListener('click', () => {
+            if (bgm.paused) {
+                bgm.play().catch(e => console.log("BGMの再生に失敗:", e));
+            }
+        }, { once: true });
+
+
+        // ===== 2. 背景斜め無限スクロール =====
+        const bgPane = document.getElementById('bg-pane');
+        let x = 0;
+        const speed = 1.0;
+
+        function scrollBackground() {
+            x -= speed;
+            bgPane.style.backgroundPosition = `${x}px ${x}px`;
+            requestAnimationFrame(scrollBackground);
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            requestAnimationFrame(scrollBackground);
+        });
+
+
+        // ===== 3. ページ管理・インジケーター切り替え =====
+        let currentPage = 0;
+        const totalPages = 4;
+        const pages = document.querySelectorAll('.page-wrapper');
+        const dots = document.querySelectorAll('.indicator-dot');
+
+        function updatePage() {
+            pages.forEach((page, idx) => {
+                if (idx === currentPage) {
+                    page.classList.add('active');
+                    dots[idx].classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                    dots[idx].classList.remove('active');
+                }
+            });
+        }
+
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            currentPage = (currentPage - 1 + totalPages) % totalPages;
+            updatePage();
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            currentPage = (currentPage + 1) % totalPages;
+            updatePage();
+        });
+
+
+        // ===== 4. 戻るボタンの動作 =====
+        document.getElementById('back-btn').addEventListener('click', () => {
+            bgm.pause();
+            console.log("戻るボタンが押されました");
+        });
+    </script>
+</body>
+</html>
