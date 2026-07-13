@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==================================================
     // 2. オーディオの生成と初期設定
     // ==================================================
-    const clickSound = new Audio("music/select.mp3");
-    const startBgm = new Audio("music/startbgm.mp3");
+    const clickSound = new Audio("../../resources/music/select.mp3");
+    const startBgm = new Audio("../../resources/music/startbgm.mp3");
 
     clickSound.volume = 0.4;
     startBgm.volume = 0.5;

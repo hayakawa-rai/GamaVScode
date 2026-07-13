@@ -59,10 +59,10 @@ export class Bgm {
     static playStageBGM(stageNumber) {
         this.#currentStageNumber = stageNumber;
         switch (stageNumber) {
-            case 1: this.playBGM("/music/stage1_bgm.mp3"); break;
-            case 2: this.playBGM("/music/stage2_bgm.mp3"); break;
-            case 3: this.playBGM("/music/stage3_bgm.mp3"); break;
-            default: this.playBGM("/music/stage1_bgm.mp3"); break;
+            case 1: this.playBGM("../../resources/music/stage1_bgm.mp3"); break;
+            case 2: this.playBGM("../../resources/music/stage2_bgm.mp3"); break;
+            case 3: this.playBGM("../../resources/music/stage3_bgm.mp3"); break;
+            default: this.playBGM("../../resources/music/stage1_bgm.mp3"); break;
         }
     }
 
@@ -70,7 +70,7 @@ export class Bgm {
      * FEVER開始
      */
     static playFeverBGM() {
-        this.playBGM("/music/feverbgm.mp3");
+        this.playBGM("../../resources/music/feverbgm.mp3");
     }
 
     /**
