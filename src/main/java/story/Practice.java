@@ -1,292 +1,333 @@
-package story;
+/**
+ * Practice画面
+ * JavaFX版 Practice.java を JavaScript化
+ */
+class Practice {
 
-import common.HighScoreManager;
-import control.GameController;
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
-import javafx.scene.paint.ImagePattern;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import start.Bgm;
-import util.ResponsiveUtil;
+    constructor() {
 
-public class Practice extends Application {
+        // 背景アニメーションID
+        this.animationId = null;
 
-	private AnimationTimer timer;
-	private AudioClip clickSound;
-	private AudioClip cancelSound;
-	private PauseTransition pause;
-	private Stage stage;
+        // 効果音
+        this.clickSound = new Audio("music/select.mp3");
+        this.cancelSound = new Audio("music/cancel.mp3");
 
-	private void cleanup() {
+        this.clickSound.volume = 0.4;
+        this.cancelSound.volume = 0.4;
 
-		// 背景アニメーション停止
-		if (timer != null) {
-			timer.stop();
-			timer = null;
-		}
+        // 背景スクロール位置
+        this.scrollX = 0;
+    }
 
-		// 遅延処理停止
-		if (pause != null) {
-			pause.stop();
-			pause = null;
-		}
+    /**
+     * 画面終了時の後始末
+     */
+    cleanup() {
 
-		// 効果音停止
-		if (clickSound != null) {
-			clickSound.stop();
-			clickSound = null;
-		}
+        // 背景アニメーション停止
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
 
-		if (cancelSound != null) {
-			cancelSound.stop();
-			cancelSound = null;
-		}
+        // 効果音停止
+        this.clickSound.pause();
+        this.clickSound.currentTime = 0;
 
-		// BGM停止
-		Bgm.stopBGM();
-	}
+        this.cancelSound.pause();
+        this.cancelSound.currentTime = 0;
 
-	@Override
-	public void start(Stage stage) {
-		this.stage = stage;
-		stage.setTitle("練習モード");
-		// WindowUtil.fillScreen(stage); // 最大化
-		stage.setScene(createScene()); // その後でSceneをセット
-		stage.show();
-		// 2. 画面が表示された「次のフレーム」でアニメーションを開始する
-	    Platform.runLater(() -> {
-	        if (timer != null) {
-	            timer.start();
-	        }
-	    });
-	}
+        // BGM停止
+        Bgm.stopBGM();
+    }
 
-	public Scene createScene() {
+    /**
+     * 画面作成
+     */
+    createScene() {
 
-		// 重ねて表示するためのレイアウト(レイヤー構造の作成)
-		StackPane root = new StackPane();
-		
-		// 1000×800のベースウィンドウを作成（以降はレスポンシブ可変）
-		Scene scene = new Scene(root, 1000, 800);
+        // =====================================
+        // ルートコンテナ
+        // =====================================
+        const root = document.createElement("div");
+        root.className = "practice-root";
 
-		// タイトル
-		Label title = new Label("練習モード");
-		title.getStyleClass().add("responsive-title"); // スタイルは基本的にCSSかバインドで行う
-		title.setStyle("-fx-font-family: 'PixelMplus12';" +
-				"-fx-text-fill: white;" + "-fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3);");
+        // =====================================
+        // 背景レイヤー
+        // =====================================
+        const bgPane = document.createElement("div");
+        bgPane.className = "background-pane";
 
-		// ステージ選択ボタン
-		Button btn1 = new Button("STAGE 1");
-		Button btn2 = new Button("STAGE 2");
-		Button btn3 = new Button("STAGE 3");
+        // =====================================
+        // タイトル
+        // =====================================
+        const title = document.createElement("h1");
+        title.textContent = "練習モード";
 
-		btn1.getStyleClass().add("game-button");
-		btn2.getStyleClass().add("game-button");
-		btn3.getStyleClass().add("game-button");
+        // =====================================
+        // ステージボタン
+        // =====================================
+        const btn1 = document.createElement("button");
+        btn1.textContent = "STAGE 1";
 
-		// ハイスコア表示用（トロフィーアイコン）
-		Label scoreInfo = new Label("🏆");
-		
-		// 戻るボタン
-		Button backButton = new Button("タイトルへ");
-		backButton.getStyleClass().add("game-button");
+        const btn2 = document.createElement("button");
+        btn2.textContent = "STAGE 2";
 
-		// 音声読み込み
-		clickSound = new AudioClip(getClass().getResource("/music/select.mp3").toExternalForm());
-		cancelSound = new AudioClip(getClass().getResource("/music/cancel.mp3").toExternalForm());
+        const btn3 = document.createElement("button");
+        btn3.textContent = "STAGE 3";
 
-		// 音量調整
-		clickSound.setVolume(0.4);
-		cancelSound.setVolume(0.4);
+        btn1.classList.add("game-button");
+        btn2.classList.add("game-button");
+        btn3.classList.add("game-button");
 
-		// ボタンアクション設定
-		btn1.setOnAction(e -> {
-			clickSound.stop();
-			clickSound.play();
-			Timeline delay = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
-				cleanup();
-				GameController.switchToPracticeGame1(stage);
-			}));
-			delay.play();
-		});
+        // =====================================
+        // ハイスコアアイコン
+        // =====================================
+        const scoreInfo = document.createElement("div");
+        scoreInfo.textContent = "🏆";
+        scoreInfo.className = "score-info";
 
-		btn2.setOnAction(e -> {
-			clickSound.stop();
-			clickSound.play();
-			Timeline delay = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
-				cleanup();
-				GameController.switchToPracticeGame2(stage);
-			}));
-			delay.play();
-		});
+        // =====================================
+        // ハイスコアツールチップ
+        // =====================================
+        const highScoreTip = document.createElement("div");
+        highScoreTip.className = "tooltip";
 
-		btn3.setOnAction(e -> {
-			clickSound.stop();
-			clickSound.play();
-			Timeline delay = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
-				cleanup();
-				GameController.switchToPracticeGame3(stage);
-			}));
-			delay.play();
-		});
+        highScoreTip.innerText =
+`★ HIGH SCORE ★
 
-		backButton.setOnAction(e -> {
-			cancelSound.stop();
-			cancelSound.play();
-			Timeline delay = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
-				cleanup();
-				try {
-					GameController.switchStart(stage);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}));
-			delay.play();
-		});
+STAGE1 : ${HighScoreManager.loadHighScore(1)}
 
-		// ステージボタンをまとめる箱
-		VBox stageButtons = new VBox(20, btn1, btn2, btn3);
-		stageButtons.setAlignment(Pos.CENTER);
+STAGE2 : ${HighScoreManager.loadHighScore(2)}
 
-		// 画面中央に並べるUI全体の箱（タイトル＋ステージボタン）
-		VBox uiContainer = new VBox(40, title, stageButtons);
-		uiContainer.setAlignment(Pos.CENTER);
+STAGE3 : ${HighScoreManager.loadHighScore(3)}`;
 
-		// 背景用の画像を読み込み
-		Image bgImage = new Image(Practice.class.getResourceAsStream("/picture/background.png"));
-		double bgWidth = bgImage.getWidth();
-		double bgHeight = bgImage.getHeight();
+        highScoreTip.style.display = "none";
 
-		Pane bgPane = new Pane();
-		final double[] scrollX = { 0 };
+        scoreInfo.addEventListener("click", (e) => {
 
-		// 背景アニメーション
-		this.timer = new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				scrollX[0] -= 1;
-				if (scrollX[0] <= -bgWidth) {
-					scrollX[0] = 0;
-				}
-				ImagePattern pattern = new ImagePattern(bgImage, scrollX[0], 0, bgWidth, bgHeight, false);
-				bgPane.setBackground(new Background(new BackgroundFill(pattern, null, null)));
-			}
-		};
+            if (highScoreTip.style.display === "block") {
 
-		// ハイスコア用ツールチップ設定
-		Tooltip highScoreTip = new Tooltip(
-				"★ HIGH SCORE ★\n\n"
-						+ "STAGE1 : " + HighScoreManager.loadHighScore(1)
-						+ "\n\nSTAGE2 : " + HighScoreManager.loadHighScore(2)
-						+ "\n\nSTAGE3 : " + HighScoreManager.loadHighScore(3));
+                highScoreTip.style.display = "none";
 
-		scoreInfo.setOnMouseClicked(e -> {
-			if (highScoreTip.isShowing()) {
-				highScoreTip.hide();
-			} else {
-				double x = e.getScreenX() - 350;
-				double y = e.getScreenY() + 20;
-				if (x < 20) {
-					x = 20;
-				}
-				highScoreTip.show(scoreInfo, x, y);
-			}
-		});
+            } else {
 
-		// レイヤー構造の組み立て
-		root.getChildren().addAll(bgPane, uiContainer, scoreInfo, backButton);
+                highScoreTip.style.left =
+                    `${Math.max(20, e.pageX - 350)}px`;
 
-		// 右上配置の固定パーツ（トロフィー）
-		StackPane.setAlignment(scoreInfo, Pos.TOP_RIGHT);
-		StackPane.setMargin(scoreInfo, new Insets(15, 15, 0, 0));
+                highScoreTip.style.top =
+                    `${e.pageY + 20}px`;
 
-		// 右下配置の固定パーツ（戻るボタン）
-		StackPane.setAlignment(backButton, Pos.BOTTOM_RIGHT);
-		StackPane.setMargin(backButton, new Insets(0, 30, 30, 0));
+                highScoreTip.style.display = "block";
+            }
+        });
 
+        // =====================================
+        // タイトルへ戻るボタン
+        // =====================================
+        const backButton = document.createElement("button");
+        backButton.textContent = "タイトルへ";
+        backButton.classList.add("game-button");
 
-		// ===== 📐 レスポンシブ対応の追加 📐 =====
+        // =====================================
+        // ステージボタンエリア
+        // =====================================
+        const stageButtons = document.createElement("div");
+        stageButtons.className = "stage-buttons";
 
-		// 1. 背景Paneをシーンサイズに追従させる
-		bgPane.prefWidthProperty().bind(scene.widthProperty());
-		bgPane.prefHeightProperty().bind(scene.heightProperty());
+        stageButtons.appendChild(btn1);
+        stageButtons.appendChild(btn2);
+        stageButtons.appendChild(btn3);
 
-		// 2. メインUIコンテナの横幅を画面の90%に制限（スマホでの横はみ出し防止）
-		ResponsiveUtil.bindMaxWidth(uiContainer, scene.widthProperty(), 0.9);
+        // =====================================
+        // 中央UI
+        // =====================================
+        const uiContainer = document.createElement("div");
+        uiContainer.className = "ui-container";
 
-		// 3. タイトル文字の大きさを画面幅の4.8%に可変（最小24px〜最大48px）
-		title.styleProperty().bind(
-			javafx.beans.binding.Bindings.concat(
-				"-fx-font-family: 'PixelMplus12'; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,120,220,0.8), 20, 0.6, 0, 3); -fx-font-size: ",
-				javafx.beans.binding.Bindings.max(24, scene.widthProperty().multiply(0.048)).asString("%.0fpx;")
-			)
-		);
+        uiContainer.appendChild(title);
+        uiContainer.appendChild(stageButtons);
 
-		// 4. トロフィーアイコンの大きさを画面幅の5%に可変（最小24px〜最大50px）
-		scoreInfo.styleProperty().bind(
-			javafx.beans.binding.Bindings.concat(
-				"-fx-text-fill: gold; -fx-font-size: ",
-				javafx.beans.binding.Bindings.max(24, scene.widthProperty().multiply(0.05)).asString("%.0fpx;")
-			)
-		);
+        // =====================================
+        // STAGE1
+        // =====================================
+        btn1.addEventListener("click", () => {
 
-		// 5. ステージボタン群（btn1〜3）を画面幅の35%、高さ10%に追従（スマホ用の最小サイズも確保）
-		for (Button b : new Button[] { btn1, btn2, btn3 }) {
-			ResponsiveUtil.bindPrefSize(b, scene.widthProperty(), 0.35, scene.heightProperty(), 0.10, 160, 44);
-			ResponsiveUtil.bindButtonFontAndPadding(b, scene.widthProperty(), 14, 0.045, 26, 8, 0.02, 20);
-		}
+            this.clickSound.pause();
+            this.clickSound.currentTime = 0;
+            this.clickSound.play();
 
-		// 6. 戻るボタンを画面幅の20%、高さ7%に追従（最小サイズ 120x36）
-		ResponsiveUtil.bindPrefSize(backButton, scene.widthProperty(), 0.20, scene.heightProperty(), 0.07, 120, 36);
-		ResponsiveUtil.bindButtonFontAndPadding(backButton, scene.widthProperty(), 12, 0.035, 20, 6, 0.015, 14);
+            setTimeout(() => {
 
-		// 7. ツールチップのフォントサイズ動的リサイズ（元のロジックを流用）
-		double initialFontSize = Math.max(18, scene.getWidth() * 0.02);
-		highScoreTip.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:" + (int) initialFontSize + "px;"
-				+ "-fx-background-color:rgba(0,0,0,0.95);" + "-fx-text-fill:white;" + "-fx-padding:15;");
+                this.cleanup();
 
-		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
-			double newFontSize = Math.max(18, newVal.doubleValue() * 0.02);
-			highScoreTip.setStyle("-fx-font-family:'PixelMplus12';" + "-fx-font-size:" + (int) newFontSize + "px;"
-					+ "-fx-background-color:rgba(0,0,0,0.95);" + "-fx-text-fill:white;" + "-fx-padding:15;");
-		});
+                GameController.switchToPracticeGame1();
 
-		// ===== レスポンシブ対応ここまで =====
+            }, 500);
 
+        });
 
-		// CSSを接続
-		var cssUrl = getClass().getResource("/css/style.css");
-		if (cssUrl != null) {
-			scene.getStylesheets().add(cssUrl.toExternalForm());
-		}
+        // =====================================
+        // STAGE2
+        // =====================================
+        btn2.addEventListener("click", () => {
 
-		// ウィンドウサイズ制限をスマホ対応に変更
-		stage.setMinWidth(320);
-		stage.setMinHeight(480);
-		// 最大サイズ制限は解除し、ブラウザいっぱいに広げられるようにする
+            this.clickSound.pause();
+            this.clickSound.currentTime = 0;
+            this.clickSound.play();
 
-		return scene;
-	}
+            setTimeout(() => {
 
-	public static void main(String[] args) {
-		launch();
-	}
+                this.cleanup();
+
+                GameController.switchToPracticeGame2();
+
+            }, 500);
+
+        });
+
+        // =====================================
+        // STAGE3
+        // =====================================
+        btn3.addEventListener("click", () => {
+
+            this.clickSound.pause();
+            this.clickSound.currentTime = 0;
+            this.clickSound.play();
+
+            setTimeout(() => {
+
+                this.cleanup();
+
+                GameController.switchToPracticeGame3();
+
+            }, 500);
+
+        });
+
+        // =====================================
+        // タイトルへ戻る
+        // =====================================
+        backButton.addEventListener("click", () => {
+
+            this.cancelSound.pause();
+            this.cancelSound.currentTime = 0;
+            this.cancelSound.play();
+
+            setTimeout(() => {
+
+                this.cleanup();
+
+                GameController.switchStart();
+
+            }, 500);
+
+        });
+
+        // =====================================
+        // 背景スクロールアニメーション
+        // =====================================
+        let bgPosition = 0;
+
+        const animateBackground = () => {
+
+            bgPosition--;
+
+            bgPane.style.backgroundPositionX =
+                `${bgPosition}px`;
+
+            this.animationId =
+                requestAnimationFrame(animateBackground);
+
+        };
+
+        animateBackground();
+
+        // =====================================
+        // レスポンシブ処理
+        // =====================================
+        const updateResponsive = () => {
+
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            // タイトルサイズ
+            const titleSize =
+                Math.max(24, width * 0.048);
+
+            title.style.fontSize =
+                `${Math.min(titleSize, 48)}px`;
+
+            // トロフィーサイズ
+            scoreInfo.style.fontSize =
+                `${Math.max(24, width * 0.05)}px`;
+
+            // ステージボタン
+            const stageWidth =
+                Math.max(160, width * 0.35);
+
+            const stageHeight =
+                Math.max(44, height * 0.10);
+
+            [btn1, btn2, btn3].forEach(btn => {
+
+                btn.style.width =
+                    `${stageWidth}px`;
+
+                btn.style.height =
+                    `${stageHeight}px`;
+
+                btn.style.fontSize =
+                    `${Math.min(
+                        26,
+                        Math.max(14, width * 0.045)
+                    )}px`;
+            });
+
+            // 戻るボタン
+            backButton.style.width =
+                `${Math.max(120, width * 0.20)}px`;
+
+            backButton.style.height =
+                `${Math.max(36, height * 0.07)}px`;
+
+            backButton.style.fontSize =
+                `${Math.min(
+                    20,
+                    Math.max(12, width * 0.035)
+                )}px`;
+
+            // ツールチップ
+            const tooltipFontSize =
+                Math.max(18, width * 0.02);
+
+            highScoreTip.style.fontSize =
+                `${tooltipFontSize}px`;
+        };
+
+        updateResponsive();
+
+        window.addEventListener(
+            "resize",
+            updateResponsive
+        );
+
+        // =====================================
+        // レイヤー組み立て
+        // =====================================
+        root.appendChild(bgPane);
+        root.appendChild(uiContainer);
+        root.appendChild(scoreInfo);
+        root.appendChild(backButton);
+        root.appendChild(highScoreTip);
+
+        // =====================================
+        // bodyに配置
+        // =====================================
+        document.body.innerHTML = "";
+        document.body.appendChild(root);
+
+        return root;
+    }
 }

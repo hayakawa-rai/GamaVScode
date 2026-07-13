@@ -1,252 +1,395 @@
-package story;
+/**
+ * Stage2クリア画面
+ * JavaFX版 Stageclear2.java を JavaScript化
+ */
+class Stageclear2 {
 
-import control.GameController;
-import javafx.animation.PauseTransition;
-import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+    constructor() {
 
-public class Stageclear2 extends Application {
+        // 効果音
+        this.clearSound = null;
+        this.clickSound = null;
+        this.cancelSound = null;
 
-	private AudioClip clearSound;
-	private AudioClip clickSound;
-	private AudioClip cancelSound;
-	private int score = 0;
-	private PauseTransition delay;
-	private PauseTransition pause;
-	private Stage stage;
+        // スコア
+        this.score = 0;
 
-	public Stageclear2() {
-		// 引数なしコンストラクタ（JProの動的生成に必須）
-	}
+        // タイマー管理
+        this.delayTimeout = null;
+        this.pauseTimeout = null;
+    }
 
-	// 💡【JPro対応】外部からStageとスコアを安全に引き継いで開始する静的メソッド
-	public static void createAndStart(Stage currentStage, int finalScore) {
-		if (currentStage == null) 
-			return;
+    /**
+     * スコア設定
+     */
+    setScore(score) {
+        this.score = score;
+    }
 
-		Stageclear2 instance = new Stageclear2();
-		instance.stage = currentStage;
-		instance.setScore(finalScore); // スコアを確実に格納
+    /**
+     * Java版 createAndStart()
+     */
+    static createAndStart(finalScore) {
 
-		// Stageとスコアがセットされた状態でSceneを構築
-		Scene newScene = instance.clear(currentStage);
+        const instance = new Stageclear2();
 
-		// 2. setRootではなく、Stageに対してSceneごと安全に丸ごと差し替える
-		currentStage.setScene(newScene);
-		currentStage.setTitle("stage2CLEAR");
-		currentStage.centerOnScreen();
-		currentStage.show();
-	}
+        instance.setScore(finalScore);
 
-	private void cleanup() {
-		if (delay != null) {
-			delay.stop();
-			delay = null;
-		}
-		if (pause != null) {
-			pause.stop();
-			pause = null;
-		}
-		if (clearSound != null) {
-			clearSound.stop();
-			clearSound = null;
-		}
-		if (clickSound != null) {
-			clickSound.stop();
-			clickSound = null;
-		}
-		if (cancelSound != null) {
-			cancelSound.stop();
-			cancelSound = null;
-		}
-	}
+        instance.createScene();
+    }
 
-	@Override
-	public void start(Stage stage) {
-		this.stage = stage;
-		stage.setTitle("stage2CLEAR");
-		stage.setScene(clear(stage));
-		stage.centerOnScreen();
-		stage.show();
-	}
-	
-	public Scene clear() {
-		return clear(this.stage);
-	}
+    /**
+     * 後始末
+     */
+    cleanup() {
 
-	public Scene clear(Stage currentStage) {
-		if (currentStage != null) {
-			this.stage = currentStage;
-		}
+        if (this.delayTimeout) {
+            clearTimeout(this.delayTimeout);
+            this.delayTimeout = null;
+        }
 
-		// ⭕【JPro対応】クリア音の読み込みをtry-catchで保護
-		try {
-			var yayUrl = getClass().getResource("/music/yay.mp3");
-			if (yayUrl != null) {
-				clearSound = new AudioClip(yayUrl.toExternalForm());
-				clearSound.setVolume(0.5);
-			}
-		} catch (Exception e) {
-			System.err.println("クリア音の読み込みに失敗しました: " + e.getMessage());
-		}
+        if (this.pauseTimeout) {
+            clearTimeout(this.pauseTimeout);
+            this.pauseTimeout = null;
+        }
 
-		delay = new PauseTransition(Duration.seconds(0.5));
-		delay.setOnFinished(e -> {
-			if (clearSound != null) {
-				clearSound.play();
-			}
-		});
-		delay.play();
+        if (this.clearSound) {
+            this.clearSound.pause();
+            this.clearSound.currentTime = 0;
+        }
 
-		// ⭕【エラー修正】全角スペースや特殊な非表示スペースを除去し、安全な半角スペースに統一
-		Text title = new Text("STAGE2    CLEAR!");
-		title.setStyle("-fx-fill: rgb(180,180,180);");
+        if (this.clickSound) {
+            this.clickSound.pause();
+            this.clickSound.currentTime = 0;
+        }
 
-		Text text = new Text("契約書を獲得しました！！");
-		text.setStyle("-fx-fill: gray;");
+        if (this.cancelSound) {
+            this.cancelSound.pause();
+            this.cancelSound.currentTime = 0;
+        }
+    }
 
-		// ⭕【JPro対応】getResourceAsStream に修正して画像の生読み込みを安全化
-		ImageView imageView = new ImageView();
-		try {
-			var imgStream = getClass().getResourceAsStream("/picture/keiyakusho.png");
-			if (imgStream != null) {
-				imageView.setImage(new Image(imgStream));
-			}
-		} catch (Exception e) {
-			System.err.println("契約書画像の読み込みに失敗しました: " + e.getMessage());
-		}
+    /**
+     * 画面生成
+     */
+    createScene() {
 
-		HBox textAndImage = new HBox();
-		textAndImage.setSpacing(10);
-		textAndImage.setAlignment(Pos.CENTER);
-		textAndImage.getChildren().addAll(imageView, text);
+        // =====================================
+        // クリア音読み込み
+        // =====================================
+        try {
 
-		// ⭕【JPro対応】効果音（クリック・キャンセル）の読み込みをtry-catchで一括保護
-		try {
-			var selectUrl = getClass().getResource("/music/select.mp3");
-			if (selectUrl != null) {
-				clickSound = new AudioClip(selectUrl.toExternalForm());
-				clickSound.setVolume(0.4);
-			}
-		} catch (Exception e) {
-			System.err.println("選択SEの読み込みに失敗しました: " + e.getMessage());
-		}
-		
-		try {
-			var cancelUrl = getClass().getResource("/music/cancel.mp3");
-			if (cancelUrl != null) {
-				cancelSound = new AudioClip(cancelUrl.toExternalForm());
-				cancelSound.setVolume(0.4);
-			}
-		} catch (Exception e) {
-			System.err.println("キャンセルSEの読み込みに失敗しました: " + e.getMessage());
-		}
+            this.clearSound =
+                new Audio("music/yay.mp3");
 
-		// 次に進むボタン
-		Button next = new Button("次のステージへ");
-		next.getStyleClass().add("game-button2");
-		next.setOnAction(e -> {
-			// 音を再生（Nullチェックをして安全に再生・停止）
-			if (clickSound != null) {
-				clickSound.stop();
-				clickSound.play();
-			}
+            this.clearSound.volume = 0.5;
 
-			// 0.5秒待つ（タイマー開始）
-			pause = new PauseTransition(Duration.seconds(0.5));
-			
-			// 待った後に画面遷移
-			pause.setOnFinished(ev -> {
-				try {
-					cleanup();
-					GameController.switchStory3(this.stage);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			});
-			pause.play();
-		});
+        } catch (e) {
 
-		// スコア表示
-		Text scoreLabel = new Text("SCORE: " + this.score);
-		scoreLabel.setStyle("-fx-fill: gray;");
-		
-		// 戻るボタン
-		Button backButton = new Button("タイトルへ");
-		backButton.getStyleClass().add("game-button2");
-		backButton.setOnAction(e -> {
-			if (cancelSound != null) {
-				cancelSound.stop();
-				cancelSound.play();
-			}
+            console.error(
+                "クリア音の読み込みに失敗しました",
+                e
+            );
+        }
 
-			pause = new PauseTransition(Duration.seconds(0.5));
-			pause.setOnFinished(ev -> {
-				try {
-					cleanup();
-					GameController.switchStart(this.stage);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			});
-			pause.play();
-		});
+        // =====================================
+        // 決定音読み込み
+        // =====================================
+        try {
 
-		// 全パーツを格納するコンテナ
-		VBox buttonBox = new VBox(20);
-		buttonBox.setAlignment(Pos.CENTER);
-		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
+            this.clickSound =
+                new Audio("music/select.mp3");
 
-		StackPane root = new StackPane();
-		root.getChildren().add(buttonBox);
-		
-		Scene scene = new Scene(root, 1000, 800);
-		
-		// ⭕【JPro対応】CSS読み込みに安全対策を追加
-		var cssUrl = getClass().getResource("/css/style.css");
-		if (cssUrl != null) {
-			scene.getStylesheets().add(cssUrl.toExternalForm());
-		}
+            this.clickSound.volume = 0.4;
 
-		// ブラウザの画面リサイズに追従する動的バインディング
-		title.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: rgb(180,180,180); -fx-font-weight: bold;",scene.widthProperty().multiply(0.06)));
-		text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray;", scene.widthProperty().multiply(0.015)));
-		scoreLabel.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray; -fx-font-weight: bold;",scene.widthProperty().multiply(0.02)));
+        } catch (e) {
 
-		imageView.fitWidthProperty().bind(scene.widthProperty().multiply(0.15));
-		imageView.fitHeightProperty().bind(scene.heightProperty().multiply(0.18));
-		imageView.setPreserveRatio(true);
+            console.error(
+                "選択SEの読み込みに失敗しました",
+                e
+            );
+        }
 
-		next.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
-		next.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
-		backButton.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
-		backButton.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
+        // =====================================
+        // キャンセル音読み込み
+        // =====================================
+        try {
 
-		next.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
-		backButton.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
+            this.cancelSound =
+                new Audio("music/cancel.mp3");
 
-		if (this.stage != null) {
-			this.stage.setMinWidth(1000);
-			this.stage.setMinHeight(800);
-			this.stage.setMaxWidth(1920);
-			this.stage.setMaxHeight(1080);
-		}
-		return scene;
-	}
-	
-	public void setScore(int score) {
-		this.score = score;
-	}
+            this.cancelSound.volume = 0.4;
+
+        } catch (e) {
+
+            console.error(
+                "キャンセルSEの読み込みに失敗しました",
+                e
+            );
+        }
+
+        // =====================================
+        // 0.5秒後にクリア音再生
+        // =====================================
+        this.delayTimeout = setTimeout(() => {
+
+            if (this.clearSound) {
+                this.clearSound.play();
+            }
+
+        }, 500);
+
+        // =====================================
+        // ルートコンテナ
+        // =====================================
+        const root =
+            document.createElement("div");
+
+        root.className =
+            "stageclear-root";
+
+        // =====================================
+        // タイトル
+        // =====================================
+        const title =
+            document.createElement("h1");
+
+        title.textContent =
+            "STAGE2 CLEAR!";
+
+        title.style.color =
+            "rgb(180,180,180)";
+
+        // =====================================
+        // 説明文
+        // =====================================
+        const text =
+            document.createElement("div");
+
+        text.textContent =
+            "契約書を獲得しました！！";
+
+        text.style.color =
+            "gray";
+
+        // =====================================
+        // 契約書画像
+        // =====================================
+        const imageView =
+            document.createElement("img");
+
+        try {
+
+            imageView.src =
+                "picture/keiyakusho.png";
+
+        } catch (e) {
+
+            console.error(
+                "契約書画像の読み込みに失敗しました",
+                e
+            );
+        }
+
+        // =====================================
+        // 横並びコンテナ(HBox)
+        // =====================================
+        const textAndImage =
+            document.createElement("div");
+
+        textAndImage.style.display = "flex";
+        textAndImage.style.flexDirection = "row";
+        textAndImage.style.alignItems = "center";
+        textAndImage.style.justifyContent = "center";
+        textAndImage.style.gap = "10px";
+
+        textAndImage.appendChild(imageView);
+        textAndImage.appendChild(text);
+
+        // =====================================
+        // スコア表示
+        // =====================================
+        const scoreLabel =
+            document.createElement("div");
+
+        scoreLabel.textContent =
+            `SCORE: ${this.score}`;
+
+        scoreLabel.style.color =
+            "gray";
+
+        // =====================================
+        // 次のステージへボタン
+        // =====================================
+        const next =
+            document.createElement("button");
+
+        next.textContent =
+            "次のステージへ";
+
+        next.classList.add(
+            "game-button2"
+        );
+
+        next.addEventListener(
+            "click",
+            () => {
+
+                if (this.clickSound) {
+
+                    this.clickSound.pause();
+                    this.clickSound.currentTime = 0;
+
+                    this.clickSound.play();
+                }
+
+                // 0.5秒待つ
+                this.pauseTimeout =
+                    setTimeout(() => {
+
+                        this.cleanup();
+
+                        // Story3へ遷移
+                        GameController.switchStory3();
+
+                    }, 500);
+            }
+        );
+
+        // =====================================
+        // タイトルへ戻るボタン
+        // =====================================
+        const backButton =
+            document.createElement("button");
+
+        backButton.textContent =
+            "タイトルへ";
+
+        backButton.classList.add(
+            "game-button2"
+        );
+
+        backButton.addEventListener(
+            "click",
+            () => {
+
+                if (this.cancelSound) {
+
+                    this.cancelSound.pause();
+                    this.cancelSound.currentTime = 0;
+
+                    this.cancelSound.play();
+                }
+
+                this.pauseTimeout =
+                    setTimeout(() => {
+
+                        this.cleanup();
+
+                        GameController.switchStart();
+
+                    }, 500);
+            }
+        );
+
+        // =====================================
+        // VBox相当
+        // =====================================
+        const buttonBox =
+            document.createElement("div");
+
+        buttonBox.style.display = "flex";
+        buttonBox.style.flexDirection = "column";
+        buttonBox.style.alignItems = "center";
+        buttonBox.style.justifyContent = "center";
+        buttonBox.style.gap = "20px";
+
+        buttonBox.appendChild(title);
+        buttonBox.appendChild(textAndImage);
+        buttonBox.appendChild(scoreLabel);
+        buttonBox.appendChild(next);
+        buttonBox.appendChild(backButton);
+
+        root.appendChild(buttonBox);
+
+        // =====================================
+        // JavaFX Bindings の代替
+        // レスポンシブ処理
+        // =====================================
+        const updateResponsive = () => {
+
+            const width =
+                window.innerWidth;
+
+            const height =
+                window.innerHeight;
+
+            // タイトル
+            title.style.fontSize =
+                `${width * 0.06}px`;
+
+            title.style.fontWeight =
+                "bold";
+
+            // 説明文
+            text.style.fontSize =
+                `${width * 0.015}px`;
+
+            // スコア
+            scoreLabel.style.fontSize =
+                `${width * 0.02}px`;
+
+            scoreLabel.style.fontWeight =
+                "bold";
+
+            // 画像サイズ
+            imageView.style.width =
+                `${width * 0.15}px`;
+
+            imageView.style.height =
+                `${height * 0.18}px`;
+
+            imageView.style.objectFit =
+                "contain";
+
+            // 次へボタン
+            next.style.width =
+                `${width * 0.17}px`;
+
+            next.style.height =
+                `${height * 0.09}px`;
+
+            // 戻るボタン
+            backButton.style.width =
+                `${width * 0.17}px`;
+
+            backButton.style.height =
+                `${height * 0.09}px`;
+
+            // ボタン文字
+            next.style.fontSize =
+                `${width * 0.013}px`;
+
+            backButton.style.fontSize =
+                `${width * 0.013}px`;
+        };
+
+        // 初回実行
+        updateResponsive();
+
+        // リサイズ時再計算
+        window.addEventListener(
+            "resize",
+            updateResponsive
+        );
+
+        // =====================================
+        // 画面表示
+        // =====================================
+        document.body.innerHTML = "";
+
+        document.body.appendChild(root);
+
+        return root;
+    }
 }

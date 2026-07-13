@@ -1,5 +1,6 @@
 // ==================================================
 // 主人公（仙石さん）クラス
+//
 // プレイヤーの移動、残機管理、スコア管理、
 // FEVER状態、死亡アニメーションの管理を行う
 // ==================================================
@@ -23,7 +24,7 @@ class Syujinkou extends Character {
         this.score = 0;
 
         // 生存状態
-        this.isAliveFlag = true;
+        this.alive = true;
 
         // FEVER状態
         this.fever = false;
@@ -69,7 +70,7 @@ class Syujinkou extends Character {
     // ポジション
     // ==================================================
 
-    // 初期位置へ戻す
+    // 初期位置に戻すリセットメソッド
     resetToStartPosition() {
 
         this.x = this.startX;
@@ -112,7 +113,7 @@ class Syujinkou extends Character {
         this.score += point;
     }
 
-    // 死亡アニメーション更新
+    // 死亡アニメーションの更新
     updateDyingAnimation() {
 
         if (!this.isDyingAnimationFlag) {
@@ -130,7 +131,7 @@ class Syujinkou extends Character {
         return true;
     }
 
-    // 残機を1つ減らす
+    // 残機を1つ減らすメソッド
     decreaseHp() {
 
         if (this.hp > 0) {
@@ -138,7 +139,7 @@ class Syujinkou extends Character {
             this.hp--;
 
             if (this.hp <= 0) {
-                this.isAliveFlag = false;
+                this.alive = false;
             }
         }
     }
@@ -152,4 +153,119 @@ class Syujinkou extends Character {
 
             if (this.hp === 0) {
                 this.die();
-        
+            }
+        }
+    }
+
+    // ==================================================
+    // 動き
+    // ==================================================
+
+    // プレイヤー移動処理
+    move(map) {
+
+        // 死亡中は移動禁止
+        if (
+            this.isDyingAnimationFlag ||
+            !this.isAlive()
+        ) {
+            return;
+        }
+
+        // 曲がれる場合は方向転換
+        if (
+            this.isAligned() &&
+            this.canMove(this.nextdirection, map)
+        ) {
+
+            this.direction = this.nextdirection;
+
+            // マスの中心へ補正
+            this.x =
+                Math.round(
+                    this.x / Syujinkou.CELL_SIZE
+                ) * Syujinkou.CELL_SIZE;
+
+            this.y =
+                Math.round(
+                    this.y / Syujinkou.CELL_SIZE
+                ) * Syujinkou.CELL_SIZE;
+        }
+
+        // 現在の方向が壁なら停止
+        if (
+            !this.canMove(
+                this.direction,
+                map
+            )
+        ) {
+            this.direction = Direction.NONE;
+        }
+
+        // 移動
+        if (
+            this.direction !== Direction.NONE
+        ) {
+
+            this.x +=
+                this.direction.getDX() *
+                this.speed;
+
+            this.y +=
+                this.direction.getDY() *
+                this.speed;
+        }
+    }
+
+    // 指定方向へ進めるか判定
+    canMove(direction, map) {
+
+        if (direction === Direction.NONE) {
+            return false;
+        }
+
+        // 進行方向の先端座標を計算
+        let checkX = this.x;
+        let checkY = this.y;
+
+        if (direction === Direction.RIGHT) {
+
+            // 右端 + speed分先
+            checkX =
+                this.x +
+                Syujinkou.CELL_SIZE -
+                1 +
+                this.speed;
+
+        } else if (
+            direction === Direction.LEFT
+        ) {
+
+            // 左端 - speed分先
+            checkX =
+                this.x -
+                this.speed;
+
+        } else if (
+            direction === Direction.DOWN
+        ) {
+
+            // 下端 + speed分先
+            checkY =
+                this.y +
+                Syujinkou.CELL_SIZE -
+                1 +
+                this.speed;
+
+        } else if (
+            direction === Direction.UP
+        ) {
+
+            // 上端 - speed分先
+            checkY =
+                this.y -
+                this.speed;
+        }
+
+        const checkCol = Math.floor(
+            checkX / Syujinkou.CELL_SIZE

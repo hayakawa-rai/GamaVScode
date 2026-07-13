@@ -1,68 +1,90 @@
-package Items;
+// フルーツアイテム
+class Fruit extends Item {
 
-import Characters.Syujinkou;
-import javafx.scene.canvas.GraphicsContext;
-import start.SoundManager;
+    // =========================
+    // コンストラクタ
+    // =========================
+    constructor(type) {
 
-public class Fruit extends Item {
-    private final FruitType type;
-    
-    //タイマー用変数
-    private int remainingTicks; // 残りフレーム数（60FPSなら600で10秒）
-    private boolean isExpired = false;
-    
-    // ==================================================
- 	// コンストラクタ
- 	// ==================================================
-    public Fruit(FruitType type) {
+        // Itemクラスへスコアを渡す
         super(type.getScore(), null);
+
+        // フルーツ種類を保存
         this.type = type;
-        this.remainingTicks = 600; // 10秒間表示
-    }
-    
-    // ==================================================
- 	// 更新処理
- 	// ==================================================
-    public void update() {
-        if (remainingTicks > 0) {
-            remainingTicks--;
-        } else {
-            isExpired = true;
-        }
-    }
-    
-    // ==================================================
- 	// 食べる処理
- 	// ==================================================
-    @Override
-    public void onEaten(Syujinkou player) {
-        player.addScore(score);
-        SoundManager.play(SoundManager.FRUIT_EAT); 
-        System.out.println(type + "を食べた！ +" + score + "点");
-    }
-    
-    // ==================================================
- 	// 描画処理
- 	// ==================================================
-    @Override
-    public void draw(GraphicsContext gc, double x, double y, double tileSize) {
-        // 残り2秒（120フレーム）以下になったら点滅させる演出（お好みで）
-        if (remainingTicks < 120 && (remainingTicks / 10) % 2 == 0) {
-            return; // 描画をスキップして点滅させる
-        }
-        gc.drawImage(
-                type.getImage(),
-                x + tileSize * 0.1,
-                y + tileSize * 0.1,
-                tileSize * 0.9,
-                tileSize * 0.9
-        	);    
+
+        // 残り表示時間（60FPS基準で約10秒）
+        this.remainingTicks = 600;
+
+        // 消滅フラグ
+        this.isExpired = false;
     }
 
-    public boolean isExpired() { return isExpired; }
-    
-    // ==================================================
- 	// getter
- 	// ==================================================
-    public FruitType getType() { return type; }
+    // =========================
+    // 更新処理
+    // =========================
+    update() {
+
+        if (this.remainingTicks > 0) {
+            this.remainingTicks--;
+        } else {
+            this.isExpired = true;
+        }
+    }
+
+    // =========================
+    // 食べる処理
+    // =========================
+    onEaten(player) {
+
+        // スコア加算
+        player.addScore(this.score);
+
+        // 効果音再生
+        SoundManager.play(SoundManager.FRUIT_EAT);
+
+        console.log(
+            this.type +
+            "を食べた！ +" +
+            this.score +
+            "点"
+        );
+    }
+
+    // =========================
+    // 描画処理
+    // =========================
+    draw(ctx, x, y, tileSize) {
+
+        // 残り2秒以下で点滅演出
+        if (
+            this.remainingTicks < 120 &&
+            Math.floor(this.remainingTicks / 10) % 2 === 0
+        ) {
+            return;
+        }
+
+        ctx.drawImage(
+            this.type.getImage(),
+            x + tileSize * 0.1,
+            y + tileSize * 0.1,
+            tileSize * 0.9,
+            tileSize * 0.9
+        );
+    }
+
+    // =========================
+    // getter
+    // =========================
+
+    // 消滅したか
+    isExpiredFruit() {
+        return this.isExpired;
+    }
+
+    // フルーツ種類
+    getType() {
+        return this.type;
+    }
 }
+
+export default Fruit;

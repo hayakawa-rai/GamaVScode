@@ -1,252 +1,212 @@
-package story;
+/**
+ * Stage1クリア画面
+ * JavaFX版 Stageclear1.java を JavaScript化
+ */
+class Stageclear1 {
 
-import control.GameController;
-import javafx.animation.PauseTransition;
-import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+    constructor() {
 
-public class Stageclear1 extends Application {
+        // 効果音
+        this.clearSound = null;
+        this.clickSound = null;
+        this.cancelSound = null;
 
-	private AudioClip clearSound;
-	private AudioClip clickSound;
-	private AudioClip cancelSound;
-	private int score = 0;
-	private PauseTransition delay;
-	private PauseTransition pause;
-	private Stage stage;
+        // スコア
+        this.score = 0;
 
-	public Stageclear1() {
-		// 引数なしコンストラクタ（JProの動的生成に必須）
-	}
+        // タイマーID管理
+        this.delayTimeout = null;
+        this.pauseTimeout = null;
+    }
 
-	// 💡【JPro対応】外部からStageとスコアを安全に引き継いで開始する静的メソッド
-	public static void createAndStart(Stage currentStage, int finalScore) {
-		if (currentStage == null)
-			return;
+    /**
+     * スコア設定
+     */
+    setScore(score) {
+        this.score = score;
+    }
 
-		Stageclear1 instance = new Stageclear1();
-		instance.setScore(finalScore);
-		instance.stage = currentStage;// スコアを確実に格納
+    /**
+     * Java版 createAndStart() 相当
+     *
+     * @param {number} finalScore
+     */
+    static createAndStart(finalScore) {
 
-		// 1. ボタンやテキストが含まれる新しいSceneを完全に作成
-		Scene newScene = instance.clear(currentStage);
+        const instance = new Stageclear1();
 
-		// 2. setRootではなく、Stageに対してSceneごと安全に丸ごと差し替える
-		currentStage.setScene(newScene);
-		currentStage.setTitle("stage1CLEAR");
-		currentStage.centerOnScreen();
-		currentStage.show();
-	}
+        instance.setScore(finalScore);
 
-	private void cleanup() {
-		if (delay != null) {
-			delay.stop();
-			delay = null;
-		}
-		if (pause != null) {
-			pause.stop();
-			pause = null;
-		}
-		if (clearSound != null) {
-			clearSound.stop();
-			clearSound = null;
-		}
-		if (clickSound != null) {
-			clickSound.stop();
-			clickSound = null;
-		}
-		if (cancelSound != null) {
-			cancelSound.stop();
-			cancelSound = null;
-		}
-	}
+        instance.createScene();
+    }
 
-	@Override
-	public void start(Stage stage) {
-		this.stage = stage;
-		stage.setTitle("stage1CLEAR");
-		stage.setScene(clear(stage));
-		stage.centerOnScreen();
-		stage.show();
-	}
+    /**
+     * 後始末
+     */
+    cleanup() {
 
-	public Scene clear() {
-		return clear(this.stage);
-	}
+        if (this.delayTimeout) {
+            clearTimeout(this.delayTimeout);
+            this.delayTimeout = null;
+        }
 
-	public Scene clear(Stage currentStage) {
-		if (currentStage != null) {
-			this.stage = currentStage;
-		}
+        if (this.pauseTimeout) {
+            clearTimeout(this.pauseTimeout);
+            this.pauseTimeout = null;
+        }
 
-		// ⭕【JPro対応】クリア音の読み込みをtry-catchで保護
-		try {
-			var yayUrl = getClass().getResource("/music/yay.mp3");
-			if (yayUrl != null) {
-				clearSound = new AudioClip(yayUrl.toExternalForm());
-				clearSound.setVolume(0.5);
-			}
-		} catch (Exception e) {
-			System.err.println("クリア音の読み込みに失敗しました: " + e.getMessage());
-		}
+        // クリア音停止
+        if (this.clearSound) {
+            this.clearSound.pause();
+            this.clearSound.currentTime = 0;
+        }
 
-		delay = new PauseTransition(Duration.seconds(0.5));
-		delay.setOnFinished(e -> {
-			if (clearSound != null) {
-				clearSound.play();
-			}
-		});
-		delay.play();
+        // 決定音停止
+        if (this.clickSound) {
+            this.clickSound.pause();
+            this.clickSound.currentTime = 0;
+        }
 
-		// テキスト類
-		Text title = new Text("STAGE1    CLEAR!");
-		title.setStyle("-fx-fill: rgb(180,180,180);");
+        // キャンセル音停止
+        if (this.cancelSound) {
+            this.cancelSound.pause();
+            this.cancelSound.currentTime = 0;
+        }
+    }
 
-		Text text = new Text("鍵を獲得しました！！");
-		text.setStyle("-fx-fill: gray;");
+    /**
+     * 画面作成
+     */
+    createScene() {
 
-		// ⭕【JPro対応】getResourceAsStream に修正して画像の生読み込みを安全化
-		ImageView imageView = new ImageView();
-		try {
-			var imgStream = getClass().getResourceAsStream("/picture/kagi.png");
-			if (imgStream != null) {
-				imageView.setImage(new Image(imgStream));
-			}
-		} catch (Exception e) {
-			System.err.println("鍵画像の読み込みに失敗しました: " + e.getMessage());
-		}
+        // =====================================
+        // 効果音読み込み
+        // =====================================
+        try {
 
-		HBox textAndImage = new HBox();
-		textAndImage.setSpacing(10);
-		textAndImage.setAlignment(Pos.CENTER);
-		textAndImage.getChildren().addAll(imageView, text);
+            this.clearSound =
+                new Audio("music/yay.mp3");
 
-		// ⭕【JPro対応】効果音（クリック・キャンセル）の読み込みをtry-catchで一括保護
-		try {
-			var selectUrl = getClass().getResource("/music/select.mp3");
-			if (selectUrl != null) {
-				clickSound = new AudioClip(selectUrl.toExternalForm());
-				clickSound.setVolume(0.4);
-			}
-		} catch (Exception e) {
-			System.err.println("選択SEの読み込みに失敗しました: " + e.getMessage());
-		}
+            this.clearSound.volume = 0.5;
 
-		try {
-			var cancelUrl = getClass().getResource("/music/cancel.mp3");
-			if (cancelUrl != null) {
-				cancelSound = new AudioClip(cancelUrl.toExternalForm());
-				cancelSound.setVolume(0.4);
-			}
-		} catch (Exception e) {
-			System.err.println("キャンセルSEの読み込みに失敗しました: " + e.getMessage());
-		}
+        } catch (e) {
 
-		// 次に進むボタン
-		Button next = new Button("次のステージへ");
-		next.getStyleClass().add("game-button2");
-		next.setOnAction(e -> {
-			// 音を再生（Nullチェックをして安全に再生・停止）
-			if (clickSound != null) {
-				clickSound.stop();
-				clickSound.play();
-			}
+            console.error(
+                "クリア音の読み込みに失敗しました",
+                e
+            );
+        }
 
-			// 0.5秒待つ（タイマー開始）
-			pause = new PauseTransition(Duration.seconds(0.5));
+        try {
 
-			// 待った後に画面遷移
-			pause.setOnFinished(ev -> {
-				try {
-					cleanup();
-					GameController.switchStory2(this.stage);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			});
-			pause.play();
-		});
+            this.clickSound =
+                new Audio("music/select.mp3");
 
-		// スコア表示
-		Text scoreLabel = new Text("SCORE: " + this.score);
-		scoreLabel.setStyle("-fx-fill:  gray;");
+            this.clickSound.volume = 0.4;
 
-		// 戻るボタン
-		Button backButton = new Button("タイトルへ");
-		backButton.getStyleClass().add("game-button2");
-		backButton.setOnAction(e -> {
-			if (cancelSound != null) {
-				cancelSound.stop();
-				cancelSound.play();
-			}
-			
-			pause = new PauseTransition(Duration.seconds(0.5));
-			pause.setOnFinished(ev -> {
-				try {
-					cleanup();
-					GameController.switchStart(this.stage);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			});
-			pause.play();
-		});
+        } catch (e) {
 
-		// 全パーツを格納するコンテナ
-		VBox buttonBox = new VBox(20);
-		buttonBox.setAlignment(Pos.CENTER);
-		buttonBox.getChildren().addAll(title, textAndImage, scoreLabel, next, backButton);
+            console.error(
+                "選択SEの読み込みに失敗しました",
+                e
+            );
+        }
 
-		StackPane root = new StackPane();
-		root.getChildren().add(buttonBox);
+        try {
 
-		Scene scene = new Scene(root, 1000, 800);
+            this.cancelSound =
+                new Audio("music/cancel.mp3");
 
-		// ⭕【JPro対応】CSS読み込みに安全対策を追加
-		var cssUrl = getClass().getResource("/css/style.css");
-		if (cssUrl != null) {
-			scene.getStylesheets().add(cssUrl.toExternalForm());
-		}
+            this.cancelSound.volume = 0.4;
 
-		// ブラウザの画面リサイズに追従する動的バインディング
-		title.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: rgb(180,180,180); -fx-font-weight: bold;",scene.widthProperty().multiply(0.06)));
-		text.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray;", scene.widthProperty().multiply(0.015)));
-		scoreLabel.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx; -fx-fill: gray; -fx-font-weight: bold;",scene.widthProperty().multiply(0.02)));
+        } catch (e) {
 
-		imageView.fitWidthProperty().bind(scene.widthProperty().multiply(0.15));
-		imageView.fitHeightProperty().bind(scene.heightProperty().multiply(0.18));
-		imageView.setPreserveRatio(true);
+            console.error(
+                "キャンセルSEの読み込みに失敗しました",
+                e
+            );
+        }
 
-		next.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
-		next.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
-		backButton.prefWidthProperty().bind(scene.widthProperty().multiply(0.17));
-		backButton.prefHeightProperty().bind(scene.heightProperty().multiply(0.09));
+        // =====================================
+        // 0.5秒後にクリア音再生
+        // =====================================
+        this.delayTimeout =
+            setTimeout(() => {
 
-		next.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
-		backButton.styleProperty().bind(Bindings.format("-fx-font-size: %.0fpx;", scene.widthProperty().multiply(0.013)));
+                if (this.clearSound) {
+                    this.clearSound.play();
+                }
 
-		if (this.stage != null) {
-			this.stage.setMinWidth(1000);
-			this.stage.setMinHeight(800);
-			this.stage.setMaxWidth(1920);
-			this.stage.setMaxHeight(1080);
-		}
-		return scene;
-	}
+            }, 500);
 
-	public void setScore(int score) {
-		this.score = score;
-	}
-}
+        // =====================================
+        // ルートコンテナ
+        // =====================================
+        const root =
+            document.createElement("div");
+
+        root.className =
+            "stageclear-root";
+
+        // =====================================
+        // タイトル
+        // =====================================
+        const title =
+            document.createElement("h1");
+
+        title.textContent =
+            "STAGE1 CLEAR!";
+
+        title.style.color =
+            "rgb(180,180,180)";
+
+        // =====================================
+        // 説明文
+        // =====================================
+        const text =
+            document.createElement("div");
+
+        text.textContent =
+            "鍵を獲得しました！！";
+
+        text.style.color =
+            "gray";
+
+        // =====================================
+        // 鍵画像
+        // =====================================
+        const imageView =
+            document.createElement("img");
+
+        try {
+
+            imageView.src =
+                "picture/kagi.png";
+
+        } catch (e) {
+
+            console.error(
+                "鍵画像の読み込み失敗",
+                e
+            );
+        }
+
+        // =====================================
+        // 画像＋テキスト
+        // =====================================
+        const textAndImage =
+            document.createElement("div");
+
+        textAndImage.className =
+            "text-image-box";
+
+        textAndImage.appendChild(imageView);
+        textAndImage.appendChild(text);
+
+        // =====================================
+        // スコア表示
+        // =====================================
+        const scoreLabel =
+            document.createElement("div");
+
+        scoreLabel.textContent

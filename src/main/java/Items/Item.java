@@ -1,35 +1,60 @@
-package Items;
+/**
+ * アイテムの基底クラス
+ * ドット・パワーエサ・フルーツなどの共通部分を管理する
+ */
+class Item {
 
-import Characters.Syujinkou;
-import javafx.scene.Node;
-import javafx.scene.canvas.GraphicsContext; // 💡 Canvas描画に必須のインポート
-
-public abstract class Item {
-    protected int score;
-    protected Node view;
-    // ==================================================
+    // =========================
     // コンストラクタ
-    // ==================================================
-    public Item(int score, Node view) {
+    // =========================
+    constructor(score, view) {
+
+        // アイテム取得時のスコア
         this.score = score;
+
+        // 描画用オブジェクト（画像など）
         this.view = view;
     }
-    // ==================================================
- 	// 食べる処理
- 	// ==================================================
-    // 食べた時の処理（子クラスでそれぞれ中身を実装する）
-    public abstract void onEaten(Syujinkou player);
-    
-    // ==================================================
- 	// 描画処理
- 	// ==================================================
-    // 自分自身を画面（Canvas）に描画する命令
-    public abstract void draw(GraphicsContext gc, double x, double y, double tileSize);
 
-    // ==================================================
+    // =========================
+    // 食べる処理
+    // =========================
+    /**
+     * アイテム取得時の処理
+     * 子クラス側で実装する
+     *
+     * @param {Syujinkou} player
+     */
+    onEaten(player) {
+        throw new Error(
+            "onEaten() must be implemented."
+        );
+    }
+
+    // =========================
+    // 描画処理
+    // =========================
+    /**
+     * Canvasへ描画する処理
+     * 子クラス側で実装する
+     *
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {number} x
+     * @param {number} y
+     * @param {number} tileSize
+     */
+    draw(ctx, x, y, tileSize) {
+        throw new Error(
+            "draw() must be implemented."
+        );
+    }
+
+    // =========================
     // getter
-    // ==================================================
-    public Node getView() { 
-        return view; 
+    // =========================
+    getView() {
+        return this.view;
     }
 }
+
+export default Item;
