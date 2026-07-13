@@ -209,4 +209,180 @@ class Stageclear1 {
         const scoreLabel =
             document.createElement("div");
 
-        scoreLabel.textContent
+        scoreLabel.textContent =
+            `SCORE: ${this.score}`;
+
+        scoreLabel.style.color =
+            "gray";
+
+        // =====================================
+        // 次のステージへ
+        // =====================================
+        const next =
+            document.createElement("button");
+
+        next.textContent =
+            "次のステージへ";
+
+        next.classList.add(
+            "game-button2"
+        );
+
+        next.addEventListener(
+            "click",
+            () => {
+
+                if (this.clickSound) {
+
+                    this.clickSound.pause();
+                    this.clickSound.currentTime = 0;
+
+                    this.clickSound.play();
+                }
+
+                // 0.5秒後に画面遷移
+                this.pauseTimeout =
+                    setTimeout(() => {
+
+                        this.cleanup();
+
+                        GameController.switchStory2();
+
+                    }, 500);
+            }
+        );
+
+        // =====================================
+        // タイトルへ戻る
+        // =====================================
+        const backButton =
+            document.createElement("button");
+
+        backButton.textContent =
+            "タイトルへ";
+
+        backButton.classList.add(
+            "game-button2"
+        );
+
+        backButton.addEventListener(
+            "click",
+            () => {
+
+                if (this.cancelSound) {
+
+                    this.cancelSound.pause();
+                    this.cancelSound.currentTime = 0;
+
+                    this.cancelSound.play();
+                }
+
+                this.pauseTimeout =
+                    setTimeout(() => {
+
+                        this.cleanup();
+
+                        GameController.switchStart();
+
+                    }, 500);
+            }
+        );
+
+        // =====================================
+        // メインコンテナ(VBox相当)
+        // =====================================
+        const buttonBox =
+            document.createElement("div");
+
+        buttonBox.className =
+            "button-box";
+
+        buttonBox.appendChild(title);
+        buttonBox.appendChild(textAndImage);
+        buttonBox.appendChild(scoreLabel);
+        buttonBox.appendChild(next);
+        buttonBox.appendChild(backButton);
+
+        root.appendChild(buttonBox);
+
+        // =====================================
+        // JavaFXの
+        // widthPropertyバインドの代替
+        // =====================================
+        const updateResponsive = () => {
+
+            const width =
+                window.innerWidth;
+
+            const height =
+                window.innerHeight;
+
+            // タイトル
+            title.style.fontSize =
+                `${width * 0.06}px`;
+
+            title.style.fontWeight =
+                "bold";
+
+            // 説明文
+            text.style.fontSize =
+                `${width * 0.015}px`;
+
+            // スコア
+            scoreLabel.style.fontSize =
+                `${width * 0.02}px`;
+
+            scoreLabel.style.fontWeight =
+                "bold";
+
+            // 鍵画像
+            imageView.style.width =
+                `${width * 0.15}px`;
+
+            imageView.style.height =
+                `${height * 0.18}px`;
+
+            imageView.style.objectFit =
+                "contain";
+
+            // 次へボタン
+            next.style.width =
+                `${width * 0.17}px`;
+
+            next.style.height =
+                `${height * 0.09}px`;
+
+            // 戻るボタン
+            backButton.style.width =
+                `${width * 0.17}px`;
+
+            backButton.style.height =
+                `${height * 0.09}px`;
+
+            // ボタンフォント
+            next.style.fontSize =
+                `${width * 0.013}px`;
+
+            backButton.style.fontSize =
+                `${width * 0.013}px`;
+        };
+
+        // 初回実行
+        updateResponsive();
+
+        // ウィンドウサイズ変更
+        window.addEventListener(
+            "resize",
+            updateResponsive
+        );
+
+        // =====================================
+        // 画面表示
+        // =====================================
+        document.body.innerHTML = "";
+
+        document.body.appendChild(root);
+
+        return root;
+    }
+}
