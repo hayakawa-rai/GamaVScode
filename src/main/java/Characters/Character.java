@@ -1,24 +1,21 @@
-package Characters;
+// characters/Character.js
+export class Character { ... }
 
-public abstract class Character {
+export abstract class Character {
 	// 現在のX座標（左右位置）
-	protected double x;
+	protected x: number;
 	// 現在のY座標（上下位置）
-	protected double y;
+	protected y: number;
 	// 移動速度
-	protected int speed;
+	protected speed: number;
 	// キャラクターが現在向いている方向
-	protected Direction direction;
+	protected direction: Direction;
 	
 	// ==================================================
 	// コンストラクタ
 	// ==================================================
 	// 速さデフォルトを 1 にして、主人公 の呼び出しと互換性を持たせる
-	public Character(double x, double y) {
-		this(x, y, 1);
-	}
-	
-	public Character(double x, double y, int speed) {
+	constructor(x: number, y: number,speed: number = 1) {
 		// 初期X座標
 		this.x = x;
 		// 初期Y座標
@@ -33,29 +30,29 @@ public abstract class Character {
 	// 動き
 	// ==================================================
 	// キャラクターを移動させる処理
-	public abstract void move(int[][] map);
+	abstract move(map:number[][]):void;
 
 	//==================================================
 	//getter
 	//==================================================
 	// 子クラスからx座標の情報を取得
-	public double getX() {
-		return x;
+	getX():number {
+		return this.x;
 	}
 	
 	// 子クラスからy座標の情報を取得
-	public double getY() {
-		return y;
+	getY():number {
+		return this.y;
 	}
 
 	// 子クラスから速度の情報を取得
-	public int getSpeed() {
-		return speed;
+	getSpeed():number {
+		return this.speed;
 	}
 
 	// 子クラスから向いている方向の情報を取得
-	public Direction getDirection() {
-		return direction;
+	getDirection():Direction {
+		return this.direction;
 	}
 
 }
