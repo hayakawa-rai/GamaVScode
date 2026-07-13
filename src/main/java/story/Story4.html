@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story 4</title>
+    <link rel="stylesheet" href="../../resources/css/style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        <img id="bg-view" class="fit-screen" src="../../resources/picture/shatyoroom.jpg" alt="背景">
+
+        <img id="syujinkou-view" class="character-left" src="../../resources/picture/syujinkou(hello).png" alt="仙石さん">
+        <img id="aniki-view" class="character-right" src="../../resources/picture/aniki-udekumi.png" alt="あにき">
+        <img id="nari-view" class="character-right hidden" src="../../resources/picture/nari.png" alt="なりなり">
+        <img id="taku-view" class="character-right hidden" src="../../resources/picture/taku2.png" alt="わだたく">
+
+        <div id="message-container">
+            <div id="message-box">
+                <div id="name-text"></div>
+                <div id="dialogue-text"></div>
+                <div id="next-mark" class="hidden">▼</div>
+            </div>
+        </div>
+
+        <button id="menu-btn">
+            <img src="../../resources/picture/menu.png" alt="メニュー" style="width: 100px; height: 90px;">
+        </button>
+
+        <div id="menu-overlay" class="hidden">
+            <div id="menu-box">
+                <button id="resume-btn" class="game-button2" style="width: 180px;">再開</button>
+                <button id="title-btn" class="game-button2" style="width: 180px;">タイトルへ</button>
+            </div>
+        </div>
+
+        <div id="fade-rect"></div>
+    </div>
+
+    <script src="Story4.js"></script>
+</body>
+</html>

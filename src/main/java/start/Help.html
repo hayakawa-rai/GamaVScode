@@ -5,244 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>基本説明</title>
     <!-- ご提示いただいた外部CSSファイルを読み込み -->
-    <link rel="stylesheet" href="css/style.css">
-    
-    <style>
-        /* 画面レイアウト用の基本スタイル */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: black; /* 白飛び防止用 */
-            /* フォントは外部CSSの PixelMplus12 を優先 */
-            font-family: "PixelMplus12", 'Courier New', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* 👑 ImagePatternを再現した無限スクロール背景 */
-        #bg-pane {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('/picture/background.png');
-            background-repeat: repeat;
-            background-position: 0px 0px;
-            z-index: 1;
-        }
-
-        /* メインコンテナ（スマホ対応レイアウト） */
-        .main-container {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            width: 100%;
-            max-width: 560px;
-            padding: 20px;
-        }
-
-        /* 中央の半透明パネル */
-        .panel {
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            border: 2px solid #6e6e85;
-            border-radius: 4px;
-            padding: 25px 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            align-items: center;
-        }
-
-        /* タイトル */
-        .title {
-            color: #F4C022;
-            font-size: 36px;
-            font-weight: bold;
-        }
-
-        /* 区切り線 */
-        .divider {
-            width: 100%;
-            height: 2px;
-            background-color: #6e6e85;
-            border: none;
-        }
-
-        /* ページスタック */
-        .page-stack {
-            width: 100%;
-            max-width: 500px;
-        }
-
-        /* 各ページのラッパー（見出し付き） */
-        .page-wrapper {
-            display: none; /* 初期状態は非表示 */
-            flex-direction: column;
-            gap: 12px;
-            align-items: flex-start;
-            width: 100%;
-        }
-        .page-wrapper.active {
-            display: flex;
-        }
-
-        .page-heading {
-            color: #4FD8E8;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .page-content {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-        #page-0 .page-content { gap: 16px; align-items: center; } /* ページ1は中央寄せ */
-
-        /* 行のレイアウト */
-        .note-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .icon-box {
-            width: 40px;
-            min-width: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .note-text {
-            color: white;
-            font-size: 14px;
-            line-height: 1.4;
-            max-width: 420px;
-            word-wrap: break-word;
-        }
-
-        /* モード用見出し */
-        .mode-heading {
-            color: #FF9632;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        /* 特定のパーツ再現 */
-        .dot-icon {
-            width: 8px;
-            height: 8px;
-            background-color: #F4C022;
-            border-radius: 50%;
-        }
-
-        .power-pellet-icon {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
-        }
-
-        /* フルーツ行 */
-        .fruit-row {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            width: 100%;
-        }
-        .fruit-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-        .fruit-item img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-        }
-        .fruit-item span {
-            color: #F4C022;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        /* 操作説明行 */
-        .move-control-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
-            color: white;
-            font-size: 15px;
-        }
-        .move-control-row img {
-            height: 65px;
-            object-fit: contain;
-        }
-
-        /* スペーサー（Javaのspacerメソッドの再現） */
-        .spacer { width: 100%; }
-
-        /* インジケーター（● ○ ○ ○） */
-        .indicator {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
-        .indicator-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #6e6e85;
-            border-radius: 50%;
-            transition: background-color 0.2s;
-        }
-        .indicator-dot.active {
-            background-color: #4FD8E8;
-        }
-
-        /* 左右矢印ボタン行 */
-        .arrow-row {
-            display: flex;
-            gap: 40px;
-            justify-content: center;
-            width: 100%;
-        }
-
-        /* 矢印ボタン専用スタイル */
-        .arrow-btn {
-            width: 50px;
-            height: 45px;
-            font-size: 18px;
-            font-weight: bold;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: #4FD8E8;
-            border: 2px solid currentColor;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        /* 戻るボタンのサイズ調整 (JavaFXの setPrefSize(200, 50) を反映) */
-        .back-button-layout {
-            width: 200px;
-            height: 50px;
-            font-size: 20px; /* style.css側の指定と連動 */
-        }
-    </style>
+    <link rel="stylesheet" href="../../resources/css/style.css">
 </head>
 <body>
 
@@ -266,9 +29,9 @@
                     <div class="page-content">
                         <div class="move-control-row">
                             <span>移動：</span>
-                            <img src="/picture/WASD.png" alt="WASD">
+                            <img src="../../resources/picture/WASD.png" alt="WASD">
                             <span>または</span>
-                            <img src="/picture/yazirusi.png" alt="矢印">
+                            <img src="../../resources/picture/yazirusi.png" alt="矢印">
                         </div>
                         <div class="spacer" style="height: 6px;"></div>
                         <div class="note-row">
@@ -288,7 +51,7 @@
                         </div>
                         <div class="spacer" style="height: 6px;"></div>
                         <div class="note-row">
-                            <div class="icon-box"><img src="/picture/Chii_Item.png" class="power-pellet-icon" alt="パワーエサ"></div>
+                            <div class="icon-box"><img src="../../resources/picture/Chii_Item.png" class="power-pellet-icon" alt="パワーエサ"></div>
                             <div class="note-text">パワーエサを食べるとスコアが加算され、一定時間敵を撃退することができます。</div>
                         </div>
                         <div class="spacer" style="height: 6px;"></div>
@@ -302,11 +65,11 @@
                         </div>
                         <div class="spacer" style="height: 6px;"></div>
                         <div class="fruit-row">
-                            <div class="fruit-item"><img src="/picture/sakuranbo.png"><span>＋100</span></div>
-                            <div class="fruit-item"><img src="/picture/ichigo.png"><span>＋300</span></div>
-                            <div class="fruit-item"><img src="/picture/orange.png"><span>＋500</span></div>
-                            <div class="fruit-item"><img src="/picture/ringo.png"><span>＋700</span></div>
-                            <div class="fruit-item"><img src="/picture/budo.png"><span>＋1000</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/sakuranbo.png"><span>＋100</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/ichigo.png"><span>＋300</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/orange.png"><span>＋500</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/ringo.png"><span>＋700</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/budo.png"><span>＋1000</span></div>
                         </div>
                     </div>
                 </div>
@@ -388,7 +151,7 @@
     </div>
 
     <!-- 音楽管理用 -->
-    <audio id="bgm" src="/music/startbgm.mp3" loop></audio>
+    <audio id="bgm" src="../../resources/music/startbgm.mp3" loop></audio>
 
     <script>
         // ===== 1. BGMの再生制御 =====
