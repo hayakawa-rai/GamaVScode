@@ -150,4 +150,38 @@ class RedEnemy extends Enemy {
             return this.getClosestDirection(
                 validDirections,
                 RedEnemy.TERRITORY_COL,
-                RedEnemy.TERRITORY
+                RedEnemy.TERRITORY_ROW
+            );
+        }
+
+        // ==========================================
+        // FEVER・DEAD状態共通処理
+        // ==========================================
+
+        const special =
+            this.handleSpecialState(
+                validDirections,
+                targetCol,
+                targetRow,
+                map
+            );
+
+        if (special !== null) {
+            return special;
+        }
+
+        // ==================================================
+        // RedEnemy固有AI
+        //
+        // プレイヤーへ最短距離で接近する
+        // ==================================================
+
+        return this.getClosestDirection(
+            validDirections,
+            targetCol,
+            targetRow
+        );
+    }
+}
+
+export default RedEnemy;

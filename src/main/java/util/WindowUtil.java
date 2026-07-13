@@ -1,108 +1,196 @@
-package util;
+// ==================================================
+// WindowUtil
+//
+// ウィンドウサイズ管理
+// Canvasの自動リサイズ管理
+// ==================================================
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
+class WindowUtil {
 
-import javafx.application.Platform;
-import javafx.scene.Parent;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+    // 登録済みリスナー管理
+    static listenerAttached = new WeakSet();
 
-public class WindowUtil {
+    // デフォルトのスマホ対応最小サイズ
+    static DEFAULT_MIN_WIDTH = 320;
 
-	// 登録済みのStageを記録しておく（WeakHashMapで自動解放）
-	private static final Set<Stage> LISTENER_ATTACHED = Collections.newSetFromMap(new WeakHashMap<>());
+    static DEFAULT_MIN_HEIGHT = 480;
 
-	// デフォルトのスマホ対応最小サイズ
-	private static final double DEFAULT_MIN_WIDTH = 320.0;
-	private static final double DEFAULT_MIN_HEIGHT = 480.0;
-	
-	// デフォルトの最大サイズ制限（ブラウザ最大化等に対応）
-	private static final double DEFAULT_MAX_WIDTH = 1920.0;
-	private static final double DEFAULT_MAX_HEIGHT = 1080.0;
+    // デフォルトの最大サイズ制限
+    static DEFAULT_MAX_WIDTH = 1920;
 
-	/**
-	 * 【追加】ウィンドウサイズ制限を個別に指定して全画面化するメソッド
-	 */
-	public static void fullScreen(Stage stage, double minWidth, double minHeight, double maxWidth, double maxHeight) {
-		if (stage == null) return;
+    static DEFAULT_MAX_HEIGHT = 1080;
 
-		// 💡 前の画面の制限を引きずらないように、遷移直後にサイズ制限を一回リセット・上書きする
-		stage.setMinWidth(minWidth);
-		stage.setMinHeight(minHeight);
-		stage.setMaxWidth(maxWidth);
-		stage.setMaxHeight(maxHeight);
+    // ==================================================
+    // ウィンドウサイズを個別指定
+    // ==================================================
 
-		// 万が一OSレベルの全画面モードになっていたら解除しておく
-		if (stage.isFullScreen()) {
-			stage.setFullScreen(false);
-		}
-		// ウィンドウがまだ表示されていなければ表示する
-		if (!stage.isShowing()) {
-			stage.show();
-		}
+    static fullScreen(
+        root,
+        minWidth,
+        minHeight,
+        maxWidth,
+        maxHeight
+    ) {
 
-		if (LISTENER_ATTACHED.add(stage)) {
-			stage.renderScaleXProperty().addListener((obs, oldV, newV) -> forceRelayout(stage));
-			stage.renderScaleYProperty().addListener((obs, oldV, newV) -> forceRelayout(stage));
-		}
+        if (!root) {
+            return;
+        }
 
-		if (!stage.isMaximized()) {
-			stage.setMaximized(true);
-		} else {
-			nudge(stage);
-		}
-	}
+        // サイズ制限を保存
+        root.dataset.minWidth = minWidth;
+        root.dataset.minHeight = minHeight;
+        root.dataset.maxWidth = maxWidth;
+        root.dataset.maxHeight = maxHeight;
 
-	/**
-	 * ウィンドウを画面いっぱいに広げる処理。（通常用：スマホ対応サイズにリセット）
-	 * 画面遷移のたびに毎回呼び出される想定。
-	 */
-	public static void fullScreen(Stage stage) {
-		// デフォルトのモバイル両対応サイズ（320x480 〜 1920x1080）を適用する
-		fullScreen(stage, DEFAULT_MIN_WIDTH, DEFAULT_MIN_HEIGHT, DEFAULT_MAX_WIDTH, DEFAULT_MAX_HEIGHT);
-	}
+        // 初回だけリサイズ監視
+        if (
+            !WindowUtil.listenerAttached.has(
+                root
+            )
+        ) {
 
-	// renderScale変化時にレイアウトとサイズを強制的に再計算させる
-	private static void forceRelayout(Stage stage) {
-		if (stage.getScene() != null) {
-			Parent root = stage.getScene().getRoot();
-			if (root != null) {
-				root.applyCss();
-				root.requestLayout();
-			}
-		}
-		nudge(stage);
-	}
+            WindowUtil.listenerAttached.add(
+                root
+            );
 
-	// サイズを1pxだけ揺らしてJavaFXに変化を検知させ、再計算を強制する
-	private static void nudge(Stage stage) {
-		double w = stage.getWidth();
-		double h = stage.getHeight();
-		if (w <= 0 || h <= 0)
-			return;
+            window.addEventListener(
+                "resize",
+                () =>
+                    WindowUtil.forceRelayout(
+                        root
+                    )
+            );
+        }
 
-		stage.setWidth(w - 1);
-		stage.setHeight(h - 1);
+        // レイアウト更新
+        WindowUtil.forceRelayout(root);
+    }
 
-		Platform.runLater(() -> {
-			stage.setWidth(w);
-			stage.setHeight(h);
-		});
-	}
+    // ==================================================
+    // デフォルトサイズで全画面
+    // ==================================================
 
-	// Canvasをrootのサイズに自動追従させる
-	public static void bindCanvasToRoot(Canvas canvas, StackPane root) {
-		canvas.widthProperty().bind(root.widthProperty());
-		canvas.heightProperty().bind(root.heightProperty());
+    static fullScreen(root) {
 
-		canvas.widthProperty().addListener((obs, oldV, newV) -> redraw(canvas));
-		canvas.heightProperty().addListener((obs, oldV, newV) -> redraw(canvas));
-	}
+        WindowUtil.fullScreen(
+            root,
+            WindowUtil.DEFAULT_MIN_WIDTH,
+            WindowUtil.DEFAULT_MIN_HEIGHT,
+            WindowUtil.DEFAULT_MAX_WIDTH,
+            WindowUtil.DEFAULT_MAX_HEIGHT
+        );
+    }
 
-	private static void redraw(Canvas canvas) {
-		// ここでゲーム側の描画メソッドを呼ぶ
-	}
+    // ==================================================
+    // レイアウト再計算
+    // ==================================================
+
+    static forceRelayout(root) {
+
+        if (!root) {
+            return;
+        }
+
+        const minWidth =
+            Number(root.dataset.minWidth);
+
+        const minHeight =
+            Number(root.dataset.minHeight);
+
+        const maxWidth =
+            Number(root.dataset.maxWidth);
+
+        const maxHeight =
+            Number(root.dataset.maxHeight);
+
+        const width = Math.min(
+            maxWidth,
+            Math.max(
+                minWidth,
+                window.innerWidth
+            )
+        );
+
+        const height = Math.min(
+            maxHeight,
+            Math.max(
+                minHeight,
+                window.innerHeight
+            )
+        );
+
+        root.style.width =
+            width + "px";
+
+        root.style.height =
+            height + "px";
+    }
+
+    // ==================================================
+    // 強制再レイアウト
+    // ==================================================
+
+    static nudge(root) {
+
+        if (!root) {
+            return;
+        }
+
+        const width = root.offsetWidth;
+        const height = root.offsetHeight;
+
+        root.style.width =
+            (width - 1) + "px";
+
+        root.style.height =
+            (height - 1) + "px";
+
+        requestAnimationFrame(() => {
+
+            root.style.width =
+                width + "px";
+
+            root.style.height =
+                height + "px";
+        });
+    }
+
+    // ==================================================
+    // Canvasを親要素サイズへ追従
+    // ==================================================
+
+    static bindCanvasToRoot(
+        canvas,
+        root
+    ) {
+
+        const resizeCanvas = () => {
+
+            canvas.width =
+                root.clientWidth;
+
+            canvas.height =
+                root.clientHeight;
+
+            WindowUtil.redraw(canvas);
+        };
+
+        resizeCanvas();
+
+        window.addEventListener(
+            "resize",
+            resizeCanvas
+        );
+    }
+
+    // ==================================================
+    // 再描画
+    // ==================================================
+
+    static redraw(canvas) {
+
+        // ここでゲーム側の描画処理を呼ぶ
+    }
 }
+
+export default WindowUtil;
