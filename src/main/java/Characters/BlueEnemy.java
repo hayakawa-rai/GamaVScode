@@ -1,228 +1,362 @@
-//　BlueEnemy（青）
-//　RedEnemyと連携してプレイヤーをはさみうちにする敵
-//　プレイヤーの進行方向の先を予測し、RedEnemyとの位置関係から追跡地点を決定する
+// ==================================================
+// BlueEnemy（青）
+//
+// RedEnemyと連携してプレイヤーをはさみうちにする敵
+// プレイヤーの進行方向の先を予測し、
+// RedEnemyとの位置関係から追跡地点を決定する
+// ==================================================
 
-package Characters;
+class BlueEnemy extends Enemy {
 
-import java.io.InputStream;
-import java.util.List;
+    // 初期位置（エネミーハウス中央付近）
+    static START_COL = 14;
+    static START_ROW = 13;
 
-import common.GameConfig;
-import common.GameMap;
-import javafx.scene.image.Image;
+    // プレイヤーの進行方向+2マス先を狙う
+    static PREDICT_TILES = 2;
 
-public class BlueEnemy extends Enemy {
+    // SCATTER状態時の縄張り座標（右下）
+    static TERRITORY_COL = 24;
+    static TERRITORY_ROW = 26;
 
-	// 初期位置（エネミーハウス中央付近）
-	private static final int START_COL = 14;
-	private static final int START_ROW = 13;
-	// プレイヤーの進行方向+2マス先を狙う
-	private static final int PREDICT_TILES = 2;
-	// SCATTER状態時の縄張り座標（右下）
-	private static final int TERRITORY_COL = 24;
-	private static final int TERRITORY_ROW = 26;
-	// 出撃時間管理用
-	private long startTime;
-	// 出撃タイマー開始フラグ
-	private boolean timerStarted = false;
-	// 巣から出撃済みか判定
-	private boolean released = false;
-	// 赤の位置を参照
-	private RedEnemy red;
+    // ==================================================
+    // コンストラクタ
+    // ==================================================
+    constructor(mapData) {
 
-	// ==================================================
-	// コンストラクタ
-	// ==================================================
-	public BlueEnemy(GameMap mapData) {
+        // マスの中心座標を初期位置としてEnemyに渡す
+        super(
+            BlueEnemy.START_COL * GameConfig.TILE_SIZE +
+            GameConfig.TILE_SIZE / 2,
 
-		// マスの中心座標を初期位置として Enemy に渡す
-		super(START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0,
-				START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2.0, 2);
-		this.mapData = mapData;
+            BlueEnemy.START_ROW * GameConfig.TILE_SIZE +
+            GameConfig.TILE_SIZE / 2,
 
-		// FEVER画像をステージごとに読み込む
-		loadFeverImage();
+            2
+        );
 
-		// DEAD画像を読み込む
-		loadDeadImage();
+        this.mapData = mapData;
 
-		// 現在のステージ番号によって、読み込む画像を切り替える
-		// デフォルト（ステージ1用）
-		String imagePath = "/picture/nari_EnemyBlue.png";
+        // 出撃時間管理用
+        this.startTime = 0;
 
-		if (this.mapData != null) {
-			switch (this.mapData.getStageNumber()) {
-			case 1:
-				// ステージ1の画像
-				imagePath = "/picture/nari_EnemyBlue.png";
-				break;
-			case 2:
-				// ステージ2の画像
-				imagePath = "/picture/taku_EnemyBlue.png";
-				break;
-			case 3:
-				// ステージ3の画像
-				imagePath = "/picture/aniki_EnemyBlue.png";
-				break;
-			default:
-				break;
-			}
-		}
+        // 出撃タイマー開始フラグ
+        this.timerStarted = false;
 
-		// RedをMapDataから探す
-		for (Enemy e : mapData.getEnemies()) {
-			if (e instanceof RedEnemy) {
-				this.red = (RedEnemy) e;
-				break;
-			}
-		}
+        // 巣から出撃済みか判定
+        this.released = false;
 
-		// 画像の読み込み
-		try {
-			InputStream is = getClass().getResourceAsStream(imagePath);
-			if (is == null) {
-				System.err.println("【エラー】画像が見つかりません: " + imagePath);
-			} else {
-				this.normalImage = new Image(is);
-				System.out.println("【成功】ステージ" + this.mapData.getStageNumber() + "用の画像を読み込みました！");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	// ==================================================
-	// タイマー
-	// ==================================================
-	// ポーズ中の時間を出撃タイマーへ反映する
-	@Override
-	public void resumeTimer() {
+        // 赤の位置を参照
+        this.red = null;
 
-		// 出撃待機中のみ補正を行う
-		if (timerStarted && !released) {
+        // FEVER画像をステージごとに読み込む
+        this.loadFeverImage();
 
-			// 出撃待機中のみ補正を行う
-			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
+        // DEAD画像を読み込む
+        this.loadDeadImage();
 
-			// タイマーをその分だけ後ろへずらす
-			startTime += pauseDuration;
-		}
-	}
+        // ==========================================
+        // 現在のステージ番号によって
+        // 読み込む画像を切り替える
+        // ==========================================
 
-	// ゲーム開始から2秒後に出撃させる
-	@Override
-	public void move(int[][] map) {
+        // デフォルト（ステージ1）
+        let imagePath =
+            "/picture/nari_EnemyBlue.png";
 
-		// READY中は移動しない
-		if (mapData.isWaitingStart()) {
-			return;
-		}
+        if (this.mapData) {
 
-		// 初回入力後に初めてタイマー開始
-		if (!timerStarted) {
-			startTime = System.currentTimeMillis();
-			timerStarted = true;
-		}
+            switch (
+                this.mapData.getStageNumber()
+            ) {
 
-		// 出撃待機中
-		if (!released) {
+                case 1:
+                    // ステージ1
+                    imagePath =
+                        "/picture/nari_EnemyBlue.png";
+                    break;
 
-			// 経過時間を計算
-			long elapsed = System.currentTimeMillis() - startTime;
+                case 2:
+                    // ステージ2
+                    imagePath =
+                        "/picture/taku_EnemyBlue.png";
+                    break;
 
-			// 2秒経過するまで待機
-			if (elapsed < 2000) {
-				return;
-			}
-			// 出撃許可
-			released = true;
-		}
+                case 3:
+                    // ステージ3
+                    imagePath =
+                        "/picture/aniki_EnemyBlue.png";
+                    break;
 
-		// Enemy共通の移動処理を実行
-		super.move(map);
-	}
-	
-	// ==================================================
-	// ポジション
-	// ==================================================
-	// プレイヤーが被弾時に元の場所、出撃時間をリセット
-	@Override
-	public void resetToStartPosition() {
+                default:
+                    break;
+            }
+        }
 
-		// Enemy共通のリセット処理
-		super.resetToStartPosition();
+        // ==========================================
+        // RedEnemyをMapDataから探す
+        // ==========================================
 
-		// 出撃状態を初期化
-		released = false;
+        if (
+            this.mapData &&
+            this.mapData.getEnemies()
+        ) {
 
-		// 出撃タイマーを未開始状態へ戻す
-		timerStarted = false;
-	}
+            for (
+                const enemy of
+                this.mapData.getEnemies()
+            ) {
 
-	// ==================================================
-	// 方向決定
-	// ==================================================
-	@Override
-	protected Direction decideNextDirection(List<Direction> validDirections, int[][] map, GameMap mapData) {
+                if (enemy instanceof RedEnemy) {
 
-		// 移動可能な方向が存在しない場合
-		if (mapData == null || validDirections.isEmpty()) {
-			return Direction.NONE;
-		}
+                    this.red = enemy;
+                    break;
+                }
+            }
+        }
 
-		// プレイヤーの現在位置をタイル座標で取得
-		int pacCol = (int) (mapData.getPacX() / GameConfig.TILE_SIZE);
-		int pacRow = (int) (mapData.getPacY() / GameConfig.TILE_SIZE);
+        // ==========================================
+        // 画像の読み込み
+        // ==========================================
 
-		// プレイヤーの進行方向の2マス先を予測
-		switch (mapData.getPlayerDirection()) {
-		case UP:
-			pacRow -= PREDICT_TILES;
-			break;
-		case DOWN:
-			pacRow += PREDICT_TILES;
-			break;
-		case LEFT:
-			pacCol -= PREDICT_TILES;
-			break;
-		case RIGHT:
-			pacCol += PREDICT_TILES;
-			break;
-		default:
-			break;
-		}
+        this.normalImage = new Image();
 
-		// RedEnemyの現在位置を取得
-		int redCol = (int) (red.getX() / GameConfig.TILE_SIZE);
-		int redRow = (int) (red.getY() / GameConfig.TILE_SIZE);
+        this.normalImage.onload = () => {
 
-		// RedEnemy→予測地点のベクトルを計算
-		int vx = pacCol - redCol;
-		int vy = pacRow - redRow;
+            console.log(
+                "【成功】ステージ" +
+                this.mapData.getStageNumber() +
+                "用の画像を読み込みました！"
+            );
+        };
 
-		// ベクトルを2倍した地点をターゲットとする
-		int targetCol = pacCol + vx;
-		int targetRow = pacRow + vy;
+        this.normalImage.onerror = () => {
 
-		// 縄張りモード
-		if (currentState == EnemyState.SCATTER) {
-			return getClosestDirection(validDirections, TERRITORY_COL, TERRITORY_ROW);
-		}
+            console.error(
+                "【エラー】画像が見つかりません: " +
+                imagePath
+            );
+        };
 
-		// FEVER・DEAD状態の共通処理
-		Direction special = handleSpecialState(validDirections, pacCol, pacRow, map);
+        this.normalImage.src = imagePath;
+    }
 
-		if (special != null) {
-			return special;
-		}
-		
-		// ==================================================
-		// getter
-		// ==================================================
-		// BlueEnemy固有AI
-		// RedEnemyと連携したターゲット地点へ向かう
-		return getClosestDirection(validDirections, targetCol, targetRow);
-	}
+    // ==================================================
+    // タイマー
+    // ==================================================
 
+    // ポーズ中の時間を出撃タイマーへ反映する
+    resumeTimer() {
 
+        // 出撃待機中のみ補正を行う
+        if (
+            this.timerStarted &&
+            !this.released
+        ) {
+
+            // ポーズ時間を計算
+            const pauseDuration =
+                Date.now() -
+                this.pauseStartTime;
+
+            // タイマーをその分だけ後ろへずらす
+            this.startTime += pauseDuration;
+        }
+    }
+
+    // ==================================================
+    // 動き
+    // ==================================================
+
+    // ゲーム開始から2秒後に出撃させる
+    move(map) {
+
+        // READY中は移動しない
+        if (
+            this.mapData.isWaitingStart()
+        ) {
+            return;
+        }
+
+        // 初回入力後に初めてタイマー開始
+        if (!this.timerStarted) {
+
+            this.startTime = Date.now();
+            this.timerStarted = true;
+        }
+
+        // 出撃待機中
+        if (!this.released) {
+
+            // 経過時間を計算
+            const elapsed =
+                Date.now() -
+                this.startTime;
+
+            // 2秒経過するまで待機
+            if (elapsed < 2000) {
+                return;
+            }
+
+            // 出撃許可
+            this.released = true;
+        }
+
+        // Enemy共通の移動処理
+        super.move(map);
+    }
+
+    // ==================================================
+    // ポジション
+    // ==================================================
+
+    // プレイヤーが被弾時に元の場所、
+    // 出撃時間をリセット
+    resetToStartPosition() {
+
+        // Enemy共通のリセット処理
+        super.resetToStartPosition();
+
+        // 出撃状態を初期化
+        this.released = false;
+
+        // 出撃タイマーを未開始状態へ戻す
+        this.timerStarted = false;
+    }
+
+    // ==================================================
+    // 方向決定
+    // ==================================================
+
+    decideNextDirection(
+        validDirections,
+        map,
+        mapData
+    ) {
+
+        // 移動可能な方向が存在しない場合
+        if (
+            !mapData ||
+            validDirections.length === 0
+        ) {
+            return Direction.NONE;
+        }
+
+        // プレイヤーの現在位置を
+        // タイル座標で取得
+        let pacCol = Math.floor(
+            mapData.getPacX() /
+            GameConfig.TILE_SIZE
+        );
+
+        let pacRow = Math.floor(
+            mapData.getPacY() /
+            GameConfig.TILE_SIZE
+        );
+
+        // ==========================================
+        // プレイヤーの進行方向の
+        // 2マス先を予測
+        // ==========================================
+
+        switch (
+            mapData.getPlayerDirection()
+        ) {
+
+            case Direction.UP:
+                pacRow -=
+                    BlueEnemy.PREDICT_TILES;
+                break;
+
+            case Direction.DOWN:
+                pacRow +=
+                    BlueEnemy.PREDICT_TILES;
+                break;
+
+            case Direction.LEFT:
+                pacCol -=
+                    BlueEnemy.PREDICT_TILES;
+                break;
+
+            case Direction.RIGHT:
+                pacCol +=
+                    BlueEnemy.PREDICT_TILES;
+                break;
+
+            default:
+                break;
+        }
+
+        // ==========================================
+        // RedEnemyの現在位置を取得
+        // ==========================================
+
+        const redCol = Math.floor(
+            this.red.getX() /
+            GameConfig.TILE_SIZE
+        );
+
+        const redRow = Math.floor(
+            this.red.getY() /
+            GameConfig.TILE_SIZE
+        );
+
+        // ==========================================
+        // RedEnemy→予測地点のベクトル
+        // ==========================================
+
+        const vx = pacCol - redCol;
+        const vy = pacRow - redRow;
+
+        // ベクトルを2倍した地点をターゲットにする
+        const targetCol = pacCol + vx;
+        const targetRow = pacRow + vy;
+
+        // ==========================================
+        // 縄張りモード
+        // ==========================================
+
+        if (
+            this.currentState ===
+            EnemyState.SCATTER
+        ) {
+
+            return this.getClosestDirection(
+                validDirections,
+                BlueEnemy.TERRITORY_COL,
+                BlueEnemy.TERRITORY_ROW
+            );
+        }
+
+        // ==========================================
+        // FEVER・DEAD状態の共通処理
+        // ==========================================
+
+        const special =
+            this.handleSpecialState(
+                validDirections,
+                pacCol,
+                pacRow,
+                map
+            );
+
+        if (special !== null) {
+            return special;
+        }
+
+        // ==================================================
+        // BlueEnemy固有AI
+        //
+        // RedEnemyと連携した
+        // ターゲット地点へ向かう
+        // ==================================================
+
+        return this.getClosestDirection(
+            validDirections,
+            targetCol,
+            targetRow
+        );
+    }
 }
+
+export default BlueEnemy;

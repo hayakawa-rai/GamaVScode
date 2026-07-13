@@ -1,104 +1,155 @@
-package Items;
+// ==================================================
+// 主人公（仙石さん）クラス
+// プレイヤーの移動、残機管理、スコア管理、
+// FEVER状態、死亡アニメーションの管理を行う
+// ==================================================
 
-import Characters.Syujinkou;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+class Syujinkou extends Character {
 
-// パワーエサ（Chii）
-public class Chii extends Item {
+    // 1マスのサイズ
+    static CELL_SIZE = 30;
 
-	// ここの数値を変更するだけで、いつでも画面上の画像の大きさを変えられます！
-	private static final double IMAGE_SIZE = 37.0;
-	
-	// ==================================================
-	// コンストラクタ
-	// ==================================================
-	public Chii(double pixelX, double pixelY) {
-		// 親クラス（Item）には、一旦何も持たないダミーのImageViewを渡しておく
-		super(50, new ImageView());
+    // ==================================================
+    // コンストラクタ
+    // ==================================================
+    constructor(x, y, speed) {
 
-		try {
-			// 画像ファイルを読み込む
-			Image img = new Image(Chii.class.getResourceAsStream("/picture/Chii_Item.png"));
-			ImageView iv = new ImageView(img);
+        super(x, y, speed);
 
-			// 縦横比を維持
-			iv.setPreserveRatio(true);
+        // 残機
+        this.hp = 3;
 
-			// サイズ変更（幅を基準にする）
-			iv.setFitWidth(IMAGE_SIZE);
+        // スコア
+        this.score = 0;
 
-			// マスの中心に画像がくるように位置を調整（サイズの半分を引く）
-			iv.setX(pixelX - (IMAGE_SIZE / 2.0));
-			iv.setY(pixelY - (IMAGE_SIZE / 2.0));
+        // 生存状態
+        this.isAliveFlag = true;
 
-			// 完成したImageViewを、Itemクラスの「view」にセットする
-			this.view = iv;
+        // FEVER状態
+        this.fever = false;
 
-		} catch (Exception e) {
-			System.out.println("画像の読み込みに失敗しました。パスが正しいか確認してください。");
-			
-			// 画像が読み込めなかった時の保険として、臨時の色円を表示させておく設定
-			this.view = new Circle(pixelX, pixelY, 8, Color.CHARTREUSE);
-		}
-	}
-	// ==================================================
-	// 食べる処理
-	// ==================================================
-	@Override
-	public void onEaten(Syujinkou player) {
-		player.addScore(this.score);
-	}
-	
-	// ==================================================
-	// 描画処理
-	// ==================================================
-	@Override
-	public void draw(GraphicsContext gc, double x, double y, double tileSize) {
+        // 次に進みたい方向（先行入力）
+        this.nextdirection = Direction.NONE;
 
-		// 画像が正常に読み込めている場合
-		if (this.view instanceof ImageView) {
-			Image img = ((ImageView) this.view).getImage();
-			if (img != null) {
+        // 初期位置
+        this.startX = x;
+        this.startY = y;
 
-				// Canvas（GraphicsContext）を使って画像を中央に描画
-				gc.drawImage(
-						img,
-						x + tileSize / 2.0 - (IMAGE_SIZE / 2.0),
-						y + tileSize / 2.0 - (IMAGE_SIZE / 2.0),
-						IMAGE_SIZE, IMAGE_SIZE);
-				
-				// 描画が終わったので終了
-				return;
-			}
-		}
+        // 死亡アニメーション中か
+        this.isDyingAnimationFlag = false;
 
-		// 画像がない場合は、catchで生成した黄緑の円を描画する
-		Circle circle = (Circle) this.view;
-		double radius = circle.getRadius();
-		gc.setFill(circle.getFill());
-		gc.fillOval(
-				x + tileSize / 2.0 - radius,
-				y + tileSize / 2.0 - radius,
-				radius * 2, radius * 2);
-	}
-	
-	// ==================================================
-	// getter
-	// ==================================================
-	// 外部から画像単体を取り出したい時用
-	public Image getImage() {
-		if (this.view instanceof ImageView) {
-			return ((ImageView) this.view).getImage();
-		}
-		return null;
-	}
+        // アニメーション経過時間
+        this.dyingTimer = 0;
+    }
 
-	// 外部からサイズを知りたい時用
-	public double getSize() {
-		return IMAGE_SIZE;
-	}
-}
+    // ==================================================
+    // タイマー
+    // ==================================================
+
+    // アニメーションタイマー取得
+    getDyingTimer() {
+        return this.dyingTimer;
+    }
+
+    // ==================================================
+    // アニメーション
+    // ==================================================
+
+    // ミスが起きたときに死亡アニメーション開始
+    startDying() {
+
+        this.isDyingAnimationFlag = true;
+        this.dyingTimer = 0;
+
+        this.direction = Direction.NONE;
+        this.nextdirection = Direction.NONE;
+    }
+
+    // ==================================================
+    // ポジション
+    // ==================================================
+
+    // 初期位置へ戻す
+    resetToStartPosition() {
+
+        this.x = this.startX;
+        this.y = this.startY;
+
+        this.direction = Direction.NONE;
+        this.nextdirection = Direction.NONE;
+
+        this.isDyingAnimationFlag = false;
+        this.dyingTimer = 0;
+    }
+
+    // ==================================================
+    // 状態確認
+    // ==================================================
+
+    // 生存判定
+    isAlive() {
+        return this.hp > 0;
+    }
+
+    // FEVER状態取得
+    isFever() {
+        return this.fever;
+    }
+
+    // 即死亡
+    die() {
+
+        this.hp = 0;
+        this.direction = Direction.NONE;
+    }
+
+    // ==================================================
+    // スコア、更新処理
+    // ==================================================
+
+    // スコア加算
+    addScore(point) {
+        this.score += point;
+    }
+
+    // 死亡アニメーション更新
+    updateDyingAnimation() {
+
+        if (!this.isDyingAnimationFlag) {
+            return false;
+        }
+
+        this.dyingTimer++;
+
+        // 約60フレーム継続
+        if (this.dyingTimer < 60) {
+            return false;
+        }
+
+        this.isDyingAnimationFlag = false;
+        return true;
+    }
+
+    // 残機を1つ減らす
+    decreaseHp() {
+
+        if (this.hp > 0) {
+
+            this.hp--;
+
+            if (this.hp <= 0) {
+                this.isAliveFlag = false;
+            }
+        }
+    }
+
+    // ダメージ処理
+    takeDamage() {
+
+        if (this.hp > 0) {
+
+            this.hp--;
+
+            if (this.hp === 0) {
+                this.die();
+        

@@ -1,46 +1,58 @@
-package Items;
+// ==================================================
+// Point（通常ドット）
+// ==================================================
 
-import Characters.Syujinkou;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+class Point extends Item {
 
-public class Point extends Item {
-    
-	// ==================================================
-	// コンストラクタ
-	// ==================================================
-    public Point(double pixelX, double pixelY) {
-
-        // 親クラス（Item）に、10点というスコアと、半径3の黄色い円（Circle）を渡す
-        super(10, new Circle(pixelX, pixelY, 3, Color.YELLOW));
-    }
-    
     // ==================================================
- 	// 食べる処理
- 	// ==================================================
-    @Override
-    public void onEaten(Syujinkou player) {
-    		// プレイヤーのスコアを加算
+    // コンストラクタ
+    // ==================================================
+    constructor(pixelX, pixelY) {
+
+        // 親クラス（Item）へ
+        // 10点スコアと描画情報を渡す
+        super(10, {
+            x: pixelX,
+            y: pixelY,
+            radius: 3,
+            color: "yellow"
+        });
+    }
+
+    // ==================================================
+    // 食べる処理
+    // ==================================================
+    onEaten(player) {
+
+        // プレイヤーへスコア加算
         player.addScore(this.score);
     }
-    
+
     // ==================================================
     // 描画処理
     // ==================================================
-    @Override
-    public void draw(GraphicsContext gc, double x, double y, double tileSize) {
+    draw(ctx, x, y, tileSize) {
 
-    		// 自分が持っている Circle オブジェクトから半径と色を自動取得
-        Circle circle = (Circle) this.view;
-        double radius = circle.getRadius();        
-        gc.setFill(circle.getFill());
+        // 自分が持っている描画情報から
+        // 半径と色を取得
+        const radius = this.view.radius;
 
-        // マスの中心（tileSize / 2.0）を基準に、円を描画する
-        gc.fillOval(
-            x + tileSize / 2.0 - radius,
-            y + tileSize / 2.0 - radius,
-            radius * 2, radius * 2
+        // 描画色設定
+        ctx.fillStyle = this.view.color;
+
+        // マス中央を基準に円を描画
+        ctx.beginPath();
+
+        ctx.arc(
+            x + tileSize / 2,
+            y + tileSize / 2,
+            radius,
+            0,
+            Math.PI * 2
         );
+
+        ctx.fill();
     }
 }
+
+export default Point;
