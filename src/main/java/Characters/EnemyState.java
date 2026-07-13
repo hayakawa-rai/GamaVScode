@@ -8,4 +8,4 @@ export const EnemyState = Object.freeze({
     FEVER: "FEVER",
     // 死亡・巣に戻るモード（目玉だけになって巣に戻る）
     DEAD: "DEAD",
-});
+})
