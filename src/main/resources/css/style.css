@@ -361,11 +361,77 @@ body, html {
 .character-left { left: 5vw; width: 30vw; height: 90vh; display: block; }
 .character-right { right: 5vw; width: 50vw; height: 95vh; display: block; }
 
-/* Java版の配置比率を再現した個別キャラクター位置 */
-#syujinkou { left: -5%; height: 110%; width: 40%; display: block; }
-#aniki { right: 5%; height: 120%; width: 50%; display: block; }
-#nari { right: 5%; height: 90%; width: 50%; }
+/* キャラクターを配置するための共通コンテナ */
+.sprite-wrapper {
+    position: absolute;
+    bottom: 0;
+    height: 85%;      /* 画面の高さの85%を使用 */
+    z-index: 2;
+    display: none;    /* 初期は非表示 */
+    justify-content: center;
+    align-items: flex-end;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
 
+/* 左側（主人公専用） */
+#syujinkou-wrapper {
+    left: 0;
+    width: 45%;       /* 左側の領域 */
+}
+
+/* 右側（なりなり専用） */
+#nari-wrapper {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 80%;           /* 画面幅の最大80%を使用 */
+    height: 85%;          /* 画面高さの85%を使用 */
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end; /* 右寄せ */
+    align-items: flex-end;     /* 下寄せ */
+    pointer-events: none;
+}
+
+#nari-wrapper .sprite-img {
+    height: 100%;         /* wrapperの高さに合わせる */
+    width: auto;          /* 横幅はアスペクト比を維持して自動調整 */
+    max-width: 100%;      /* 枠からはみ出さない */
+    object-fit: contain;
+    object-position: bottom right; /* 右下を支点に伸縮 */
+}
+#aniki-wrapper {
+    right: 0;
+    width: 50%; /* この枠の右端は絶対に動きません */
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end; /* 枠の中で右寄せにする */
+    align-items: flex-end;     /* 枠の中で下寄せにする */
+}
+
+#aniki-wrapper .sprite-img {
+    /* ここで大きさを変える */
+    width: 140%; 
+    height: 140%;
+    
+    object-fit: contain;
+    object-position: bottom right; /* 拡大の基準を右下にする */
+    
+}
+/* 実際に表示する画像：崩れず、枠内で最大化 */
+.sprite-img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;     /* 比率を維持して枠に収める */
+    object-position: bottom; /* 下揃え */
+}
+
+.sprite-wrapper.active {
+    display: flex;
+    opacity: 1;
+}
 /* ==========================================================================
    4. アドベンチャーパート：メッセージボックス関連
    ========================================================================== */

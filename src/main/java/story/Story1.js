@@ -61,38 +61,44 @@ document.addEventListener("DOMContentLoaded", () => {
         showDialogue();
     }
 
-    function showDialogue() {
-        if (messageIndex >= dialogues.length) return;
+function showDialogue() {
+    if (messageIndex >= dialogues.length) return;
 
-        const d = dialogues[messageIndex];
-        
-        // テキスト初期化
-        ui.speakerName.innerText = d.speaker;
-        ui.messageText.style.color = d.color;
-        ui.messageText.innerText = "";
-        ui.nextMark.style.display = "none";
-        charIndex = 0;
-        isTyping = true;
+    const d = dialogues[messageIndex];
+    
+    // --- 立ち絵表示制御 ---
+    const syujinkouWrapper = document.getElementById('syujinkou-wrapper');
+    const anikiWrapper = document.getElementById('aniki-wrapper');
+    const nariWrapper = document.getElementById('nari-wrapper');
 
-        // Java版の表示制御ロジック
-        // あにき・なりなりの画像は排他表示（仙石さんは常に表示）
-        if (d.speaker === "あにき") {
-            ui.aniki.style.display = "block";
-            ui.nari.style.display = "none";
-        } else if (d.speaker === "なりなり") {
-            ui.aniki.style.display = "none";
-            ui.nari.style.display = "block";
-        }
-
-        // 音声・アニメーション
-        if (d.sound) {
-            StoryUtils.triggerJump(d.speaker, ui);
-        }
-
-        // タイピングエフェクト開始 (50ms間隔)
-        clearInterval(typeInterval);
-        typeInterval = setInterval(typeChar, 50);
+    if (d.speaker === "仙石さん") {
+        // 主人公の発言時は、今の右側キャラの状態を維持（あるいは必要に応じて変更）
+        syujinkouWrapper.classList.add('active');
+    } else if (d.speaker === "あにき") {
+        // あにきが喋るときは、あにきを表示、なりなりを隠す
+        anikiWrapper.classList.add('active');
+        nariWrapper.classList.remove('active');
+    } else if (d.speaker === "なりなり") {
+        // なりなりが喋るときは、なりなりを表示、あにきを隠す
+        anikiWrapper.classList.remove('active');
+        nariWrapper.classList.add('active');
     }
+
+    // --- 以下、既存のテキスト・アニメーション処理 ---
+    ui.speakerName.innerText = d.speaker;
+    ui.messageText.style.color = d.color;
+    ui.messageText.innerText = "";
+    ui.nextMark.style.display = "none";
+    charIndex = 0;
+    isTyping = true;
+
+    if (d.sound) {
+        StoryUtils.triggerJump(d.speaker, ui);
+    }
+
+    clearInterval(typeInterval);
+    typeInterval = setInterval(typeChar, 50);
+}
 
     function typeChar() {
         const d = dialogues[messageIndex];
