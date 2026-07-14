@@ -77,7 +77,7 @@ public class Main3 extends Application {
 		ImageView backgroundView = new ImageView();
 
 		try {
-			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/shatyoroom.jpg"));
+			Image backgroundImage = new Image(getClass().getResourceAsStream("/src/main/resources/picture/shatyoroom.jpg"));
 			backgroundView = new ImageView(backgroundImage);
 
 			// ウィンドウサイズに追従
@@ -184,7 +184,7 @@ public class Main3 extends Application {
 		// =====================================================
 		// メニューアイコンボタン（Story1と同じ見た目・配置）
 		// =====================================================
-		Image menuImg = new Image(getClass().getResourceAsStream("/picture/menu.png"));
+		Image menuImg = new Image(getClass().getResourceAsStream("/src/main/resources/picture/menu.png"));
 		ImageView menuIconView = new ImageView(menuImg);
 		menuIconView.setFitWidth(40);
 		menuIconView.setFitHeight(40);

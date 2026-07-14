@@ -1,5 +1,5 @@
 // ハイスコアの保存・読み込みを行うクラス
-class HighScoreManager {
+export class HighScoreManager {
     
     // ハイスコア保存先のキー（Javaのファイル名に相当）
     static STORAGE_KEY = "highscore_data";

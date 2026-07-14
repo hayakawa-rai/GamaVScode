@@ -2,7 +2,7 @@
  * Stage1クリア画面
  * JavaFX版 Stageclear1.java を JavaScript化
  */
-class Stageclear1 {
+export class Stageclear1 {
 
     constructor() {
 

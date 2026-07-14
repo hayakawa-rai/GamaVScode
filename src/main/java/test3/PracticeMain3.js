@@ -82,7 +82,7 @@ public class PracticeMain3 extends Application {
 
 		try {
 			// 背景画像読込
-			Image backgroundImage = new Image(getClass().getResourceAsStream("/picture/shatyoroom.jpg"));
+			Image backgroundImage = new Image(getClass().getResourceAsStream("/src/main/resources/picture/shatyoroom.jpg"));
 			backgroundView = new ImageView(backgroundImage);
 
 			// ウィンドウサイズに追従
@@ -194,7 +194,7 @@ public class PracticeMain3 extends Application {
 		// =====================================================
 		// メニューアイコンボタン（Story1と同じ見た目・配置）
 		// =====================================================
-		Image menuImg = new Image(getClass().getResourceAsStream("/picture/menu.png"));
+		Image menuImg = new Image(getClass().getResourceAsStream("/src/main/resources/picture/menu.png"));
 		ImageView menuIconView = new ImageView(menuImg);
 		menuIconView.setFitWidth(100);
 		menuIconView.setFitHeight(90);

@@ -5,7 +5,7 @@
 // Canvasの自動リサイズ管理
 // ==================================================
 
-class WindowUtil {
+export class WindowUtil {
 
     // 登録済みリスナー管理
     static listenerAttached = new WeakSet();
@@ -193,4 +193,3 @@ class WindowUtil {
     }
 }
 
-export default WindowUtil;

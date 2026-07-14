@@ -1,7 +1,7 @@
 /**
  * ゲーム全体を管理・制御するコントローラークラス (GameController)
  */
-class GameController {
+export class GameController {
     // クラス共通の静的（static）プロパティ
     static #touchStart = [0, 0];       // スワイプ開始座標 [x, y]
     static #FLICK_THRESHOLD = 30.0;    // スワイプ判定の閾値（ピクセル）

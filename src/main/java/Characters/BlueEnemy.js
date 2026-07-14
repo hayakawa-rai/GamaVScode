@@ -6,7 +6,14 @@
 // RedEnemyとの位置関係から追跡地点を決定する
 // ==================================================
 
-class BlueEnemy extends Enemy {
+import { Enemy } from "./Enemy.js";
+import { GameConfig } from "../common/GameConfig.js";
+import { EnemyState } from "./EnemyState.js";
+import { Direction } from "./Direction.js";
+import { RedEnemy } from "./RedEnemy.js";
+
+
+export class BlueEnemy extends Enemy {
 
     // 初期位置（エネミーハウス中央付近）
     static START_COL = 14;
@@ -62,7 +69,7 @@ class BlueEnemy extends Enemy {
 
         // デフォルト（ステージ1）
         let imagePath =
-            "/picture/nari_EnemyBlue.png";
+             "/src/main/resources/picture/nari_EnemyBlue.png";
 
         if (this.mapData) {
 
@@ -73,19 +80,19 @@ class BlueEnemy extends Enemy {
                 case 1:
                     // ステージ1
                     imagePath =
-                        "/picture/nari_EnemyBlue.png";
+                         "/src/main/resources/picture/nari_EnemyBlue.png";
                     break;
 
                 case 2:
                     // ステージ2
                     imagePath =
-                        "/picture/taku_EnemyBlue.png";
+                         "/src/main/resources/picture/taku_EnemyBlue.png";
                     break;
 
                 case 3:
                     // ステージ3
                     imagePath =
-                        "/picture/aniki_EnemyBlue.png";
+                         "/src/main/resources/picture/aniki_EnemyBlue.png";
                     break;
 
                 default:
@@ -358,5 +365,3 @@ class BlueEnemy extends Enemy {
         );
     }
 }
-
-export default BlueEnemy;

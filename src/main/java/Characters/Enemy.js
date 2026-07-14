@@ -4,8 +4,6 @@ import{Character}from "./Character.js";
 import{Direction,DirectionValues}from "./Direction.js";
 import{EnemyState}from "./EnemyState.js";
 import{GameConfig}from "../common/GameConfig.js";
-import{loadImage}from "../common/loadImage.js";
-
 export class Enemy extends Character {
 
 	// 敵キャラクターの画像表示用(実質未使用)
@@ -62,66 +60,76 @@ export class Enemy extends Character {
 	}
 
 	// ==================================================
-	// 画像読み込み
-	// ==================================================
-	// FEVER状態で使用する画像をステージごとに読み込む
-	// ※ブラウザの画像読み込みは非同期のため async/await にしている
-	async loadFeverImage() {
+// 画像読み込み
+// ==================================================
 
-		// デフォルト画像（ステージ1）
-		let feverPath = "/picture/nari_EnemyFever.png";
+// FEVER状態で使用する画像をステージごとに読み込む
+loadFeverImage() {
 
-		// 現在のステージ番号に応じて画像を切り替える
-		if (this.mapData != null) {
-			switch (this.mapData.getStageNumber()) {
-			case 1:
-				feverPath = "/picture/nari_EnemyFever.png";
-				break;
-			case 2:
-				feverPath = "/picture/taku_EnemyFever.png";
-				break;
-			case 3:
-				feverPath = "/picture/aniki_EnemyFever.png";
-				break;
-			}
-		}
+    // デフォルト画像(ステージ1)
+    let feverPath = "/src/main/resources/picture/nari_EnemyFever.png";
 
-    try {
-      this.feverImage = await loadImage(feverPath);
-      console.log(`FEVER画像読込成功: ${feverPath}`);
-    } catch (e) {
-      console.error(e.message);
+    // 現在のステージ番号に応じて画像を切り替える
+    if (this.mapData) {
+        switch (this.mapData.getStageNumber()) {
+            case 1:
+                feverPath = "/src/main/resources/picture/nari_EnemyFever.png";
+                break;
+            case 2:
+                feverPath = "/src/main/resources/picture/taku_EnemyFever.png";
+                break;
+            case 3:
+                feverPath = "/src/main/resources/picture/aniki_EnemyFever.png";
+                break;
+        }
     }
-  }
-	
-	// DEAD状態で使用する画像をステージごとに読み込む
-		async loadDeadImage() {
 
-			// デフォルトはステージ1
-			let deadPath = "/picture/nari_EnemyDead.png";
+    this.feverImage = new Image();
 
-			// 現在のステージ番号に応じて画像を切り替える
-			if (this.mapData != null) {
-				switch (this.mapData.getStageNumber()) {
-				case 1:
-					deadPath = "/picture/nari_EnemyDead.png";
-					break;
-				case 2:
-					deadPath = "/picture/taku_EnemyDead.png";
-					break;
-				case 3:
-					deadPath = "/picture/aniki_EnemyDead.png";
-					break;
-				}
-			}
+    this.feverImage.onload = () => {
+        console.log("FEVER画像読込成功: " + feverPath);
+    };
 
-    try {
-      this.deadImage = await loadImage(deadPath);
-      console.log(`DEAD画像読込成功: ${deadPath}`);
-    } catch (e) {
-      console.error(e.message);
+    this.feverImage.onerror = () => {
+        console.error("FEVER画像が見つかりません: " + feverPath);
+    };
+
+    this.feverImage.src = feverPath;
+}
+
+// DEAD状態で使用する画像をステージごとに読み込む
+loadDeadImage() {
+
+    // デフォルトはステージ1
+    let deadPath = "/src/main/resources/picture/nari_EnemyDead.png";
+
+    // 現在のステージ番号に応じて画像を切り替える
+    if (this.mapData) {
+        switch (this.mapData.getStageNumber()) {
+            case 1:
+                deadPath = "/src/main/resources/picture/nari_EnemyDead.png";
+                break;
+            case 2:
+                deadPath = "/src/main/resources/picture/taku_EnemyDead.png";
+                break;
+            case 3:
+                deadPath = "/src/main/resources/picture/aniki_EnemyDead.png";
+                break;
+        }
     }
-  }
+
+    this.deadImage = new Image();
+
+    this.deadImage.onload = () => {
+        console.log("DEAD画像読込成功: " + deadPath);
+    };
+
+    this.deadImage.onerror = () => {
+        console.error("DEAD画像が見つかりません: " + deadPath);
+    };
+
+    this.deadImage.src = deadPath;
+}
 		
 	// ==================================================
 	// スコア表示

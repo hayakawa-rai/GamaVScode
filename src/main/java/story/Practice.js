@@ -1,41 +1,69 @@
-// ==================================================
-// Practice画面CSSをJS化
-// ==================================================
+/**
+ * Practice画面
+ * JavaFX版 Practice.java を JavaScript化
+ */
+export class Practice {
 
-const practiceContainer =
-    document.getElementById("practice-container");
+    constructor() {
 
-practiceContainer.style.position = "absolute";
-practiceContainer.style.top = "0";
-practiceContainer.style.left = "0";
-practiceContainer.style.width = "100%";
-practiceContainer.style.height = "100%";
-practiceContainer.style.zIndex = "3";
+        // 背景アニメーションID
+        this.animationId = null;
 
-practiceContainer.style.display = "flex";
-practiceContainer.style.flexDirection = "column";
+        // 効果音
+        this.clickSound = new Audio("music/select.mp3");
+        this.cancelSound = new Audio("music/cancel.mp3");
 
-practiceContainer.style.justifyContent = "center";
-practiceContainer.style.alignItems = "center";
+        this.clickSound.volume = 0.4;
+        this.cancelSound.volume = 0.4;
 
+        // 背景スクロール位置
+        this.scrollX = 0;
+    }
 
-// ==================================================
-// タイトル
-// ==================================================
+    /**
+     * 画面終了時の後始末
+     */
+    cleanup() {
 
-const practiceTitle =
-    document.getElementById("practice-title");
+        // 背景アニメーション停止
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
 
-practiceTitle.style.position = "absolute";
-practiceTitle.style.top = "20%";
+        // 効果音停止
+        this.clickSound.pause();
+        this.clickSound.currentTime = 0;
 
-practiceTitle.style.fontFamily =
-    `"PixelMplus12", sans-serif`;
+        this.cancelSound.pause();
+        this.cancelSound.currentTime = 0;
 
-practiceTitle.style.fontSize =
-    "clamp(30px, 4vw, 60px)";
+        // BGM停止
+        Bgm.stopBGM();
+    }
 
-practiceTitle.style.color = "white";
+    /**
+     * 画面作成
+     */
+    createScene() {
+
+        // =====================================
+        // ルートコンテナ
+        // =====================================
+        const root = document.createElement("div");
+        root.className = "practice-root";
+
+        // =====================================
+        // 背景レイヤー
+        // =====================================
+        const bgPane = document.createElement("div");
+        bgPane.className = "background-pane";
+
+        // =====================================
+        // タイトル
+        // =====================================
+        const title = document.createElement("h1");
+        title.textContent = "練習モード";
 
 practiceTitle.style.textShadow =
     "0 0 20px rgba(0,120,220,0.8)";

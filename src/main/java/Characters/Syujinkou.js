@@ -7,10 +7,16 @@
 //     RIGHT: { name: 'RIGHT', dx: 1,  dy: 0,  getDX: () => 1,  getDY: () => 0 }
 // };
 
+import { Character } from "./Character.js";
+import { Direction } from "./Direction.js";
 // Character 親クラスを継承した主人公クラス
-class Syujinkou extends Character {
+export class Syujinkou extends Character {
     // 1マスのサイズ（Javaの static final int に対応）
     static CELL_SIZE = 30;
+
+    // 死亡アニメーション中かどうか（本物のプライベートフィールド。
+    // これにより公開メソッド isDyingAnimation() と名前が衝突しない）
+    #isDyingAnimation = false;
 
     // ==================================================
     // コンストラクタ
@@ -32,7 +38,7 @@ class Syujinkou extends Character {
         this.nextdirection = Direction.NONE;
 
         // 4. 死亡アニメーション用の管理データ
-        this.isDyingAnimation = false;
+        // #isDyingAnimation はクラスフィールドとして false 初期化済み
         this.dyingTimer = 0;
     }
 
@@ -49,7 +55,7 @@ class Syujinkou extends Character {
     // ==================================================
     // ミスが起きたときに 死亡アニメーション開始
     startDying() {
-        this.isDyingAnimation = true;
+        this.#isDyingAnimation = true;
         this.dyingTimer = 0;
         this.direction = Direction.NONE;
         this.nextdirection = Direction.NONE;
@@ -64,7 +70,7 @@ class Syujinkou extends Character {
         this.y = this.startY;
         this.direction = Direction.NONE;
         this.nextdirection = Direction.NONE;
-        this.isDyingAnimation = false;
+        this.#isDyingAnimation = false;
         this.dyingTimer = 0;
     }
 
@@ -97,7 +103,7 @@ class Syujinkou extends Character {
 
     // 死亡アニメーションの更新
     updateDyingAnimation() {
-        if (!this.isDyingAnimation) {
+        if (!this.#isDyingAnimation) {
             return false;
         }
         this.dyingTimer++;
@@ -105,7 +111,7 @@ class Syujinkou extends Character {
         if (this.dyingTimer < 60) {
             return false;
         }
-        this.isDyingAnimation = false;
+        this.#isDyingAnimation = false;
         return true;
     }
 
@@ -135,7 +141,7 @@ class Syujinkou extends Character {
     // プレイヤー移動処理（親クラスの move をオーバーライド）
     move(map) {
         // 死亡中は移動禁止
-        if (this.isDyingAnimation || !this.isAlive()) return;
+        if (this.#isDyingAnimation || !this.isAlive()) return;
 
         // 曲がれる場合は方向転換
         if (this.isAligned() && this.canmove(this.nextdirection, map)) {
@@ -205,7 +211,7 @@ class Syujinkou extends Character {
     setNextDirection(direction) {
         this.nextdirection = direction;
         // 停止中は即座に方向変更
-        if (this.direction === Direction.NONE && !this.isDyingAnimation) {
+        if (this.direction === Direction.NONE && !this.#isDyingAnimation) {
             this.direction = direction;
         }
     }
@@ -235,7 +241,7 @@ class Syujinkou extends Character {
 
     // 外部から状態をチェックするゲッター
     isDyingAnimation() {
-        return this.isDyingAnimation;
+        return this.#isDyingAnimation;
     }
 
     // ==================================================
