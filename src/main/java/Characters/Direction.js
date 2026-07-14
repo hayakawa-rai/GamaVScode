@@ -1,4 +1,4 @@
-function createDirection(name.dx,dy){
+function createDirection(name,dx,dy){
 	return Object.freeze({
 		name,
 		dx,

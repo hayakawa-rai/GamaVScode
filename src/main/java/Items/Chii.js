@@ -1,155 +1,94 @@
-// ==================================================
-// 主人公（仙石さん）クラス
-// プレイヤーの移動、残機管理、スコア管理、
-// FEVER状態、死亡アニメーションの管理を行う
-// ==================================================
-
-class Syujinkou extends Character {
-
-    // 1マスのサイズ
-    static CELL_SIZE = 30;
+// パワーエサ（Chii）クラス。Item クラスを継承
+class Chii extends Item {
+    // 画面上の画像の大きさ（Javaの static final double に対応）
+    static IMAGE_SIZE = 37.0;
 
     // ==================================================
     // コンストラクタ
     // ==================================================
-    constructor(x, y, speed) {
+    constructor(pixelX, pixelY) {
+        // 親クラス（Item）のコンストラクタを呼び出す（スコア値 50 を設定）
+        super(50);
 
-        super(x, y, speed);
+        // マスの中心に画像がくるように位置を調整して保持
+        this.x = pixelX - (Chii.IMAGE_SIZE / 2.0);
+        this.y = pixelY - (Chii.IMAGE_SIZE / 2.0);
 
-        // 残機
-        this.hp = 3;
+        // 画像の読み込み状態管理
+        this.imageLoaded = false;
+        this.img = new Image();
 
-        // スコア
-        this.score = 0;
+        // 保険用の円データ（画像が読み込めなかった場合用）
+        this.fallbackCircle = {
+            x: pixelX,
+            y: pixelY,
+            radius: 8,
+            color: 'chartreuse' // 黄緑色
+        };
 
-        // 生存状態
-        this.isAliveFlag = true;
+        // 画像ファイルの読み込み開始
+        this.img.src = '/picture/Chii_Item.png';
 
-        // FEVER状態
-        this.fever = false;
+        this.img.onload = () => {
+            this.imageLoaded = true;
+        };
 
-        // 次に進みたい方向（先行入力）
-        this.nextdirection = Direction.NONE;
-
-        // 初期位置
-        this.startX = x;
-        this.startY = y;
-
-        // 死亡アニメーション中か
-        this.isDyingAnimationFlag = false;
-
-        // アニメーション経過時間
-        this.dyingTimer = 0;
+        this.img.onerror = () => {
+            console.error("画像の読み込みに失敗しました。パスが正しいか確認してください。");
+            this.imageLoaded = false;
+        };
     }
 
     // ==================================================
-    // タイマー
+    // 食べる処理
     // ==================================================
-
-    // アニメーションタイマー取得
-    getDyingTimer() {
-        return this.dyingTimer;
+    onEaten(player) {
+        // 主人公クラスの addScore メソッドを呼び出す
+        player.addScore(this.score);
     }
 
     // ==================================================
-    // アニメーション
+    // 描画処理
     // ==================================================
-
-    // ミスが起きたときに死亡アニメーション開始
-    startDying() {
-
-        this.isDyingAnimationFlag = true;
-        this.dyingTimer = 0;
-
-        this.direction = Direction.NONE;
-        this.nextdirection = Direction.NONE;
-    }
-
-    // ==================================================
-    // ポジション
-    // ==================================================
-
-    // 初期位置へ戻す
-    resetToStartPosition() {
-
-        this.x = this.startX;
-        this.y = this.startY;
-
-        this.direction = Direction.NONE;
-        this.nextdirection = Direction.NONE;
-
-        this.isDyingAnimationFlag = false;
-        this.dyingTimer = 0;
-    }
-
-    // ==================================================
-    // 状態確認
-    // ==================================================
-
-    // 生存判定
-    isAlive() {
-        return this.hp > 0;
-    }
-
-    // FEVER状態取得
-    isFever() {
-        return this.fever;
-    }
-
-    // 即死亡
-    die() {
-
-        this.hp = 0;
-        this.direction = Direction.NONE;
-    }
-
-    // ==================================================
-    // スコア、更新処理
-    // ==================================================
-
-    // スコア加算
-    addScore(point) {
-        this.score += point;
-    }
-
-    // 死亡アニメーション更新
-    updateDyingAnimation() {
-
-        if (!this.isDyingAnimationFlag) {
-            return false;
+    // Javaの GraphicsContext -> HTML5 Canvas の ctx に対応
+    draw(ctx, x, y, tileSize) {
+        // 1. 画像が正常に読み込めている場合
+        if (this.imageLoaded && this.img) {
+            ctx.drawImage(
+                this.img,
+                x + tileSize / 2.0 - (Chii.IMAGE_SIZE / 2.0),
+                y + tileSize / 2.0 - (Chii.IMAGE_SIZE / 2.0),
+                Chii.IMAGE_SIZE, 
+                Chii.IMAGE_SIZE
+            );
+            // 描画が終わったので終了
+            return;
         }
 
-        this.dyingTimer++;
-
-        // 約60フレーム継続
-        if (this.dyingTimer < 60) {
-            return false;
-        }
-
-        this.isDyingAnimationFlag = false;
-        return true;
+        // 2. 画像がない場合は、保険として生成した黄緑の円を描画する
+        const circle = this.fallbackCircle;
+        ctx.fillStyle = circle.color;
+        ctx.beginPath();
+        ctx.arc(
+            x + tileSize / 2.0, 
+            y + tileSize / 2.0, 
+            circle.radius, 
+            0, 
+            Math.PI * 2
+        );
+        ctx.fill();
     }
 
-    // 残機を1つ減らす
-    decreaseHp() {
-
-        if (this.hp > 0) {
-
-            this.hp--;
-
-            if (this.hp <= 0) {
-                this.isAliveFlag = false;
-            }
-        }
+    // ==================================================
+    // getter
+    // ==================================================
+    // 外部から画像単体を取り出したい時用
+    getImage() {
+        return this.imageLoaded ? this.img : null;
     }
 
-    // ダメージ処理
-    takeDamage() {
-
-        if (this.hp > 0) {
-
-            this.hp--;
-
-            if (this.hp === 0) {
-                this.die();
-        
+    // 外部からサイズを知りたい時用
+    getSize() {
+        return Chii.IMAGE_SIZE;
+    }
+}

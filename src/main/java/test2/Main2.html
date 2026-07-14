@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>仙石さん - ステージ 2</title>
+    <style>
+        /* =====================================================
+         * 共通レイアウトスタイル (旧JavaFXコンポーネントの再現)
+         * ===================================================== */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: "Meiryo", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ゲームのルート（StackPane） */
+        #stage-root {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            /* 通常モードの制限サイズに準拠 */
+            min-width: 1000px;
+            min-height: 800px;
+            max-width: 1920px;
+            max-height: 1080px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        /* 背景画像（ぼかし効果） */
+        .background-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            filter: blur(10px);
+            z-index: 1;
+        }
+
+        /* ゲームベース（Pane） */
+        #game-base {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        #game-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* メニューボタン */
+        .menu-btn {
+            position: absolute;
+            top: 60px;   /* Insets(60, 0, 0, 30) */
+            left: 30px;
+            width: 100px;
+            height: 90px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 4;
+        }
+        .menu-btn img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ポーズ画面レイヤー（VBox） */
+        #pause-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 25px; /* VBox(25) */
+            z-index: 3;
+            display: none; 
+            pointer-events: none; 
+        }
+
+        #pause-layer.visible {
+            display: flex;
+            pointer-events: auto;
+        }
+
+        .pause-title {
+            font-family: "Arial", sans-serif;
+            font-weight: bold;
+            font-size: 48px;
+            color: #FFFF00;
+        }
+
+        .game-button {
+            width: 160px;
+            height: 40px;
+            font-family: "Meiryo", sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .how-to-play-text {
+            color: #FFFFFF;
+            font-family: "Meiryo", sans-serif;
+            font-weight: normal;
+            font-size: 14px;
+            text-align: center;
+            white-space: pre-line;
+            background-color: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            padding: 12px 20px;
+            display: none; 
+        }
+
+        /* ==========================================================================
+           ステージカラーCSS設定 (test.cssの設定から抽出)
+           ========================================================================== */
+        .stage2 .game-bg { 
+            background-color: rgb(43, 43, 43); 
+        }
+        .stage2 .game-wall { 
+            background-color: #ff44cc; 
+        }
+        .stage2 .game-pacman { 
+            background-color: rgb(28, 221, 216); 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ルートコンテナ (StackPane) -->
+    <div id="stage-root" class="stage2">
+        
+        <!-- 背景画像 -->
+        <img id="bg-img" class="background-view" src="picture/companyroom.jpg" alt="Background">
+
+        <!-- ゲーム画面ベース (Pane) -->
+        <div id="game-base" class="stage2">
+            <canvas id="game-canvas"></canvas>
+        </div>
+
+        <!-- メニューアイコンボタン -->
+        <button id="menu-btn" class="menu-btn">
+            <img src="picture/menu.png" alt="Menu">
+        </button>
+
+        <!-- ポーズ画面レイヤー (VBox) -->
+        <div id="pause-layer">
+            <div class="pause-title">PAUSE</div>
+            <button id="to-play-btn" class="game-button">ゲーム再開</button>
+            <button id="how-to-play-btn" class="game-button">操作説明</button>
+            <div id="how-to-play-text" class="how-to-play-text">移動 : ↑↓←→ / WASD<br>画面スワイプ(スマホ用)</div>
+            <button id="title-btn" class="game-button">タイトルへ戻る</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- モックオブジェクト群（既存ファイルに合わせて調整してください） ---
+        const Bgm = { stopBGM: () => console.log("BGMを停止しました") };
+        
+        class MapData {
+            constructor() { 
+                console.log("MapData(Stage2 通常モード)を生成"); 
+            }
+            initEnemy(imgElement) { console.log("敵キャラを初期化しました"); }
+        }
+        
+        class MapView { 
+            constructor(model, baseEl) { console.log("MapView(Stage2)を接続"); } 
+        }
+        
+        class GameController {
+            constructor(model, view, canvas, stageNumber, isPractice) {
+                this.isPaused = false;
+                this.pauseLayer = null;
+                this.stageNumber = stageNumber;
+                this.isPractice = isPractice;
+                console.log(`GameController生成 -> ステージ: ${this.stageNumber}, 練習モード: ${this.isPractice}`);
+            }
+            stop() { console.log("旧セッションを解放しました"); }
+            setPauseLayer(layer) { this.pauseLayer = layer; }
+            togglePauseByButton() {
+                this.isPaused = !this.isPaused;
+                if (this.isPaused) {
+                    this.pauseLayer.classList.add('visible');
+                } else {
+                    this.pauseLayer.classList.remove('visible');
+                }
+            }
+            forceBackToTitle() { console.log("タイトル画面へ遷移"); }
+        }
+
+        // --- ステージ2 起動メインオブジェクト ---
+        const Main2 = {
+            controller: null,
+
+            starts: function() {
+                
+                // 1. 再起動時の多重起動防止
+                if (this.controller !== null) {
+                    this.controller.stop();
+                    this.controller = null;
+                }
+                Bgm.stopBGM();
+
+                // 2. DOM要素の取得とクラス設定
+                const root = document.getElementById('stage-root');
+                const gameBase = document.getElementById('game-base');
+                root.className = "stage2";
+                gameBase.className = "stage2";
+
+                // 3. モデル・ビュー生成（引数なし：通常モード）
+                const model = new MapData();
+                const view = new MapView(model, gameBase);
+
+                // 4. Canvasのレスポンシブ・リサイズ処理
+                const canvas = document.getElementById('game-canvas');
+                const rootContainer = document.getElementById('stage-root');
+                
+                const resizeCanvas = () => {
+                    canvas.width = rootContainer.clientWidth;
+                    canvas.height = rootContainer.clientHeight;
+                };
+                window.addEventListener('resize', resizeCanvas);
+                resizeCanvas();
+
+                // 5. ポーズ画面および各種ボタンイベントの紐付け
+                const pauseLayer = document.getElementById('pause-layer');
+                
+                document.getElementById('to-play-btn').onclick = () => this.controller?.togglePauseByButton();
+                document.getElementById('menu-btn').onclick = () => this.controller?.togglePauseByButton();
+                document.getElementById('title-btn').onclick = () => this.controller?.forceBackToTitle();
+
+                const howToPlayText = document.getElementById('how-to-play-text');
+                document.getElementById('how-to-play-btn').onclick = () => {
+                    const isHidden = window.getComputedStyle(howToPlayText).display === 'none';
+                    howToPlayText.style.display = isHidden ? 'block' : 'none';
+                };
+
+                // 6. 敵キャラクターの初期化
+                model.initEnemy(new Image());
+
+                // 7. コントローラーの初期化（stageNumber = 2, isPractice = false）
+                this.controller = new GameController(model, view, canvas, 2, false);
+                this.controller.setPauseLayer(pauseLayer);
+
+                // 8. キー入力を受け取れるようにフォーカスを設定
+                canvas.tabIndex = 1;
+                canvas.focus();
+
+                console.log("仙石さん - ステージ 2 が正常に起動しました（通常モード）");
+            }
+        };
+
+        // 初期実行
+        window.onload = () => {
+            document.title = "仙石さん - ステージ 2";
+            Main2.starts();
+        };
+    </script>
+</body>
+</html>
