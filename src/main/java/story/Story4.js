@@ -18,8 +18,8 @@ const dialogues = [
 ];
 
 // 画像パスの定数管理（あにきの表情差分用）
-const ANIKI_NORMAL = "picture/aniki-udekumi.png";
-const ANIKI_ANGRY = "picture/aniki2.png";
+const ANIKI_NORMAL = "../../resources/picture/aniki-udekumi.png";
+const ANIKI_ANGRY = "../../resources/picture/aniki2.png";
 
 // ==========================================================================
 // 状態管理変数

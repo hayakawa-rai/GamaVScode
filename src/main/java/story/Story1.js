@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
     // --- 1. データ定義 ---
-    // Java版の全会話テキストを移植 (すべてjump06.mp3が鳴る設定)
     const dialogues = [
         { speaker: "仙石さん", message: "おはよ～～！！", sound: "jump", color: "white" },
         { speaker: "あにき", message: "先輩社員サン、ですか。", sound: "jump", color: "red" },
@@ -19,11 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 2. オーディオ設定 ---
     const sounds = {
-        jump: new Audio('music/jump06.mp3')
+        jump: new Audio('../../resources/music/jump06.mp3')
     };
     sounds.jump.volume = 0.2;
 
-    let currentBgm = new Audio('music/storybgm.mp3');
+    let currentBgm = new Audio('../../resources/music/storybgm.mp3');
     currentBgm.loop = true;
 
     function playSound(key) {
@@ -87,8 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 音声・アニメーション
         if (d.sound) {
-            playSound(d.sound);
-            triggerJump(d.speaker);
+            StoryUtils.triggerJump(d.speaker, ui);
         }
 
         // タイピングエフェクト開始 (50ms間隔)
@@ -113,19 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ui.nextMark.style.display = "block";
     }
 
-    function triggerJump(speaker) {
-        let target = null;
-        if (speaker === "あにき") target = ui.aniki;
-        if (speaker === "仙石さん") target = ui.syujinkou;
-        if (speaker === "なりなり") target = ui.nari;
-
-        if (target) {
-            target.classList.remove("jumping");
-            void target.offsetWidth; // リフローを強制してアニメーションを再トリガー
-            target.classList.add("jumping");
-            setTimeout(() => target.classList.remove("jumping"), 200);
-        }
-    }
 
     function progressStory() {
         if (ui.menuOverlay.style.display === "flex" || isEndingStarted) return;
@@ -177,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
         currentBgm.pause();
         console.log("Switch to Start");
-        // window.location.href = "index.html"; // スタート画面へ遷移
+        GameController.switchStart();
     });
 
     // ESCキーでのメニュー表示

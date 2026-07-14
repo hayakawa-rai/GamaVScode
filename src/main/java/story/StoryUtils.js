@@ -1,8 +1,35 @@
 /**
  * JavaFXのStoryUtilsクラスをJavaScript環境に移植したユーティリティクラス
  */
-export class StoryUtils {
-    
+class StoryUtils {
+    // 効果音の管理と再生
+    static playSound(key) {
+        const sounds = {
+            jump: new Audio('../../resources/music/jump06.mp3')
+        };
+        if (!key || !sounds[key]) return;
+        sounds[key].volume = 0.2;
+        sounds[key].currentTime = 0;
+        sounds[key].play().catch(e => console.warn("Audio play failed", e));
+    }
+
+    // キャラクタージャンプ演出の統合
+    static triggerJump(speaker, ui) {
+        let target = null;
+        if (speaker === "あにき") target = ui.aniki;
+        else if (speaker === "仙石さん") target = ui.syujinkou;
+        else if (speaker === "なりなり") target = ui.nari;
+
+        if (target) {
+            // CSSアニメーションの再トリガー
+            target.classList.remove("jumping");
+            void target.offsetWidth;
+            target.classList.add("jumping");
+            
+            // 効果音再生（ジャンプとセット）
+            this.playSound('jump');
+        }
+    }
     /**
      * キャラクターの2連続ジャンプ演出
      * JavaFXのKeyFrameの時間（300ms, 700ms, 1000ms, 1400ms）と挙動を忠実に再現しています。

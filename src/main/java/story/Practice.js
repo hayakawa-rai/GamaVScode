@@ -80,7 +80,7 @@ document
 const backBtn =
     document.getElementById("back-btn");
 
-backBtn.style.position = "absolute";
+backBtn.style.position = "fixed";
 
 backBtn.style.right = "30px";
 backBtn.style.bottom = "30px";
@@ -98,12 +98,16 @@ backBtn.style.zIndex = "4";
 const scoreInfo =
     document.getElementById("score-info");
 
-scoreInfo.style.position =
-    "absolute";
+scoreInfo.style.position = "fixed";
 
-scoreInfo.style.top = "15px";
-scoreInfo.style.right = "15px";
+scoreInfo.style.top =
+    "clamp(5px, 1vw, 15px)";
 
+scoreInfo.style.right =
+    "clamp(5px, 1vw, 15px)";
+
+scoreInfo.style.fontSize =
+    "clamp(24px, 3vw, 50px)";
 scoreInfo.style.zIndex = "4";
 
 scoreInfo.style.fontSize = "50px";
@@ -160,14 +164,41 @@ tooltip.style.fontSize =
 tooltip.style.padding =
     "clamp(10px, 1vw, 20px)";
 
+tooltip.style.position = "fixed";
+
+tooltip.style.top =
+    "clamp(50px, 8vh, 70px)";
+
+tooltip.style.right =
+    "clamp(10px, 2vw, 20px)";
+
+tooltip.style.zIndex = "100";
+
+tooltip.style.backgroundColor =
+    "rgba(0,0,0,0.95)";
+
+tooltip.style.color = "white";
+
+tooltip.style.fontFamily =
+    '"PixelMplus12", sans-serif';
+
+tooltip.style.fontSize =
+    "clamp(16px, 1.5vw, 32px)";
+
+tooltip.style.padding =
+    "clamp(10px, 1vw, 20px)";
+
 tooltip.style.border =
     "2px solid gold";
 
 tooltip.style.borderRadius =
     "8px";
 
-tooltip.style.minWidth =
-    "250px";
+tooltip.style.width =
+    "clamp(150px, 35vw, 300px)";
 
-tooltip.style.maxWidth =
-    "400px";
+tooltip.style.whiteSpace =
+    "nowrap";
+
+tooltip.style.boxSizing =
+    "border-box";
