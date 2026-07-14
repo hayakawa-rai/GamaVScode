@@ -143,83 +143,52 @@ class Stageclear1 {
         // ルートコンテナ
         // =====================================
         const root =
-            document.createElement("div");
-
-        root.className =
-            "stageclear-root";
+            document.getElementById(
+                "stageclear-root"
+            );
 
         // =====================================
         // タイトル
         // =====================================
         const title =
-            document.createElement("h1");
-
-        title.textContent =
-            "STAGE1 CLEAR!";
-
-        title.style.color =
-            "rgb(180,180,180)";
+            document.getElementById(
+                "title"
+            );
 
         // =====================================
         // 説明文
         // =====================================
         const text =
-            document.createElement("div");
-
-        text.textContent =
-            "鍵を獲得しました！！";
-
-        text.style.color =
-            "gray";
+            document.getElementById(
+                "text"
+            );
 
         // =====================================
         // 鍵画像
         // =====================================
         const imageView =
-            document.createElement("img");
-
-        try {
-
-            imageView.src =
-                "picture/kagi.png";
-
-        } catch (e) {
-
-            console.error(
-                "鍵画像の読み込み失敗",
-                e
+            document.getElementById(
+                "imageView"
             );
-        }
-
-        // =====================================
-        // 画像＋テキスト
-        // =====================================
-        const textAndImage =
-            document.createElement("div");
-
-        textAndImage.className =
-            "text-image-box";
-
-        textAndImage.appendChild(imageView);
-        textAndImage.appendChild(text);
 
         // =====================================
         // スコア表示
         // =====================================
         const scoreLabel =
-            document.createElement("div");
+            document.getElementById(
+                "scoreLabel"
+            );
 
         scoreLabel.textContent =
             `SCORE: ${this.score}`;
-
-        scoreLabel.style.color =
-            "gray";
 
         // =====================================
         // 次のステージへ
         // =====================================
         const next =
-            document.createElement("button");
+            document.getElementById(
+                "nextButton"
+            );
 
         next.textContent =
             "次のステージへ";
@@ -252,11 +221,13 @@ class Stageclear1 {
             }
         );
 
-        // =====================================
+        // ====================================
         // タイトルへ戻る
         // =====================================
         const backButton =
-            document.createElement("button");
+            document.getElementById(
+                "backButton"
+            );
 
         backButton.textContent =
             "タイトルへ";
@@ -287,23 +258,6 @@ class Stageclear1 {
                     }, 500);
             }
         );
-
-        // =====================================
-        // メインコンテナ(VBox相当)
-        // =====================================
-        const buttonBox =
-            document.createElement("div");
-
-        buttonBox.className =
-            "button-box";
-
-        buttonBox.appendChild(title);
-        buttonBox.appendChild(textAndImage);
-        buttonBox.appendChild(scoreLabel);
-        buttonBox.appendChild(next);
-        buttonBox.appendChild(backButton);
-
-        root.appendChild(buttonBox);
 
         // =====================================
         // JavaFXの
@@ -375,14 +329,5 @@ class Stageclear1 {
             "resize",
             updateResponsive
         );
-
-        // =====================================
-        // 画面表示
-        // =====================================
-        document.body.innerHTML = "";
-
-        document.body.appendChild(root);
-
-        return root;
     }
 }

@@ -4,217 +4,197 @@
  */
 class GameOver {
 
-    /**
-     * ゲームオーバー画面を生成
-     * @param {Function} retryAction リトライ時の処理
-     * @param {number} score スコア
-     * @param {boolean} isNewRecord 新記録かどうか
+    /***     * ゲームオーバー画面を初期化
+     *
+     **@param {Function} retryAction
+    ** @param {number} score
+     * @param {boolean} isNewRecord
      */
-    static create(retryAction, score, isNewRecord) {
+  static create(retryAction, score, isNewRecord) {
 
-        // =====================================
+        // ===================================
         // 効果音再生（ゲームオーバー）
-        // =====================================
-        SoundManager.play(SoundManager.GAMEOVER);
+        // ===================================
+        SoundManager.play(SoundMa*ager.GAMEOVER);
 
-        // =====================================
-        // ルートコンテナ
-        // =====================================
-        const root = document.createElement("div");
-        root.className = "gameover-root";
+        // ====================================
+        // HTML要素取得
+        // ====================================
+        const gameText =
+            document.getElementById("game-text");
+        const overText =
+            document.getElementById("over-t*xt");
 
-        // =====================================
-        // 背景画像
-        // =====================================
-        const bg = document.createElement("img");
-        bg.src = "picture/gameover.jpg";
-        bg.className = "gameover-background";
+        const scoreLabel =
+            document.getElementById("score-label");
 
-        // =====================================
-        // 白いオーバーレイ
-        // =====================================
-        const overlay = document.createElement("div");
-        overlay.className = "white-overlay";
+        const newRecordLabel =
+            document.getElementById("new-record-label");
+        const icon =
+            document.getElementById("character-*con");
 
-        // =====================================
-        // メインコンテンツ
-        // =====================================
-        const contentLayout = document.createElement("div");
-        contentLayout.className = "content-layout";
+        const retryBtn =
+            document.getElementById("retry-btn");
 
-        // =====================================
-        // GAME OVER タイトル
-        // =====================================
-        const gameText = document.createElement("h1");
-        gameText.textContent = "GAME";
+        const titleBtn =
+            document.getElementById("title-btn");
 
-        const overText = document.createElement("h1");
-        overText.textContent = "OVER";
-
-        // =====================================
+        const contentLayout =
+            document.getElementById("content-layout");
+        // ====================================
         // スコア表示
-        // =====================================
-        const scoreLabel = document.createElement("div");
-        scoreLabel.textContent = `SCORE : ${score}`;
+        // ====================================
+        scoreLabel.textContent =
+            `SCORE : ${score}`;
 
-        // =====================================
-        // 新記録表示
-        // =====================================
-        const newRecordLabel = document.createElement("div");
-        newRecordLabel.textContent = "NEW RECORD!!";
-
-        // =====================================
-        // タイトル部分コンテナ
-        // =====================================
-        const titleBox = document.createElement("div");
-        titleBox.className = "title-box";
-
-        titleBox.appendChild(gameText);
-        titleBox.appendChild(overText);
-        titleBox.appendChild(scoreLabel);
-
-        // 新記録なら表示
-        if (isNewRecord) {
-            titleBox.appendChild(newRecordLabel);
+        // ====================================
+        // NEW RECORD表示
+        // ====================================
+        if(isNewRecord) {
+            newRecordLabel.style.display =
+               "block";
         }
 
-        // =====================================
-        // キャラクター画像（仙石さん）
-        // =====================================
-        const icon = document.createElement("img");
-        icon.src = "picture/syujinkou(gameover).png";
-        icon.className = "character-image";
-
-        // =====================================
+        // ====================================
         // リトライボタン
-        // =====================================
-        const retryBtn = document.createElement("button");
-        retryBtn.textContent = "リトライする";
+        // ===================================
+        retryBtn.addEventListener(
+            "click",
+            () => {
 
-        retryBtn.addEventListener("click", () => {
+                SoundManager.play(
+                    SoundManager.RETRY
+                );
 
-            // 効果音
-            SoundManager.play(SoundManager.RETRY);
+              setTimeout(() => {
 
-            // 500ms後にリトライ処理
-            setTimeout(() => {
-                if (retryAction) {
-                    retryAction();
-                }
-            }, 500);
+                   if (retryAction) {
+                        retryAction();
+                    }
 
-        });
+               }, 500);
+            });
 
-        // =====================================
-        // タイトルへ戻るボタン
-        // =====================================
-        const titleBtn = document.createElement("button");
-        titleBtn.textContent = "タイトルへ";
+        // ====================================
+        // タイトルへ戻る
+        // ====================================
+        titleBtn.addEventListener(
+           "click",
+            () => {
 
-        titleBtn.addEventListener("click", () => {
+               SoundManager.play(
+                   SoundManager.SELECT);
 
-            // 効果音
-            SoundManager.play(SoundManager.SELECT);
+               setTimeout(() => {
 
-            // 500ms待機
-            setTimeout(() => {
-                GameController.switchStart();
-            }, 500);
+                   GameController.switchStart();
 
-        });
+                }, 500);
+           }
+        );
 
-        // =====================================
-        // ボタンエリア
-        // =====================================
-        const buttonColumn = document.createElement("div");
-        buttonColumn.className = "button-column";
-
-        buttonColumn.appendChild(retryBtn);
-        buttonColumn.appendChild(titleBtn);
-
-        // =====================================
-        // メインレイアウトに追加
-        // =====================================
-        contentLayout.appendChild(titleBox);
-        contentLayout.appendChild(icon);
-        contentLayout.appendChild(buttonColumn);
-
-        // =====================================
+        // ====================================
         // レスポンシブ対応
-        // JavaFXの widthProperty の代替
-        // =====================================
-        function updateLayout() {
+        // ====================================
+       function updateLayout() {
 
-            const width = window.innerWidth;
+           const width =
+               window.innerWidth;
 
-            if (width < 600) {
+           if (width < 600) {
 
-                // ==========================
-                // スマホ表示
-                // ==========================
-                gameText.style.fontSize = "42px";
-                overText.style.fontSize = "42px";
+              // スマホ表示
 
-                scoreLabel.style.fontSize = "24px";
+                gameText.style.fontSize =
+                   "42px";
 
-                newRecordLabel.style.fontSize = "28px";
-                newRecordLabel.style.color = "gold";
+                overText.style.fontSize =
+                   "42px";
 
-                icon.style.width = "180px";
-                icon.style.height = "230px";
+                scoreLabel.style.fontSize =
+                  "24px";
 
-                retryBtn.style.width = "260px";
-                retryBtn.style.height = "55px";
+                newRecordLabel.style.fontSize =
+                   "28px";
 
-                titleBtn.style.width = "260px";
-                titleBtn.style.height = "55px";
+               newRecordLabel.style.color =
+                   "gold";
 
-                contentLayout.style.transform = "translateY(-30px)";
-                contentLayout.style.gap = "15px";
+               icon.style.width =
+                   "180px";
 
+               icon.style.height =
+                   "230px";
+
+                retryBtn.style.width =
+                   "260px";
+
+                retryBtn.style.height =
+                   "55px";
+
+                titleBtn.style.width =
+                   "260px";
+
+                titleBtn.style.height =
+                   "55px";
+
+                contentLayout.style.transform =
+                   "translateY(-30px)";
+
+               contentLayout.style.gap =
+                    "15px";
             } else {
 
-                // ==========================
-                // PC表示
-                // ==========================
-                gameText.style.fontSize = "70px";
-                overText.style.fontSize = "70px";
+               // PC表示
 
-                scoreLabel.style.fontSize = "36px";
+                gameText.style.fontSize =
+                    "70px";
 
-                newRecordLabel.style.fontSize = "40px";
-                newRecordLabel.style.color = "gold";
+                overText.style.fontSize =
+                    "70px";
 
-                icon.style.width = "320px";
-                icon.style.height = "416px";
+                scoreLabel.style.fontSize =
+                    "36px";
 
-                retryBtn.style.width = "320px";
-                retryBtn.style.height = "70px";
+                newRecordLabel.style.fontSize =
+                    "40px";
 
-                titleBtn.style.width = "320px";
-                titleBtn.style.height = "70px";
+                newRecordLabel.style.color =
+                    "gold";
 
-                contentLayout.style.transform = "translateY(0)";
-                contentLayout.style.gap = "25px";
+                icon.style.width =
+                    "320px";
+
+                icon.style.height =
+                    "416px";
+
+                retryBtn.style.width =
+                    "320px";
+
+                retryBtn.style.height =
+                    "70px";
+
+                titleBtn.style.width =
+                    "320px";
+
+                titleBtn.style.height =
+                    "70px";
+
+                contentLayout.style.transform =
+                    "translateY(0)";
+
+                contentLayout.style.gap =
+                    "25px";
             }
-
         }
 
         // 初回実行
         updateLayout();
 
-        // ウィンドウサイズ変更時
-        window.addEventListener("resize", updateLayout);
-
-        // =====================================
-        // 画面構築
-        // =====================================
-        root.appendChild(bg);
-        root.appendChild(overlay);
-        root.appendChild(contentLayout);
-
-        // bodyへ追加
-        document.body.innerHTML = "";
-        document.body.appendChild(root);
+        // リサイズ時
+        window.addEventListener(
+            "resize",
+            updateLayout
+        );
     }
 }

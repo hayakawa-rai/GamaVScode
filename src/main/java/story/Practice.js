@@ -95,13 +95,14 @@ class Practice {
         highScoreTip.className = "tooltip";
 
         highScoreTip.innerText =
-`★ HIGH SCORE ★
 
-STAGE1 : ${HighScoreManager.loadHighScore(1)}
+    `★ HIGH SCORE ★
 
-STAGE2 : ${HighScoreManager.loadHighScore(2)}
+        STAGE1 : ${HighScoreManager.loadHighScore(1)}
 
-STAGE3 : ${HighScoreManager.loadHighScore(3)}`;
+        STAGE2 : ${HighScoreManager.loadHighScore(2)}
+
+        STAGE3 : ${HighScoreManager.loadHighScore(3)}`;
 
         highScoreTip.style.display = "none";
 
