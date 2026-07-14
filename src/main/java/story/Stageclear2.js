@@ -172,7 +172,7 @@ export class Stageclear2 {
         try {
 
             imageView.src =
-                "picture/keiyakusho.png";
+                "../../resources/picture/keiyakusho.png";
 
         } catch (e) {
 

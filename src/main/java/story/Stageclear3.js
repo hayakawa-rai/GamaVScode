@@ -177,7 +177,7 @@ export class Stageclear3 {
         try {
 
             imageView.src =
-                "picture/hanko.png";
+                "../../resources/picture/hanko.png";
 
         } catch (e) {
 

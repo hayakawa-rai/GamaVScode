@@ -293,7 +293,7 @@ export class GameController {
     // 画面遷移メソッド群（Web環境では各URLへのリダイレクトや、SPAなら画面パーツの切り替えを行います）
     // ==========================================
     static switchStart() {
-        window.location.href = "Start.html"; 
+        window.location.href = "../start/Start.html"; 
     }
 
     static switchToHelp() {
@@ -301,15 +301,15 @@ export class GameController {
     }
 
     static switchToPractice() {
-        window.location.href = "Practice.html";
+        window.location.href = "../story/Practice.html";
     }
 
     static startToStory() {
-        window.location.href = "Story1.html";
+        window.location.href = "../story/Story1.html";
     }
 
     static startToStory2() {
-        window.location.href = "Story2.html";
+        window.location.href = "../story/Story2.html";
     }
 
     static startToStory3() {
@@ -322,10 +322,10 @@ export class GameController {
 
     static switchToStageclear(stageNum, score) {
         // 例: stageclear1.html?score=1200 のようにクエリパラメータでスコアを渡す設計
-        window.location.href = `sStageclear${stageNum}.html?score=${score}`;
+        window.location.href = `../story/Stageclear${stageNum}.html?score=${score}`;
     }
 
     static switchToGameover(stageNum, isPractice, score) {
-        window.location.href = `Gameover.html?stage=${stageNum}&practice=${isPractice}&score=${score}`;
+        window.location.href = `../story/Gameover.html?stage=${stageNum}&practice=${isPractice}&score=${score}`;
     }
 }

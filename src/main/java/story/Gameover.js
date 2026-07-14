@@ -31,7 +31,7 @@ export class GameOver {
         const newRecordLabel =
             document.getElementById("new-record-label");
         const icon =
-            document.getElementById("character-*con");
+            document.getElementById("character-Icon");
 
         const retryBtn =
             document.getElementById("retry-btn");
