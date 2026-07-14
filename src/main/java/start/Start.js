@@ -17,65 +17,52 @@ document.addEventListener("DOMContentLoaded", () => {
     startBgm.volume = 0.5;
     startBgm.loop = true;
 
-    // 画面ロード時にBGMをスタート（ブラウザの仕様上、初回クリック後に鳴り始めます）
+    // 画面ロード時にBGMをスタート
     startBgm.play().catch(err => console.log("ユーザー操作後にBGMが再生されます", err));
 
-    /**
-     * JavaFXのcleanup()に相当するオーディオ停止処理
-     */
     function cleanup() {
         startBgm.pause();
         startBgm.currentTime = 0;
     }
 
     /**
-     * JavaFXのTimeline(0.5秒ディレイ)を伴う安全な画面遷移
-     * @param {string} url - 遷移先のHTMLファイル名
+     * 変更点: 引数をURL文字列ではなく、実行する関数（callback）に変更
+     * @param {Function} action - 遷移時に実行したい GameController のメソッド
      */
-    function transitionTo(url) {
-        // 連打された時のために既存のSEを停止して最初から再生
+    function transitionTo(action) {
         clickSound.pause();
         clickSound.currentTime = 0;
         clickSound.play();
 
-        // 0.5秒（500ミリ秒）待ってからクリーンアップして遷移
         setTimeout(() => {
             cleanup();
-            window.location.href = url;
+            action(); // ここで渡された GameController のメソッドを実行する
         }, 500);
     }
 
     // ==================================================
-    // 3. 各ボタンのクリックイベント（setOnActionの移植）
+    // 3. 各ボタンのクリックイベント
     // ==================================================
 
     // ① ストーリーモードへ
     storyBtn.addEventListener("click", () => {
-        // GameController.startToStory(stage) のWeb版遷移
-        transitionTo("story1.html"); 
+        transitionTo(() => GameController.startToStory()); 
     });
 
     // ② 練習モードへ
     practiceBtn.addEventListener("click", () => {
-        // GameController.switchToPractice(stage) のWeb版遷移
-        transitionTo("practice.html"); 
+        transitionTo(() => GameController.switchToPractice()); 
     });
 
     // ③ ヘルプ画面へ
     helpBtn.addEventListener("click", () => {
-        // GameController.switchToHelp(stage) のWeb版遷移
-        transitionTo("help.html"); 
+        transitionTo(() => GameController.switchToHelp()); 
     });
 
-    // ④ ゲーム終了（WebAPIのJProロジックを完全移植）
+    // ④ ゲーム終了
     exitBtn.addEventListener("click", () => {
-        clickSound.play();
-
-        setTimeout(() => {
-            cleanup();
-            // JavaFX内のWebAPI.getWebAPI(stage)の仕様を踏襲：
-            // ブラウザ環境であれば指定のURL（Bing等）へリダイレクトさせ、Webタブを終了したように見せる
+        transitionTo(() => {
             window.location.href = "https://www.bing.com";
-        }, 500);
+        });
     });
 });
