@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>story2</title>
+    <link rel="stylesheet" href="../../resources/css/style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        <img id="bg-view" class="fit-screen" src="../../resources/picture/companyroom.jpg" alt="背景">
+
+        <img id="syujinkou-view" class="character-left" src="../../resources/picture/syujinkou(hello).png" alt="仙石さん">
+
+        <img id="aniki-view" class="character-right" src="../../resources/picture/aniki-udekumi.png" alt="あにき">
+        <img id="nari-view" class="character-right hidden" src="../../resources/picture/nari.png" alt="なりなり">
+        <img id="taku-view" class="character-right hidden" src="../../resources/picture/taku.png" alt="わだたく">
+
+        <img id="insert-view" class="fit-screen hidden" src="../../resources/picture/insert.png" alt="演出">
+
+        <button id="menu-btn">
+            <img src="../../resources/picture/menu.png" alt="メニュー" width="100" height="90">
+        </button>
+
+        <div id="message-container">
+            <div id="message-box">
+                <div id="name-text"></div>
+                <div id="dialogue-text"></div>
+                <div id="next-mark" class="hidden">▼</div>
+            </div>
+        </div>
+
+        <div id="menu-overlay" class="hidden">
+            <div id="menu-box">
+                <button id="resume-btn" class="game-button2">再開</button>
+                <button id="title-btn" class="game-button2">タイトルへ</button>
+            </div>
+        </div>
+
+        <div id="fade-rect" class="hidden"></div>
+    </div>
+
+    <script src="story2.js"></script>
+</body>
+</html>
