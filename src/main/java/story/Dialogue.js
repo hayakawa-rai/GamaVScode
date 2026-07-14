@@ -1,4 +1,4 @@
-class Dialogue {
+export class Dialogue {
     /**
      * @param {string} speaker - 発言者の名前
      * @param {string} message - セリフの内容

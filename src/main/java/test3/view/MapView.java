@@ -38,8 +38,8 @@ public class MapView {
 	private int blinkTick = 0;
 
 	// Pac-man・主人公画像
-	private final Image pacmanImage = new Image(getClass().getResource("/picture/syujinkou.png").toExternalForm());
-	private final Image pacmanFeverImage = new Image(getClass().getResource("/picture/syujinkou_Fever.png").toExternalForm());
+	private final Image pacmanImage = new Image(getClass().getResource("/src/main/resources/picture/syujinkou.png").toExternalForm());
+	private final Image pacmanFeverImage = new Image(getClass().getResource("/src/main/resources/picture/syujinkou_Fever.png").toExternalForm());
 
 	/**
 	 * 互換コンストラクタ（引数1つ用）

@@ -2,7 +2,7 @@
  * GameOver画面
  * JavaFX版 Gameover.java を JavaScript化したもの
  */
-class GameOver {
+export class GameOver {
 
     /***     * ゲームオーバー画面を初期化
      *

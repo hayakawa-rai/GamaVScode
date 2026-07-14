@@ -2,7 +2,9 @@
 // Point（通常ドット）
 // ==================================================
 
-class Point extends Item {
+import { Item } from "./Item.js";
+
+export class Point extends Item {
 
     // ==================================================
     // コンストラクタ
@@ -55,4 +57,3 @@ class Point extends Item {
     }
 }
 
-export default Point;

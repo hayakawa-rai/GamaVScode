@@ -1,5 +1,5 @@
 // GameMap インターフェースの役割を持つベースクラス
-class GameMap {
+export class GameMap {
     // ステージ番号を返す (int)
     getStageNumber() {
         throw new Error("getStageNumber() が実装されていません");

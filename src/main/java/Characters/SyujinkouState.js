@@ -1,7 +1,7 @@
 // ==================================================
 // 主人公の状態を管理する enum 相当のクラス
 // ==================================================
-class SyujinkouState {
+export class SyujinkouState {
     // ==================================================
     // コンストラクタ
     // ==================================================
@@ -40,5 +40,3 @@ SyujinkouState.VALUES = Object.freeze([
 
 // 状態全体も後から追加や削除ができないようにフリーズしておく
 Object.freeze(SyujinkouState);
-
-export default SyujinkouState;

@@ -34,14 +34,14 @@ class Dialogue {
 }
 
 // 効果音ファイルの準備（パスは環境に合わせて調整してください）
-const jumpSound = "/music/jump06.mp3";
-const cuteSound = "/music/footsteps.mp3";
-const appearSound = "/music/appearance.mp3";
-const mysteriousSound = "/music/nari.mp3";
-const shineSound = "/music/shine.mp3";
-const damageSound = "/music/damage.mp3";
-const aSound = "/music/damage2.mp3";
-const atacSound = "/music/atac.mp3";
+const jumpSound = "/src/main/resources/music/jump06.mp3";
+const cuteSound = "/src/main/resources/music/footsteps.mp3";
+const appearSound = "/src/main/resources/music/appearance.mp3";
+const mysteriousSound = "/src/main/resources/music/nari.mp3";
+const shineSound = "/src/main/resources/music/shine.mp3";
+const damageSound = "/src/main/resources/music/damage.mp3";
+const aSound = "/src/main/resources/music/damage2.mp3";
+const atacSound = "/src/main/resources/music/atac.mp3";
 
 // シナリオデータの配列化 (JavaFXのList<Dialogue>に相当)
 const dialogues = [
@@ -98,7 +98,7 @@ const fadeRect = document.getElementById("fade-rect");
 
 // 初回起動処理
 function init() {
-    Bgm.playBGM("/music/naribgm.mp3");
+    Bgm.playBGM("/src/main/resources/music/naribgm.mp3");
     startTyping();
     
     // イベントリスナー登録
@@ -184,7 +184,7 @@ function handleBoxClick() {
         if (messageIndex === 4) insertView.classList.remove("hidden");
         if (messageIndex === 5) {
             insertView.classList.add("hidden");
-            Bgm.playBGM("/music/storybgm.mp3");
+            Bgm.playBGM("/src/main/resources/music/storybgm.mp3");
         }
 
         // 💡 仙石さんの被弾（シェイク）演出の再現 (Index 18)

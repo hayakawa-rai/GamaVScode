@@ -2,7 +2,7 @@
  * Stage2クリア画面
  * JavaFX版 Stageclear2.java を JavaScript化
  */
-class Stageclear2 {
+export class Stageclear2 {
 
     constructor() {
 

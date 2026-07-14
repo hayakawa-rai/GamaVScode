@@ -4,7 +4,12 @@
 // 最短距離でプレイヤーを追跡する敵
 // ==================================================
 
-class RedEnemy extends Enemy {
+import { Enemy } from "./Enemy.js";
+import { GameConfig } from "../common/GameConfig.js";
+import { EnemyState } from "./EnemyState.js";
+import { Direction } from "./Direction.js";
+
+export class RedEnemy extends Enemy {
 
     // 初期位置（エネミーハウス中央付近）
     static START_COL = 13;
@@ -40,38 +45,23 @@ class RedEnemy extends Enemy {
         this.loadDeadImage();
 
         // 通常時に使用する画像パス
-        let imagePath =
-            "/picture/nari_EnemyRed.png";
+let imagePath = "../../resources/picture/nari_EnemyRed.png";
 
-        // ステージごとに画像を切り替える
-        if (this.mapData) {
+if (this.mapData) {
+    switch (this.mapData.getStageNumber()) {
+        case 1:
+            imagePath = "../../resources/picture/nari_EnemyRed.png";
+            break;
+        case 2:
+            imagePath = "../../resources/picture/taku_EnemyRed.png";
+            break;
+        case 3:
+            imagePath = "../../resources/picture/aniki_EnemyRed.png";
+            break;
+    }
+}
 
-            switch (
-                this.mapData.getStageNumber()
-            ) {
 
-                case 1:
-                    // ステージ1
-                    imagePath =
-                        "/picture/nari_EnemyRed.png";
-                    break;
-
-                case 2:
-                    // ステージ2
-                    imagePath =
-                        "/picture/taku_EnemyRed.png";
-                    break;
-
-                case 3:
-                    // ステージ3
-                    imagePath =
-                        "/picture/aniki_EnemyRed.png";
-                    break;
-
-                default:
-                    break;
-            }
-        }
 
         // ==========================================
         // 画像読み込み
@@ -182,6 +172,5 @@ class RedEnemy extends Enemy {
             targetRow
         );
     }
+    
 }
-
-export default RedEnemy;

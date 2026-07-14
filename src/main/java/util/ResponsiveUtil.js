@@ -34,7 +34,7 @@
  * );
  */
 
-class ResponsiveUtil {
+export class ResponsiveUtil {
 
     /**
      * コンストラクタ封印

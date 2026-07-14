@@ -99,8 +99,8 @@ export function createHelpScreen(gameController) {
         `<div class="page-heading" style="color:#4FD8E8; font-size:18px; font-weight:bold;">操作</div>
          <div style="display:flex; flex-direction:column; gap:16px; align-items:center; width:100%;">
             <div style="display:flex; align-items:center; gap:8px; justify-content:center; color:white; font-size:15px;">
-                <span>移動：</span><img src="/picture/WASD.png" style="height:65px; object-fit:contain;">
-                <span>または</span><img src="/picture/yazirusi.png" style="height:65px; object-fit:contain;">
+                <span>移動：</span><img src="/src/main/resources/picture/WASD.png" style="height:65px; object-fit:contain;">
+                <span>または</span><img src="/src/main/resources/picture/yazirusi.png" style="height:65px; object-fit:contain;">
             </div>
             <div style="height:6px;"></div>
             <div style="display:flex; align-items:center; gap:10px; width:100%;">
@@ -117,7 +117,7 @@ export function createHelpScreen(gameController) {
             </div>
             <div style="height:6px;"></div>
             <div style="display:flex; align-items:center; gap:10px; width:100%;">
-                <div style="width:40px; min-width:40px; display:flex; justify-content:center;"><img src="/picture/Chii_Item.png" style="width:36px; height:36px; object-fit:contain;"></div>
+                <div style="width:40px; min-width:40px; display:flex; justify-content:center;"><img src="/src/main/resources/picture/Chii_Item.png" style="width:36px; height:36px; object-fit:contain;"></div>
                 <div style="color:white; font-size:14px;">パワーエサを食べるとスコアが加算され、一定時間敵を撃退することができます。</div>
             </div>
             <div style="height:6px;"></div>
@@ -125,11 +125,11 @@ export function createHelpScreen(gameController) {
             <div style="display:flex; align-items:center; gap:10px; width:100%;"><div style="width:40px;"></div><div style="color:white; font-size:14px;">一定数のエサを食べるとランダムな場所に出現し、一定時間が過ぎると消えてなくなります。</div></div>
             <div style="height:6px;"></div>
             <div style="display:flex; gap:12px; justify-content:center; width:100%;">
-                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/picture/sakuranbo.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋100</span></div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/picture/ichigo.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋300</span></div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/picture/orange.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋500</span></div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/picture/ringo.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋700</span></div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/picture/budo.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋1000</span></div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/src/main/resources/picture/sakuranbo.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋100</span></div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/src/main/resources/picture/ichigo.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋300</span></div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/src/main/resources/picture/orange.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋500</span></div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/src/main/resources/picture/ringo.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋700</span></div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;"><img src="/src/main/resources/picture/budo.png" style="width:32px; height:32px;"><span style="color:#F4C022; font-size:11px; font-weight:bold;">＋1000</span></div>
             </div>
          </div>`,
         // ページ3: ルール

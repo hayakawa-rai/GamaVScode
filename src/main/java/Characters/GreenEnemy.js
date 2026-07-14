@@ -6,7 +6,12 @@
 // 近いとき → 縄張りへ戻る
 // ==================================================
 
-class GreenEnemy extends Enemy {
+import { Enemy } from "./Enemy.js";
+import { GameConfig } from "../common/GameConfig.js";
+import { EnemyState } from "./EnemyState.js";
+import { Direction } from "./Direction.js";
+
+export class GreenEnemy extends Enemy {
 
     // 初期位置（エネミーハウス内）
     static START_COL = 14;
@@ -58,7 +63,7 @@ class GreenEnemy extends Enemy {
         // ==========================================
 
         let imagePath =
-            "/picture/nari_EnemyGreen.png";
+             "/src/main/resources/picture/nari_EnemyGreen.png";
 
         if (this.mapData) {
 
@@ -69,19 +74,19 @@ class GreenEnemy extends Enemy {
                 case 1:
                     // ステージ1
                     imagePath =
-                        "/picture/nari_EnemyGreen.png";
+                         "/src/main/resources/picture/nari_EnemyGreen.png";
                     break;
 
                 case 2:
                     // ステージ2
                     imagePath =
-                        "/picture/taku_EnemyGreen.png";
+                         "/src/main/resources/picture/taku_EnemyGreen.png";
                     break;
 
                 case 3:
                     // ステージ3
                     imagePath =
-                        "/picture/aniki_EnemyGreen.png";
+                         "/src/main/resources/picture/aniki_EnemyGreen.png";
                     break;
 
                 default:
@@ -318,5 +323,3 @@ class GreenEnemy extends Enemy {
         );
     }
 }
-
-export default GreenEnemy;
