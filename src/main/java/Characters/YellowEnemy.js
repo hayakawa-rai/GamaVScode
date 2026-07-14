@@ -5,7 +5,12 @@
 // プレイヤーの4マス先を目標地点として移動する
 // ==================================================
 
-class YellowEnemy extends Enemy {
+import { Enemy } from "./Enemy.js";
+import { GameConfig } from "../common/GameConfig.js";
+import { EnemyState } from "./EnemyState.js";
+import { Direction } from "./Direction.js";
+
+export class YellowEnemy extends Enemy {
 
     // 初期位置（エネミーハウス内）
     static START_COL = 13;
@@ -52,7 +57,7 @@ class YellowEnemy extends Enemy {
         this.loadDeadImage();
 
         // 現在のステージ番号によって画像を切り替える
-        let imagePath = "/picture/nari_EnemyYellow.png";
+        let imagePath =  "/src/main/resources/picture/nari_EnemyYellow.png";
 
         if (this.mapData) {
 
@@ -60,17 +65,17 @@ class YellowEnemy extends Enemy {
 
                 case 1:
                     imagePath =
-                        "/picture/nari_EnemyYellow.png";
+                         "/src/main/resources/picture/nari_EnemyYellow.png";
                     break;
 
                 case 2:
                     imagePath =
-                        "/picture/taku_EnemyYellow.png";
+                         "/src/main/resources/picture/taku_EnemyYellow.png";
                     break;
 
                 case 3:
                     imagePath =
-                        "/picture/aniki_EnemyYellow.png";
+                         "/src/main/resources/picture/aniki_EnemyYellow.png";
                     break;
 
                 default:
@@ -276,5 +281,3 @@ class YellowEnemy extends Enemy {
         );
     }
 }
-
-export default YellowEnemy;

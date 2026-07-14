@@ -19,10 +19,10 @@ export class MapView {
 
         // 画像リソースのプリロード
         this.pacmanImage = new Image();
-        this.pacmanImage.src = "/picture/syujinkou.png"; // パスは環境に合わせて調整してください
+        this.pacmanImage.src = "/src/main/resources/picture/syujinkou.png"; // パスは環境に合わせて調整してください
 
         this.pacmanFeverImage = new Image();
-        this.pacmanFeverImage.src = "/picture/syujinkou_Fever.png";
+        this.pacmanFeverImage.src = "/src/main/resources/picture/syujinkou_Fever.png";
 
         // モバイルコントローラーの適用（root要素が存在する場合）
         if (this.rootElement) {

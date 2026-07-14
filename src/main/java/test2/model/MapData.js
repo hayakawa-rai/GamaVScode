@@ -38,7 +38,7 @@ import javafx.util.Duration;
 import start.Bgm;
 import start.SoundManager;
 
-public class MapData implements GameMap {
+export public class MapData implements GameMap {
 
 	// ==================================================
 	// マップ定義(28×31マス)

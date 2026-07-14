@@ -1,5 +1,8 @@
 // フルーツアイテム
-class Fruit extends Item {
+import { Item } from "./Item.js";
+import { SoundManager } from "../start/SoundManager.js";
+
+export class Fruit extends Item {
 
     // =========================
     // コンストラクタ
@@ -87,4 +90,3 @@ class Fruit extends Item {
     }
 }
 
-export default Fruit;

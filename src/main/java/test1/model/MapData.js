@@ -14,19 +14,28 @@
 
 
 
-import { BlueEnemy } from "../characters/BlueEnemy.js";
-import { Direction } from "../characters/Direction.js";
-import { EnemyState } from "../characters/EnemyState.js";
-import { GreenEnemy } from "../characters/GreenEnemy.js";
-import { RedEnemy } from "../characters/RedEnemy.js";
-import { Syujinkou } from "../characters/Syujinkou.js";
-import { YellowEnemy } from "../characters/YellowEnemy.js";
-import { Chii } from "../items/Chii.js";
-import { Fruit } from "../items/Fruit.js";
-import { FruitType } from "../items/FruitType.js";
-import { Point } from "../items/Point.js";
-import { Bgm } from "../start/Bgm.js";
-import { SoundManager } from "../start/SoundManager.js";
+import { BlueEnemy } from "../../Characters/BlueEnemy.js";
+import { Direction } from "../../Characters/Direction.js";
+import { EnemyState } from "../../Characters/EnemyState.js";
+import { GreenEnemy } from "../../Characters/GreenEnemy.js";
+import { RedEnemy } from "../../Characters/RedEnemy.js";
+import { Syujinkou } from "../../Characters/Syujinkou.js";
+import { YellowEnemy } from "../../Characters/YellowEnemy.js";
+import { Chii } from "../../Items/Chii.js";
+import { Fruit } from "../../Items/Fruit.js";
+import { FruitType } from "../../Items/FruitType.js";
+import { Point } from "../../Items/Point.js";
+import { Bgm } from "../../start/Bgm.js";
+import { SoundManager } from "../../start/SoundManager.js";
+import { WallOutline } from "../view/WallOutline.js";
+
+// MapData.js の先頭付近(import群のあと)に追加
+const DIRECTION_MAP = {
+  UP: Direction.UP,
+  DOWN: Direction.DOWN,
+  LEFT: Direction.LEFT,
+  RIGHT: Direction.RIGHT,
+};
 
 export class MapData {
 
@@ -125,6 +134,9 @@ export class MapData {
 
 	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
 	#stageNumber = 1;
+
+  //壁のアウトラインを保持するプロパティ
+  #wallOutline;
 
 	// ==================================================
 	// アイテム管理
@@ -314,6 +326,7 @@ export class MapData {
  
     // 敵の初期位置
     this.initEnemy(null);
+    this.#wallOutline = new WallOutline(this.#map, MapData.TILE_SIZE);
  
     // アイテムが完全に配置し終わった後で、バックアップを取り、復活を有効にする
     this.#initialItemMap = this.#copyItemMap(this.#itemMap);
@@ -524,7 +537,7 @@ export class MapData {
     if (this.#currentFruit == null) return;
  
     this.#currentFruit.update();
-    if (this.#currentFruit.isExpired()) {
+    if (this.#currentFruit.isExpiredFruit()) {
       this.#map[this.#fruitRow][this.#fruitCol] = 0; // 消えたら道に戻す
       this.#currentFruit = null;
       this.#fruitRow = -1;
@@ -723,19 +736,22 @@ export class MapData {
    *
    * @param dir プレイヤーに設定する次の移動方向
    */
-  setNextDirection(dir) {
-    if (this.#syujinkou != null) {
-      this.#syujinkou.setNextDirection(dir);
-    }
- 
-    // 初回入力でゲーム開始
-    if (this.#waitingStart) {
-      this.#waitingStart = false;
-      this.#modeStartTime = Date.now();
-      this.#lastFruitSpawnTime = Date.now();
-      console.log("ゲーム開始");
-    }
+setNextDirection(dir) {
+  // 文字列("UP"など)で渡された場合はDirectionオブジェクトに変換する
+  const resolvedDir = typeof dir === "string" ? DIRECTION_MAP[dir] : dir;
+
+  if (this.#syujinkou != null && resolvedDir != null) {
+    this.#syujinkou.setNextDirection(resolvedDir);
   }
+
+  // 初回入力でゲーム開始
+  if (this.#waitingStart) {
+    this.#waitingStart = false;
+    this.#modeStartTime = Date.now();
+    this.#lastFruitSpawnTime = Date.now();
+    console.log("ゲーム開始");
+  }
+}
 
 	/**
    * プレイヤーと各敵との距離をチェックし、一定距離(collisionThreshold)以内なら
@@ -940,4 +956,8 @@ export class MapData {
     this.#remainingItems = 0;
     console.log("【デバッグ】強制ステージクリアを実行しました。");
   }
+
+  getWallOutline() {
+    return this.#wallOutline;
+}
 }

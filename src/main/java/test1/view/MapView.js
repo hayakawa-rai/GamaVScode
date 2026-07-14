@@ -14,6 +14,13 @@ export class MapView {
         
         // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
         this.wallColor = '#0000FF'; // 青
+
+              // 主人公用画像の読み込み(Java版のpacmanImage/pacmanFeverImage相当)
+        this.pacmanImage = new Image();
+        this.pacmanImage.src = "../../resources/picture/syujinkou.png"; 
+
+        this.pacmanFeverImage = new Image();
+        this.pacmanFeverImage.src = "../../resources/picture/syujinkou_fever.png";
     }
 
     /**
@@ -59,6 +66,11 @@ export class MapView {
         // ステージ内を真っ黒に塗りつぶし
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, stageWidth, stageHeight);
+
+        const outline = this.model.getWallOutline?.();
+        if (outline) {
+        outline.setGeometry(scale, offsetX, offsetY);
+        }
 
         // 各種コンテンツの描画
         this.drawStageContent(ctx, cols, rows, TILE_SIZE);
@@ -169,105 +181,97 @@ export class MapView {
     /**
      * プレイヤー（パックマン）の描画
      */
-    drawPacman(ctx, syujinkou, TILE_SIZE) {
-        if (!syujinkou) return;
+drawPacman(ctx, syujinkou, TILE_SIZE) {
+    if (!syujinkou) return;
 
-        // 死亡アニメーション中の場合
-        if (syujinkou.isDyingAnimation?.()) {
-            this.drawDyingSyujinkou(ctx, syujinkou, TILE_SIZE);
-            return;
-        }
+    if (syujinkou.isDyingAnimation?.()) {
+        this.drawDyingSyujinkou(ctx, syujinkou, TILE_SIZE);
+        return;
+    }
 
-        if (!syujinkou.isAlive?.()) return;
+    if (!syujinkou.isAlive?.()) return;
 
-        const pacX = syujinkou.getX() + TILE_SIZE / 2.0;
-        const pacY = syujinkou.getY() + TILE_SIZE / 2.0;
+    const pacX = syujinkou.getX() + TILE_SIZE / 2.0;
+    const pacY = syujinkou.getY() + TILE_SIZE / 2.0;
 
-        // フィーバー終了間際の点滅処理
-        if (syujinkou.isFever?.()) {
-            const remain = this.model.getFeverRemainingTime();
-            if (remain <= 3000) {
-                if (Math.floor(Date.now() / 150) % 2 === 0) {
-                    return; // 描画スキップ（点滅）
-                }
+    if (syujinkou.isFever?.()) {
+        const remain = this.model.getFeverRemainingTime();
+        if (remain <= 3000) {
+            if (Math.floor(Date.now() / 150) % 2 === 0) {
+                return;
             }
         }
-
-        ctx.save();
-        ctx.translate(pacX, pacY);
-        // 必要に応じてここで回転を入れる (ctx.rotate(angle))
-
-        // 画像が用意されているかチェック、無ければ黄色い円でフォールバック
-        const imgKey = syujinkou.isFever?.() ? 'pacmanFever' : 'pacman';
-        const img = this.images[imgKey];
-
-        if (img) {
-            ctx.drawImage(img, -TILE_SIZE / 2.0, -TILE_SIZE / 2.0, TILE_SIZE, TILE_SIZE);
-        } else {
-            ctx.fillStyle = '#FFFF00';
-            ctx.beginPath();
-            ctx.arc(0, 0, TILE_SIZE / 2.0, 0, Math.PI * 2);
-            ctx.fill();
-        }
-        ctx.restore();
     }
+
+    ctx.save();
+    ctx.translate(pacX, pacY);
+
+    const img = syujinkou.isFever?.() ? this.pacmanFeverImage : this.pacmanImage;
+
+    if (img && img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, -TILE_SIZE / 2.0, -TILE_SIZE / 2.0, TILE_SIZE, TILE_SIZE);
+    } else {
+        ctx.fillStyle = '#FFFF00';
+        ctx.beginPath();
+        ctx.arc(0, 0, TILE_SIZE / 2.0, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
 
     /**
      * 敵1体の描画
      */
     drawEnemyInstance(ctx, enemy, TILE_SIZE) {
-        if (!enemy) return;
+    if (!enemy) return;
 
-        // JavaFXの instanceOf の代わりに、オブジェクトが持つ `type` や `color` プロパティで判定するとJSらしくなります
-        const type = enemy.type; // 'red', 'green', 'yellow', 'blue' などを想定
-        const img = this.images[type]; // images['red'] などから画像を取得
+    // 各Enemyサブクラスが持つ getEnemyImage() から画像を取得
+    const img = typeof enemy.getEnemyImage === 'function' ? enemy.getEnemyImage() : null;
 
-        // 敵の座標系（中心基準か左上基準かで計算を合わせてください。元コードは -TILE_SIZE/2 しているので中心座標と仮定）
-        const enemyLeftX = enemy.getX() - TILE_SIZE / 2.0;
-        const enemyTopY = enemy.getY() - TILE_SIZE / 2.0;
+    const enemyLeftX = enemy.getX() - TILE_SIZE / 2.0;
+    const enemyTopY = enemy.getY() - TILE_SIZE / 2.0;
 
-        if (img) {
-            ctx.drawImage(img, enemyLeftX, enemyTopY, TILE_SIZE, TILE_SIZE);
-        } else {
-            // フォールバック（簡易円描画）
-            const colorMap = { red: '#FF0000', green: '#008000', yellow: '#FFFF00', blue: '#0000FF' };
-            ctx.fillStyle = colorMap[type] || '#FFFFFF';
-            
-            ctx.beginPath();
-            ctx.arc(enemy.getX(), enemy.getY(), TILE_SIZE / 2.0, 0, Math.PI * 2);
-            ctx.fill();
+    if (img) {
+        ctx.drawImage(img, enemyLeftX, enemyTopY, TILE_SIZE, TILE_SIZE);
+    } else {
+        // フォールバック(画像未読み込み時)。enemy.type で色分け
+        const colorMap = { red: '#FF0000', green: '#008000', yellow: '#FFFF00', blue: '#0000FF' };
+        ctx.fillStyle = colorMap[enemy.type] || '#FFFFFF';
 
-            // 黒い目
-            ctx.fillStyle = '#000000';
-            ctx.beginPath();
-            ctx.arc(enemy.getX() - 2, enemy.getY() - 2, 2, 0, Math.PI * 2);
-            ctx.fill();
-        }
+        ctx.beginPath();
+        ctx.arc(enemy.getX(), enemy.getY(), TILE_SIZE / 2.0, 0, Math.PI * 2);
+        ctx.fill();
 
-        // 敵撃破時のスコアポップアップ表示
-        if (enemy.isScorePopupActive?.()) {
-            const progress = enemy.getScorePopupProgress();
-            const riseOffset = progress * 20;
-            const alpha = 1.0 - progress;
-
-            const popupX = enemy.getDefeatX();
-            const popupY = enemy.getDefeatY() - TILE_SIZE / 2.0 - 6 - riseOffset;
-
-            ctx.save();
-            ctx.globalAlpha = alpha;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.font = 'bold 14px Arial';
-
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 3;
-            ctx.strokeText(`+${enemy.getLastDefeatScore()}`, popupX, popupY);
-
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillText(`+${enemy.getLastDefeatScore()}`, popupX, popupY);
-            ctx.restore();
-        }
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.arc(enemy.getX() - 2, enemy.getY() - 2, 2, 0, Math.PI * 2);
+        ctx.fill();
     }
+
+    // 撃破時のスコアポップアップ表示(変更なし)
+    if (enemy.isScorePopupActive?.()) {
+        const progress = enemy.getScorePopupProgress();
+        const riseOffset = progress * 20;
+        const alpha = 1.0 - progress;
+
+        const popupX = enemy.getDefeatX();
+        const popupY = enemy.getDefeatY() - TILE_SIZE / 2.0 - 6 - riseOffset;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = 'bold 14px Arial';
+
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 3;
+        ctx.strokeText(`+${enemy.getLastDefeatScore()}`, popupX, popupY);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(`+${enemy.getLastDefeatScore()}`, popupX, popupY);
+        ctx.restore();
+    }
+}
 
     /**
      * プレイヤー死亡時の回転・縮小演出
@@ -285,9 +289,17 @@ export class MapView {
         ctx.scale(scale, scale);
         ctx.globalAlpha = 1.0 - progress;
 
-        const img = this.images['pacman'];
-        if (img) {
+        // コンストラクタで読み込み済みの pacmanImage / pacmanFeverImage を使う
+        const img = syujinkou.isFever?.() ? this.pacmanFeverImage : this.pacmanImage;
+
+        if (img && img.complete && img.naturalWidth > 0) {
             ctx.drawImage(img, -TILE_SIZE / 2.0, -TILE_SIZE / 2.0, TILE_SIZE, TILE_SIZE);
+        } else {
+            // 画像未読み込み時のフォールバック(黄色い円)
+            ctx.fillStyle = '#FFFF00';
+            ctx.beginPath();
+            ctx.arc(0, 0, TILE_SIZE / 2.0, 0, Math.PI * 2);
+            ctx.fill();
         }
         ctx.restore();
     }

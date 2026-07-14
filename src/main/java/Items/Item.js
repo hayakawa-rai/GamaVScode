@@ -2,7 +2,7 @@
  * アイテムの基底クラス
  * ドット・パワーエサ・フルーツなどの共通部分を管理する
  */
-class Item {
+export class Item {
 
     // =========================
     // コンストラクタ
@@ -57,4 +57,3 @@ class Item {
     }
 }
 
-export default Item;

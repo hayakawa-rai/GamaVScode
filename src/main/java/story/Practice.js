@@ -2,7 +2,7 @@
  * Practice画面
  * JavaFX版 Practice.java を JavaScript化
  */
-class Practice {
+export class Practice {
 
     constructor() {
 
