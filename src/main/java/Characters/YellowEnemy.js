@@ -71,6 +71,7 @@ class YellowEnemy extends Enemy {
                 case 3:
                     imagePath =
                         "/picture/aniki_EnemyYellow.png";
+                    break;
 
                 default:
                     break;
@@ -109,7 +110,8 @@ class YellowEnemy extends Enemy {
         if (
             this.timerStarted &&
             !this.released
-     ) {
+        ) {
+
 
             // ポーズ時間
             const pauseDuration =
