@@ -3,59 +3,48 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Practice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>練習モード</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="practice.css">
+    <link rel="stylesheet" href="../../resources/css/style.css">
 </head>
-
 <body>
 
-    <div id="practice-root">
+<div id="game-container">
+    <!-- 背景 -->
+    <div id="bg-pane"></div>
 
-        <!-- 背景 -->
-        <div id="background-pane"></div>
+    <!-- トロフィー -->
+    <div id="score-info">🏆</div>
 
-        <!-- ハイスコア -->
-        <div id="score-info">🏆</div>
-
-        <!-- ハイスコア表示 -->
-        <div id="high-score-tip"></div>
-
-        <!-- 中央UI -->
-        <div id="ui-container">
-
-            <!-- タイトル -->
-            <h1 id="title">
-                練習モード
-            </h1>
-
-            <!-- ステージ選択 -->
-            <div id="stage-buttons">
-
-                <button id="btn1" class="game-button">
-                    STAGE 1
-                </button>
-
-                <button id="btn2" class="game-button">
-                    STAGE 2
-                </button>
-
-                <button id="btn3" class="game-button">
-                    STAGE 3
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- タイトルへ戻る -->
-        <button id="backButton" class="game-button">
-            タイトルへ
-        </button>
-
+    <!-- ハイスコア -->
+    <div id="highscore-tooltip">
+        ★ HIGH SCORE ★
+        <br><br>
+        STAGE1 : 1000
+        <br><br>
+        STAGE2 : 2000
+        <br><br>
+        STAGE3 : 3000
     </div>
 
-</body>
+    <!-- メイン -->
+    <div id="practice-container">
+        <div id="practice-title">練習モード</div>
 
+        <div id="stage-box">
+            <button id="stage1-btn" class="game-button">STAGE 1</button>
+            <button id="stage2-btn" class="game-button">STAGE 2</button>
+            <button id="stage3-btn" class="game-button">STAGE 3</button>
+        </div>
+    </div>
+
+    <button id="back-btn"   class="game-button">タイトルへ</button>
+</div>
+
+<script src="HighScoreManager.js"></script>
+<script src="Practice.js"></script>
+
+
+</body>
 </html>
