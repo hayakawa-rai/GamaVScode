@@ -112,6 +112,7 @@ class YellowEnemy extends Enemy {
             !this.released
         ) {
 
+
             // ポーズ時間
             const pauseDuration =
                 Date.now() -
