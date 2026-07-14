@@ -143,19 +143,13 @@ class Stageclear2 {
         // ルートコンテナ
         // =====================================
         const root =
-            document.createElement("div");
-
-        root.className =
-            "stageclear-root";
+            document.getElementById("stageclear-root");
 
         // =====================================
         // タイトル
         // =====================================
         const title =
-            document.createElement("h1");
-
-        title.textContent =
-            "STAGE2 CLEAR!";
+            document.getElementById("title");
 
         title.style.color =
             "rgb(180,180,180)";
@@ -164,10 +158,7 @@ class Stageclear2 {
         // 説明文
         // =====================================
         const text =
-            document.createElement("div");
-
-        text.textContent =
-            "契約書を獲得しました！！";
+            document.getElementById("text");
 
         text.style.color =
             "gray";
@@ -176,12 +167,12 @@ class Stageclear2 {
         // 契約書画像
         // =====================================
         const imageView =
-            document.createElement("img");
+            document.getElementById("imageView");
 
         try {
 
             imageView.src =
-                "picture/keiyakusho.png";
+                "../../resources/picture/keiyakusho.png";
 
         } catch (e) {
 
@@ -192,25 +183,10 @@ class Stageclear2 {
         }
 
         // =====================================
-        // 横並びコンテナ(HBox)
-        // =====================================
-        const textAndImage =
-            document.createElement("div");
-
-        textAndImage.style.display = "flex";
-        textAndImage.style.flexDirection = "row";
-        textAndImage.style.alignItems = "center";
-        textAndImage.style.justifyContent = "center";
-        textAndImage.style.gap = "10px";
-
-        textAndImage.appendChild(imageView);
-        textAndImage.appendChild(text);
-
-        // =====================================
         // スコア表示
         // =====================================
         const scoreLabel =
-            document.createElement("div");
+            document.getElementById("scoreLabel");
 
         scoreLabel.textContent =
             `SCORE: ${this.score}`;
@@ -222,7 +198,7 @@ class Stageclear2 {
         // 次のステージへボタン
         // =====================================
         const next =
-            document.createElement("button");
+            document.getElementById("nextButton");
 
         next.textContent =
             "次のステージへ";
@@ -260,7 +236,7 @@ class Stageclear2 {
         // タイトルへ戻るボタン
         // =====================================
         const backButton =
-            document.createElement("button");
+            document.getElementById("backButton");
 
         backButton.textContent =
             "タイトルへ";
@@ -291,26 +267,6 @@ class Stageclear2 {
                     }, 500);
             }
         );
-
-        // =====================================
-        // VBox相当
-        // =====================================
-        const buttonBox =
-            document.createElement("div");
-
-        buttonBox.style.display = "flex";
-        buttonBox.style.flexDirection = "column";
-        buttonBox.style.alignItems = "center";
-        buttonBox.style.justifyContent = "center";
-        buttonBox.style.gap = "20px";
-
-        buttonBox.appendChild(title);
-        buttonBox.appendChild(textAndImage);
-        buttonBox.appendChild(scoreLabel);
-        buttonBox.appendChild(next);
-        buttonBox.appendChild(backButton);
-
-        root.appendChild(buttonBox);
 
         // =====================================
         // JavaFX Bindings の代替
@@ -382,14 +338,5 @@ class Stageclear2 {
             "resize",
             updateResponsive
         );
-
-        // =====================================
-        // 画面表示
-        // =====================================
-        document.body.innerHTML = "";
-
-        document.body.appendChild(root);
-
-        return root;
     }
 }

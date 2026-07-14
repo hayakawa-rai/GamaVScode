@@ -145,7 +145,7 @@ class Stageclear3 {
         // ルートコンテナ(StackPane相当)
         // =====================================
         const root =
-            document.createElement("div");
+            document.getElementById("stageclear-root");
 
         root.className =
             "stageclear-root";
@@ -154,10 +154,7 @@ class Stageclear3 {
         // タイトル
         // =====================================
         const title =
-            document.createElement("h1");
-
-        title.textContent =
-            "STAGE3 CLEAR!";
+            document.getElementById("title");
 
         title.style.color =
             "rgb(180,180,180)";
@@ -166,10 +163,7 @@ class Stageclear3 {
         // 説明テキスト
         // =====================================
         const text =
-            document.createElement("div");
-
-        text.textContent =
-            "ハンコを獲得しました！！";
+            document.getElementById("text");
 
         text.style.color =
             "gray";
@@ -178,12 +172,12 @@ class Stageclear3 {
         // ハンコ画像
         // =====================================
         const imageView =
-            document.createElement("img");
+            document.getElementById("imageView");
 
         try {
 
             imageView.src =
-                "picture/hanko.png";
+                "../../resources/picture/hanko.png";
 
         } catch (e) {
 
@@ -194,34 +188,10 @@ class Stageclear3 {
         }
 
         // =====================================
-        // HBox相当
-        // =====================================
-        const textAndImage =
-            document.createElement("div");
-
-        textAndImage.style.display =
-            "flex";
-
-        textAndImage.style.flexDirection =
-            "row";
-
-        textAndImage.style.alignItems =
-            "center";
-
-        textAndImage.style.justifyContent =
-            "center";
-
-        textAndImage.style.gap =
-            "10px";
-
-        textAndImage.appendChild(imageView);
-        textAndImage.appendChild(text);
-
-        // =====================================
         // スコア表示
         // =====================================
         const scoreLabel =
-            document.createElement("div");
+            document.getElementById("scoreLabel");
 
         scoreLabel.textContent =
             `SCORE: ${this.score}`;
@@ -233,7 +203,7 @@ class Stageclear3 {
         // 次のステージへボタン
         // =====================================
         const next =
-            document.createElement("button");
+            document.getElementById("nextButton");
 
         next.textContent =
             "次のステージへ";
@@ -271,7 +241,7 @@ class Stageclear3 {
         // タイトルへ戻るボタン
         // =====================================
         const backButton =
-            document.createElement("button");
+            document.getElementById("backButton");
 
         backButton.textContent =
             "タイトルへ";
@@ -302,35 +272,6 @@ class Stageclear3 {
                     }, 500);
             }
         );
-
-        // =====================================
-        // VBox相当
-        // =====================================
-        const buttonBox =
-            document.createElement("div");
-
-        buttonBox.style.display =
-            "flex";
-
-        buttonBox.style.flexDirection =
-            "column";
-
-        buttonBox.style.alignItems =
-            "center";
-
-        buttonBox.style.justifyContent =
-            "center";
-
-        buttonBox.style.gap =
-            "20px";
-
-        buttonBox.appendChild(title);
-        buttonBox.appendChild(textAndImage);
-        buttonBox.appendChild(scoreLabel);
-        buttonBox.appendChild(next);
-        buttonBox.appendChild(backButton);
-
-        root.appendChild(buttonBox);
 
         // =====================================
         // JavaFX Bindings の代替
@@ -402,14 +343,5 @@ class Stageclear3 {
             "resize",
             updateResponsive
         );
-
-        // =====================================
-        // 画面表示
-        // =====================================
-        document.body.innerHTML = "";
-
-        document.body.appendChild(root);
-
-        return root;
     }
 }
