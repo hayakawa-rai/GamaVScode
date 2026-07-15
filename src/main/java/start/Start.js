@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
+import { GameController } from "../control/GameController.js";
+    document.addEventListener("DOMContentLoaded", () => {
     // ==================================================
     // 1. DOM要素の取得
     // ==================================================
