@@ -1,65 +1,247 @@
 @font-face {
     font-family: "PixelMplus12";
-    src: url('../font/PixelMplus12-Regular.ttf') format('truetype');
+    src: url("../font/PixelMplus12-Regular.ttf")
+         format("truetype");
 }
 
-/* ==========================================================================
-   ゲームオーバー画面：ボタン (.gameover-button)
-   ========================================================================== */
-.gameover-button {
-    font-family: "PixelMplus12", sans-serif;
-    font-size: 26px;
-    font-weight: bold;
+/* ==================================================
+   全体
+   ================================================== */
 
-    /* JavaFXのグラデーションをCSSに変換 */
-    background: linear-gradient(to bottom, #ff4d4d, #b30000);
-    color: white;
+#gameover-root {
+    position: relative;
 
-    border: 3px solid #660000;
-    /* JavaFXのradius（角丸）を再現 */
-    border-radius: 10px;
+    width: 100vw;
+    height: 100vh;
 
-    /* ドロップシャドウを再現 */
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    cursor: pointer;
-    box-sizing: border-box;
-    transition: transform 0.1s ease, background 0.1s ease;
-    display: inline-block;
-    text-align: center;
+    overflow: hidden;
 }
 
-/* ホバー（マウスを載せたとき） */
-.gameover-button:hover {
-    background: linear-gradient(to bottom, #ff6666, #cc0000);
-    /* JavaFXのscaleを再現 */
-    transform: scale(1.05);
+#content-layout {
+    position: relative;
+    z-index: 10;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
 }
 
-/* 押す（クリックしたとき：JavaFXの:pressedはWebでは:active） */
-.gameover-button:active {
-    background: linear-gradient(to bottom, #990000, #660000);
-    /* JavaFXのscaleを再現 */
-    transform: scale(0.95);
+/* ==================================================
+   タイトルエリア
+   ================================================== */
+
+#title-box {
+    margin-top: clamp(50px, 10vh, 120px);
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 20px;
 }
 
-/* ==========================================================================
-   ゲームオーバー画面：タイトル (.gameover-title)
-   ========================================================================== */
+/* ==================================================
+   GAME OVER
+   ================================================== */
+
 .gameover-title {
     font-family: "PixelMplus12", sans-serif;
-    font-size: 120px;
+
+    font-size: clamp(50px, 8vw, 120px);
+
     font-weight: 900;
 
-    /* テキストにグラデーションを適用するWebの手法 */
-    background: linear-gradient(to bottom, #ff5f5f, #c62828);
+    background: linear-gradient(
+        to bottom,
+        #ff5f5f,
+        #c62828
+    );
+
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
-    /* JavaFXの二重のドロップシャドウ（白発光＋赤発光）を再現 */
-    filter: drop-shadow(0px 0px 18px rgba(255, 255, 255, 0.6))
-            drop-shadow(0px 0px 30px rgba(180, 40, 40, 0.5));
-    
+    filter:
+        drop-shadow(
+            0 0 18px rgba(255, 255, 255, 0.6)
+        )
+        drop-shadow(
+            0 0 30px rgba(180, 40, 40, 0.5)
+        );
+
     text-align: center;
+
     margin: 40px 0;
+}
+
+/* ==================================================
+   SCORE
+   ================================================== */
+
+#score-label {
+    font-family: "PixelMplus12", sans-serif;
+
+    font-size: clamp(24px, 3vw, 36px);
+
+    font-weight: bold;
+
+    color: white;
+}
+
+/* ==================================================
+   NEW RECORD
+   ================================================== */
+
+#new-record-label {
+    display: none;
+
+    font-family: "PixelMplus12", sans-serif;
+
+    font-size: clamp(28px, 4vw, 40px);
+
+    font-weight: bold;
+
+    color: gold;
+}
+
+/* ==================================================
+   中央エリア
+   ================================================== */
+
+#center-box {
+    flex: 1;
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: clamp(20px, 4vw, 40px);
+
+    padding: 0 30px;
+}
+
+/* ==================================================
+   キャラクター
+   ================================================== */
+
+#character-icon {
+    width: clamp(180px, 25vw, 350px);
+
+    height: auto;
+
+    transform: translateY(-70px);
+}
+
+/* ==================================================
+   ボタン列
+   ================================================== */
+
+#button-column {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    /* 横画面は広め */
+    gap: 60px;
+}
+
+/* ==================================================
+   ボタン
+   ================================================== */
+
+.gameover-button {
+    width: clamp(220px, 25vw, 320px);
+
+    height: clamp(55px, 8vh, 70px);
+
+    font-family: "PixelMplus12", sans-serif;
+
+    font-size: clamp(18px, 2vw, 26px);
+
+    font-weight: bold;
+
+    background: linear-gradient(
+        to bottom,
+        #ff4d4d,
+        #b30000
+    );
+
+    color: white;
+
+    border: 3px solid #660000;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.5);
+
+    padding: 10px 20px;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.1s ease,
+        background 0.1s ease;
+
+    text-align: center;
+}
+
+.gameover-button:hover {
+    background: linear-gradient(
+        to bottom,
+        #ff6666,
+        #cc0000
+    );
+
+    transform: scale(1.05);
+}
+
+.gameover-button:active {
+    background: linear-gradient(
+        to bottom,
+        #990000,
+        #660000
+    );
+
+    transform: scale(0.95);
+}
+
+/* ==================================================
+   縦画面
+   ================================================== */
+
+@media (orientation: portrait) {
+
+    #center-box {
+        flex-direction: column;
+    }
+
+    #character-icon {
+        transform: translateY(-40px);
+    }
+
+    #button-column {
+        width: 100%;
+
+        /* 縦画面は狭め */
+        gap: 25px;
+    }
+
+    .gameover-button {
+        width: 90%;
+        max-width: 320px;
+    }
 }
