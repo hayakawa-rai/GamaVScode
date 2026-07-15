@@ -3,12 +3,11 @@
    ========================================================================== */
 @font-face {
     font-family: "PixelMplus12";
-    /* Web用に通常の相対パス（cssフォルダから見た階層）に調整 */
     src: url('../font/PixelMplus12-Regular.ttf') format('truetype');
 }
 
 /* ==========================================================================
-   1. ゲーム全体・基本レイアウト（全画面・仮想コンテナ）
+   1. ゲーム全体・基本レイアウト
    ========================================================================== */
 * {
     box-sizing: border-box;
@@ -25,13 +24,11 @@ body, html {
     font-family: "PixelMplus12", 'Courier New', monospace, sans-serif;
     overflow: hidden;
     user-select: none;
-    /* 基本説明画面のレイアウト用 */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* ゲーム全体の仮想解像度コンテナ */
 #game-container {
     position: relative;
     width: 100vw;
@@ -45,22 +42,21 @@ body, html {
     background-color: black;
 }
 
-/* 共通：全画面にフィットする背景画像 */
 .fit-screen, .bg-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: fill; /* 比率を合わせて引き伸ばす場合はfill、カットする場合はcover */
+    object-fit: fill;
     z-index: 1;
 }
 .bg-image {
-    object-fit: cover; /* Story1の指定（cover）に準拠 */
+    object-fit: cover;
 }
 
 /* ==========================================================================
-   2. スタート画面 ＆ 説明画面：レイアウトと無限ループ背景
+   2. スタート画面 ＆ 説明画面
    ========================================================================== */
 #bg-pane {
     position: absolute;
@@ -69,17 +65,13 @@ body, html {
     width: 100%;
     height: 100%;
     z-index: 1;
-    /* 背景画像をタイルのように敷き詰める指定 */
     background-image: url('../picture/background.png');
-    background-repeat: repeat; /* repeat-x から基本説明画面の仕様(repeat)へ統一 */
+    background-repeat: repeat;
     background-position: 0px 0px;
-    background-size: auto 100%; /* 縦幅を画面に合わせる */
-    
-    /* ※スタート画面用アニメーション。基本説明画面ではJSのrequestAnimationFrameで制御されます */
+    background-size: auto 100%;
     animation: scrollBackground 30s linear infinite;
 }
 
-/* スタート画面用コンテナ */
 #ui-container {
     position: absolute;
     top: 50%;
@@ -88,7 +80,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4vh; /* 画面の高さに比例した余白 */
+    gap: 4vh;
     width: 90%;
     max-width: 600px;
     z-index: 3;
@@ -108,7 +100,6 @@ body, html {
     align-items: center;
 }
 
-/* JavaFX版のレスポンシブなサイズ感を一括適用 */
 #button-box .game-button {
     width: 35vw;
     max-width: 320px;
@@ -116,13 +107,12 @@ body, html {
     height: 9vh;
     max-height: 70px;
     min-height: 44px;
-    font-size: calc(12px + 1vw); /* 画面幅に応じてフォントが可変 */
+    font-size: calc(12px + 1vw);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* 画面右上の？ボタン */
 #help-btn {
     position: absolute;
     top: 20px;
@@ -135,13 +125,12 @@ body, html {
     max-height: 60px;
     font-size: calc(14px + 0.5vw);
     z-index: 4;
-    border-radius: 50%; /* 完全な丸ボタンにする */
+    border-radius: 50%;
 }
 
 /* ==========================================================================
-   2.5 基本説明画面（ヘルプ画面）専用レイアウト
+   2.5 基本説明画面（ヘルプ画面）
    ========================================================================== */
-/* メインコンテナ（スマホ対応レイアウト） */
 .main-container {
     position: relative;
     z-index: 2;
@@ -154,7 +143,6 @@ body, html {
     padding: 20px;
 }
 
-/* 中央の半透明パネル */
 .panel {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.6);
@@ -167,14 +155,12 @@ body, html {
     align-items: center;
 }
 
-/* タイトル */
 .title {
     color: #F4C022;
     font-size: 36px;
     font-weight: bold;
 }
 
-/* 区切り線 */
 .divider {
     width: 100%;
     height: 2px;
@@ -182,15 +168,13 @@ body, html {
     border: none;
 }
 
-/* ページスタック */
 .page-stack {
     width: 100%;
     max-width: 500px;
 }
 
-/* 各ページのラッパー（見出し付き） */
 .page-wrapper {
-    display: none; /* 初期状態は非表示 */
+    display: none;
     flex-direction: column;
     gap: 12px;
     align-items: flex-start;
@@ -212,9 +196,8 @@ body, html {
     gap: 10px;
     width: 100%;
 }
-#page-0 .page-content { gap: 16px; align-items: center; } /* ページ1は中央寄せ */
+#page-0 .page-content { gap: 16px; align-items: center; }
 
-/* 行のレイアウト */
 .note-row {
     display: flex;
     align-items: center;
@@ -238,14 +221,12 @@ body, html {
     word-wrap: break-word;
 }
 
-/* モード用見出し */
 .mode-heading {
     color: #FF9632;
     font-size: 18px;
     font-weight: bold;
 }
 
-/* 特定のパーツ再現 */
 .dot-icon {
     width: 8px;
     height: 8px;
@@ -259,7 +240,6 @@ body, html {
     object-fit: contain;
 }
 
-/* フルーツ行 */
 .fruit-row {
     display: flex;
     gap: 12px;
@@ -283,7 +263,6 @@ body, html {
     font-weight: bold;
 }
 
-/* 操作説明行 */
 .move-control-row {
     display: flex;
     align-items: center;
@@ -297,10 +276,8 @@ body, html {
     object-fit: contain;
 }
 
-/* スペーサー（Javaのspacerメソッドの再現） */
 .spacer { width: 100%; }
 
-/* インジケーター（● ○ ○ ○） */
 .indicator {
     display: flex;
     gap: 8px;
@@ -317,7 +294,6 @@ body, html {
     background-color: #4FD8E8;
 }
 
-/* 左右矢印ボタン行 */
 .arrow-row {
     display: flex;
     gap: 40px;
@@ -325,7 +301,6 @@ body, html {
     width: 100%;
 }
 
-/* 矢印ボタン専用スタイル */
 .arrow-btn {
     width: 50px;
     height: 45px;
@@ -338,7 +313,6 @@ body, html {
     cursor: pointer;
 }
 
-/* 戻るボタンのサイズ調整 (JavaFXの setPrefSize(200, 50) を反映) */
 .back-button-layout {
     width: 200px;
     height: 50px;
@@ -346,7 +320,7 @@ body, html {
 }
 
 /* ==========================================================================
-   3. アドベンチャーパート：キャラクター立ち絵の配置
+   3. アドベンチャーパート
    ========================================================================== */
 .character-left, .character-right, .sprite {
     position: absolute;
@@ -354,20 +328,18 @@ body, html {
     object-fit: contain;
     z-index: 2;
     transition: opacity 0.3s ease;
-    display: none; /* JS側で表示制御するため初期値は非表示 */
+    display: none;
 }
 
-/* 旧定義の互換用位置調整 */
 .character-left { left: 5vw; width: 30vw; height: 90vh; display: block; }
 .character-right { right: 5vw; width: 50vw; height: 95vh; display: block; }
 
-/* キャラクターを配置するための共通コンテナ */
 .sprite-wrapper {
     position: absolute;
     bottom: 0;
-    height: 85%;      /* 画面の高さの85%を使用 */
+    height: 85%;
     z-index: 2;
-    display: none;    /* 初期は非表示 */
+    display: none;
     justify-content: center;
     align-items: flex-end;
     pointer-events: none;
@@ -375,65 +347,87 @@ body, html {
     transition: opacity 0.5s ease;
 }
 
-/* 左側（主人公専用） */
-#syujinkou-wrapper {
+#insert-view {
+    position: absolute;
+    top: 0;
     left: 0;
-    width: 45%;       /* 左側の領域 */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 5;
+    pointer-events: none;
 }
 
-/* 右側（なりなり専用） */
+#syujinkou-wrapper {
+    left: 0;
+    width: 45%;
+}
+
 #nari-wrapper {
     position: absolute;
     right: 0;
     bottom: 0;
-    width: 80%;           /* 画面幅の最大80%を使用 */
-    height: 85%;          /* 画面高さの85%を使用 */
+    width: 80%;
+    height: 85%;
     z-index: 2;
     display: flex;
-    justify-content: flex-end; /* 右寄せ */
-    align-items: flex-end;     /* 下寄せ */
+    justify-content: flex-end;
+    align-items: flex-end;
     pointer-events: none;
 }
 
 #nari-wrapper .sprite-img {
-    height: 100%;         /* wrapperの高さに合わせる */
-    width: auto;          /* 横幅はアスペクト比を維持して自動調整 */
-    max-width: 100%;      /* 枠からはみ出さない */
+    height: 100%;
+    width: auto;
+    max-width: 100%;
     object-fit: contain;
-    object-position: bottom right; /* 右下を支点に伸縮 */
+    object-position: bottom right;
 }
 #aniki-wrapper {
     right: 0;
-    width: 50%; /* この枠の右端は絶対に動きません */
+    width: 50%;
     z-index: 2;
     display: flex;
-    justify-content: flex-end; /* 枠の中で右寄せにする */
-    align-items: flex-end;     /* 枠の中で下寄せにする */
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 #aniki-wrapper .sprite-img {
-    /* ここで大きさを変える */
-    width: 140%; 
+    width: 140%;
     height: 140%;
-    
     object-fit: contain;
-    object-position: bottom right; /* 拡大の基準を右下にする */
-    
+    object-position: bottom right;
 }
-/* 実際に表示する画像：崩れず、枠内で最大化 */
+
+#taku-wrapper {
+    right: 0;
+    width: 50%;
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#taku-wrapper .sprite-img {
+    width: 140%;
+    height: 140%;
+    object-fit: contain;
+    object-position: bottom right;
+}
 .sprite-img {
     height: 100%;
     width: 100%;
-    object-fit: contain;     /* 比率を維持して枠に収める */
-    object-position: bottom; /* 下揃え */
+    object-fit: contain;
+    object-position: bottom;
 }
 
 .sprite-wrapper.active {
     display: flex;
     opacity: 1;
 }
+
 /* ==========================================================================
-   4. アドベンチャーパート：メッセージボックス関連
+   4. アドベンチャーパート：メッセージボックス
    ========================================================================== */
 #message-container, #message-box-container {
     position: absolute;
@@ -445,9 +439,8 @@ body, html {
     justify-content: center;
     z-index: 10;
 }
-#message-container { left: 0; width: 100%; height: 18vh; } /* 互換用 */
+#message-container { left: 0; width: 100%; height: 18vh; }
 
-/* メッセージボックス本体 */
 #message-box {
     position: relative;
     width: 100%;
@@ -461,7 +454,6 @@ body, html {
     cursor: pointer;
 }
 
-/* 発言者名（どちらのID名でも対応可能） */
 #name-text, #speaker-name {
     font-size: 2.5vh;
     color: lightgray;
@@ -469,7 +461,6 @@ body, html {
     font-weight: bold;
 }
 
-/* セリフ本文（どちらのID名でも対応可能） */
 #dialogue-text, #message-text {
     color: white;
     font-size: 3vh;
@@ -478,7 +469,6 @@ body, html {
     flex-grow: 1;
 }
 
-/* 次へマーク ▼ */
 #next-mark {
     position: absolute;
     right: 40px;
@@ -505,7 +495,6 @@ body, html {
     height: 90px;
 }
 
-/* メニュー画面の背景マスク */
 #menu-overlay {
     position: absolute;
     top: 0;
@@ -517,10 +506,9 @@ body, html {
     justify-content: center;
     align-items: center;
     z-index: 30;
-    display: none; /* 初期は隠す */
+    display: none;
 }
 
-/* メニュー枠本体 */
 #menu-box, .menu-box {
     width: 300px;
     background: rgba(40, 40, 50, 0.95);
@@ -535,7 +523,7 @@ body, html {
 }
 
 /* ==========================================================================
-   6. 画面エフェクト（暗転・フェード用レイヤー）
+   6. 画面エフェクト（暗転・フェード）
    ========================================================================== */
 #fade-rect, #fade-overlay {
     position: absolute;
@@ -551,9 +539,8 @@ body, html {
 }
 
 /* ==========================================================================
-   7. STORY CLEAR (スタッフロール画面) 専用スタイル
+   7. STORY CLEAR (スタッフロール)
    ========================================================================== */
-/* 白色のフィルター層 */
 #white-filter {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -561,7 +548,6 @@ body, html {
     z-index: 2;
 }
 
-/* 画面中央の大きな演出テキスト（STORY CLEAR / THANK YOU） */
 .center-notice {
     position: absolute;
     top: 50%; left: 50%;
@@ -577,7 +563,6 @@ body, html {
 #story-clear-text { font-size: 8vw; }
 #thank-you-text { font-size: 6.5vw; }
 
-/* スタッフロールの流れるコンテナ */
 #roll-container {
     position: absolute;
     width: 100%;
@@ -598,7 +583,6 @@ body, html {
     white-space: pre-wrap;
 }
 
-/* 最終リザルト表示エリア */
 #thank-box {
     position: absolute;
     top: 50%; left: 50%;
@@ -612,7 +596,6 @@ body, html {
 }
 #logo-view { width: 35vw; height: auto; }
 
-/* 右下のコピーライトBOX */
 #company-box {
     position: absolute;
     right: 30px;
@@ -632,9 +615,8 @@ body, html {
 }
 
 /* ==========================================================================
-   8. ゲーム共通UIボタン（青・黒・オレンジ・パネル）
+   8. ゲーム共通UIボタン
    ========================================================================== */
-/* ゲームボタン青ver */
 .game-button {
     font-family: "PixelMplus12", sans-serif;
     font-size: 30px;
@@ -659,7 +641,6 @@ body, html {
     transform: scale(0.95);
 }
 
-/* ゲームボタン黒ver */
 .game-button2 {
     font-family: "PixelMplus12", sans-serif;
     font-size: 20px;
@@ -679,7 +660,6 @@ body, html {
     transform: scale(0.95);
 }
 
-/* ヘルプボタン(戻るボタンなど) オレンジver */
 .help-button {
     font-family: "PixelMplus12", sans-serif;
     font-size: 20px;
@@ -704,7 +684,6 @@ body, html {
     transform: scale(0.95);
 }
 
-/* パネルボタン */
 .panel-button {
     cursor: pointer;
     transition: transform 0.1s ease;
@@ -723,13 +702,11 @@ body, html {
    ========================================================================== */
 .hidden { display: none !important; }
 
-/* 背景の無限横スクロール */
 @keyframes scrollBackground {
     0% { background-position: 0 0; }
     100% { background-position: -1920px 0; }
 }
 
-/* ▼マークの点滅 ＆ 上下アニメーション */
 @keyframes blinkAndMove {
     0% { opacity: 1; transform: translateY(0px); }
     50% { opacity: 0.3; transform: translateY(6px); }
@@ -739,21 +716,28 @@ body, html {
     animation: blinkAndMove 0.8s infinite ease-in-out;
 }
 
-/* 立ち絵被弾シェイク */
 .shake { animation: shake-anim 0.1s infinite alternate; }
 @keyframes shake-anim {
     0% { transform: translateX(0); }
     100% { transform: translateX(20px); }
 }
 
-/* キャラクター用ジャンプアニメーション */
 @keyframes jump {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-30px); }
 }
+
 .jumping { animation: jump 0.2s ease; }
 
-/* スタッフロールのスクロール用 */
+@keyframes fallAnim {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(200px); }
+}
+
+.falling { 
+    animation: fallAnim 0.8s ease-in-out forwards; 
+}
+
 @keyframes scrollCredits {
     0% { transform: translateY(0vh); }
     100% { transform: translateY(var(--scroll-distance, -2500px)); }

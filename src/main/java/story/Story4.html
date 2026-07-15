@@ -9,13 +9,15 @@
 <body>
 
     <div id="game-container">
-        <img id="bg-view" class="fit-screen" src="../../resources/picture/shatyoroom.jpg" alt="背景">
-
-        <img id="syujinkou-view" class="character-left" src="../../resources/picture/syujinkou(hello).png" alt="仙石さん">
-        <img id="aniki-view" class="character-right" src="../../resources/picture/aniki-udekumi.png" alt="あにき">
-        <img id="nari-view" class="character-right hidden" src="../../resources/picture/nari.png" alt="なりなり">
-        <img id="taku-view" class="character-right hidden" src="../../resources/picture/taku2.png" alt="わだたく">
-
+        <!-- 1. 背景 -->
+        <img id="bg" class="bg-image" src="../../resources/picture/shatyoroom.jpg">
+        <!-- 2. キャラクターレイヤー-->
+        <div id="syujinkou-wrapper" class="sprite-wrapper active" style="left: 0;">
+            <img id="syujinkou" class="sprite-img" src="../../resources/picture/syujinkou(hello).png">
+        </div>
+        <div id="aniki-wrapper" class="sprite-wrapper" style="right: 0;">
+            <img id="aniki" class="sprite-img" src="../../resources/picture/aniki2.png">
+        </div>
         <div id="message-container">
             <div id="message-box">
                 <div id="name-text"></div>

@@ -1,258 +1,116 @@
 import { GameController } from "../control/GameController.js";
+import { StoryEngine } from "./StoryEngine.js";
+import { StoryUtils } from "./StoryUtils.js";
 
-// サウンド管理オブジェクト (BGM用)
-const Bgm = {
-    currentBgm: null,
-    playBGM(src) {
-        this.stopBGM();
-        this.currentBgm = new Audio(src);
-        this.currentBgm.loop = true;
-        this.currentBgm.volume = 0.5;
-        this.currentBgm.play().catch(e => console.log("BGM再生にはユーザー操作が必要です。"));
-    },
-    stopBGM() {
-        if (this.currentBgm) {
-            this.currentBgm.pause();
-            this.currentBgm = null;
+document.addEventListener("DOMContentLoaded", () => {
+    // --- 1. データ定義 ---
+    const dialogues = [
+        { speaker: "なりなり", message: "あ、あれっ…！？", sound: "../../resources/music/nari.mp3", textColor: "orange" },
+        { speaker: "仙石さん", message: "弱いな！？", sound: "../../resources/music/jump06.mp3", textColor: "white" },
+        { speaker: "なりなり", message: "ま、まだだ…まだ終わってない…！", sound: null, textColor: "orange" },
+        { speaker: "仙石さん", message: "もう終わってる。", sound: "../../resources/music/nari.mp3", textColor: "white" },
+        { speaker: "なりなり", message: "ぐああああああ！！", sound: "../../resources/music/damage.mp3", textColor: "orange" },
+        { speaker: "あにき", message: "クク…やはり雑魚か。", sound: null, textColor: "red" },
+        { speaker: "仙石さん", message: "おい、完全に遊ばれてるぞ。", sound: "../../resources/music/jump06.mp3", textColor: "white" },
+        { speaker: "あにき", message: "まあいい。次は特別だ。", sound: null, textColor: "red" },
+        { speaker: "あにき", message: "来い、わだたく。", sound: "../../resources/music/jump06.mp3", textColor: "red" },
+        { speaker: "わだたく", message: "……とてとて…", sound: "../../resources/music/footsteps.mp3", textColor: "pink" },
+        { speaker: "わだたく", message: "……ぴょこっ", sound: "../../resources/music/appearance.mp3", textColor: "pink" },
+        { speaker: "仙石さん", message: "……ん？", sound: "../../resources/music/nari.mp3", textColor: "white" },
+        { speaker: "仙石さん", message: "なんだこのかわいい生き物は。", sound: "../../resources/music/jump06.mp3", textColor: "white" },
+        { speaker: "わだたく", message: "わだ〜たく〜…♪", sound: "../../resources/music/shine.mp3", textColor: "pink" },
+        { speaker: "わだたく", message: "よろしくね♪", sound: "../../resources/music/shine.mp3", textColor: "pink" },
+        { speaker: "仙石さん", message: "……弱そうだな。", sound: "../../resources/music/nari.mp3", textColor: "white" },
+        { speaker: "あにき", message: "見た目で判断するな。", sound: null, textColor: "red" },
+        { speaker: "わだたく", message: "えいっ", sound: "../../resources/music/atac.mp3", textColor: "pink" },
+        { speaker: "仙石さん", message: "ぐっ！？", sound: "../../resources/music/damage2.mp3", textColor: "white" },
+        { speaker: "仙石さん", message: "な、何だ今の一撃は…！", sound: null, textColor: "white" },
+        { speaker: "わだたく", message: "あそぼ？♪", sound: "../../resources/music/shine.mp3", textColor: "red" },
+        { speaker: "わだたく", message: "いっぱいあそぼ〜♪", sound: "../../resources/music/shine.mp3", textColor: "red" },
+        { speaker: "あにき", message: "そいつは俺のペットでな。", sound: null, textColor: "red" },
+        { speaker: "あにき", message: "強そうに見えないが、遊ばれたら最後だ。", sound: "../../resources/music/jump06.mp3", textColor: "red" }
+    ];
+
+    // --- 2. DOM要素取得 ---
+    const ui = {
+        container: document.getElementById('game-container'),
+        nameText: document.getElementById('speaker-name'),
+        messageText: document.getElementById('message-text'),
+        nextMark: document.getElementById('next-mark'),
+        menuBtn: document.getElementById('menu-btn'),
+        menuOverlay: document.getElementById('menu-overlay'),
+        resumeBtn: document.getElementById('resume-btn'),
+        titleBtn: document.getElementById('title-btn'),
+        insertView: document.getElementById('insert-view'),
+        fadeOverlay: document.getElementById('fade-overlay'),
+        wrappers: {
+            syujinkou: document.getElementById('syujinkou-wrapper'),
+            aniki: document.getElementById('aniki-wrapper'),
+            nari: document.getElementById('nari-wrapper'),
+            taku: document.getElementById('taku-wrapper')
         }
-    }
-};
+    };
 
-// 対話データの定義クラス (前回の移植版をベース)
-class Dialogue {
-    constructor(speaker, message, soundPath, textColor) {
-        this.speaker = speaker;
-        this.message = message;
-        this.sound = soundPath ? new Audio(soundPath) : null;
-        if (this.sound) this.sound.volume = 0.3;
-        this.textColor = textColor;
-    }
-    playEventSound() {
-        if (this.sound) {
-            this.sound.currentTime = 0;
-            this.sound.play().catch(e => {});
-        }
-    }
-}
-
-// 効果音ファイルの準備（パスは環境に合わせて調整してください）
-const jumpSound = "/src/main/resources/music/jump06.mp3";
-const cuteSound = "/src/main/resources/music/footsteps.mp3";
-const appearSound = "/src/main/resources/music/appearance.mp3";
-const mysteriousSound = "/src/main/resources/music/nari.mp3";
-const shineSound = "/src/main/resources/music/shine.mp3";
-const damageSound = "/src/main/resources/music/damage.mp3";
-const aSound = "/src/main/resources/music/damage2.mp3";
-const atacSound = "/src/main/resources/music/atac.mp3";
-
-// シナリオデータの配列化 (JavaFXのList<Dialogue>に相当)
-const dialogues = [
-    new Dialogue("なりなり", "あ、あれっ…！？", mysteriousSound, "orange"),
-    new Dialogue("仙石さん", "弱いな！？", jumpSound, "white"),
-    new Dialogue("なりなり", "ま、まだだ…まだ終わってない…！", null, "orange"),
-    new Dialogue("仙石さん", "もう終わってる。", mysteriousSound, "white"),
-    new Dialogue("なりなり", "ぐああaaaa転！！", damageSound, "orange"),
-    new Dialogue("あにき", "クク…やはり雑魚か。", null, "red"),
-    new Dialogue("仙石さん", "おい、完全に遊ばれてるぞ。", jumpSound, "white"),
-    new Dialogue("あにき", "まあいい。次は特別だ。", null, "red"),
-    new Dialogue("あにき", "来い、わだたく。", jumpSound, "red"),
-    new Dialogue("わだたく", "……とてとて…", cuteSound, "pink"),
-    new Dialogue("わだたく", "……ぴょこっ", appearSound, "pink"),
-    new Dialogue("仙石さん", "……ん？", mysteriousSound, "white"),
-    new Dialogue("仙石さん", "なんだこのかわいい生き物は。", jumpSound, "white"),
-    new Dialogue("わだたく", "わだ〜たく〜…♪", shineSound, "pink"),
-    new Dialogue("わだたく", "よろしくね♪", shineSound, "pink"),
-    new Dialogue("仙石さん", "……弱そうだな。", mysteriousSound, "white"),
-    new Dialogue("あにき", "見た目で判断するな。", null, "red"),
-    new Dialogue("わだたく", "えいっ", atacSound, "pink"),
-    new Dialogue("仙石さん", "ぐっ！？", aSound, "white"),
-    new Dialogue("仙石さん", "な、何だ今の一撃は…！", null, "white"),
-    new Dialogue("わだたく", "あそぼ？♪", shineSound, "red"),
-    new Dialogue("わだたく", "いっぱいあそぼ〜♪", shineSound, "red"),
-    new Dialogue("あにき", "そいつは俺のペットでな。", null, "red"),
-    new Dialogue("あにき", "強そうに見えないが、遊ばれたら最後だ。", jumpSound, "red")
-];
-
-// 状態変数
-let messageIndex = 0;
-let charIndex = 0;
-let isTyping = false;
-let typingTimer = null;
-let isEndingStarted = false;
-
-// DOM要素の取得
-const nameText = document.getElementById("name-text");
-const dialogueText = document.getElementById("dialogue-text");
-const nextMark = document.getElementById("next-mark");
-const messageBox = document.getElementById("message-box");
-
-const syujinkouView = document.getElementById("syujinkou-view");
-const anikiView = document.getElementById("aniki-view");
-const nariView = document.getElementById("nari-view");
-const takuView = document.getElementById("taku-view");
-const insertView = document.getElementById("insert-view");
-
-const menuBtn = document.getElementById("menu-btn");
-const menuOverlay = document.getElementById("menu-overlay");
-const resumeBtn = document.getElementById("resume-btn");
-const titleBtn = document.getElementById("title-btn");
-const fadeRect = document.getElementById("fade-rect");
-
-// 初回起動処理
-function init() {
-    Bgm.playBGM("/src/main/resources/music/naribgm.mp3");
-    startTyping();
-    
-    // イベントリスナー登録
-    messageBox.addEventListener("click", handleBoxClick);
-    menuBtn.addEventListener("click", openMenu);
-    resumeBtn.addEventListener("click", closeMenu);
-    titleBtn.addEventListener("click", goToTitle);
-    
-    window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") openMenu();
-    });
-}
-
-// タイピング演出開始
-function startTyping() {
-    clearInterval(typingTimer);
-    charIndex = 0;
-    isTyping = true;
-    nextMark.classList.add("hidden");
-    
-    const d = dialogues[messageIndex];
-    nameText.innerText = d.speaker;
-    dialogueText.style.color = d.textColor;
-    
-    // 話者に応じた立ち絵の表示切り替えロジック
-    updateCharacterVisibility(d.speaker);
-
-    // 💡 JavaFXのTimeline(50ms)に相当するループ処理
-    typingTimer = setInterval(() => {
-        if (charIndex < d.message.length) {
-            charIndex++;
-            dialogueText.innerText = d.message.substring(0, charIndex);
-        } else {
-            finishTyping();
-        }
-    }, 50);
-}
-
-// 文字表示の即時完了
-function finishTyping() {
-    clearInterval(typingTimer);
-    const d = dialogues[messageIndex];
-    dialogueText.innerText = d.message;
-    isTyping = false;
-    nextMark.classList.remove("hidden");
-}
-
-// 話者による画像切り替えロジック
-function updateCharacterVisibility(speaker) {
-    if (speaker === "あにき") {
-        anikiView.classList.remove("hidden");
-        nariView.classList.add("hidden");
-        takuView.classList.add("hidden");
-    } else if (speaker === "なりなり") {
-        anikiView.classList.add("hidden");
-        nariView.classList.remove("hidden");
-        takuView.classList.add("hidden");
-    } else if (speaker === "わだたく") {
-        anikiView.classList.add("hidden");
-        nariView.classList.add("hidden");
-        // インデックス10未満は非表示にするJavaFX側の条件の再現
-        if (messageIndex < 10) {
-            takuView.classList.add("hidden");
-        } else {
-            takuView.classList.remove("hidden");
-        }
-    }
-}
-
-// 画面（メッセージエリア）がクリックされた時の進行制御
-function handleBoxClick() {
-    if (menuOverlay.classList.contains("hidden") === false) return;
-
-    if (isTyping) {
-        finishTyping();
-        return;
-    }
-
-    if (messageIndex < dialogues.size - 1) {
-        messageIndex++;
-
-        // 特定インデックスによるカットイン画像演出の再現
-        if (messageIndex === 4) insertView.classList.remove("hidden");
-        if (messageIndex === 5) {
-            insertView.classList.add("hidden");
-            Bgm.playBGM("/src/main/resources/music/storybgm.mp3");
-        }
-
-        // 💡 仙石さんの被弾（シェイク）演出の再現 (Index 18)
-        if (messageIndex === 18) {
-            syujinkouView.style.opacity = "0.5";
-            syujinkouView.classList.add("shake");
-            
-            setTimeout(() => {
-                syujinkouView.style.opacity = "1.0";
-                syujinkouView.classList.remove("shake");
-            }, 600); // 100ms * 6往復に相当
-        }
-
-        // 効果音再生
-        const d = dialogues[messageIndex];
-        if (d.sound) d.playEventSound();
-
-        // 💡 キャラクターのジャンプ演出について：
-        // WebではCSSアニメーションクラスを一時的に追加することで簡単に再現可能です。
-        // （今回は割愛していますが、必要に応じて .jump クラス等を作成して要素に付与してください）
-
-        startTyping();
-    } else {
-        // 全セリフ終了 -> シーン終了（フェードアウト黒）
-        if (isEndingStarted) return;
-        isEndingStarted = true;
-
-        nextMark.classList.add("hidden");
-        fadeRect.classList.remove("hidden");
+    // --- 3. エンジン起動 ---
+    const engine = new StoryEngine(dialogues, {
+        bgmPath: '../../resources/music/naribgm.mp3',
+        ui: ui,
         
-        // CSSのtransitionで1.5秒かけて暗転
-        setTimeout(() => {
-            fadeRect.style.opacity = "1";
-        }, 50);
+        onStep: (index, ui) => {
+            const d = dialogues[index];
+            const w = ui.wrappers;
 
-        setTimeout(() => {
-            cleanup();
-            //次のシーンに遷移
-            GameController.switchToGame2();
-        }, 1550);
-    }
-}
+            // A. 立ち絵の制御（仙石さんは常に表示、右側は入れ替え）
+            w.syujinkou.classList.add('active');
+            
+            // 話者に応じて右側の表示を切り替え
+            if (d.speaker === "あにき") {
+                w.aniki.classList.add('active');
+                w.nari.classList.remove('active');
+                w.taku.classList.remove('active');
+            } else if (d.speaker === "なりなり") {
+                w.nari.classList.add('active');
+                w.aniki.classList.remove('active');
+                w.taku.classList.remove('active');
+            } else if (d.speaker === "わだたく") {
+                w.taku.classList.add('active');
+                w.aniki.classList.remove('active');
+                w.nari.classList.remove('active');
+            }
 
-// メニュー（ポーズ）関連
-function openMenu() {
-    menuOverlay.classList.remove("hidden");
-    clearInterval(typingTimer); // タイピングの一時停止
-}
+            // B. 特殊演出（差し込み絵）
+            if (index === 4) ui.insertView.style.display = "block";
+            if (index === 5) {
+                ui.insertView.style.display = "none";
+                engine.changeBGM("../../resources/music/storybgm.mp3");
+            }
 
-function closeMenu() {
-    menuOverlay.classList.add("hidden");
-    if (isTyping) {
-        // 再開時にタイピングの続きを行う
-        startTyping();
-    }
-}
+            // C. 揺れ演出（Index 18）
+            if (index === 18) {
+                w.syujinkou.classList.add('shake');
+                setTimeout(() => w.syujinkou.classList.remove('shake'), 600);
+            }
 
-function goToTitle() {
-    cleanup();
-    console.log("タイトル画面へ遷移: GameController.switchStart");
-}
-
-function cleanup() {
-    clearInterval(typingTimer);
-    Bgm.stopBGM();
-}
-
-// ページ読み込み完了時に初期化を実行
-window.onload = init;
+            // D. ジャンプアニメーション
+            if (d.sound) {
+                const target = d.speaker === "仙石さん" ? w.syujinkou :
+                               d.speaker === "あにき" ? w.aniki :
+                               d.speaker === "なりなり" ? w.nari :
+                               d.speaker === "わだたく" ? w.taku : null;
+                
+                if (target) {
+                    StoryUtils.createJumpAnimation(target, () => {});
+                }
+            }
+        },
+        
+        onEnd: () => {
+            ui.fadeOverlay.style.opacity = "1";
+            setTimeout(() => GameController.switchToGame2(), 1500);
+        },
+        
+        onTitle: () => {
+            GameController.switchStart();
+        }
+    });
+});
