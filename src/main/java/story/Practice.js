@@ -1,232 +1,81 @@
-/**
- * Practice画面
- * JavaFX版 Practice.java を JavaScript化
- */
-export class Practice {
-
-    constructor() {
-
-        // 背景アニメーションID
-        this.animationId = null;
-
-        // 効果音
-        this.clickSound = new Audio("music/select.mp3");
-        this.cancelSound = new Audio("music/cancel.mp3");
-
-        this.clickSound.volume = 0.4;
-        this.cancelSound.volume = 0.4;
-
-        // 背景スクロール位置
-        this.scrollX = 0;
-    }
-
-    /**
-     * 画面終了時の後始末
-     */
-    cleanup() {
-
-        // 背景アニメーション停止
-        if (this.animationId) {
-            cancelAnimationFrame(this.animationId);
-            this.animationId = null;
-        }
-
-        // 効果音停止
-        this.clickSound.pause();
-        this.clickSound.currentTime = 0;
-
-        this.cancelSound.pause();
-        this.cancelSound.currentTime = 0;
-
-        // BGM停止
-        Bgm.stopBGM();
-    }
-
-    /**
-     * 画面作成
-     */
-    createScene() {
-
-        // =====================================
-        // ルートコンテナ
-        // =====================================
-        const root = document.createElement("div");
-        root.className = "practice-root";
-
-        // =====================================
-        // 背景レイヤー
-        // =====================================
-        const bgPane = document.createElement("div");
-        bgPane.className = "background-pane";
-
-        // =====================================
-        // タイトル
-        // =====================================
-        const title = document.createElement("h1");
-        title.textContent = "練習モード";
-
-practiceTitle.style.textShadow =
-    "0 0 20px rgba(0,120,220,0.8)";
-
-practiceTitle.style.textAlign =
-    "center";
-
-
 // ==================================================
-// ステージボタン群
+// STAGE1
 // ==================================================
 
-const stageBox =
-    document.getElementById("stage-box");
+document.getElementById("stage1-btn").addEventListener("click", () => {
+  cleanup(); // BGM停止
 
-stageBox.style.display = "flex";
-stageBox.style.flexDirection = "column";
-stageBox.style.gap = "20px";
-
-document
-    .querySelectorAll(
-        "#stage-box .game-button"
-    )
-    .forEach(button => {
-
-        button.style.width = "35vw";
-        button.style.maxWidth = "400px";
-        button.style.minWidth = "180px";
-
-        button.style.height = "9vh";
-        button.style.maxHeight = "80px";
-        button.style.minHeight = "50px";
-        button.style.fontSize = "30px";
-
-    });
-
-
-// ==================================================
-// 戻る
-// ==================================================
-
-const backBtn =
-    document.getElementById("back-btn");
-
-backBtn.style.position = "fixed";
-
-backBtn.style.right = "30px";
-backBtn.style.bottom = "30px";
-
-backBtn.style.width = "200px";
-backBtn.style.height = "60px";
-
-backBtn.style.zIndex = "4";
-
-
-// ==================================================
-// トロフィー
-// ==================================================
-
-const scoreInfo =
-    document.getElementById("score-info");
-
-scoreInfo.style.position = "fixed";
-
-scoreInfo.style.top =
-    "clamp(5px, 1vw, 15px)";
-
-scoreInfo.style.right =
-    "clamp(5px, 1vw, 15px)";
-
-scoreInfo.style.fontSize =
-    "clamp(24px, 3vw, 50px)";
-scoreInfo.style.zIndex = "4";
-
-scoreInfo.style.fontSize = "50px";
-
-scoreInfo.style.color = "gold";
-
-scoreInfo.style.cursor =
-    "pointer";
-
-scoreInfo.addEventListener("click", () => {
-
-    if (tooltip.style.display === "block") {
-        tooltip.style.display = "none";
-
-    } else {
-
-        tooltip.style.display = "block";
-    }
+  window.location.href = "practiceGame1.html";
 });
 
 // ==================================================
-// ハイスコア
+// STAGE2
 // ==================================================
 
-const tooltip =
-    document.getElementById(
-        "highscore-tooltip"
-    );
+document.getElementById("stage2-btn").addEventListener("click", () => {
+  cleanup();
 
-tooltip.style.display = "none";
+  window.location.href = "practiceGame2.html";
+});
 
-tooltip.style.position = "absolute";
+// ==================================================
+// STAGE3
+// ==================================================
 
-/* トロフィーの少し左下 */
-tooltip.style.top = "70px";
-tooltip.style.right = "20px";
+document.getElementById("stage3-btn").addEventListener("click", () => {
+  cleanup();
 
-tooltip.style.zIndex = "100";
+  window.location.href = "practiceGame3.html";
+});
 
-tooltip.style.whiteSpace = "pre-line";
+// ==================================================
+// タイトルへ戻る
+// ==================================================
 
-tooltip.style.backgroundColor =
-    "rgba(0,0,0,0.95)";
+document.getElementById("back-btn").addEventListener("click", () => {
+  cleanup();
 
-tooltip.style.color = "white";
+  window.location.href = "start.html";
+});
 
-tooltip.style.fontFamily =
-    `"PixelMplus12", sans-serif`;
+// ==================================================
+// トロフィー（ハイスコア表示ボタン）
+// ==================================================
 
-/* 画面サイズに応じて可変 */
-tooltip.style.fontSize =
-    "clamp(18px, 2vw, 32px)";
+// トロフィーアイコンを取得
+const scoreInfo = document.getElementById("score-info");
 
-tooltip.style.padding =
-    "clamp(10px, 1vw, 20px)";
+// ハイスコア表示用のパネルを取得
+const tooltip = document.getElementById("highscore-tooltip");
 
-tooltip.style.position = "fixed";
+// トロフィーがクリックされたとき
+scoreInfo.addEventListener("click", () => {
+  // 既に表示中なら非表示にする
+  if (tooltip.style.display === "block") {
+    tooltip.style.display = "none";
+  } else {
+    // 非表示中なら表示する
+    tooltip.style.display = "block";
+  }
+});
 
-tooltip.style.top =
-    "clamp(50px, 8vh, 70px)";
+// ==================================================
+// BGM
+// ==================================================
 
-tooltip.style.right =
-    "clamp(10px, 2vw, 20px)";
+const practiceBgm = new Audio("../../resources/music/startbgm.mp3");
 
-tooltip.style.zIndex = "100";
+practiceBgm.volume = 0.1;
+practiceBgm.loop = true;
 
-tooltip.style.backgroundColor =
-    "rgba(0,0,0,0.95)";
+practiceBgm.play().catch(() => {});
 
-tooltip.style.color = "white";
+// ==================================================
+// BGM停止
+// ==================================================
 
-tooltip.style.fontFamily =
-    '"PixelMplus12", sans-serif';
+function cleanup() {
+  practiceBgm.pause();
 
-tooltip.style.fontSize =
-    "clamp(16px, 1.5vw, 32px)";
-
-tooltip.style.padding =
-    "clamp(10px, 1vw, 20px)";
-
-tooltip.style.border =
-    "2px solid gold";
-
-tooltip.style.borderRadius =
-    "8px";
-
-tooltip.style.width =
-    "clamp(150px, 35vw, 300px)";
-
-tooltip.style.whiteSpace =
-    "nowrap";
-
-tooltip.style.boxSizing =
-    "border-box";
+  practiceBgm.currentTime = 0;
+}
