@@ -1,3 +1,5 @@
+import { GameController } from "../control/GameController.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     // ==================================================
     // 1. DOM要素の取得
@@ -84,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         endingBgm.pause();
         endingBgm.currentTime = 0;
 
-        // タイトル画面のHTMLへ遷移（GameController.switchStartのWeb代替）
-        window.location.href = "index.html"; 
+        // タイトル画面のHTMLへ遷移
+        GameController.switchStart();
     });
 });

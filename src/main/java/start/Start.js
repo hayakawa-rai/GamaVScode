@@ -1,4 +1,5 @@
 import { GameController } from "../control/GameController.js";
+
     document.addEventListener("DOMContentLoaded", () => {
     // ==================================================
     // 1. DOM要素の取得
@@ -47,7 +48,7 @@ import { GameController } from "../control/GameController.js";
 
     // ① ストーリーモードへ
     storyBtn.addEventListener("click", () => {
-        transitionTo(() => GameController.startToStory()); 
+        transitionTo(() => GameController.switchToStory()); 
     });
 
     // ② 練習モードへ

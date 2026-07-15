@@ -1,3 +1,5 @@
+import { GameController } from "../control/GameController.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     // --- 1. データ定義 ---
     const dialogues = [
@@ -140,7 +142,7 @@ function showDialogue() {
                 setTimeout(() => {
                     console.log("Switch to Game1");
                     // 次のシーンへ遷移する処理
-                    // window.location.href = "game1.html"; 
+                    GameController.switchToGame1();
                 }, 1500);
             }
         }

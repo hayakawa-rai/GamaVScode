@@ -304,20 +304,48 @@ export class GameController {
         window.location.href = "../story/Practice.html";
     }
 
-    static startToStory() {
+    static switchToStory() {
         window.location.href = "../story/Story1.html";
     }
 
-    static startToStory2() {
+    static switchToStory2() {
         window.location.href = "../story/Story2.html";
     }
 
-    static startToStory3() {
-        window.location.href = "Story3.html";
+    static switchToStory3() {
+        window.location.href = "../story/Story3.html";
     }
 
-    static startToStory4() {
-        window.location.href = "Story4.html";
+    static switchToStory4() {
+        window.location.href = "../story/Story4.html";
+    }
+
+    static switchStoryClear(){
+        window.location.href = "../story/Storyclear.html"
+    }
+
+    static switchToGame1(){
+        window.location.href = "../test1/Main1.html"
+    }
+
+    static switchToGame2(){
+        window.location.href = "../test2/Main2.html"
+    }
+
+    static switchToGame3(){
+        window.location.href = "../test3/Main3.html"
+    }
+
+    static switchToPracticeGame1(){
+        window.location.href = "../test1/PracticeMain1.html"
+    }
+
+    static switchToPracticeGame2(){
+        window.location.href = "../test2/PracticeMain2.html"
+    }
+
+    static switchToPracticeGame3(){
+        window.location.href = "../test3/PracticeMain3.html"
     }
 
     static switchToStageclear(stageNum, score) {
