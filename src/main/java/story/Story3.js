@@ -1,3 +1,5 @@
+import { GameController } from "../control/GameController.js";
+
 // ==========================================================================
 // シナリオデータ（JavaFXのDialogue配列をそのまま移植）
 // ==========================================================================
@@ -226,7 +228,7 @@ function startEnding() {
     setTimeout(() => {
         console.log("GameController.switchToGame3(stage) を実行します");
         // ここに次の画面（Game3）へ進むためのURL遷移や関数呼び出しを記述してください
-        // 例: window.location.href = "game3.html";
+        GameController.switchToGame3();
     }, 1500);
 }
 

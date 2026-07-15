@@ -1,3 +1,5 @@
+import { GameController } from "../control/GameController.js";
+
 // サウンド管理オブジェクト (BGM用)
 const Bgm = {
     currentBgm: null,
@@ -222,8 +224,8 @@ function handleBoxClick() {
 
         setTimeout(() => {
             cleanup();
-            console.log("次のゲーム画面へ遷移: GameController.switchToGame2");
-            // location.href = "game2.html"; // Webであれば次のページへの遷移など
+            //次のシーンに遷移
+            GameController.switchToGame2();
         }, 1550);
     }
 }

@@ -1,3 +1,5 @@
+import { GameController } from "../control/GameController.js";
+
 // ==========================================================================
 // シナリオデータ（JavaFXのDialogue配列をそのまま移植）
 // ==========================================================================
@@ -208,7 +210,7 @@ function startEnding() {
     setTimeout(() => {
         console.log("GameController.switchStoryClear(stage) を実行します");
         // クリア画面へのWEB遷移ロジックをここに実装
-        // 例: window.location.href = "story_clear.html";
+        GameController.switchStoryClear();
     }, 1500);
 }
 
@@ -232,7 +234,7 @@ function resumeGame() {
 function goToTitle() {
     console.log("GameController.switchStart(stage) を実行します");
     // タイトルへ戻る処理
-    // 例: window.location.href = "index.html";
+    GameController.switchStart();
 }
 
 // ==========================================================================

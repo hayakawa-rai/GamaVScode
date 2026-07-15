@@ -1,3 +1,5 @@
+import { GameController } from "../control/GameController.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     // --- 1. 要素の取得 ---
     const bgm = document.getElementById('bgm');
