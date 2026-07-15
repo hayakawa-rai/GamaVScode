@@ -1,394 +1,320 @@
-/**
- * JavaFX の test2.view.MapView を HTML5 Canvas / JavaScript に移植したクラス。
- */
+// MapView.js
+
 export class MapView {
-    // ヘッダー（スコア表示領域）の高さ
-    static INFO_HEIGHT = 40;
-
     /**
-     * コンストラクタ
-     * @param {MapData} model - 描画対象のゲームデータモデル
-     * @param {HTMLElement} [rootElement] - CSSの色や操作をバインドする親要素（オプション）
+     * @param {Object} model - ゲームのデータモデル (MapDataに相当)
+     * @param {Object} images - 読み込み済みのImageオブジェクトをまとめた連想配列
      */
-    constructor(model, rootElement = null) {
+    constructor(model, images = {}) {
         this.model = model;
-        this.rootElement = rootElement;
+        this.images = images;
+        
+        // ヘッダー（情報バー）の高さ
+        this.INFO_HEIGHT = 40;
+        
+        // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
+        this.wallColor = '#0000FF'; // 青
 
-        // JPro互換の安定点滅用カウンター
-        this.blinkTick = 0;
-
-        // 画像リソースのプリロード
+              // 主人公用画像の読み込み(Java版のpacmanImage/pacmanFeverImage相当)
         this.pacmanImage = new Image();
-        this.pacmanImage.src = "/src/main/resources/picture/syujinkou.png"; // パスは環境に合わせて調整してください
+        this.pacmanImage.src = "../../resources/picture/syujinkou.png"; 
 
         this.pacmanFeverImage = new Image();
-        this.pacmanFeverImage.src = "/src/main/resources/picture/syujinkou_Fever.png";
+        this.pacmanFeverImage.src = "../../resources/picture/syujinkou_fever.png";
 
-        // モバイルコントローラーの適用（root要素が存在する場合）
-        if (this.rootElement) {
-            this.applyMobileControls();
-        }
+            // ステージ番号を取得して色を決定
+    const stageNumber = model.getStageNumber?.() || 1; // モデル側に取得メソッドがある想定
+    const colors = MapView.STAGE_COLORS[stageNumber] || MapView.STAGE_COLORS[1];
+
+    this.bgColor = colors.bg;
+    this.wallColor = colors.wall;
+    this.pacmanColor = colors.pacman;
     }
 
-    /**
-     * JavaFX 側の GameController.applyMobileControls に相当する処理のスタブ
-     */
-    applyMobileControls() {
-        // 必要に応じてここにキーイベントやタッチイベントの初期化を実装します
-        console.log("Mobile controls applied to root element.");
-    }
+      static STAGE_COLORS = {
+    1: { bg: "#000000", wall: "rgb(0, 238, 190)", pacman: "#ffffff" },
+    2: { bg: "rgb(43, 43, 43)", wall: "#ff44cc", pacman: "rgb(28, 221, 216)" },
+    3: { bg: "#1a0000", wall: "rgb(238, 30, 0)", pacman: "#ffaa00" },
+  };
 
     /**
-     * ステージ全体を画面サイズに合わせて拡大縮小・中央配置して描画するメインメソッド
-     * @param {CanvasRenderingContext2D} ctx - 描画先の Canvas 2D コンテキスト
-     * @param {number} canvasWidth - キャンバスの現在の幅
-     * @param {number} canvasHeight - キャンバスの現在の高さ
+     * メイン描画メソッド
+     * @param {CanvasRenderingContext2D} ctx - HTML5 Canvasの2Dコンテキスト
+     * @param {number} canvasWidth - キャンバスの横幅
+     * @param {number} canvasHeight - キャンバスの縦幅
      */
     draw(ctx, canvasWidth, canvasHeight) {
-        this.blinkTick++;
+        const syujinkou = this.model.getSyujinkou?.();
+        const TILE_SIZE = this.model.constructor.TILE_SIZE || 20; // マップデータのタイルサイズ
 
-        // 1. キャンバスのクリアと上部情報バーの塗りつぶし
+        // 1. キャンバスのクリアとヘッダー背景の塗りつぶし
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvasWidth, MapView.INFO_HEIGHT);
+        ctx.fillStyle = this.bgColor;
+        ctx.fillRect(0, 0, canvasWidth, this.INFO_HEIGHT);
 
-        // 2. CSS から壁色とパックマン色を取得（取得失敗時はデフォルト色）
-        const wallColor = this.getColorFromCSS("game-wall", "#0000ff");       // 青
-        const pacmanColor = this.getColorFromCSS("game-pacman", "#ffff00"); // 黄
-
-        // 3. ステージ本来のサイズを計算
+        // ステージの行列サイズを取得
         const map = this.model.getMap();
-        const cols = map[0].length;
         const rows = map.length;
+        const cols = map[0].length;
 
-        const stageWidth = cols * MapData.TILE_SIZE;
-        const stageHeight = rows * MapData.TILE_SIZE;
+        const stageWidth = cols * TILE_SIZE;
+        const stageHeight = rows * TILE_SIZE;
+        
+        // 画面に収まるスケールを計算（全体の90%に縮小）
         const scaleX = canvasWidth / stageWidth;
-        const scaleY = canvasHeight / stageHeight;
-
-        // 4. 全体を90%の大きさに縮小する調整
+        const scaleY = (canvasHeight - this.INFO_HEIGHT) / stageHeight;
         const bufferRatio = 0.9;
         const scale = Math.min(scaleX, scaleY) * bufferRatio;
 
-        // 5. 中央に配置するための余白（オフセット）を計算
+        // 中央配置のためのオフセット計算
         const offsetX = (canvasWidth - (stageWidth * scale)) / 2.0;
-        const offsetY = ((canvasHeight - MapView.INFO_HEIGHT) - (stageHeight * scale)) / 2.0 + MapView.INFO_HEIGHT;
+        const offsetY = ((canvasHeight - this.INFO_HEIGHT) - (stageHeight * scale)) / 2.0 + this.INFO_HEIGHT;
 
-        // 6. グラフィックスの状態を保存
+        // グラフィックス状態の保存
         ctx.save();
 
-        // 7. 変換行列を適用（中央へ移動させてから、拡大する）
+        // 変換行列の適用（中央へ移動して拡大）
         ctx.translate(offsetX, offsetY);
         ctx.scale(scale, scale);
 
-        // ステージの枠内を真っ黒に塗りつぶす
-        ctx.fillStyle = "black";
+        // ステージ内を真っ黒に塗りつぶし
+        ctx.fillStyle = this.bgColor;
         ctx.fillRect(0, 0, stageWidth, stageHeight);
 
-        // 8. 実際の描画処理を呼び出す
-        this.drawStageContent(ctx, cols, rows, stageWidth, stageHeight, wallColor, scale, offsetX, offsetY);
-        this.drawPacman(ctx);
+        const outline = this.model.getWallOutline?.();
+        if (outline) {
+        outline.setGeometry(scale, offsetX, offsetY);
+        }
+
+        // 各種コンテンツの描画
+        this.drawStageContent(ctx, cols, rows, TILE_SIZE);
+        this.drawPacman(ctx, syujinkou, TILE_SIZE);
 
         // 敵の描画
-        const enemies = this.model.getEnemies();
+        const enemies = this.model.getEnemies?.();
         if (enemies) {
             for (const enemy of enemies) {
-                this.drawEnemyInstance(ctx, enemy);
+                this.drawEnemyInstance(ctx, enemy, TILE_SIZE);
             }
         }
 
-        // 9. グラフィックスの状態を元に戻す
+        // 状態を元に戻す
         ctx.restore();
 
-        // --- UI（スコア・ライフ）の描画 ---
-        const syujinkou = this.model.getsyujinkou();
+        // UI（スコア・ライフ）の描画
         if (syujinkou) {
-            // テキストの配置基準を設定
-            ctx.textAlign = "left";
-            ctx.textBaseline = "top";
-            ctx.font = "bold 18px 'PixelMplus12', Arial, sans-serif";
-            ctx.fillStyle = "white";
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.font = 'bold 18px "PixelMplus12", Arial';
+            ctx.fillStyle = '#FFFFFF';
 
-            const scoreText = `SCORE : ${syujinkou.getScore()}  /  HIGH SCORE : ${HighScoreManager.loadHighScore(this.model.getStageNumber())}`;
+            // スコア表示
+            const scoreText = `SCORE : ${syujinkou.getScore()}  /  HIGH SCORE : ${this.model.getHighScore?.() || 0}`;
             ctx.fillText(scoreText, 20, 12);
 
-            // ライフの描画 (❤ をループで再現)
-            ctx.fillStyle = "red";
-            const hearts = "❤".repeat(Math.max(0, syujinkou.getHp()));
-            ctx.textAlign = "right";
-            ctx.fillText(hearts, canvasWidth - 100, 12);
+            // ライフ（ハート）表示
+            ctx.fillStyle = '#FF0000';
+            const hearts = '❤'.repeat(syujinkou.getHp());
+            ctx.textAlign = 'right';
+            ctx.fillText(hearts, canvasWidth - 20, 12);
 
             // 区切り線
-            ctx.strokeStyle = "darkgray";
+            ctx.strokeStyle = '#A9A9A9'; // DARKGRAY
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(0, MapView.INFO_HEIGHT);
-            ctx.lineTo(canvasWidth, MapView.INFO_HEIGHT);
+            ctx.moveTo(0, this.INFO_HEIGHT);
+            ctx.lineTo(canvasWidth, this.INFO_HEIGHT);
             ctx.stroke();
         }
     }
 
     /**
-     * ステージの中身（壁の輪郭とアイテム）を描画する内部メソッド。
+     * ステージの枠（壁）やアイテムを描画
      */
-    drawStageContent(ctx, cols, rows, stageWidth, stageHeight, wallColor, scale, offsetX, offsetY) {
+    drawStageContent(ctx, cols, rows, TILE_SIZE) {
         const itemMap = this.model.getItemMap();
 
-        // 💡 JProの描画ズレバグ対策の移植：壁の描画時だけ座標行列を完全にリセット（等倍にする）
-        ctx.save();
-        ctx.setTransform(1, 0, 0, 1, 0, 0); // 生の画面座標に戻す
+        // --- 壁の輪郭 (WallOutline) の描画 ---
+        // 元のJavaFXコードでは一時的に行列をリセットしていましたが、JSでは独立した座標計算ロジック（WallOutline側）が
+        // 縮小率やオフセットを受け取って直にキャンバスへ描画する設計にするとすっきりします。
+        if (this.model.getWallOutline) {
+            const outline = this.model.getWallOutline(); // すでに幾何情報が同期されている想定
+            ctx.save();
+            ctx.resetTransform(); // 完全な画面生の座標系にする（JavaFXのsetTransform(1,0,0,1,0,0)相当）
+            outline.drawOutline(ctx, this.wallColor); 
+            ctx.restore();
+        }
 
-        // 事前に作成した JavaScript 版の WallOutline クラスを使用
-        const outline = new WallOutline(this.model.getMap(), MapData.TILE_SIZE);
-        outline.setGeometry(scale, offsetX, offsetY);
-        ctx.strokeStyle = wallColor;
-        ctx.lineWidth = 2 * scale; // 線の太さも拡大率に追従
-        outline.drawOutline(ctx);
-
-        ctx.restore(); // アイテムやキャラを描画するために、スケールされた元の座標系に復元
-
-        // アイテムを描画
+        // アイテムの描画
         for (let row = 0; row < rows; row++) {
             for (let col = 0; col < cols; col++) {
-                const x = col * MapData.TILE_SIZE;
-                const y = row * MapData.TILE_SIZE;
                 const item = itemMap[row][col];
                 if (item) {
-                    item.draw(ctx, x, y, MapData.TILE_SIZE);
+                    const x = col * TILE_SIZE;
+                    const y = row * TILE_SIZE;
+                    item.draw?.(ctx, x, y, TILE_SIZE);
                 }
             }
         }
 
-        // フルーツを描画
-        const fruit = this.model.getCurrentFruit();
+        // フルーツの描画
+        const fruit = this.model.getCurrentFruit?.();
         if (fruit) {
-            const fx = this.model.getFruitCol() * MapData.TILE_SIZE;
-            const fy = this.model.getFruitRow() * MapData.TILE_SIZE;
-            fruit.draw(ctx, fx, fy, MapData.TILE_SIZE);
+            const fx = this.model.getFruitCol() * TILE_SIZE;
+            const fy = this.model.getFruitRow() * TILE_SIZE;
+            fruit.draw?.(ctx, fx, fy, TILE_SIZE);
         }
 
-        // フルーツ撃破時のスコアポップアップ（フェードイン・フロート）
-        if (this.model.isFruitPopupActive()) {
-            const progress = this.model.getFruitPopupProgress(); // 0.0〜1.0
+        // フルーツ撃破時のスコアポップアップ
+        if (this.model.isFruitPopupActive?.()) {
+            const progress = this.model.getFruitPopupProgress();
             const riseOffset = progress * 20;
             const alpha = 1.0 - progress;
 
             const popupX = this.model.getFruitPopupX();
-            const popupY = this.model.getFruitPopupY() - MapData.TILE_SIZE / 2.0 - 6 - riseOffset;
+            const popupY = this.model.getFruitPopupY() - TILE_SIZE / 2.0 - 6 - riseOffset;
 
             ctx.save();
             ctx.globalAlpha = alpha;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = 'bold 14px Arial';
 
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.font = "bold 14px Arial, sans-serif";
-
-            // 縁取り（黒）
-            ctx.strokeStyle = "black";
+            // 袋文字（縁取り）
+            ctx.strokeStyle = '#000000';
             ctx.lineWidth = 3;
             ctx.strokeText(`+${this.model.getFruitPopupScore()}`, popupX, popupY);
 
-            // 本体（白文字）
-            ctx.fillStyle = "white";
+            // 中身
+            ctx.fillStyle = '#FFFFFF';
             ctx.fillText(`+${this.model.getFruitPopupScore()}`, popupX, popupY);
-
             ctx.restore();
         }
     }
 
     /**
-     * プレイヤー（主人公）を描画する。
+     * プレイヤー（パックマン）の描画
      */
-    drawPacman(ctx) {
-        const syujinkou = this.model.getsyujinkou();
-        if (!syujinkou) return;
+drawPacman(ctx, syujinkou, TILE_SIZE) {
+    if (!syujinkou) return;
 
-        if (syujinkou.isDyingAnimation()) {
-            this.drawDyingSyujinkou(ctx, syujinkou);
-            return;
-        }
+    if (syujinkou.isDyingAnimation?.()) {
+        this.drawDyingSyujinkou(ctx, syujinkou, TILE_SIZE);
+        return;
+    }
 
-        if (!syujinkou.isAlive()) return;
+    if (!syujinkou.isAlive?.()) return;
 
-        // 画像が何らかの理由で読み込めなかった場合のフォールバック
-        if (!this.pacmanImage.complete || this.pacmanImage.naturalWidth === 0) {
-            ctx.fillStyle = "yellow";
-            ctx.beginPath();
-            ctx.arc(syujinkou.getX() + MapData.TILE_SIZE / 2, syujinkou.getY() + MapData.TILE_SIZE / 2, MapData.TILE_SIZE / 2, 0, Math.PI * 2);
-            ctx.fill();
-            return;
-        }
+    const pacX = syujinkou.getX() + TILE_SIZE / 2.0;
+    const pacY = syujinkou.getY() + TILE_SIZE / 2.0;
 
-        const pacX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
-        const pacY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
-
-        ctx.save();
-        ctx.translate(pacX, pacY);
-
-        // FEVER終了間際の点滅ロジック (8フレーム間隔)
-        if (syujinkou.isFever()) {
-            const remain = this.model.getFeverRemainingTime();
-            if (remain <= 3000) {
-                if (Math.floor(this.blinkTick / 8) % 2 === 0) {
-                    ctx.restore();
-                    return;
-                }
+    if (syujinkou.isFever?.()) {
+        const remain = this.model.getFeverRemainingTime();
+        if (remain <= 3000) {
+            if (Math.floor(Date.now() / 150) % 2 === 0) {
+                return;
             }
         }
+    }
 
-        const currentImage = syujinkou.isFever() ? this.pacmanFeverImage : this.pacmanImage;
+    ctx.save();
+    ctx.translate(pacX, pacY);
 
-        ctx.drawImage(
-            currentImage,
-            -MapData.TILE_SIZE / 2.0,
-            -MapData.TILE_SIZE / 2.0,
-            MapData.TILE_SIZE,
-            MapData.TILE_SIZE
-        );
+    const img = syujinkou.isFever?.() ? this.pacmanFeverImage : this.pacmanImage;
+
+    if (img && img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, -TILE_SIZE / 2.0, -TILE_SIZE / 2.0, TILE_SIZE, TILE_SIZE);
+    } else {
+        ctx.fillStyle = '#FFFF00';
+        ctx.beginPath();
+        ctx.arc(0, 0, TILE_SIZE / 2.0, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+    /**
+     * 敵1体の描画
+     */
+    drawEnemyInstance(ctx, enemy, TILE_SIZE) {
+    if (!enemy) return;
+
+    // 各Enemyサブクラスが持つ getEnemyImage() から画像を取得
+    const img = typeof enemy.getEnemyImage === 'function' ? enemy.getEnemyImage() : null;
+
+    const enemyLeftX = enemy.getX() - TILE_SIZE / 2.0;
+    const enemyTopY = enemy.getY() - TILE_SIZE / 2.0;
+
+    if (img) {
+        ctx.drawImage(img, enemyLeftX, enemyTopY, TILE_SIZE, TILE_SIZE);
+    } else {
+        // フォールバック(画像未読み込み時)。enemy.type で色分け
+        const colorMap = { red: '#FF0000', green: '#008000', yellow: '#FFFF00', blue: '#0000FF' };
+        ctx.fillStyle = colorMap[enemy.type] || '#FFFFFF';
+
+        ctx.beginPath();
+        ctx.arc(enemy.getX(), enemy.getY(), TILE_SIZE / 2.0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.arc(enemy.getX() - 2, enemy.getY() - 2, 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // 撃破時のスコアポップアップ表示(変更なし)
+    if (enemy.isScorePopupActive?.()) {
+        const progress = enemy.getScorePopupProgress();
+        const riseOffset = progress * 20;
+        const alpha = 1.0 - progress;
+
+        const popupX = enemy.getDefeatX();
+        const popupY = enemy.getDefeatY() - TILE_SIZE / 2.0 - 6 - riseOffset;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = 'bold 14px Arial';
+
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 3;
+        ctx.strokeText(`+${enemy.getLastDefeatScore()}`, popupX, popupY);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(`+${enemy.getLastDefeatScore()}`, popupX, popupY);
         ctx.restore();
     }
+}
 
     /**
-     * 敵1体分を描画する。
+     * プレイヤー死亡時の回転・縮小演出
      */
-    drawEnemyInstance(ctx, enemy) {
-        if (!enemy) return;
-
-        let img = null;
-        let fallbackColor = "red";
-
-        // リフレクション・型チェックの代わりに constructor.name や独自の識別フラグを利用
-        const type = enemy.constructor.name; 
-        if (type === "RedEnemy") {
-            img = enemy.getEnemyImage();
-            fallbackColor = "red";
-        } else if (type === "GreenEnemy") {
-            img = enemy.getEnemyImage();
-            fallbackColor = "green";
-        } else if (type === "YellowEnemy") {
-            img = enemy.getEnemyImage();
-            fallbackColor = "yellow";
-        } else if (type === "BlueEnemy") {
-            img = enemy.getEnemyImage();
-            fallbackColor = "blue";
-        }
-
-        const enemyLeftX = enemy.getX() - MapData.TILE_SIZE / 2.0;
-        const enemyTopY = enemy.getY() - MapData.TILE_SIZE / 2.0;
-
-        if (img && img.complete && img.naturalWidth !== 0) {
-            ctx.drawImage(img, enemyLeftX, enemyTopY, MapData.TILE_SIZE, MapData.TILE_SIZE);
-        } else {
-            // 画像がない場合の簡易フォールバック描画
-            ctx.fillStyle = fallbackColor;
-            ctx.beginPath();
-            ctx.arc(enemy.getX(), enemy.getY(), MapData.TILE_SIZE / 2, 0, Math.PI * 2);
-            ctx.fill();
-
-            // 黒い目
-            ctx.fillStyle = "black";
-            ctx.beginPath();
-            ctx.arc(enemy.getX() - 2, enemy.getY() - 2, 2, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        // 敵撃破時のスコアポップアップ表示
-        if (enemy.isScorePopupActive()) {
-            const progress = enemy.getScorePopupProgress();
-            const riseOffset = progress * 20;
-            const alpha = 1.0 - progress;
-
-            const popupX = enemy.getDefeatX();
-            const popupY = enemy.getDefeatY() - MapData.TILE_SIZE / 2.0 - 6 - riseOffset;
-
-            ctx.save();
-            ctx.globalAlpha = alpha;
-
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.font = "bold 14px Arial, sans-serif";
-
-            // 縁取り（黒）
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.strokeText(`+${enemy.getLastDefeatScore()}`, popupX, popupY);
-
-            // 本体（白文字）
-            ctx.fillStyle = "white";
-            ctx.fillText(`+${enemy.getLastDefeatScore()}`, popupX, popupY);
-
-            ctx.restore();
-        }
-    }
-
-    /**
-     * プレイヤーの死亡（ミス）演出を描画する。
-     */
-    drawDyingSyujinkou(ctx, syujinkou) {
+    drawDyingSyujinkou(ctx, syujinkou, TILE_SIZE) {
         const progress = syujinkou.getDyingProgress();
 
-        const centerX = syujinkou.getX() + MapData.TILE_SIZE / 2.0;
-        const centerY = syujinkou.getY() + MapData.TILE_SIZE / 2.0;
-
+        const centerX = syujinkou.getX() + TILE_SIZE / 2.0;
+        const centerY = syujinkou.getY() + TILE_SIZE / 2.0;
         const scale = 1.0 - progress;
 
         ctx.save();
         ctx.translate(centerX, centerY);
-        ctx.rotate((progress * 720 * Math.PI) / 180); // JavaFXの度(degree)からラジアン(radian)に変換
+        ctx.rotate((progress * 720 * Math.PI) / 180); // ラジアンに変換
         ctx.scale(scale, scale);
         ctx.globalAlpha = 1.0 - progress;
 
-        ctx.drawImage(
-            this.pacmanImage,
-            -MapData.TILE_SIZE / 2.0,
-            -MapData.TILE_SIZE / 2.0,
-            MapData.TILE_SIZE,
-            MapData.TILE_SIZE
-        );
+        // コンストラクタで読み込み済みの pacmanImage / pacmanFeverImage を使う
+        const img = syujinkou.isFever?.() ? this.pacmanFeverImage : this.pacmanImage;
 
+        if (img && img.complete && img.naturalWidth > 0) {
+            ctx.drawImage(img, -TILE_SIZE / 2.0, -TILE_SIZE / 2.0, TILE_SIZE, TILE_SIZE);
+        } else {
+            // 画像未読み込み時のフォールバック(黄色い円)
+            ctx.fillStyle = '#FFFF00';
+            ctx.beginPath();
+            ctx.arc(0, 0, TILE_SIZE / 2.0, 0, Math.PI * 2);
+            ctx.fill();
+        }
         ctx.restore();
-    }
-
-    /**
-     * Web標準のCSSシステムから背景色（あるいは任意の色）を抽出する。
-     * JavaFXの Region ダミー部品によるCSSカラーハックを綺麗に代替します。
-     * 
-     * HTML側で以下のように定義されている想定です：
-     * <div class="game-wall" style="background-color: #0000ff; display: none;"></div>
-     * 
-     * @param {string} className 取得対象のCSSクラス名
-     * @param {string} defaultColor 失敗時のフォールバックカラー（HEX形式など）
-     */
-    getColorFromCSS(className, defaultColor) {
-        if (!this.rootElement) return defaultColor;
-
-        // rootElementから該当クラスを持つ要素を探す、なければ一時的に作る
-        let dummy = this.rootElement.querySelector(`.${className}`);
-        let created = false;
-
-        if (!dummy) {
-            dummy = document.createElement("div");
-            dummy.className = className;
-            dummy.style.display = "none";
-            this.rootElement.appendChild(dummy);
-            created = true;
-        }
-
-        try {
-            const computedStyle = window.getComputedStyle(dummy);
-            const bgColor = computedStyle.backgroundColor;
-
-            // ブラウザは通常 "rgb(r, g, b)" の形式で返すため、そのままCanvasに適用可能
-            if (bgColor && bgColor !== "rgba(0, 0, 0, 0)" && bgColor !== "transparent") {
-                return bgColor;
-            }
-        } catch (e) {
-            console.error("Failed to parse color from CSS:", e);
-        } finally {
-            if (created) {
-                dummy.remove(); // 一時作成したものは削除
-            }
-        }
-        return defaultColor;
     }
 }
