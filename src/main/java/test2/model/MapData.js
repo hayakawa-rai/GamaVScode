@@ -12,252 +12,253 @@
  * ・ステージクリア判定
  */
 
-package test2.model;
+import { BlueEnemy } from "../../Characters/BlueEnemy.js";
+import { Direction } from "../../Characters/Direction.js";
+import { EnemyState } from "../../Characters/EnemyState.js";
+import { GreenEnemy } from "../../Characters/GreenEnemy.js";
+import { RedEnemy } from "../../Characters/RedEnemy.js";
+import { Syujinkou } from "../../Characters/Syujinkou.js";
+import { YellowEnemy } from "../../Characters/YellowEnemy.js";
+import { Chii } from "../../Items/Chii.js";
+import { Fruit } from "../../Items/Fruit.js";
+import { FruitType } from "../../Items/FruitType.js";
+import { Point } from "../../Items/Point.js";
+import { Bgm } from "../../start/Bgm.js";
+import { SoundManager } from "../../start/SoundManager.js";
+import { WallOutline } from "../view/WallOutline.js";
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+// MapData.js の先頭付近(import群のあと)に追加
+const DIRECTION_MAP = {
+  UP: Direction.UP,
+  DOWN: Direction.DOWN,
+  LEFT: Direction.LEFT,
+  RIGHT: Direction.RIGHT,
+};
 
-import Characters.BlueEnemy;
-import Characters.Direction;
-import Characters.Enemy;
-import Characters.EnemyState;
-import Characters.GreenEnemy;
-import Characters.RedEnemy;
-import Characters.Syujinkou;
-import Characters.YellowEnemy;
-import Items.Chii;
-import Items.Fruit;
-import Items.FruitType;
-import Items.Item;
-import Items.Point;
-import common.GameMap;
-import javafx.animation.PauseTransition;
-import javafx.scene.image.ImageView;
-import javafx.util.Duration;
-import start.Bgm;
-import start.SoundManager;
-
-export public class MapData implements GameMap {
+export class MapData {
 
 	// ==================================================
 	// マップ定義(28×31マス)
 	// ==================================================
 
 	// 1マスのサイズ(30×30px)
-	public static final int TILE_SIZE = 30;
+	static TILE_SIZE = 30;
 
 	// 0：道 1：壁 2：パワーエサ 3:仙石さん 7:扉 8:巣 9: ワープ
-	private final int[][] map = {
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-			{ 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1 }, // ■　　餌　　　　　　　■■■■■■　　　　　　　餌　　■
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■　　　　　　　■■　■■■■■■　■■　　　　　　　■
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■　■■　　　　　　　　■■　■■　■■■■
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■　■■　■■■　■■　■■　■■　■■■■
-			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, // ■■■■　　　　　　　■■■　■■　　　　　　　■■■■
-			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■■■■　■■　　■■　■■■■■　■■■■
-			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, // ■　　　　■■■■■　■■　■■■　■■■■■　　　　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■■　■■　■■■　■■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, // ■　■■　　　　　　　　　　　　　　　　　　　　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 7, 7, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■■■扉扉■■■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■巣巣巣巣巣巣■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■巣巣巣巣巣巣■　■■■■　■■　■
-			{ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9 }, // ワ　　　　　　　　　■巣巣巣巣巣巣■　　　　　　　　　ワ
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■■■■■■■■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　　　　　　　　　　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■■■■■　■■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 }, // ■　■■　■■■■　■■■■■　■■　■■■■　■■　■
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 }, // ■　■■　　　　　　■■　　　　■■　　　　　　■■　■
-			{ 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1 }, // ■　　　　■■■■　■■　■■■■■　■■■■　　　　■
-			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■■■　■■　■■■■■　■■■■　■■■■
-			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 }, // ■■■■　　　　　　　　　　　　仙　　　　　　　■■■■
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■　■■　■■■■■■　■■　■■　■■■■
-			{ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 }, // ■■■■　■■　■■　■■■■■■　■■　■■　■■■■
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, // ■　　　　　　　■■　　　　　　　　■■　　　　　　　■
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 }, // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
-			{ 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1 }, // ■　　餌　　　　　　　■■■■■■　　　　　　　餌　　■
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }  // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-	};
+	#map = [
+
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ], // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			[ 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1 ], // ■　　餌　　　　　　　■■■■■■　　　　　　　餌　　■
+			[ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 ], // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
+			[ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 ], // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
+			[ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 ], // ■　　　　　　　■■　■■■■■■　■■　　　　　　　■
+			[ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 ], // ■■■■　■■　■■　　　　　　　　■■　■■　■■■■
+			[ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 ], // ■■■■　■■　■■　■■■　■■　■■　■■　■■■■
+			[ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 ], // ■■■■　　　　　　　■■■　■■　　　　　　　■■■■
+			[ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 ], // ■■■■　■■■■■　■■　　■■　■■■■■　■■■■
+			[ 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1 ], // ■　　　　■■■■■　■■　■■■　■■■■■　　　　■
+			[ 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1 ], // ■　■■　■■■■■　■■　■■■　■■■■■　■■　■
+			[ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 ], // ■　■■　　　　　　　　　　　　　　　　　　　　■■　■
+			[ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 7, 7, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 ], // ■　■■　■■■■　■■■扉扉■■■　■■■■　■■　■
+			[ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 ], // ■　■■　■■■■　■巣巣巣巣巣巣■　■■■■　■■　■
+			[ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 ], // ■　■■　■■■■　■巣巣巣巣巣巣■　■■■■　■■　■
+			[ 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 8, 8, 8, 8, 8, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9 ], // ワ　　　　　　　　　■巣巣巣巣巣巣■　　　　　　　　　ワ
+			[ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 ], // ■　■■　■■■■　■■■■■■■■　■■■■　■■　■
+			[ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 ], // ■　■■　■■■■　　　　　　　　　　■■■■　■■　■
+			[ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 ], // ■　■■　■■■■　■■■■■　■■　■■■■　■■　■
+			[ 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1 ], // ■　■■　■■■■　■■■■■　■■　■■■■　■■　■
+			[ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 ], // ■　■■　　　　　　■■　　　　■■　　　　　　■■　■
+			[ 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1 ], // ■　　　　■■■■　■■　■■■■■　■■■■　　　　■
+			[ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1 ], // ■■■■　■■■■　■■　■■■■■　■■■■　■■■■
+			[ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 ], // ■■■■　　　　　　　　　　　　仙　　　　　　　■■■■
+			[ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 ], // ■■■■　■■　■■　■■■■■■　■■　■■　■■■■
+			[ 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1 ], // ■■■■　■■　■■　■■■■■■　■■　■■　■■■■
+			[ 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1 ], // ■　　　　　　　■■　　　　　　　　■■　　　　　　　■
+			[ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 ], // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
+			[ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1 ], // ■　■■■　■■■■　■■■■■■　■■■■　■■■　■
+			[ 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1 ], // ■　　餌　　　　　　　■■■■■■　　　　　　　餌　　■
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ], // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+	];
 
 	// ==================================================
 	// キャラクター管理
 	// ==================================================
 
 	// 主人公キャラクター
-	private Syujinkou syujinkou;
+	#syujinkou;
 
 	// 敵キャラクター一覧
-	private final List<Enemy> enemies = new ArrayList<>();
+	#enemies = [];
 
 	// ==================================================
 	// ゲーム状態管理
 	// ==================================================
 
 	// ゲームが一時停止中か
-	private boolean paused = false;
+	#paused = false;
 
 	// ゲームオーバー判定
-	private boolean gameOver = false;
+	#gameOver = false;
 
 	// ゲーム開始待ち
-	private boolean waitingStart = true;
+	#waitingStart = true;
 
 	// 現在のステージ番号を書く(1 = ステージ1, 2 = ステージ2, 3 = ステージ3）
-	private int stageNumber = 2;
+	#stageNumber = 2;
+
+  // 壁のアウトラインを保持するプロパティ
+  #wallOutline;
 
 	// ==================================================
 	// アイテム管理
 	// ==================================================
 
 	// マップ上のアイテム配置
-	private Item[][] itemMap;
+	#itemMap;
 
 	// 初期状態のアイテム配置（復活用)
-	private Item[][] initialItemMap;
+	#initialItemMap;
 
 	// アイテム総数
-	private int totalItems;
+	#totalItems;
 
 	// 残りアイテム数をカウントする変数
-	private int remainingItems = 0;
+	#remainingItems = 0;
 
 	// エサ復活を有効にするか？
-	private boolean enableRespawn;
+	#enableRespawn = false;
 
 	// ==================================================
 	// ポーズ管理
 	// ==================================================
 
-	// ポーズ開始時刻
-	private long pauseStartTime = 0;
+	#pauseStartTime = 0;
 
 	// ==================================================
 	// ワープ管理
 	// ==================================================
 
 	// ワープ直後の連続ワープ防止
-	private boolean justWarped = false;
+	#justWarped = false;
 
 	// 最後にワープした座標
-	private int lastWarpX = -1;
-	private int lastWarpY = -1;
+	#lastWarpX = -1;
+	#lastWarpY = -1;
 
 	// ==================================================
 	// FEVER管理
 	// ==================================================
 
 	// FEVER終了時刻
-	private long feverEndTime = 0;
+	#feverEndTime = 0;
 
 	// ==================================================
 	// 敵行動モード管理
 	// ==================================================
 
 	// モード開始時刻
-	private long modeStartTime = 0;
+	#modeStartTime = 0;
 
 	// true:CHASE false:SCATTER
-	private boolean chaseMode = false;
+	#chaseMode = false;
 
 	// ==================================================
 	// フルーツ管理
 	// ==================================================
 
 	// フルーツ用マップ値
-	public static final int FRUIT_VALUE = 3;
+	static FRUIT_VALUE = 3;
 
 	// 出現位置
-	private int fruitRow = -1;
-	private int fruitCol = -1; // map配列内でのフルーツを表す数値
+	#fruitRow = -1;
+	#fruitCol = -1; // map配列内でのフルーツを表す数値
 
 	// 現在出現中のフルーツ(nullなら未出現)
-	private Items.Fruit currentFruit = null;
+	#currentFruit = null;
 
 	// 最後にフルーツを出した時刻
-	private long lastFruitSpawnTime = 0;
+	#lastFruitSpawnTime = 0;
 
 	// 最後にフルーツを出した時点のスコア
-	private int lastFruitScore = 0;
+	#lastFruitScore = 0;
 
 	// 出現条件
-	private static final long FRUIT_TIME_INTERVAL = 15000; // 15秒ごと
-	private static final int FRUIT_SCORE_INTERVAL = 1000; // 1000点ごと
+	static #FRUIT_TIME_INTERVAL = 15000; // 15秒ごと
+	static #FRUIT_SCORE_INTERVAL = 1000; // 1000点ごと
 
 	// ==================================================
 	// フルーツスコア表示管理
 	// ==================================================
 
 	// フルーツスコアポップアップ用
-	private boolean fruitPopupActive = false;
+	#fruitPopupActive = false;
 
 	// 表示開始時刻
-	private long fruitPopupStartTime = 0;
+	#fruitPopupStartTime = 0;
 
 	// 表示スコア
-	private int fruitPopupScore = 0;
+	#fruitPopupScore = 0;
 
 	// 表示時間(ms)
-	private static final long FRUIT_POPUP_DURATION = 1000;
+	static #FRUIT_POPUP_DURATION = 1000;
 
 	// 表示位置
-	private double fruitPopupX = 0; // 食べた瞬間のX座標（固定・ピクセル）
-	private double fruitPopupY = 0; // 食べた瞬間のY座標（固定・ピクセル）
-
-	// booleanを受け取る新しいコンストラクターを追加
-	public MapData(boolean paused) {
-		this(); // 上にある引数なしのコンストラクターを呼び出して初期化を行う
-		this.paused = paused; // 受け取った値をpausedフィールドにセットする
-	}
+	#fruitPopupX = 0; // 食べた瞬間のX座標（固定・ピクセル）
+	#fruitPopupY = 0; // 食べた瞬間のY座標（固定・ピクセル）
 
 	/**
-	 * 練習モード用の初期化メソッド。 プレイヤーの初期位置を通常とは別の座標に設定し、アイテム(ドット・パワーエサ)を
-	 * マップ全体に配置する。enableRespawn が true の場合は、エサ復活用に 初期状態のitemMapのコピーを保存しておく。
+	 * 練習モード用の初期化メソッド。プレイヤーの初期位置を通常とは別の座標に設定し、
+	 * アイテム(ドット・パワーエサ)をマップ全体に配置する。enableRespawn が true の場合は、
+	 * エサ復活用に初期状態のitemMapのコピーを保存しておく。
 	 *
-	 * enableRespawn エサ（ドット）を食べ切ったあとに復活させるかどうか
+	 * ※元のJavaコードでは `SampleModel` という大文字始まりのメソッド名だったが、
+	 *   （コンストラクタと紛らわしい命名だったため）JSではメソッドの命名規則に
+	 *   合わせて `sampleModel` とキャメルケースに直している。
+	 *
+	 * @param enableRespawn エサ（ドット）を食べ切ったあとに復活させるかどうか
 	 */
-	public void SampleModel(boolean enableRespawn) {
-		this.enableRespawn = enableRespawn; // これで練習/ストーリーを切り替えられる（エサ復活用）
-		this.syujinkou = new Syujinkou(10 * TILE_SIZE, 14 * TILE_SIZE, 2);
-		this.itemMap = new Item[map.length][map[0].length];
-		this.remainingItems = 0;
-		this.lastFruitSpawnTime = System.currentTimeMillis();
-		this.lastFruitScore = 0;
+	sampleModel(enableRespawn) {
+		this.#enableRespawn = enableRespawn;
+		this.#syujinkou = new Syujinkou(14 * MapData.TILE_SIZE, 23 * MapData.TILE_SIZE, 2);
+		this.#itemMap = new Array(this.#map.length);
+		this.#remainingItems = 0;
+		this.#lastFruitSpawnTime = Date.now();
+		this.#lastFruitScore = 0;
 
-		for (int row = 0; row < map.length; row++) {
-			for (int col = 0; col < map[0].length; col++) {
-				double pixelX = col * TILE_SIZE + TILE_SIZE / 2.0;
-				double pixelY = row * TILE_SIZE + TILE_SIZE / 2.0;
+		for (let row = 0; row < this.#map.length; row++) {
+			this.#itemMap[row] = new Array(this.#map[0].length).fill(null);
 
-				if (map[row][col] == 0) {
-					itemMap[row][col] = new Point(pixelX, pixelY);
-					this.remainingItems++;
-				} else if (map[row][col] == 2) {
-					itemMap[row][col] = new Chii(pixelX, pixelY);
-					this.remainingItems++;
+			for (let col = 0; col < this.#map[0].length; col++) {
+				const pixelX = col * MapData.TILE_SIZE + MapData.TILE_SIZE / 2;
+				const pixelY = row * MapData.TILE_SIZE + MapData.TILE_SIZE / 2;
+
+				if (this.#map[row][col] === 0) {
+					this.#itemMap[row][col] = new Point(pixelX, pixelY);
+					this.#remainingItems++;
+				} else if (this.#map[row][col] === 2) {
+					this.#itemMap[row][col] = new Chii(pixelX, pixelY);
+					this.#remainingItems++;
 				}
 			}
 		}
 
 		// エサ復活が有効なときだけ初期状態を保存（エサ復活用）
 		if (enableRespawn) {
-			this.initialItemMap = copyItemMap(itemMap);
+			this.#initialItemMap = this.#copyItemMap(this.#itemMap);
 		} else {
-			this.initialItemMap = null;
+			this.#initialItemMap = null;
 		}
 	}
 
-	// --- itemMap をコピーする ---（エサ復活用）
 	/**
-	 * itemMap（アイテム配置の二次元配列）のディープではない浅いコピーを作成する。
+	 * itemMap（アイテム配置の二次元配列）の浅いコピーを作成する。
 	 * エサ復活機能で「初期状態のアイテム配置」を保存・復元するために使用する。
 	 */
-	private Item[][] copyItemMap(Item[][] src) {
-		Item[][] dst = new Item[src.length][src[0].length];
-		for (int r = 0; r < src.length; r++) {
-			for (int c = 0; c < src[0].length; c++) {
+	#copyItemMap(src) {
+		const dst = new Array(src.length);
+		for (let r = 0; r < src.length; r++) {
+			dst[r] = new Array(src[0].length);
+			for (let c = 0; c < src[0].length; c++) {
 				dst[r][c] = src[r][c];
 			}
 		}
@@ -265,61 +266,73 @@ export public class MapData implements GameMap {
 	}
 
 	/**
-	 * 本番モード（ストーリーモード）用のデフォルトコンストラクタ。 プレイヤーの初期位置を設定し、マップ上の道(0)とパワーエサ(2)の位置に
-	 * アイテムを配置、敵を初期化する。最後にエサ復活用の初期状態を保存し、 総アイテム数(totalItems)を記録する。
+	 * 本番モード（ストーリーモード）用のデフォルトコンストラクタ相当。
+	 * プレイヤーの初期位置を設定し、マップ上の道(0)とパワーエサ(2)の位置に
+	 * アイテムを配置、敵を初期化する。最後にエサ復活用の初期状態を保存し、
+	 * 総アイテム数(totalItems)を記録する。
+	 *
+	 * ※Javaでは MapData() と MapData(boolean paused) の2つのコンストラクタが
+	 *   オーバーロードされていたが、JSはオーバーロードできないため
+	 *   デフォルト引数(paused = false)で1本化している。
+	 *   new MapData() は Java の MapData() 相当、
+	 *   new MapData(true) は Java の MapData(true) 相当になる。
 	 */
-	public MapData() {
-		// 初期設定
-		this.enableRespawn = false;
-		this.syujinkou = new Syujinkou(14 * TILE_SIZE, 23 * TILE_SIZE, 2);
-		this.itemMap = new Item[map.length][map[0].length];
-		this.remainingItems = 0;
-		this.lastFruitSpawnTime = System.currentTimeMillis();
-		this.lastFruitScore = 0;
+	constructor(paused = false) {
+		this.#syujinkou = new Syujinkou(14 * MapData.TILE_SIZE, 23 * MapData.TILE_SIZE, 2);
+		this.#itemMap = new Array(this.#map.length);
+		this.#remainingItems = 0;
+		this.#lastFruitSpawnTime = Date.now();
+		this.#lastFruitScore = 0;
 
 		// アイテムの配置
-		for (int row = 0; row < map.length; row++) {
+		for (let row = 0; row < this.#map.length; row++) {
+			this.#itemMap[row] = new Array(this.#map[0].length).fill(null);
 
-			for (int col = 0; col < map[0].length; col++) {
-				double pixelX = col * TILE_SIZE + TILE_SIZE / 2.0;
-				double pixelY = row * TILE_SIZE + TILE_SIZE / 2.0;
+			for (let col = 0; col < this.#map[0].length; col++) {
+				const pixelX = col * MapData.TILE_SIZE + MapData.TILE_SIZE / 2;
+				const pixelY = row * MapData.TILE_SIZE + MapData.TILE_SIZE / 2;
 
-				if (map[row][col] == 0) {
-					itemMap[row][col] = new Point(pixelX, pixelY);
-					remainingItems++; // ドットを配置したらカウントアップ
-				} else if (map[row][col] == 2) {
-					itemMap[row][col] = new Chii(pixelX, pixelY);
-					remainingItems++;// パワーエサもクリア条件に含めるならカウントアップ
+				if (this.#map[row][col] === 0) {
+					this.#itemMap[row][col] = new Point(pixelX, pixelY);
+					this.#remainingItems++;
+				} else if (this.#map[row][col] === 2) {
+					this.#itemMap[row][col] = new Chii(pixelX, pixelY);
+					this.#remainingItems++;
 				}
 			}
 		}
+
 		// 敵の初期位置
-		initEnemy(null);
+		this.initEnemy(null);
+		this.#wallOutline = new WallOutline(this.#map, MapData.TILE_SIZE);
 
 		// アイテムが完全に配置し終わった後で、バックアップを取り、復活を有効にする
-		this.initialItemMap = copyItemMap(itemMap);
-		this.enableRespawn = true;
+		this.#initialItemMap = this.#copyItemMap(this.#itemMap);
+		this.#enableRespawn = true;
 
 		// 最初に配置し終わった時の総数を記憶しておく
-		this.totalItems = this.remainingItems;
+		this.#totalItems = this.#remainingItems;
+
+		// 受け取ったpausedを最後に反映(Javaのオーバーロード版コンストラクタ相当)
+		this.#paused = paused;
 	}
 
 	/**
-	 * 敵キャラクター（赤・緑・黄・青）を初期化してenemiesリストに追加する。 既存のリストを一度クリアしてから追加するため、複数回呼んでも敵が重複しない。
+	 * 敵キャラクター（赤・緑・黄・青）を初期化してenemies配列に追加する。
+	 * 既存の配列を一度クリアしてから追加するため、複数回呼んでも敵が重複しない。
 	 * 追加後、全ての敵の状態をSCATTER（散開）にリセットする。
+	 *
+	 * ※enemyImageView 引数は元のJavaコードでも本文内で一度も使われていないため、
+	 *   JS版でも未使用のまま残している（互換性のためシグネチャだけ維持）。
 	 */
-	public void initEnemy(ImageView enemyImageView) {
+	initEnemy(enemyImageView) {
+		this.#enemies.length = 0; // 配列をクリア
+		this.#enemies.push(new RedEnemy(this));
+		this.#enemies.push(new GreenEnemy(this));
+		this.#enemies.push(new YellowEnemy(this));
+		this.#enemies.push(new BlueEnemy(this));
 
-		// ⭕ リストを一度クリアして、敵をどんどん追加する
-
-		enemies.clear();
-		enemies.add(new RedEnemy(this));
-		enemies.add(new GreenEnemy(this)); // 今後Map3Enemyなどもここに enemies.add(...) するだけで追加可能
-		enemies.add(new YellowEnemy(this));
-		enemies.add(new BlueEnemy(this));
-
-		// 安全対策: リスト内の全ての敵の初期状態をセット
-		for (Enemy e : enemies) {
+		for (const e of this.#enemies) {
 			if (e != null) {
 				e.setCurrentState(EnemyState.SCATTER);
 			}
@@ -327,674 +340,603 @@ export public class MapData implements GameMap {
 	}
 
 	/**
-	 * ゲームの一時停止／再開を切り替える。 一時停止に入るときは開始時刻を記録し、敵のタイマーを止める。
-	 * 再開するときは一時停止していた時間分だけ、FEVERタイマーやCHASE/SCATTERタイマーを 後ろにずらして帳尻を合わせ、敵のタイマーを再開する。
+	 * ゲームの一時停止／再開を切り替える。一時停止に入るときは開始時刻を記録し、
+	 * 敵のタイマーを止める。再開するときは一時停止していた時間分だけ、
+	 * FEVERタイマーやCHASE/SCATTERタイマーを後ろにずらして帳尻を合わせ、
+	 * 敵のタイマーを再開する。
 	 */
-	public void togglePause() {
-		if (!paused) {
-
-			paused = true;
-			pauseStartTime = System.currentTimeMillis();
+	togglePause() {
+		if (!this.#paused) {
+			this.#paused = true;
+			this.#pauseStartTime = Date.now();
 			Bgm.pauseBGM();
-
+			for (const e of this.#enemies) {
+				e.pauseTimer();
+			}
 		} else {
-
-			paused = false;
+			this.#paused = false;
 			Bgm.resumeBGM();
-
-			long pauseDuration = System.currentTimeMillis() - pauseStartTime;
+			const pauseDuration = Date.now() - this.#pauseStartTime;
 
 			// FEVER停止
-			if (feverEndTime > 0) {
-				feverEndTime += pauseDuration;
+			if (this.#feverEndTime > 0) {
+				this.#feverEndTime += pauseDuration;
 			}
 			// CHASE/SCATTERタイマー停止
-			if (modeStartTime > 0) {
-				modeStartTime += pauseDuration;
+			if (this.#modeStartTime > 0) {
+				this.#modeStartTime += pauseDuration;
 			}
 
-			if (lastFruitSpawnTime > 0) {
-				lastFruitSpawnTime += pauseDuration;
+			if (this.#lastFruitSpawnTime > 0) {
+				this.#lastFruitSpawnTime += pauseDuration;
 			}
 
-			for (Enemy e : enemies) {
+			for (const e of this.#enemies) {
 				e.resumeTimer();
 			}
 		}
 	}
 
-	// ゲーム全体の定期更新
 	/**
-	 * 1. 一時停止中は何もしない 2. プレイヤーが死亡アニメーション中なら、アニメーションの進行のみ行い、
-	 * アニメーション終了時にHPが残っていればリスポーン、HPが0ならgameOverをtrueにする 3.
-	 * 死亡アニメーション中でなければ、プレイヤー移動・FEVER終了判定・
-	 * CHASE/SCATTERモードの切り替え・敵の移動・口パク更新・当たり判定を順に行う
+	 * ゲーム全体を1フレーム更新する。
+	 *
+	 * 更新内容: ・死亡アニメーション ・プレイヤー移動 ・FEVER終了判定
+	 * ・CHASE/SCATTER切替 ・敵移動 ・フルーツ管理 ・当たり判定
 	 */
-	public void update() {
-		if (paused)
-			return;
+	update() {
+		if (this.#paused) return;
 
 		// 死んだときのアニメーション
-		if (syujinkou.isDyingAnimation()) {
-
-			if (syujinkou.updateDyingAnimation()) {
-
-				if (syujinkou.isAlive()) {
-
-					syujinkou.resetToStartPosition();
-
-					for (Enemy enemy : enemies) {
+		if (this.#syujinkou.isDyingAnimation()) {
+			if (this.#syujinkou.updateDyingAnimation()) {
+				if (this.#syujinkou.isAlive()) {
+					this.#syujinkou.resetToStartPosition();
+					for (const enemy of this.#enemies) {
 						enemy.resetToStartPosition();
 						enemy.setCurrentState(EnemyState.SCATTER);
 					}
 
-					modeStartTime = 0;
-					chaseMode = false;
-					waitingStart = true;
-
+					this.#modeStartTime = 0;
+					this.#chaseMode = false;
+					this.#waitingStart = true;
 				} else {
-
-					gameOver = true;
-					paused = true;
+					this.#gameOver = true;
+					this.#paused = true;
 				}
 			}
-
 			return;
 		}
 
 		// パックマンの移動処理
-		updatePacman();
+		this.updatePacman();
 
 		// FEVER終了判定
-		if (feverEndTime > 0 && System.currentTimeMillis() >= feverEndTime) {
-			feverEndTime = 0;
-			syujinkou.setFever(false);
+		if (this.#feverEndTime > 0 && Date.now() >= this.#feverEndTime) {
+			this.#feverEndTime = 0;
+			this.#syujinkou.setFever(false);
 			Bgm.stopFeverBGM(); // ステージBGMに復帰
 
-			for (Enemy e : enemies) {
-				if (e.getCurrentState() == EnemyState.FEVER) {
+			for (const e of this.#enemies) {
+				if (e.getCurrentState() === EnemyState.FEVER) {
 					e.setCurrentState(EnemyState.SCATTER);
 				}
 			}
-			System.out.println("FEVER終了");
+			console.log("FEVER終了");
 		}
 
 		// CHASE/SCATTER管理
-		if (!waitingStart) {
+		if (!this.#waitingStart) {
+			const elapsed = Date.now() - this.#modeStartTime;
 
-			long elapsed = System.currentTimeMillis() - modeStartTime;
+			if (this.#chaseMode && elapsed >= 20000) {
+				this.#chaseMode = false;
+				this.#modeStartTime = Date.now();
 
-			if (chaseMode && elapsed >= 20000) {
-
-				chaseMode = false;
-				modeStartTime = System.currentTimeMillis();
-
-				for (Enemy e : enemies) {
-
-					if (e.getCurrentState() != EnemyState.DEAD && e.getCurrentState() != EnemyState.FEVER) {
-
+				for (const e of this.#enemies) {
+					if (e.getCurrentState() !== EnemyState.DEAD && e.getCurrentState() !== EnemyState.FEVER) {
 						e.setCurrentState(EnemyState.SCATTER);
 					}
 				}
+				console.log("SCATTER開始");
+			} else if (!this.#chaseMode && elapsed >= 7000) {
+				this.#chaseMode = true;
+				this.#modeStartTime = Date.now();
 
-				System.out.println("SCATTER開始");
-			}
-
-			else if (!chaseMode && elapsed >= 7000) {
-
-				chaseMode = true;
-				modeStartTime = System.currentTimeMillis();
-
-				for (Enemy e : enemies) {
-
-					if (e.getCurrentState() != EnemyState.DEAD && e.getCurrentState() != EnemyState.FEVER) {
-
+				for (const e of this.#enemies) {
+					if (e.getCurrentState() !== EnemyState.DEAD && e.getCurrentState() !== EnemyState.FEVER) {
 						e.setCurrentState(EnemyState.CHASE);
 					}
 				}
-
-				System.out.println("CHASE開始");
+				console.log("CHASE開始");
 			}
 
 			// 敵移動
-			for (Enemy e : enemies) {
-				e.move(map);
+			for (const e of this.#enemies) {
+				e.move(this.#map);
 			}
 
-			checkFruitSpawn();
-			updateFruit();
+			this.#checkFruitSpawn();
+			this.#updateFruit();
 		}
+
 		// パックマンと敵の当たり判定を毎フレーム確認
-		checkCollision();
+		this.#checkCollision();
 	}
 
 	/**
 	 * 時間経過 または スコア到達 を条件にフルーツを固定位置に出現させる
 	 */
-	private void checkFruitSpawn() {
-		if (currentFruit != null)
-			return;// 既に出現中なら何もしない
+	#checkFruitSpawn() {
+		if (this.#currentFruit != null) return; // 既に出現中なら何もしない
 
-		long now = System.currentTimeMillis();
-		int score = syujinkou.getScore();
+		const now = Date.now();
+		const score = this.#syujinkou.getScore();
 
-		boolean timeCondition = (now - lastFruitSpawnTime) >= FRUIT_TIME_INTERVAL;
-		boolean scoreCondition = (score - lastFruitScore) >= FRUIT_SCORE_INTERVAL;
+		const timeCondition = now - this.#lastFruitSpawnTime >= MapData.#FRUIT_TIME_INTERVAL;
+		const scoreCondition = score - this.#lastFruitScore >= MapData.#FRUIT_SCORE_INTERVAL;
 
 		if (timeCondition || scoreCondition) {
-			spawnFruit();
-			lastFruitSpawnTime = now;
-			lastFruitScore = score;
+			this.#spawnFruit();
+			this.#lastFruitSpawnTime = now;
+			this.#lastFruitScore = score;
 		}
 	}
 
-	private void spawnFruit() {
-
+	#spawnFruit() {
 		// 道(0)かつ、まだドットが残っていない(itemMapがnull)マスだけを候補にする
-		List<int[]> candidates = new ArrayList<>();
-		for (int row = 0; row < map.length; row++) {
-			for (int col = 0; col < map[0].length; col++) {
-				if (map[row][col] == 0 && itemMap[row][col] == null) {
-					candidates.add(new int[] { row, col });
+		const candidates = [];
+		for (let row = 0; row < this.#map.length; row++) {
+			for (let col = 0; col < this.#map[0].length; col++) {
+				if (this.#map[row][col] === 0 && this.#itemMap[row][col] == null) {
+					candidates.push([row, col]);
 				}
 			}
 		}
 
-		if (candidates.isEmpty()) {
+		if (candidates.length === 0) {
 			return; // 万が一、道が無ければ何もしない
 		}
 
 		// ランダムに1マス選ぶ
-		Random random = new Random();
-		int[] chosen = candidates.get(random.nextInt(candidates.size()));
-		this.fruitRow = chosen[0];
-		this.fruitCol = chosen[1];
+		const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+		this.#fruitRow = chosen[0];
+		this.#fruitCol = chosen[1];
 
-		FruitType type = FruitType.random(random);
-		currentFruit = new Items.Fruit(type);
-		map[fruitRow][fruitCol] = FRUIT_VALUE;
+		const type = FruitType.random();
+		this.#currentFruit = new Fruit(type);
+		this.#map[this.#fruitRow][this.#fruitCol] = MapData.FRUIT_VALUE;
 
-		System.out.println(type + "が (" + fruitRow + ", " + fruitCol + ") に出現しました！");
+		console.log(`${type}が (${this.#fruitRow}, ${this.#fruitCol}) に出現しました！`);
 	}
 
 	/**
 	 * フルーツのタイマー更新。時間切れになったら消す。
 	 */
-	private void updateFruit() {
-		if (currentFruit == null)
-			return;
+	#updateFruit() {
+		if (this.#currentFruit == null) return;
 
-		currentFruit.update();
-		if (currentFruit.isExpired()) {
-			map[fruitRow][fruitCol] = 0;
-			currentFruit = null;
-			fruitRow = -1;
-			fruitCol = -1;
-			System.out.println("フルーツが消えました");
+		this.#currentFruit.update();
+		if (this.#currentFruit.isExpiredFruit()) {
+			this.#map[this.#fruitRow][this.#fruitCol] = 0; // 消えたら道に戻す
+			this.#currentFruit = null;
+			this.#fruitRow = -1;
+			this.#fruitCol = -1;
+			console.log("フルーツが消えました");
 		}
 	}
 
 	/**
-	 * プレイヤーの移動処理を行う。 ワープマスの検出・ワープ処理・壁として扱う扉(7)/巣(8)の判定・実際の移動、
-	 * そして移動後にいるマスにアイテムがあれば取得（スコア加算・FEVER発動）を行う。 一時停止中、またはプレイヤーが死亡している場合は何もしない。
+	 * 主人公の移動更新処理。
+	 *
+	 * 処理内容: ・ワープ処理 ・壁判定 ・移動実行 ・ドット取得 ・パワーエサ取得
+	 * ・FEVER開始 ・フルーツ取得
 	 */
-	public void updatePacman() {
-		if (paused || !syujinkou.isAlive())
-			return;
+	updatePacman() {
+		if (this.#paused || !this.#syujinkou.isAlive()) return;
 
-		// 追加箇所 移動先のタイルを予測検出し、壁(1), 扉(7), 巣(8)への進入を防ぐ
-		int tileX = (int) ((syujinkou.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
-		int tileY = (int) ((syujinkou.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
+		// 移動先のタイルを予測検出し、壁(1), 扉(7), 巣(8)への進入を防ぐ
+		const tileX = Math.floor((this.#syujinkou.getX() + MapData.TILE_SIZE / 2) / MapData.TILE_SIZE);
+		const tileY = Math.floor((this.#syujinkou.getY() + MapData.TILE_SIZE / 2) / MapData.TILE_SIZE);
 
 		// --- ワープ抑止ロジック ---
-		boolean skipWarp = false;
-		if (justWarped) {
-			if (tileX == lastWarpX && tileY == lastWarpY) {
+		let skipWarp = false;
+		if (this.#justWarped) {
+			if (tileX === this.#lastWarpX && tileY === this.#lastWarpY) {
 				skipWarp = true;
 
 				// ワープ直後は、プレイヤーの入力を上書きして強制直進（先行入力を固定）
-				if (lastWarpX == 27) {
-					syujinkou.setNextDirection(Direction.LEFT);
-				} else if (lastWarpX == 0) {
-					syujinkou.setNextDirection(Direction.RIGHT);
+				if (this.#lastWarpX === 27) {
+					this.#syujinkou.setNextDirection(Direction.LEFT);
+				} else if (this.#lastWarpX === 0) {
+					this.#syujinkou.setNextDirection(Direction.RIGHT);
 				}
 			} else {
-				justWarped = false;
-				lastWarpX = -1;
-				lastWarpY = -1;
+				this.#justWarped = false;
+				this.#lastWarpX = -1;
+				this.#lastWarpY = -1;
 			}
 		}
 
 		// --- ワープ処理 ---
-		if (!skipWarp && tileX >= 0 && tileX < map[0].length && tileY >= 0 && tileY < map.length) {
+		if (!skipWarp && tileX >= 0 && tileX < this.#map[0].length && tileY >= 0 && tileY < this.#map.length) {
+			if (this.#map[tileY][tileX] === 9) {
+				let warpX = tileX;
+				let warpY = tileY;
+				const currentDir = this.#syujinkou.getDirection();
 
-			if (map[tileY][tileX] == 9) {
-				int warpX = tileX;
-				int warpY = tileY;
-				Direction currentDir = syujinkou.getDirection();
-
-				if (currentDir != Direction.NONE) {
-					if (currentDir.getDX() != 0) {
-						for (int x = 0; x < map[0].length; x++) {
-							if (map[tileY][x] == 9 && x != tileX) {
+				if (currentDir !== Direction.NONE) {
+					if (currentDir.dx !== 0) {
+						for (let x = 0; x < this.#map[0].length; x++) {
+							if (this.#map[tileY][x] === 9 && x !== tileX) {
 								warpX = x;
 								break;
 							}
 						}
 					}
 
-					if (currentDir.getDY() != 0) {
-						for (int y = 0; y < map.length; y++) {
-							if (map[y][tileX] == 9 && y != tileY) {
+					if (currentDir.dy !== 0) {
+						for (let y = 0; y < this.#map.length; y++) {
+							if (this.#map[y][tileX] === 9 && y !== tileY) {
 								warpY = y;
 								break;
 							}
 						}
 					}
 				}
-				double newPacX = warpX * TILE_SIZE;
-				double newPacY = warpY * TILE_SIZE;
 
-				syujinkou.setX(newPacX);
-				syujinkou.setY(newPacY);
+				const newPacX = warpX * MapData.TILE_SIZE;
+				const newPacY = warpY * MapData.TILE_SIZE;
+
+				this.#syujinkou.setX(newPacX);
+				this.#syujinkou.setY(newPacY);
 
 				// 効果音
 				SoundManager.play(SoundManager.WARP);
 
-				justWarped = true;
-				lastWarpX = warpX;
-				lastWarpY = warpY;
+				this.#justWarped = true;
+				this.#lastWarpX = warpX;
+				this.#lastWarpY = warpY;
 				return;
 			}
 		}
+
 		// 巣(8)と扉(7)を同様に壁扱いしている。
-		int[][] moveMap = new int[map.length][map[0].length];
-		for (int r = 0; r < map.length; r++) {
-			for (int c = 0; c < map[0].length; c++) {
-				if (map[r][c] == 7 || map[r][c] == 8) {
+		const moveMap = new Array(this.#map.length);
+		for (let r = 0; r < this.#map.length; r++) {
+			moveMap[r] = new Array(this.#map[0].length);
+			for (let c = 0; c < this.#map[0].length; c++) {
+				if (this.#map[r][c] === 7 || this.#map[r][c] === 8) {
 					moveMap[r][c] = 1; // 7(扉)と8(巣)を、移動処理の時だけ壁(1)に化けさせる
 				} else {
-					moveMap[r][c] = map[r][c];
+					moveMap[r][c] = this.#map[r][c];
 				}
 			}
 		}
 
-		syujinkou.move(moveMap);
+		this.#syujinkou.move(moveMap);
 
-		int currentTileX = (int) ((syujinkou.getX() + TILE_SIZE / 2.0) / TILE_SIZE);
-		int currentTileY = (int) ((syujinkou.getY() + TILE_SIZE / 2.0) / TILE_SIZE);
+		const currentTileX = Math.floor((this.#syujinkou.getX() + MapData.TILE_SIZE / 2) / MapData.TILE_SIZE);
+		const currentTileY = Math.floor((this.#syujinkou.getY() + MapData.TILE_SIZE / 2) / MapData.TILE_SIZE);
 
-		if (currentTileY >= 0 && currentTileY < map.length && currentTileX >= 0 && currentTileX < map[0].length) {
-			Item item = itemMap[currentTileY][currentTileX];
+		if (
+			currentTileY >= 0 &&
+			currentTileY < this.#map.length &&
+			currentTileX >= 0 &&
+			currentTileX < this.#map[0].length
+		) {
+			const item = this.#itemMap[currentTileY][currentTileX];
 
 			if (item != null) {
-				item.onEaten(syujinkou);
+				item.onEaten(this.#syujinkou);
 
 				// パワーエサ(2)を食べたらFEVER
-				if (map[currentTileY][currentTileX] == 2) {
-
-					System.out.println("FEVER開始！");
+				if (this.#map[currentTileY][currentTileX] === 2) {
+					console.log("FEVER開始！");
 					SoundManager.play(SoundManager.POWER_EAT); // パワーエサ効果音を先に再生
 
-					// ★0.4秒遅らせてからFEVER BGMを開始
-					PauseTransition delay = new PauseTransition(Duration.seconds(0.4));
-					delay.setOnFinished(event -> start.Bgm.playFeverBGM());
-					delay.play();
+					// 0.4秒遅らせてからFEVER BGMを開始
+					// ※JavaFXの PauseTransition + Duration.seconds(0.4) を setTimeout に置き換え
+					setTimeout(() => {
+						Bgm.playFeverBGM();
+					}, 400);
 
-					syujinkou.setFever(true);
+					this.#syujinkou.setFever(true);
 					// 毎回7秒にリセット
-					feverEndTime = System.currentTimeMillis() + 7000;
+					this.#feverEndTime = Date.now() + 7000;
 
-					for (Enemy e : enemies) {
-						if (e.getCurrentState() != EnemyState.DEAD) {
+					for (const e of this.#enemies) {
+						if (e.getCurrentState() !== EnemyState.DEAD) {
 							e.setCurrentState(EnemyState.FEVER);
 						}
 					}
 
-					// ★パワーエサを食べたので50点加算（メソッド名はsyujinkouクラスに合わせてね）
-					syujinkou.addScore(50);
+					// パワーエサを食べたので50点加算
+					this.#syujinkou.addScore(50);
 				} else {
-					// ★普通のドットを食べたので10点加算
-					syujinkou.addScore(10);
+					// 普通のドットを食べたので10点加算
+					this.#syujinkou.addScore(10);
 				}
 
-				itemMap[currentTileY][currentTileX] = null;
-				remainingItems--; // ★1個食べたのでカウントを減らす
-				System.out.println("残りのドット数: " + remainingItems); // デバッグ用ログ
+				this.#itemMap[currentTileY][currentTileX] = null;
+				this.#remainingItems--; // 1個食べたのでカウントを減らす
+				console.log(`残りのドット数: ${this.#remainingItems}`); // デバッグ用ログ
 			}
 		}
-		// --- updatePacman()内、既存のitemMap判定の直後あたりに追加 ---
+
 		// フルーツを食べたかチェック
-		if (currentFruit != null && currentTileY == fruitRow && currentTileX == fruitCol) {
-			currentFruit.onEaten(syujinkou);
+		if (this.#currentFruit != null && currentTileY === this.#fruitRow && currentTileX === this.#fruitCol) {
+			this.#currentFruit.onEaten(this.#syujinkou);
 
 			// スコアポップアップ開始
-			fruitPopupScore = currentFruit.getType().getScore();
-			fruitPopupStartTime = System.currentTimeMillis();
-			fruitPopupActive = true;
-			fruitPopupX = fruitCol * TILE_SIZE + TILE_SIZE / 2.0;
-			fruitPopupY = fruitRow * TILE_SIZE + TILE_SIZE / 2.0;
+			this.#fruitPopupScore = this.#currentFruit.getType().getScore();
+			this.#fruitPopupStartTime = Date.now();
+			this.#fruitPopupActive = true;
+			this.#fruitPopupX = this.#fruitCol * MapData.TILE_SIZE + MapData.TILE_SIZE / 2;
+			this.#fruitPopupY = this.#fruitRow * MapData.TILE_SIZE + MapData.TILE_SIZE / 2;
 
-			map[fruitRow][fruitCol] = 0;
-			currentFruit = null;
-			fruitRow = -1;
-			fruitCol = -1;
-
+			this.#map[this.#fruitRow][this.#fruitCol] = 0;
+			this.#currentFruit = null;
+			this.#fruitRow = -1;
+			this.#fruitCol = -1;
 		}
-
-		// 全部食べたかチェック（エサ復活用）
-		// checkAllEaten();
-
 	}
 
-	// --- 全部食べたかチェック ---（エサ復活用）
-
-	/*
-	 * private void checkAllEaten() { if (!enableRespawn) return; // ← ストーリーでは復活しない
-	 * 
-	 * for (int r = 0; r < itemMap.length; r++) { for (int c = 0; c <
-	 * itemMap[0].length; c++) { if (itemMap[r][c] != null) return; // まだ残っている } }
-	 * // 全部食べた → 復活（エサ復活用） resetItems(); }
-	 * 
-	 * // --- エサ復活 ---（エサ復活用）
-	 * 
-	 * private void resetItems() { if (!enableRespawn || initialItemMap == null)
-	 * return;
-	 * 
-	 * this.itemMap = copyItemMap(this.initialItemMap);
-	 * System.out.println("ステージクリア！エサが復活しました！"); }
-	 */
-
 	/**
-	 * 練習モード用：itemMapを初期状態に戻し、残りアイテム数を最大数にリセットする。 これにより isCleared() が再び false
-	 * に戻り、ゲームを終わらせずに エサを食べ続けられるようになる（練習モードのループ継続用）。
+	 * 練習モード用：itemMapを初期状態に戻し、残りアイテム数を最大数にリセットする。
+	 * これにより isCleared() が再び false に戻り、ゲームを終わらせずに
+	 * エサを食べ続けられるようになる（練習モードのループ継続用）。
 	 */
-	public void respawnDots() {
-		if (this.initialItemMap != null) {
+	respawnDots() {
+		if (this.#initialItemMap != null) {
 			// 1. マップのアイテム配置を初期状態にコピー
-			this.itemMap = copyItemMap(this.initialItemMap);
+			this.#itemMap = this.#copyItemMap(this.#initialItemMap);
 
 			// 2. 残りアイテム数を初期の総数にリセット（これで isCleared() が false に戻る）
-			this.remainingItems = this.totalItems;
+			this.#remainingItems = this.#totalItems;
 
-			if (fruitRow != -1 && fruitCol != -1) {
-				this.map[fruitRow][fruitCol] = 0;
+			// フルーツ関連の状態もリセット
+			if (this.#fruitRow !== -1 && this.#fruitCol !== -1) {
+				this.#map[this.#fruitRow][this.#fruitCol] = 0;
 			}
-			this.currentFruit = null;
-			this.fruitRow = -1;
-			this.fruitCol = -1;
-			this.lastFruitSpawnTime = System.currentTimeMillis();
-			this.lastFruitScore = (syujinkou != null) ? syujinkou.getScore() : 0;
+			this.#currentFruit = null;
+			this.#fruitRow = -1;
+			this.#fruitCol = -1;
+			this.#lastFruitSpawnTime = Date.now();
+			this.#lastFruitScore = this.#syujinkou != null ? this.#syujinkou.getScore() : 0;
 
-			System.out.println("【練習モード】エサが再配置され、残りカウントが " + this.remainingItems + " にリセットされました。");
+			console.log(`【練習モード】エサが再配置され、残りカウントが ${this.#remainingItems} にリセットされました。`);
 		}
 	}
 
-	/*
-	 * public void updateMouth() { if (paused || !syujinkou.isAlive() ||
-	 * syujinkou.getDirection() == Direction.NONE) return;
-	 * 
-	 * mouthAngle += mouthOpening * 2; if (mouthAngle <= 10) mouthOpening = +1; if
-	 * (mouthAngle >= 45) mouthOpening = -1; }
-	 */
-
 	/**
-	 * キー入力などから呼ばれ、プレイヤーの次の移動方向をセットする。 ゲームがまだ開始待ち(waitingStart)の場合は、この最初の入力をトリガーとして
+	 * キー入力などから呼ばれ、プレイヤーの次の移動方向をセットする。
+	 * ゲームがまだ開始待ち(waitingStart)の場合は、この最初の入力をトリガーとして
 	 * ゲームを開始状態にし、CHASE/SCATTERタイマーを開始する。
 	 *
-	 * dir→プレイヤーに設定する次の移動方向
+	 * @param dir プレイヤーに設定する次の移動方向
 	 */
-	public void setNextDirection(Direction dir) {
-		if (syujinkou != null) {
-			syujinkou.setNextDirection(dir);
+	setNextDirection(dir) {
+		// 文字列("UP"など)で渡された場合はDirectionオブジェクトに変換する
+		const resolvedDir = typeof dir === "string" ? DIRECTION_MAP[dir] : dir;
+
+		if (this.#syujinkou != null && resolvedDir != null) {
+			this.#syujinkou.setNextDirection(resolvedDir);
 		}
 
 		// 初回入力でゲーム開始
-		if (waitingStart) {
-
-			waitingStart = false;
-
-			modeStartTime = System.currentTimeMillis();
-
-			lastFruitSpawnTime = System.currentTimeMillis();
-
-			System.out.println("ゲーム開始");
+		if (this.#waitingStart) {
+			this.#waitingStart = false;
+			this.#modeStartTime = Date.now();
+			this.#lastFruitSpawnTime = Date.now();
+			console.log("ゲーム開始");
 		}
 	}
-	// 敵との当たり判定
 
 	/**
-	 * プレイヤーと各敵との距離をチェックし、一定距離(collisionThreshold)以内なら 「衝突」とみなす当たり判定処理。
-	 * 敵がFEVER状態の場合はプレイヤーが敵を倒したことになり、スコア加算＆敵をDEAD状態にする。
-	 * それ以外（通常状態の敵）に衝突した場合は、プレイヤーがダメージを受け(takeDamage)、
-	 * 死亡（ミス）アニメーションを開始する(startDying)。 すでにプレイヤーが死んでいる場合は何もしない。
+	 * プレイヤーと各敵との距離をチェックし、一定距離(collisionThreshold)以内なら
+	 * 「衝突」とみなす当たり判定処理。敵がFEVER状態の場合はプレイヤーが敵を倒したことになり、
+	 * スコア加算＆敵をDEAD状態にする。それ以外（通常状態の敵）に衝突した場合は、
+	 * プレイヤーがダメージを受け(takeDamage)、死亡（ミス）アニメーションを開始する(startDying)。
+	 * すでにプレイヤーが死んでいる場合は何もしない。
 	 */
-	private void checkCollision() {
+	#checkCollision() {
+		if (!this.#syujinkou.isAlive()) return;
 
-		if (!syujinkou.isAlive())
-			return;
+		const pacCenterX = this.#syujinkou.getX() + MapData.TILE_SIZE / 2;
+		const pacCenterY = this.#syujinkou.getY() + MapData.TILE_SIZE / 2;
+		const collisionThreshold = MapData.TILE_SIZE * 0.8;
 
-		double pacCenterX = syujinkou.getX() + TILE_SIZE / 2.0;
-		double pacCenterY = syujinkou.getY() + TILE_SIZE / 2.0;
-		double collisionThreshold = TILE_SIZE * 0.8;
-
-		for (Enemy e : enemies) {
-
-			if (e.getCurrentState() == EnemyState.DEAD) {
+		for (const e of this.#enemies) {
+			if (e.getCurrentState() === EnemyState.DEAD) {
 				continue;
 			}
 
-			double dx = pacCenterX - e.getX();
-			double dy = pacCenterY - e.getY();
+			const dx = pacCenterX - e.getX();
+			const dy = pacCenterY - e.getY();
 
 			if (Math.sqrt(dx * dx + dy * dy) < collisionThreshold) {
 				// FEVER中の敵は食べられる
-				if (e.getCurrentState() == EnemyState.FEVER) {
-
+				if (e.getCurrentState() === EnemyState.FEVER) {
 					// 効果音
 					SoundManager.play(SoundManager.ENEMY_DEAD);
 
 					// 敵を倒したのでスコアを加算し、その場にスコア表示を開始する
-					int defeatScore = 200;
-					syujinkou.addScore(defeatScore);
+					const defeatScore = 200;
+					this.#syujinkou.addScore(defeatScore);
 					e.onDefeated(defeatScore);
 					continue;
 				}
 
-				if (e.getCurrentState() == EnemyState.DEAD) {
+				if (e.getCurrentState() === EnemyState.DEAD) {
 					continue;
 				}
 
-				System.out.println("💥敵に捕まった！");
+				console.log("💥敵に捕まった！");
 
 				// 効果音
 				SoundManager.play(SoundManager.DAMAGE);
 
-				syujinkou.takeDamage();
-				syujinkou.startDying();
-
-				/*
-				 * if (syujinkou.getHp() <= 0) {
-				 * 
-				 * this.gameOver = true; this.paused = true;
-				 * 
-				 * } else {
-				 * 
-				 * syujinkou.resetToStartPosition();
-				 * 
-				 * for (Enemy enemy : enemies) { enemy.resetToStartPosition(); }
-				 * 
-				 * for (Enemy enemy : enemies) {
-				 * enemy.setCurrentState(Characters.EnemyState.SCATTER); }
-				 * 
-				 * // タイマーリセット modeStartTime = 0;
-				 * 
-				 * // 初期状態に戻す chaseMode = false;
-				 * 
-				 * // 再入力待ち waitingStart = true;
-				 * 
-				 * }
-				 */
+				this.#syujinkou.takeDamage();
+				this.#syujinkou.startDying();
 
 				return;
 			}
 		}
 	}
 
+	// ==================================================
+	// getter
+	// ==================================================
+
 	// ゲームが一時停止中かどうか返す。
-	public boolean isPaused() {
-		return paused;
+	isPaused() {
+		return this.#paused;
 	}
 
 	// マップデータ(壁・道・アイテム種別を表す二次元配列)を返す。
-	@Override
-	public int[][] getMap() {
-		return map;
+	getMap() {
+		return this.#map;
 	}
 
 	// プレイヤーの現在のX座標(ピクセル)を返す。syujinkouがnullの場合は0を返す。
-	@Override
-	public double getPacX() {
-		return syujinkou != null ? syujinkou.getX() : 0;
+	getPacX() {
+		return this.#syujinkou != null ? this.#syujinkou.getX() : 0;
 	}
 
 	// プレイヤーの現在のY座標(ピクセル)を返す。syujinkouがnullの場合は0を返す。
-	@Override
-	public double getPacY() {
-		return syujinkou != null ? syujinkou.getY() : 0;
+	getPacY() {
+		return this.#syujinkou != null ? this.#syujinkou.getY() : 0;
 	}
 
 	// 現在のステージ番号(1～3)を返す。
-	@Override
-	public int getStageNumber() {
-		return stageNumber;
+	getStageNumber() {
+		return this.#stageNumber;
 	}
 
 	// ゲームがまだプレイヤーの初回入力を待っている状態かどうかを返す。
-	@Override
-	public boolean isWaitingStart() {
-		return waitingStart;
+	isWaitingStart() {
+		return this.#waitingStart;
 	}
 
-	// 敵キャラクターのリストを返す。
-	@Override
-	public List<Enemy> getEnemies() {
-		return enemies;
+	// 敵キャラクターの配列を返す。
+	getEnemies() {
+		return this.#enemies;
 	}
 
-	// ※ common.Direction と Characters.Direction の型が合わない場合はキャストや変換を行ってください
 	/**
-	 * プレイヤーの現在の移動方向を取得する。 syujinkou、またはsyujinkouの方向がnullの場合はDirection.NONEを返す。
-	 * 名前ベースでCharacters.Directionへの変換を試み、失敗した場合もNONEを返す。
+	 * プレイヤーの現在の移動方向を取得する。
+	 * syujinkou、またはsyujinkouの方向がnullの場合はDirection.NONEを返す。
+	 *
+	 * ※Java版では「common.Direction」と「Characters.Direction」という
+	 *   2つの別々のDirection型が存在し、Direction.valueOf(name())で
+	 *   名前ベースの変換を行っていた。JS版ではDirectionモジュールを
+	 *   全クラスで共有しているため、この変換処理は不要になり、
+	 *   単にそのまま返すだけでよい。
 	 */
-	@Override
-	public Direction getPlayerDirection() {
-		if (syujinkou == null || syujinkou.getDirection() == null) {
+	getPlayerDirection() {
+		if (this.#syujinkou == null || this.#syujinkou.getDirection() == null) {
 			return Direction.NONE;
 		}
-
-		// Characters.Direction から 正解の test.Direction へ名前ベースで型変換
-		try {
-			return Direction.valueOf(syujinkou.getDirection().name());
-		} catch (IllegalArgumentException e) {
-			return Direction.NONE;
-		}
+		return this.#syujinkou.getDirection();
 	}
 
-	// --- getters ---
 	// 各マスに配置されているアイテムの二次元配列を返す。
-	public Item[][] getItemMap() {
-		return itemMap;
+	getItemMap() {
+		return this.#itemMap;
 	}
 
-	// 口パクアニメーション用の現在の角度を返す。
-	/*
-	 * public double getMouthAngle() { return mouthAngle; }
-	 */
-	// プレイヤーのキャラクターオブジェを返す。
-	public Syujinkou getsyujinkou() {
-		return syujinkou;
+	// プレイヤーのキャラクターオブジェクトを返す。
+	// ※Java版のメソッド名 getsyujinkou() は小文字始まりのタイポに近い命名だったため、
+	//   JS版では getSyujinkou() とキャメルケースに直している。
+	getSyujinkou() {
+		return this.#syujinkou;
 	}
 
 	/**
-	 * FEVER状態の残り時間（ミリ秒）を返す。 一時停止中は、一時停止した時点での残り時間を固定して返す。
-	 * FEVERが発動していない、または既に終了している場合は0以上の値（実質0）を返す。
+	 * FEVER状態の残り時間（ミリ秒）を返す。一時停止中は、一時停止した時点での
+	 * 残り時間を固定して返す。FEVERが発動していない、または既に終了している場合は
+	 * 0以上の値（実質0）を返す。
 	 */
-	public long getFeverRemainingTime() {
-
-		if (paused && feverEndTime > 0) {
-			return Math.max(0, feverEndTime - pauseStartTime);
+	getFeverRemainingTime() {
+		if (this.#paused && this.#feverEndTime > 0) {
+			return Math.max(0, this.#feverEndTime - this.#pauseStartTime);
 		}
-		return Math.max(0, feverEndTime - System.currentTimeMillis());
+		return Math.max(0, this.#feverEndTime - Date.now());
 	}
 
-	// ⭕ 既存の古いゲッターもエラー防止で残し、リストの先頭(赤)を返す
-	public Enemy getEnemy() {
-		return enemies.isEmpty() ? null : enemies.get(0);
+	// 既存の古いゲッターもエラー防止で残し、配列の先頭(赤)を返す
+	getEnemy() {
+		return this.#enemies.length === 0 ? null : this.#enemies[0];
 	}
 
-	// ⭕ ステージが切り替わったときに外から数値を変更できるようにする
-	// --- setters ---
-	public void setStageNumber(int stageNum) {
-		this.stageNumber = stageNum;
+	// ==================================================
+	// setter
+	// ==================================================
+
+	// ステージが切り替わったときに外から数値を変更できるようにする
+	setStageNumber(stageNum) {
+		this.#stageNumber = stageNum;
 	}
 
-	// 残りアイテム数が0以下、つまり全てのドット・パワーエサを食べ終えたかどうかを返す。(ステージクリア判定)。
-	public boolean isCleared() {
-		return remainingItems <= 0;
+	// 残りアイテム数が0以下、つまり全てのドット・パワーエサを食べ終えたかどうかを返す(ステージクリア判定)。
+	isCleared() {
+		return this.#remainingItems <= 0;
 	}
 
 	// ゲームオーバーになったかどうかを返す(プレイヤーのHPが0になった後、死亡アニメーション終了時にtrueになる)。
-	public boolean isGameOver() {
-		return gameOver;
+	isGameOver() {
+		return this.#gameOver;
 	}
 
 	// フルーツ
-	public Fruit getCurrentFruit() {
-		return currentFruit;
+	getCurrentFruit() {
+		return this.#currentFruit;
 	}
 
 	// フルーツのスコアポップアップがまだ表示中か判定する（時間経過で自動的にfalseになる）
-	public boolean isFruitPopupActive() {
-		if (fruitPopupActive && System.currentTimeMillis() - fruitPopupStartTime > FRUIT_POPUP_DURATION) {
-			fruitPopupActive = false;
+	isFruitPopupActive() {
+		if (this.#fruitPopupActive && Date.now() - this.#fruitPopupStartTime > MapData.#FRUIT_POPUP_DURATION) {
+			this.#fruitPopupActive = false;
 		}
-		return fruitPopupActive;
+		return this.#fruitPopupActive;
 	}
 
 	// 表示するフルーツのスコア値を返す
-	public int getFruitPopupScore() {
-		return fruitPopupScore;
+	getFruitPopupScore() {
+		return this.#fruitPopupScore;
 	}
 
 	// 食べた瞬間のX座標を返す（ポップアップ表示用、固定値・ピクセル）
-	public double getFruitPopupX() {
-		return fruitPopupX;
+	getFruitPopupX() {
+		return this.#fruitPopupX;
 	}
 
 	// 食べた瞬間のY座標を返す（ポップアップ表示用、固定値・ピクセル）
-	public double getFruitPopupY() {
-		return fruitPopupY;
+	getFruitPopupY() {
+		return this.#fruitPopupY;
 	}
 
 	// ポップアップの進行度を0.0(開始)〜1.0(終了)で返す
-	public double getFruitPopupProgress() {
-		long elapsed = System.currentTimeMillis() - fruitPopupStartTime;
-		return Math.min(1.0, Math.max(0.0, elapsed / (double) FRUIT_POPUP_DURATION));
+	getFruitPopupProgress() {
+		const elapsed = Date.now() - this.#fruitPopupStartTime;
+		return Math.min(1.0, Math.max(0.0, elapsed / MapData.#FRUIT_POPUP_DURATION));
 	}
 
-	public int getFruitRow() {
-		return fruitRow;
+	getFruitRow() {
+		return this.#fruitRow;
 	}
 
-	public int getFruitCol() {
-		return fruitCol;
+	getFruitCol() {
+		return this.#fruitCol;
 	}
-	
-	// デバックよう強制クリアボタン
-		public void forceStageClear() {
-		    this.remainingItems = 0;
-		    System.out.println("【デバッグ】強制ステージクリアを実行しました。");
-		}
 
+	// デバッグ用強制クリアボタン
+	forceStageClear() {
+		this.#remainingItems = 0;
+		console.log("【デバッグ】強制ステージクリアを実行しました。");
+	}
+
+	getWallOutline() {
+		return this.#wallOutline;
+	}
 }
