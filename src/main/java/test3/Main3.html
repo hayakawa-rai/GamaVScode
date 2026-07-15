@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>仙石さん - ステージ 1</title>
+    <title>仙石さん - ステージ 3</title>
 
     <style>
       /* =====================================================
@@ -141,7 +141,7 @@
       <!-- 背景画像 (ImageView) -->
       <img
         id="backgroundView"
-        src="../../resources/picture/emd-nottori.jpg"
+        src="../../resources/picture/shatyoroom.jpg"
         alt="Background"
         onerror="
           this.onerror = null;
@@ -229,12 +229,11 @@
           this.startLoop();
         }
 
-        static applyMobileControls(model, onMove) {
+        static applyMobileControls(model) {
           if (!model) return;
           const sendDirection = (dir) => {
             if (typeof model.isPaused === "function" && !model.isPaused()) {
-              if (typeof model.setNextDirection === "function") onMove();
-              {
+              if (typeof model.setNextDirection === "function") {
                 model.setNextDirection(dir);
               }
             }
@@ -300,22 +299,30 @@
 
             if (this.model.isPaused && this.model.isPaused()) return;
 
-        if (typeof this.model.setNextDirection === 'function') {
-            const isMoveKey =
-                key === 'W' || e.key === 'ArrowUp' ||
-                key === 'S' || e.key === 'ArrowDown' ||
-                key === 'A' || e.key === 'ArrowLeft' ||
-                key === 'D' || e.key === 'ArrowRight';
+            if (typeof this.model.setNextDirection === "function") {
+              const isMoveKey =
+                key === "W" ||
+                e.key === "ArrowUp" ||
+                key === "S" ||
+                e.key === "ArrowDown" ||
+                key === "A" ||
+                e.key === "ArrowLeft" ||
+                key === "D" ||
+                e.key === "ArrowRight";
 
-            if (isMoveKey) {
+              if (isMoveKey) {
                 this.startBgmOnce(); // ★追加：移動キーが押された瞬間にBGM開始
 
-                if (key === 'W' || e.key === 'ArrowUp')    this.model.setNextDirection("UP");
-                if (key === 'S' || e.key === 'ArrowDown')  this.model.setNextDirection("DOWN");
-                if (key === 'A' || e.key === 'ArrowLeft')  this.model.setNextDirection("LEFT");
-                if (key === 'D' || e.key === 'ArrowRight') this.model.setNextDirection("RIGHT");
+                if (key === "W" || e.key === "ArrowUp")
+                  this.model.setNextDirection("UP");
+                if (key === "S" || e.key === "ArrowDown")
+                  this.model.setNextDirection("DOWN");
+                if (key === "A" || e.key === "ArrowLeft")
+                  this.model.setNextDirection("LEFT");
+                if (key === "D" || e.key === "ArrowRight")
+                  this.model.setNextDirection("RIGHT");
+              }
             }
-        }
           });
         }
 
@@ -349,8 +356,8 @@
                   );
 
                   let finalScore = 0;
-                  if (this.model.getsyujinkou) {
-                    const syujinkou = this.model.getsyujinkou();
+                  if (this.model.getSyujinkou) {
+                    const syujinkou = this.model.getSyujinkou();
                     if (syujinkou && typeof syujinkou.getScore === "function") {
                       finalScore = syujinkou.getScore();
                     }
@@ -390,8 +397,8 @@
                     console.log("🏁 ステージクリア！");
 
                     let finalScore = 0;
-                    if (this.model.getsyujinkou) {
-                      const syujinkou = this.model.getsyujinkou();
+                    if (this.model.getSyujinkou) {
+                      const syujinkou = this.model.getSyujinkou();
                       if (
                         syujinkou &&
                         typeof syujinkou.getScore === "function"
@@ -505,9 +512,9 @@
       }
 
       // =====================================================
-      // メイン起動クラス (Main1)
+      // メイン起動クラス (Main3)
       // =====================================================
-      class Main1 {
+      class Main3 {
         constructor() {
           this.controller = null;
           this.dom = {
@@ -524,7 +531,7 @@
         }
 
         static createAndStart() {
-          const app = new Main1();
+          const app = new Main3();
           app.starts();
         }
 
@@ -581,7 +588,7 @@
             model,
             view,
             this.dom.gameCanvas,
-            1, // stageNumber = 1
+            3, // stageNumber = 3
             false, // isPractice = false
           );
 
@@ -589,14 +596,14 @@
           this.controller.setPauseLayer(this.dom.pauseLayer);
 
           // ステージ設定 & 入力受付
-          document.title = "仙石さん - ステージ 1";
+          document.title = "仙石さん - ステージ 3";
           this.dom.gameCanvas.focus();
         }
       }
 
       // 読み込み完了時に実行
       window.addEventListener("DOMContentLoaded", () => {
-        Main1.createAndStart();
+        Main3.createAndStart();
       });
     </script>
   </body>

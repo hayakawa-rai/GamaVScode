@@ -1,61 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
+  <head>
+    <!-- 文字コード -->
+    <meta charset="UTF-8" />
 
-<head>
-    <meta charset="UTF-8">
-    <title>Practice</title>
+    <!-- レスポンシブ対応 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="practice.css">
-</head>
+    <!-- ブラウザタブに表示されるタイトル -->
+    <title>練習モード</title>
 
-<body>
+    <!-- 共通スタイル -->
+    <link rel="stylesheet" href="../../resources/css/style.css" />
+    <link rel="stylesheet" href="../../resources/css/practice.css" />
+  </head>
 
-    <div id="practice-root">
+  <body>
+    <!-- ==================================================
+         ゲーム画面全体
+         ================================================== -->
+    <div id="game-container">
+      <!-- 背景 -->
+      <div id="bg-pane"></div>
 
-        <!-- 背景 -->
-        <div id="background-pane"></div>
+      <!-- ==================================================
+             トロフィー（ハイスコア表示ボタン）
+             ================================================== -->
+      <div id="score-info">🏆</div>
 
-        <!-- ハイスコア -->
-        <div id="score-info">🏆</div>
+      <!-- ==================================================
+             ハイスコア表示エリア
+             （初期状態ではCSSで非表示）
+             ================================================== -->
+      <div id="highscore-tooltip">
+        ★ HIGH SCORE ★
+        <br /><br />
+        STAGE1 : 1000
+        <br /><br />
+        STAGE2 : 2000
+        <br /><br />
+        STAGE3 : 3000
+      </div>
 
-        <!-- ハイスコア表示 -->
-        <div id="high-score-tip"></div>
+      <!-- ==================================================
+             練習モードメインエリア
+             ================================================== -->
+      <div id="practice-container">
+        <!-- タイトル -->
+        <div id="practice-title">練習モード</div>
 
-        <!-- 中央UI -->
-        <div id="ui-container">
+        <!-- ステージ選択ボタン -->
+        <div id="stage-box">
+          <button id="stage1-btn" class="game-button">STAGE 1</button>
 
-            <!-- タイトル -->
-            <h1 id="title">
-                練習モード
-            </h1>
+          <button id="stage2-btn" class="game-button">STAGE 2</button>
 
-            <!-- ステージ選択 -->
-            <div id="stage-buttons">
-
-                <button id="btn1" class="game-button">
-                    STAGE 1
-                </button>
-
-                <button id="btn2" class="game-button">
-                    STAGE 2
-                </button>
-
-                <button id="btn3" class="game-button">
-                    STAGE 3
-                </button>
-
-            </div>
-
+          <button id="stage3-btn" class="game-button">STAGE 3</button>
         </div>
+      </div>
 
-        <!-- タイトルへ戻る -->
-        <button id="backButton" class="game-button">
-            タイトルへ
-        </button>
-
+      <!-- タイトル画面へ戻る -->
+      <button id="back-btn" class="game-button">タイトルへ</button>
     </div>
 
-</body>
+    <!-- ハイスコア管理 -->
+  <script src="../common/HighScoreManager.js"></script>
 
+    <!-- Practice画面処理 -->
+    <script src="Practice.js"></script>
+  </body>
 </html>

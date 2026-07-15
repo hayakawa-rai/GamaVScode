@@ -1,68 +1,79 @@
 <!DOCTYPE html>
 <html lang="ja">
+ </head>   
 
-<head>
+    <!-- 文字コード -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Over</title>
 
-    <link rel="stylesheet" href="gameover.css">
-</head>
+    <!-- レスポンシブ対応 -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <!-- タイトル -->
+    <title>ゲームオーバー</title>
+
+    <!-- 共通スタイル -->
+    <link rel="stylesheet" href="../../resources/css/style.css">
+
+    <!-- GameOver専用CSS -->
+    <link rel="stylesheet" href="../../resources/css/gameover.css">
 
 <body>
 
-    <!-- ルートコンテナ -->
-    <div id="gameover-root" class="gameover-root">
-
+<div id="gameover-root">
         <!-- 背景画像 -->
-        <img
-            id="background"
-            class="gameover-background"
-            src="../../resources/picture/gameover.jpg"
-            alt="background">-layout" class="content-layout">
+        <!--img id="gameover.jbg" src="../../resources/picture/gameover.jpg"-->
 
-            <!-- タイトル部 -->
-            <div class="title-box">
+        <!-- 白い半透明オーバーレイ -->
+        <div id="white-overlay"></div>
 
-                <h1 id="game-text">GAME</h1>
+        <!-- メインエリア -->
+        <div id="content-layout">
 
-                <h1 id="over-text">OVER</h1>
+            <!-- タイトルエリア -->
+            <div id="title-box">
+
+                <h1 id="gameover-title"
+                    class="gameover-title">
+                    GAME OVER
+                </h1>
 
                 <div id="score-label">
-                    SCORE : 0
+                    SCORE : 
                 </div>
 
-                <div
-                    id="new-record-label"
-                    style="display:none;">
+                <div id="new-record-label">
                     NEW RECORD!!
                 </div>
 
             </div>
 
-            <!-- キャラクター画像 -->
-            png"
-                alt="character">
+            <!-- キャラクター＋ボタン -->
+           <div id="center-box">
 
-            <!-- ボタン -->
-            <div class="button-column">
+                <img id="character-icon"
+                    src="../../resources/picture/syujinkou(gameover).png">
 
-                <button id="retry-btn">
-                    リトライする
-                </button>
+                    <div id="button-column">
+                        <button id="retry-btn"
+                            class="gameover-button">
+                            リトライする
+                        </button>
 
-                <button id="title-btn">
-                    タイトルへ
-                </button>
-
+                    <button id="title-btn"
+                            class="gameover-button">
+                        タイトルへ
+                    </button>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
+</div>
 
-    gameover.jsscript>
+    <!-- GameOver処理 -->
+    <script type="module"
+            src="GameOver.js"></script>
 
 </body>
-
 </html>

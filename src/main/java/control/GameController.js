@@ -1,6 +1,7 @@
 /**
  * ゲーム全体を管理・制御するコントローラークラス (GameController)
  */
+import { Bgm } from '../start/Bgm.js';
 export class GameController {
     // クラス共通の静的（static）プロパティ
     static #touchStart = [0, 0];       // スワイプ開始座標 [x, y]
@@ -158,7 +159,7 @@ export class GameController {
                         if (this.isTransitioning) return;
                         this.isTransitioning = true;
 
-                        if (window.Bgm) Bgm.stopBGM();
+                        if (typeof Bgm.stopBGM === 'function') Bgm.stopBGM();
                         console.log("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
 
                         let finalScore = 0;
@@ -196,7 +197,7 @@ export class GameController {
                             if (this.isTransitioning) return;
                             this.isTransitioning = true;
 
-                            if (window.Bgm) Bgm.stopBGM();
+                            if (typeof Bgm.stopBGM === 'function') Bgm.stopBGM();
                             console.log("🏁 ステージクリア！");
 
                             let finalScore = 0;
@@ -238,7 +239,7 @@ export class GameController {
      */
     forceBackToTitle() {
         this.stop();
-        if (window.Bgm) Bgm.stopBGM();
+        if (typeof Bgm.stopBGM === 'function') Bgm.stopBGM();
         console.log("② timer停止");
         GameController.switchStart();
     }
@@ -247,7 +248,7 @@ export class GameController {
      * BGM再生の委譲
      */
     playStageBgm(stageNumber) {
-        if (window.Bgm && typeof Bgm.playStageBGM === 'function') {
+        if (typeof Bgm.playStageBGM === 'function') {
             Bgm.playStageBGM(stageNumber);
         }
     }

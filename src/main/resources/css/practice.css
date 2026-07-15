@@ -1,0 +1,155 @@
+/* ==================================================
+   Practice画面全体のレイアウト
+   ================================================== */
+#practice-container {
+  /* 画面全体に配置 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* 背景より前面に表示 */
+  z-index: 3;
+
+  /* タイトル・ボタンを中央配置 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ==================================================
+   タイトル
+   ================================================== */
+#practice-title {
+  /* 画面上部に配置 */
+  position: absolute;
+  top: 20%;
+
+  /* ドットフォント */
+  font-family: "PixelMplus12", sans-serif;
+
+  /* 画面サイズに応じて可変 */
+  font-size: clamp(30px, 4vw, 60px);
+
+  color: white;
+
+  /* 青い発光エフェクト */
+  text-shadow: 0 0 20px rgba(0, 120, 220, 0.8);
+
+  text-align: center;
+}
+
+/* ==================================================
+   STAGEボタン配置エリア
+   ================================================== */
+#stage-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* STAGEボタン */
+#stage-box .game-button {
+  /* 横幅を画面サイズに応じて調整 */
+  width: 35vw;
+  max-width: 400px;
+  min-width: 180px;
+
+  /* 高さも可変 */
+  height: 9vh;
+  max-height: 80px;
+  min-height: 50px;
+
+  font-size: 30px;
+}
+
+/* ==================================================
+   タイトルへ戻るボタン
+   ================================================== */
+#back-btn {
+  /* 画面右下に固定 */
+  position: fixed;
+
+  right: 30px;
+  bottom: 30px;
+
+  /* 画面サイズに応じて縮小 */
+  width: clamp(100px, 15vw, 200px);
+  height: clamp(35px, 6vh, 60px);
+
+  /* 文字サイズも可変 */
+  font-size: clamp(14px, 1.2vw, 30px);
+
+  /* ボタン中央に文字を配置 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* 「タイトルへ」の改行防止 */
+  white-space: nowrap;
+
+  z-index: 4;
+}
+
+/* ==================================================
+   トロフィー（ハイスコア表示ボタン）
+   ================================================== */
+#score-info {
+  /* 常に画面右上に固定 */
+  position: fixed;
+
+  top: clamp(5px, 1vw, 15px);
+  right: clamp(5px, 1vw, 15px);
+
+  /* 画面サイズに応じて縮小 */
+  font-size: clamp(35px, 3vw, 50px);
+
+  color: gold;
+
+  /* クリック可能を示す */
+  cursor: pointer;
+
+  z-index: 4;
+}
+
+/* ==================================================
+   ハイスコア表示パネル
+   ================================================== */
+#highscore-tooltip {
+  /* 初期状態は非表示 */
+  display: none;
+
+  /* トロフィー付近に固定表示 */
+  position: fixed;
+
+  top: clamp(50px, 8vh, 70px);
+  right: clamp(10px, 2vw, 20px);
+
+  z-index: 100;
+
+  /* 背景 */
+  background-color: rgba(0, 0, 0, 0.95);
+  color: white;
+
+  /* ドットフォント */
+  font-family: "PixelMplus12", sans-serif;
+
+  /* 画面サイズに合わせて文字サイズ調整 */
+  font-size: clamp(16px, 1.5vw, 32px);
+
+  padding: clamp(10px, 1vw, 20px);
+
+  /* 金色の枠線 */
+  border: 2px solid gold;
+  border-radius: 8px;
+
+  /* パネル横幅 */
+  width: clamp(120px, 30vw, 250px);
+
+  /* 改行を防止 */
+  white-space: nowrap;
+
+  box-sizing: border-box;
+}
