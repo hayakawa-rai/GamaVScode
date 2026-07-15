@@ -1,69 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
+  <head>
+    <!-- 文字コード -->
+    <meta charset="UTF-8" />
 
-<head>
-    <meta charset="UTF-8">
+    <!-- レスポンシブ対応 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- タイトル -->
     <title>STAGE1 CLEAR</title>
 
-    <!-- CSS（後で追加） -->
-    <link rel="stylesheet" href="stageclear1.css">
-</head>
+    <!-- 共通CSS -->
+    ../../resources/css/style.css
 
-<body>
+    <!-- StageClear専用CSS -->
+    ../../resources/css/stageclear.css
+  </head>
 
+  <body>
+    <!-- =========================================
+         STAGE CLEAR画面全体
+         ========================================= -->
     <div id="stageclear-root">
+      <!-- メインコンテンツ -->
+      <div id="clear-container">
+        <!-- タイトル -->
+        <h1 id="clear-title">STAGE1 CLEAR!</h1>
 
-        <div id="button-box">
+        <!-- 獲得アイテム -->
+        <div id="reward-box">
+          ../../resources/picture/kagi.png
 
-            <!-- タイトル -->
-            <h1 id="title">
-                STAGE1 CLEAR!
-            </h1>
-
-            <!-- 画像＋説明 -->
-            <div id="text-image-box">
-
-                <!-- 鍵画像 -->
-                <img id="imageView"
-                    src="../../resources/picture/kagi.png"
-                    alt="鍵">
-            
-                <!-- 説明文 -->
-                <div id="text">
-                    鍵を獲得しました！！
-                </div>
-
-            </div>
-
-            <!-- スコア -->
-            <div id="scoreLabel">
-                SCORE : 0
-            </div>
-
-            <!-- 次へ -->
-            <button
-                id="nextButton"
-                class="game-button2">
-
-                次のステージへ
-
-            </button>
-
-            <!-- タイトルへ -->
-            <button
-                id="backButton"
-                class="game-button2">
-
-                タイトルへ
-
-            </button>
-
+          <div id="reward-text">鍵を獲得しました！！</div>
         </div>
 
+        <!-- スコア -->
+        <div id="score-label">SCORE : 0</div>
+
+        <!-- ボタン -->
+        <div id="button-box">
+          <button id="next-btn" class="game-button2">次のステージへ</button>
+
+          <button id="title-btn" class="game-button2">タイトルへ</button>
+        </div>
+      </div>
     </div>
 
-    <script src="Stageclear1.js"></script>
-
-</body>
-
+    <!-- StageClear処理 -->
+    <script type="module" src="Stageclear1.js"></script>
+  </body>
 </html>

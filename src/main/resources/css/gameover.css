@@ -1,7 +1,6 @@
 @font-face {
-    font-family: "PixelMplus12";
-    src: url("../font/PixelMplus12-Regular.ttf")
-         format("truetype");
+  font-family: "PixelMplus12";
+  src: url("../font/PixelMplus12-Regular.ttf") format("truetype");
 }
 
 /* ==================================================
@@ -9,25 +8,25 @@
    ================================================== */
 
 #gameover-root {
-    position: relative;
+  position: relative;
 
-    width: 100vw;
-    height: 100vh;
+  width: 100vw;
+  height: 100vh;
 
-    overflow: hidden;
+  overflow: hidden;
 }
 
 #content-layout {
-    position: relative;
-    z-index: 10;
+  position: relative;
+  z-index: 10;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    align-items: center;
+  align-items: center;
 }
 
 /* ==================================================
@@ -35,14 +34,14 @@
    ================================================== */
 
 #title-box {
-    margin-top: clamp(50px, 10vh, 120px);
+  margin-top: clamp(50px, 10vh, 120px);
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    align-items: center;
+  align-items: center;
 
-    gap: 20px;
+  gap: 20px;
 }
 
 /* ==================================================
@@ -50,32 +49,23 @@
    ================================================== */
 
 .gameover-title {
-    font-family: "PixelMplus12", sans-serif;
+  font-family: "PixelMplus12", sans-serif;
 
-    font-size: clamp(50px, 8vw, 120px);
+  font-size: clamp(50px, 8vw, 120px);
 
-    font-weight: 900;
+  font-weight: 900;
 
-    background: linear-gradient(
-        to bottom,
-        #ff5f5f,
-        #c62828
-    );
+  background: linear-gradient(to bottom, #ff5f5f, #c62828);
 
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
-    filter:
-        drop-shadow(
-            0 0 18px rgba(255, 255, 255, 0.6)
-        )
-        drop-shadow(
-            0 0 30px rgba(180, 40, 40, 0.5)
-        );
+  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.6))
+    drop-shadow(0 0 30px rgba(180, 40, 40, 0.5));
 
-    text-align: center;
+  text-align: center;
 
-    margin: 40px 0;
+  margin: 40px 0;
 }
 
 /* ==================================================
@@ -83,13 +73,13 @@
    ================================================== */
 
 #score-label {
-    font-family: "PixelMplus12", sans-serif;
+  font-family: "PixelMplus12", sans-serif;
 
-    font-size: clamp(24px, 3vw, 36px);
+  font-size: clamp(24px, 3vw, 36px);
 
-    font-weight: bold;
+  font-weight: bold;
 
-    color: white;
+  color: white;
 }
 
 /* ==================================================
@@ -97,15 +87,15 @@
    ================================================== */
 
 #new-record-label {
-    display: none;
+  display: none;
 
-    font-family: "PixelMplus12", sans-serif;
+  font-family: "PixelMplus12", sans-serif;
 
-    font-size: clamp(28px, 4vw, 40px);
+  font-size: clamp(28px, 4vw, 40px);
 
-    font-weight: bold;
+  font-weight: bold;
 
-    color: gold;
+  color: gold;
 }
 
 /* ==================================================
@@ -113,18 +103,18 @@
    ================================================== */
 
 #center-box {
-    flex: 1;
+  flex: 1;
 
-    width: 100%;
+  width: 100%;
 
-    display: flex;
+  display: flex;
 
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 
-    gap: clamp(20px, 4vw, 40px);
+  gap: clamp(20px, 4vw, 40px);
 
-    padding: 0 30px;
+  padding: 0 30px;
 }
 
 /* ==================================================
@@ -132,11 +122,11 @@
    ================================================== */
 
 #character-icon {
-    width: clamp(180px, 25vw, 350px);
+  width: clamp(180px, 25vw, 350px);
 
-    height: auto;
+  height: auto;
 
-    transform: translateY(-70px);
+  transform: translateY(-70px);
 }
 
 /* ==================================================
@@ -144,16 +134,16 @@
    ================================================== */
 
 #button-column {
-    display: flex;
+  display: flex;
 
-    flex-direction: column;
+  flex-direction: column;
 
-    justify-content: center;
+  justify-content: center;
 
-    align-items: center;
+  align-items: center;
 
-    /* 横画面は広め */
-    gap: 60px;
+  /* 横画面は広め */
+  gap: 60px;
 }
 
 /* ==================================================
@@ -161,62 +151,49 @@
    ================================================== */
 
 .gameover-button {
-    width: clamp(220px, 25vw, 320px);
+  width: clamp(220px, 25vw, 320px);
 
-    height: clamp(55px, 8vh, 70px);
+  height: clamp(55px, 8vh, 70px);
 
-    font-family: "PixelMplus12", sans-serif;
+  font-family: "PixelMplus12", sans-serif;
 
-    font-size: clamp(18px, 2vw, 26px);
+  font-size: clamp(18px, 2vw, 26px);
 
-    font-weight: bold;
+  font-weight: bold;
 
-    background: linear-gradient(
-        to bottom,
-        #ff4d4d,
-        #b30000
-    );
+  background: linear-gradient(to bottom, #ff4d4d, #b30000);
 
-    color: white;
+  color: white;
 
-    border: 3px solid #660000;
+  border: 3px solid #660000;
 
-    border-radius: 10px;
+  border-radius: 10px;
 
-    box-shadow:
-        0 3px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
 
-    padding: 10px 20px;
+  padding: 10px 20px;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 
-    transition:
-        transform 0.1s ease,
-        background 0.1s ease;
+  transition:
+    transform 0.1s ease,
+    background 0.1s ease;
 
-    text-align: center;
+  text-align: center;
 }
 
 .gameover-button:hover {
-    background: linear-gradient(
-        to bottom,
-        #ff6666,
-        #cc0000
-    );
+  background: linear-gradient(to bottom, #ff6666, #cc0000);
 
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .gameover-button:active {
-    background: linear-gradient(
-        to bottom,
-        #990000,
-        #660000
-    );
+  background: linear-gradient(to bottom, #990000, #660000);
 
-    transform: scale(0.95);
+  transform: scale(0.95);
 }
 
 /* ==================================================
@@ -224,24 +201,23 @@
    ================================================== */
 
 @media (orientation: portrait) {
+  #center-box {
+    flex-direction: column;
+  }
 
-    #center-box {
-        flex-direction: column;
-    }
+  #character-icon {
+    transform: translateY(-40px);
+  }
 
-    #character-icon {
-        transform: translateY(-40px);
-    }
+  #button-column {
+    width: 100%;
 
-    #button-column {
-        width: 100%;
+    /* 縦画面は狭め */
+    gap: 25px;
+  }
 
-        /* 縦画面は狭め */
-        gap: 25px;
-    }
-
-    .gameover-button {
-        width: 90%;
-        max-width: 320px;
-    }
+  .gameover-button {
+    width: 90%;
+    max-width: 320px;
+  }
 }
