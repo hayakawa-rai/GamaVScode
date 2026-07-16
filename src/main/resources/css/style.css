@@ -52,6 +52,16 @@ body, html {
         min-width: 320px;
         min-height: 568px;
     }
+
+    /* 縦持ち時はキャラの幅制約を緩めて、高さいっぱいまで表示させる */
+    #syujinkou-wrapper {
+        width: 65cqw;
+    }
+    #aniki-wrapper,
+    #nari-wrapper,
+    #taku-wrapper {
+        width: 65cqw;
+    }
 }
 
 .fit-screen, .bg-image {
@@ -370,17 +380,25 @@ body, html {
     pointer-events: none;
 }
 
+/* 左側：主人公は常にここに固定表示 */
 #syujinkou-wrapper {
     left: 0;
-    width: 45cqw;
+    width: 30cqw;
+}
+#syujinkou-wrapper .sprite-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom left;
 }
 
-#nari-wrapper {
-    position: absolute;
+/* 右側：あにき・なりなり・わだたくは完全に同じ枠(位置・サイズ・計算方法)を共有 */
+#aniki-wrapper,
+#nari-wrapper,
+#taku-wrapper {
     right: 0;
-    bottom: 0;
-    width: 85cqw;
-    height: 90cqh;
+    width: 50cqw;
+    height: 85cqh;
     z-index: 2;
     display: flex;
     justify-content: flex-end;
@@ -388,46 +406,21 @@ body, html {
     pointer-events: none;
 }
 
-#nari-wrapper .sprite-img {
-    height: 100%;
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
-    object-position: bottom right;
-}
-#aniki-wrapper {
-    right: 0;
-    width: 55cqw;
-    height: 90cqh;
-    z-index: 2;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-}
-
-#aniki-wrapper .sprite-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: bottom right;
-}
-
-#taku-wrapper {
-    right: 0;
-    width: 55cqw;
-    height: 90cqh;
-    z-index: 2;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-}
-
+#nari-wrapper .sprite-img,
 #taku-wrapper .sprite-img {
-    width: 100%;
-    height: 100%;
+    width: 110%;
+    height: 110%;
     object-fit: contain;
     object-position: bottom right;
 }
+
+#aniki-wrapper .sprite-img{
+    width: 130%;
+    height: 130%;
+    object-fit: contain;
+    object-position: bottom right;
+}
+
 .sprite-img {
     height: 100%;
     width: 100%;
@@ -443,8 +436,7 @@ body, html {
 @supports not (container-type: size) {
     .sprite-wrapper { height: 85%; }
     #syujinkou-wrapper { width: 45%; }
-    #nari-wrapper { width: 80%; height: 85%; }
-    #aniki-wrapper, #taku-wrapper { width: 50%; height: 85%; }
+    #aniki-wrapper, #nari-wrapper, #taku-wrapper { width: 50%; height: 85%; }
 }
 
 /* ==========================================================================
