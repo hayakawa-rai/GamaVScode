@@ -69,7 +69,7 @@ export class BlueEnemy extends Enemy {
 
         // デフォルト（ステージ1）
         let imagePath =
-             "/src/main/resources/picture/nari_EnemyBlue.png";
+             "../../resources/picture/nari_EnemyBlue.png";
 
         if (this.mapData) {
 
@@ -80,19 +80,19 @@ export class BlueEnemy extends Enemy {
                 case 1:
                     // ステージ1
                     imagePath =
-                         "/src/main/resources/picture/nari_EnemyBlue.png";
+                         "../../resources/picture/nari_EnemyBlue.png";
                     break;
 
                 case 2:
                     // ステージ2
                     imagePath =
-                         "/src/main/resources/picture/taku_EnemyBlue.png";
+                         "../../resources/picture/taku_EnemyBlue.png";
                     break;
 
                 case 3:
                     // ステージ3
                     imagePath =
-                         "/src/main/resources/picture/aniki_EnemyBlue.png";
+                         "../../resources/picture/aniki_EnemyBlue.png";
                     break;
 
                 default:

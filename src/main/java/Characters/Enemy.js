@@ -67,19 +67,19 @@ export class Enemy extends Character {
 loadFeverImage() {
 
     // デフォルト画像(ステージ1)
-    let feverPath = "/src/main/resources/picture/nari_EnemyFever.png";
+    let feverPath = "../../resources/picture/nari_EnemyFever.png";
 
     // 現在のステージ番号に応じて画像を切り替える
     if (this.mapData) {
         switch (this.mapData.getStageNumber()) {
             case 1:
-                feverPath = "/src/main/resources/picture/nari_EnemyFever.png";
+                feverPath = "../../resources/picture/nari_EnemyFever.png";
                 break;
             case 2:
-                feverPath = "/src/main/resources/picture/taku_EnemyFever.png";
+                feverPath = "../../resources/picture/taku_EnemyFever.png";
                 break;
             case 3:
-                feverPath = "/src/main/resources/picture/aniki_EnemyFever.png";
+                feverPath = "../../resources/picture/aniki_EnemyFever.png";
                 break;
         }
     }
@@ -101,19 +101,19 @@ loadFeverImage() {
 loadDeadImage() {
 
     // デフォルトはステージ1
-    let deadPath = "/src/main/resources/picture/nari_EnemyDead.png";
+    let deadPath = "../../resources/picture/nari_EnemyDead.png";
 
     // 現在のステージ番号に応じて画像を切り替える
     if (this.mapData) {
         switch (this.mapData.getStageNumber()) {
             case 1:
-                deadPath = "/src/main/resources/picture/nari_EnemyDead.png";
+                deadPath = "../../resources/picture/nari_EnemyDead.png";
                 break;
             case 2:
-                deadPath = "/src/main/resources/picture/taku_EnemyDead.png";
+                deadPath = "../../resources/picture/taku_EnemyDead.png";
                 break;
             case 3:
-                deadPath = "/src/main/resources/picture/aniki_EnemyDead.png";
+                deadPath = "../../resources/picture/aniki_EnemyDead.png";
                 break;
         }
     }

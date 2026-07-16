@@ -63,7 +63,7 @@ export class GreenEnemy extends Enemy {
         // ==========================================
 
         let imagePath =
-             "/src/main/resources/picture/nari_EnemyGreen.png";
+             "../../resources/picture/nari_EnemyGreen.png";
 
         if (this.mapData) {
 
@@ -74,19 +74,19 @@ export class GreenEnemy extends Enemy {
                 case 1:
                     // ステージ1
                     imagePath =
-                         "/src/main/resources/picture/nari_EnemyGreen.png";
+                         "../../resources/picture/nari_EnemyGreen.png";
                     break;
 
                 case 2:
                     // ステージ2
                     imagePath =
-                         "/src/main/resources/picture/taku_EnemyGreen.png";
+                         "../../resources/picture/taku_EnemyGreen.png";
                     break;
 
                 case 3:
                     // ステージ3
                     imagePath =
-                         "/src/main/resources/picture/aniki_EnemyGreen.png";
+                         "../../resources/picture/aniki_EnemyGreen.png";
                     break;
 
                 default:
