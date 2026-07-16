@@ -349,8 +349,13 @@ body, html {
 .sprite-wrapper {
     position: absolute;
     bottom: 0;
+
+    height: 85%;
+    height: 85cqh;
+
     height: 85cqh;
     z-index: 2;
+
     display: none;
     justify-content: center;
     align-items: flex-end;
@@ -366,21 +371,38 @@ body, html {
     width: 100%;
     height: 100%;
     object-fit: contain;
+
+    z-index: 5;
     z-index: 12;
+
+    z-index: 12;
+
     pointer-events: none;
 }
 
 #syujinkou-wrapper {
     left: 0;
+
+    width: 45%;
     width: 45cqw;
+
 }
 
 #nari-wrapper {
     position: absolute;
     right: 0;
     bottom: 0;
+
+    width: 80%;
+    height: 85%;
+
     width: 85cqw;
     height: 90cqh;
+
+
+    width: 85cqw;
+    height: 90cqh;
+
     z-index: 2;
     display: flex;
     justify-content: flex-end;
@@ -397,8 +419,11 @@ body, html {
 }
 #aniki-wrapper {
     right: 0;
+
+    width: 50%;
     width: 55cqw;
     height: 90cqh;
+
     z-index: 2;
     display: flex;
     justify-content: flex-end;
@@ -406,16 +431,24 @@ body, html {
 }
 
 #aniki-wrapper .sprite-img {
+
+    width: 140%;
+    height: 140%;
+
     width: 100%;
     height: 100%;
+
     object-fit: contain;
     object-position: bottom right;
 }
 
 #taku-wrapper {
     right: 0;
+
+    width: 50%;
     width: 55cqw;
     height: 90cqh;
+
     z-index: 2;
     display: flex;
     justify-content: flex-end;
@@ -423,8 +456,13 @@ body, html {
 }
 
 #taku-wrapper .sprite-img {
+
+    width: 140%;
+    height: 140%;
+
     width: 100%;
     height: 100%;
+
     object-fit: contain;
     object-position: bottom right;
 }
@@ -460,6 +498,8 @@ body, html {
     justify-content: center;
     z-index: 10;
 }
+
+#message-container { left: 0; width: 100%; height: 18vh; }
 
 #message-box {
     position: relative;
