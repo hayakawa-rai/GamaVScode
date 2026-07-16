@@ -54,14 +54,14 @@ class SoundClip {
  */
 export class SoundManager {
     // 1. 各効果音の定数定義
-    static WARP = new SoundClip("/src/main/resources/music/warp.mp3");
-    static ENEMY_DEAD = new SoundClip("/src/main/resources/music/enemydeadsound.mp3");
-    static DAMAGE = new SoundClip("/src/main/resources/music/syujinkoudeadsound.mp3");
-    static FRUIT_EAT = new SoundClip("/src/main/resources/music/fruiteatsound.mp3");
-    static POWER_EAT = new SoundClip("/src/main/resources/music/powerup.mp3");
-    static GAMEOVER = new SoundClip("/src/main/resources/music/gameover.mp3");
-    static RETRY = new SoundClip("/src/main/resources/music/retry.mp3");
-    static SELECT = new SoundClip("/src/main/resources/music/select.mp3");
+    static WARP = new SoundClip("../../resources/music/warp.mp3");
+    static ENEMY_DEAD = new SoundClip("../../resources/music/enemydeadsound.mp3");
+    static DAMAGE = new SoundClip("../../resources/music/syujinkoudeadsound.mp3");
+    static FRUIT_EAT = new SoundClip("../../resources/music/fruiteatsound.mp3");
+    static POWER_EAT = new SoundClip("../../resources/music/powerup.mp3");
+    static GAMEOVER = new SoundClip("../../resources/music/gameover.mp3");
+    static RETRY = new SoundClip("../../resources/music/retry.mp3");
+    static SELECT = new SoundClip("../../resources/music/select.mp3");
 
     // 2. 音量調節 (Javaの static 初期化ブロックの再現)
     static {
