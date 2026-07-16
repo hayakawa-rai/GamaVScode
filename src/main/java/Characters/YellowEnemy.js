@@ -57,7 +57,7 @@ export class YellowEnemy extends Enemy {
         this.loadDeadImage();
 
         // 現在のステージ番号によって画像を切り替える
-        let imagePath =  "/src/main/resources/picture/nari_EnemyYellow.png";
+        let imagePath =  "../../resources/picture/nari_EnemyYellow.png";
 
         if (this.mapData) {
 
@@ -65,17 +65,17 @@ export class YellowEnemy extends Enemy {
 
                 case 1:
                     imagePath =
-                         "/src/main/resources/picture/nari_EnemyYellow.png";
+                         "../../resources/picture/nari_EnemyYellow.png";
                     break;
 
                 case 2:
                     imagePath =
-                         "/src/main/resources/picture/taku_EnemyYellow.png";
+                         "../../resources/picture/taku_EnemyYellow.png";
                     break;
 
                 case 3:
                     imagePath =
-                         "/src/main/resources/picture/aniki_EnemyYellow.png";
+                         "../../resources/picture/aniki_EnemyYellow.png";
                     break;
 
                 default:

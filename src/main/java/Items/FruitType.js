@@ -67,35 +67,35 @@ export class FruitType {
 FruitType.CHERRY =
     new FruitType(
         100,
-        "/src/main/resources/picture/sakuranbo.png"
+        "../../resources/picture/sakuranbo.png"
     );
 
 // イチゴ
 FruitType.STRAWBERRY =
     new FruitType(
         300,
-        "/src/main/resources/picture/ichigo.png"
+        "../../resources/picture/ichigo.png"
     );
 
 // オレンジ
 FruitType.ORANGE =
     new FruitType(
         500,
-        "/src/main/resources/picture/orange.png"
+        "../../resources/picture/orange.png"
     );
 
 // リンゴ
 FruitType.APPLE =
     new FruitType(
         700,
-        "/src/main/resources/picture/ringo.png"
+        "../../resources/picture/ringo.png"
     );
 
 // ブドウ
 FruitType.GRAPE =
     new FruitType(
         1000,
-        "/src/main/resources/picture/budo.png"
+        "../../resources/picture/budo.png"
     );
 
 // enumのvalues()相当

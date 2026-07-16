@@ -30,7 +30,7 @@ export class Chii extends Item {
         };
 
         // 画像ファイルの読み込み開始
-        this.img.src = "/src/main/resources/picture/Chii_Item.png";
+        this.img.src = "../../resources/picture/Chii_Item.png";
 
         this.img.onload = () => {
             this.imageLoaded = true;

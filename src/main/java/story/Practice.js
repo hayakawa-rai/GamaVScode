@@ -4,14 +4,14 @@
 document.getElementById("stage1-btn")
 .addEventListener("click", () => {
   cleanup(); // BGM停止
-  window.location.href = "practiceGame1.html";});
+  window.location.href = "../test1/PracticeMain1.html";});
 
 // ==================================================
 // STAGE2
 // ==================================================
 document.getElementById("stage2-btn").addEventListener("click", () => {
   cleanup();
-  window.location.href = "practiceGame2.html";
+  window.location.href = "../test2/PracticeMain2.html";
 });
 
 // ==================================================
@@ -19,7 +19,7 @@ document.getElementById("stage2-btn").addEventListener("click", () => {
 // ==================================================
 document.getElementById("stage3-btn").addEventListener("click", () => {
   cleanup();
-  window.location.href = "practiceGame3.html";
+  window.location.href = "../test3/PracticeMain3.html";
 });
 
 // ==================================================
@@ -27,7 +27,7 @@ document.getElementById("stage3-btn").addEventListener("click", () => {
 // ==================================================
 document.getElementById("back-btn").addEventListener("click", () => {
   cleanup();
-  window.location.href = "start.html";
+  window.location.href = "../start.html";
 });
 
 // ==================================================
