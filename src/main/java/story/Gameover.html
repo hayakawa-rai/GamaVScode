@@ -75,5 +75,28 @@
     <script type="module"
             src="GameOver.js"></script>
 
+            <!-- 起動用スクリプト -->
+<script type="module">
+    import { GameOver } from "./GameOver.js";
+
+    // URLのクエリパラメータを取得
+    const params = new URLSearchParams(window.location.search);
+    const stage = params.get("stage");
+    const isPractice = params.get("practice") === "true";
+    const score = Number(params.get("score")) || 0;
+
+    // GameOver画面を初期化して起動
+    GameOver.create(
+        () => {
+            // リトライボタンが押された時の遷移先
+            window.location.href = isPractice
+                ? `../test${stage}/PracticeMain${stage}.html`
+                : `../test${stage}/Main${stage}.html`;
+        },
+        score,
+        false // NEW RECORD判定は別途ハイスコア管理と連携する場合は差し替え
+    );
+</script>
+
 </body>
 </html>
