@@ -1,23 +1,31 @@
 @font-face {
-    font-family: "PixelMplus12";
-    src:
-    url("../font/PixelMplus12-Regular.ttf")
-    format("truetype");
+  font-family: "PixelMplus12";
+  src: url("../font/PixelMplus12-Regular.ttf") format("truetype");
 }
 
 /* =========================================
    全体
    ========================================= */
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
 #stageclear-root {
+  width: 100vw;
+  height: 100vh;
 
-    width: 100vw;
-    height: 100vh;
+  background: #ececec;
 
-    display: flex;
+  display: flex;
 
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 /* =========================================
@@ -25,14 +33,13 @@
    ========================================= */
 
 #clear-container {
+  display: flex;
 
-    display: flex;
+  flex-direction: column;
 
-    flex-direction: column;
+  align-items: center;
 
-    align-items: center;
-
-    gap: clamp(20px, 3vh, 40px);
+  gap: 40px;
 }
 
 /* =========================================
@@ -40,20 +47,17 @@
    ========================================= */
 
 #clear-title {
+  font-family: "PixelMplus12", sans-serif;
 
-    font-family:
-        "PixelMplus12",
-        sans-serif;
+  font-size: clamp(60px, 8vw, 110px);
 
-    font-size:
-        clamp(50px, 8vw, 80px);
+  color: rgb(170, 170, 170);
 
-    color:
-        rgb(180,180,180);
+  font-weight: bold;
 
-    text-align: center;
+  text-align: center;
 
-    margin: 0;
+  margin: 0;
 }
 
 /* =========================================
@@ -61,33 +65,29 @@
    ========================================= */
 
 #reward-box {
+  display: flex;
 
-    display: flex;
+  align-items: center;
 
-    align-items: center;
+  justify-content: center;
 
-    justify-content: center;
-
-    gap: 20px;
+  gap: 20px;
 }
 
 #reward-image {
+  width: clamp(80px, 12vw, 150px);
 
-    width: clamp(80px, 12vw, 150px);
+  height: auto;
 
-    height: auto;
+  object-fit: contain;
 }
 
 #reward-text {
+  font-family: "PixelMplus12", sans-serif;
 
-    font-family:
-        "PixelMplus12",
-        sans-serif;
+  color: gray;
 
-    font-size:
-        clamp(18px, 2vw, 24px);
-
-    color: gray;
+  font-size: clamp(20px, 2vw, 35px);
 }
 
 /* =========================================
@@ -95,15 +95,13 @@
    ========================================= */
 
 #score-label {
+  font-family: "PixelMplus12", sans-serif;
 
-    font-family:
-        "PixelMplus12",
-        sans-serif;
+  font-size: clamp(30px, 4vw, 50px);
 
-    font-size:
-        clamp(24px, 3vw, 30px);
+  font-weight: bold;
 
-    color: gray;
+  color: gray;
 }
 
 /* =========================================
@@ -111,33 +109,36 @@
    ========================================= */
 
 #button-box {
+  display: flex;
 
-    display: flex;
+  flex-direction: column;
 
-    flex-direction: column;
+  align-items: center;
 
-    gap: 20px;
-
-    align-items: center;
+  gap: 20px;
 }
 
 #next-btn,
 #title-btn {
+  width: clamp(220px, 30vw, 320px);
 
-    width: clamp(220px, 25vw, 250px);
-
-    height: clamp(60px, 8vh, 80px);
+  height: clamp(60px, 8vh, 80px);
 }
 
 /* =========================================
-   スマホ
+   スマホ縦画面
    ========================================= */
 
 @media (orientation: portrait) {
+  #clear-container {
+    gap: 30px;
+  }
 
-    #reward-box {
+  #reward-box {
+    flex-direction: column;
+  }
 
-        flex-direction: column;
-    }
-
+  #reward-image {
+    width: 120px;
+  }
 }
