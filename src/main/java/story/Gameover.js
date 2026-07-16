@@ -1,6 +1,10 @@
 /**
  * GameOver画面
  */
+
+import { SoundManager } from "../start/SoundManager.js";
+import { GameController } from "../control/GameController.js";
+
 export class GameOver {
 
     /**

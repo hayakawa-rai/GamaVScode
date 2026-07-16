@@ -163,8 +163,8 @@ export class GameController {
                         console.log("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
 
                         let finalScore = 0;
-                        if (this.model.getsyujinkou) {
-                            const syujinkou = this.model.getsyujinkou();
+                        if (this.model.getSyujinkou) {
+                            const syujinkou = this.model.getSyujinkou();
                             if (syujinkou && typeof syujinkou.getScore === 'function') {
                                 finalScore = syujinkou.getScore();
                             }
@@ -201,8 +201,8 @@ export class GameController {
                             console.log("🏁 ステージクリア！");
 
                             let finalScore = 0;
-                            if (this.model.getsyujinkou) {
-                                const syujinkou = this.model.getsyujinkou();
+                            if (this.model.getSyujinkou) {
+                                const syujinkou = this.model.getSyujinkou();
                                 if (syujinkou && typeof syujinkou.getScore === 'function') {
                                     finalScore = syujinkou.getScore();
                                 }
