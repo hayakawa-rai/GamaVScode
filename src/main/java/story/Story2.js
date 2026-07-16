@@ -60,23 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const d = dialogues[index];
             const w = ui.wrappers;
 
-            // A. 立ち絵の制御（仙石さんは常に表示、右側は入れ替え）
-            w.syujinkou.classList.add('active');
-            
-            // 話者に応じて右側の表示を切り替え
-            if (d.speaker === "あにき") {
-                w.aniki.classList.add('active');
-                w.nari.classList.remove('active');
-                w.taku.classList.remove('active');
-            } else if (d.speaker === "なりなり") {
-                w.nari.classList.add('active');
-                w.aniki.classList.remove('active');
-                w.taku.classList.remove('active');
-            } else if (d.speaker === "わだたく") {
-                w.taku.classList.add('active');
-                w.aniki.classList.remove('active');
-                w.nari.classList.remove('active');
-            }
+    // A. 立ち絵切り替え（共通処理）
+    StoryUtils.updateCharacterDisplay(d.speaker, w);
 
             // B. 特殊演出（差し込み絵）
             if (index === 4) ui.insertView.style.display = "block";
@@ -102,6 +87,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     StoryUtils.createJumpAnimation(target, () => {});
                 }
             }
+
+        w.syujinkou.classList.add('shake');
+        setTimeout(() => w.syujinkou.classList.remove('shake'), 600);
+            }
+
+            // D. ジャンプアニメーション
+            StoryUtils.triggerJumpIfNeeded(d, w);
         },
         
         onEnd: () => {

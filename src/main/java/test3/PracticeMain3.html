@@ -257,3 +257,586 @@ public class PracticeMain3 extends Application {
 		launch(args);
 	}
 }
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>仙石さん - 練習ステージ 3</title>
+    <style>
+      /* =====================================================
+         * 共通レイアウトスタイル (旧JavaFXコンポーネントの再現)
+         * ===================================================== */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #000;
+        font-family: "Meiryo", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /*
+         * ゲームのルート（StackPane）
+         * JavaFXの stage.setMinWidth(320) などのサイズ制限をCSSで完全にシミュレート
+         */
+      #stage-root {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        min-width: 320px;
+        min-height: 568px;
+        max-width: 1920px;
+        max-height: 1080px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); /* 画面サイズ制限時の縁取り */
+      }
+
+      /* 背景画像（ぼかし効果） */
+      .background-view {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        filter: blur(10px);
+        z-index: 1;
+      }
+
+      /* ゲームベース（Pane） */
+      #game-base {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+      }
+
+      #game-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      /* メニューボタン */
+      .menu-btn {
+        position: absolute;
+        top: 60px; /* Insets(60, 0, 0, 30) */
+        left: 30px;
+        width: 100px;
+        height: 90px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: 4;
+      }
+      .menu-btn img {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ポーズ画面レイヤー（VBox） */
+      #pause-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.65);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px; /* VBox(25) */
+        z-index: 3;
+        display: none;
+        pointer-events: none;
+      }
+
+      #pause-layer.visible {
+        display: flex;
+        pointer-events: auto;
+      }
+
+      .pause-title {
+        font-family: "Arial", sans-serif;
+        font-weight: bold;
+        font-size: 48px;
+        color: #ffff00;
+      }
+
+      .game-button {
+        width: 160px;
+        height: 40px;
+        font-family: "Meiryo", sans-serif;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .how-to-play-text {
+        color: #ffffff;
+        font-family: "Meiryo", sans-serif;
+        font-weight: normal;
+        font-size: 14px;
+        text-align: center;
+        white-space: pre-line;
+        background-color: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 8px;
+        padding: 12px 20px;
+        display: none;
+      }
+
+      /* ==========================================================================
+           ステージカラーCSS設定
+           ========================================================================== */
+      .stage1 .game-bg {
+        background-color: #000000;
+      }
+      .stage1 .game-wall {
+        background-color: rgb(0, 238, 190);
+      }
+      .stage1 .game-pacman {
+        background-color: #ffffff;
+      }
+
+      .stage2 .game-bg {
+        background-color: rgb(43, 43, 43);
+      }
+      .stage2 .game-wall {
+        background-color: #ff44cc;
+      }
+      .stage2 .game-pacman {
+        background-color: rgb(28, 221, 216);
+      }
+
+      .stage3 .game-bg {
+        background-color: #1a0000;
+      }
+      .stage3 .game-wall {
+        background-color: rgb(238, 30, 0);
+      }
+      .stage3 .game-pacman {
+        background-color: #ffaa00;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ルートコンテナ (StackPane) -->
+    <div id="stage-root" class="stage3">
+      <!-- 背景画像 -->
+      <img
+        class="background-view"
+        src="../../resources/picture/shatyoroom.jpg"
+        alt="Background"
+      />
+
+      <!-- ゲーム画面ベース (Pane) -->
+      <div id="game-base" class="stage3">
+        <canvas id="game-canvas"></canvas>
+      </div>
+
+      <!-- メニューアイコンボタン -->
+      <button id="menu-btn" class="menu-btn">
+        <img src="../../resources/picture/menu.png" alt="Menu" />
+      </button>
+
+      <!-- ポーズ画面レイヤー (VBox) -->
+      <div id="pause-layer">
+        <div class="pause-title">PAUSE</div>
+        <button id="to-play-btn" class="game-button">ゲーム再開</button>
+        <button id="how-to-play-btn" class="game-button">操作説明</button>
+        <div id="how-to-play-text" class="how-to-play-text">
+          移動 : ↑↓←→ / WASD<br />画面スワイプ(スマホ用)
+        </div>
+        <button id="title-btn" class="game-button">タイトルへ戻る</button>
+      </div>
+    </div>
+
+    <script type="module">
+      import { MapData } from "./model/MapData.js";
+      import { MapView } from "./view/MapView.js";
+      import { Bgm } from "../start/Bgm.js";
+
+      // =====================================================
+      // GameController クラス（Main3と共通ロジックを移植）
+      // =====================================================
+      class GameController {
+        static #touchStart = [0, 0];
+        static #FLICK_THRESHOLD = 30.0;
+        static #newRecord = false;
+
+        static isNewRecord() {
+          return GameController.#newRecord;
+        }
+
+        constructor(model, view, canvas, stageNumber, isPractice) {
+          this.model = model;
+          this.view = view;
+          this.canvas = canvas;
+          this.gc = canvas.getContext("2d");
+          this.stageNumber = stageNumber;
+          this.isPractice = isPractice;
+
+          this.timerId = null;
+          this.pauseLayer = null;
+          this.isTransitioning = false;
+          this.bgmStarted = false; // BGM開始済みフラグ（主人公が動くまでBGMを再生しない）
+
+          this.attachInput();
+          GameController.applyMobileControls(this.model, () =>
+            this.startBgmOnce(),
+          );
+          this.startLoop();
+        }
+
+        // スマホ用スワイプ操作。onMoveコールバックでBGM開始トリガーを外から渡す
+        static applyMobileControls(model, onMove) {
+          if (!model) return;
+          const sendDirection = (dir) => {
+            if (typeof model.isPaused === "function" && !model.isPaused()) {
+              if (typeof model.setNextDirection === "function") {
+                if (typeof onMove === "function") onMove();
+                model.setNextDirection(dir);
+              }
+            }
+          };
+
+          window.addEventListener("mousedown", (e) => {
+            GameController.#touchStart[0] = e.clientX;
+            GameController.#touchStart[1] = e.clientY;
+          });
+
+          window.addEventListener("mouseup", (e) => {
+            const deltaX = e.clientX - GameController.#touchStart[0];
+            const deltaY = e.clientY - GameController.#touchStart[1];
+            const absX = Math.abs(deltaX);
+            const absY = Math.abs(deltaY);
+
+            if (
+              absX > GameController.#FLICK_THRESHOLD ||
+              absY > GameController.#FLICK_THRESHOLD
+            ) {
+              if (absX > absY) {
+                sendDirection(deltaX > 0 ? "RIGHT" : "LEFT");
+              } else {
+                sendDirection(deltaY > 0 ? "DOWN" : "UP");
+              }
+            }
+          });
+        }
+
+        attachInput() {
+          window.addEventListener("keydown", (e) => {
+            const key = e.key.toUpperCase();
+
+            if (key === "P") {
+              if (typeof this.model.togglePause === "function") {
+                this.model.togglePause();
+              }
+              if (this.pauseLayer) {
+                const isPaused = this.model.isPaused
+                  ? this.model.isPaused()
+                  : false;
+                // Practice側CSSは classList の visible で表示制御する設計
+                this.pauseLayer.classList.toggle("visible", isPaused);
+              }
+              return;
+            }
+
+            if (key === "C") {
+              if (typeof this.model.forceStageClear === "function") {
+                this.model.forceStageClear();
+              } else {
+                console.log(
+                  "⚠️ このモデルには forceStageClear メソッドがありません",
+                );
+              }
+              return;
+            }
+
+            if (this.model.isPaused && this.model.isPaused()) return;
+
+            if (typeof this.model.setNextDirection === "function") {
+              const isMoveKey =
+                key === "W" ||
+                e.key === "ArrowUp" ||
+                key === "S" ||
+                e.key === "ArrowDown" ||
+                key === "A" ||
+                e.key === "ArrowLeft" ||
+                key === "D" ||
+                e.key === "ArrowRight";
+
+              if (isMoveKey) {
+                // 主人公が実際に動いた瞬間（＝ユーザー操作の直後）にBGMを開始する。
+                // ブラウザの自動再生ブロックを回避するため。
+                this.startBgmOnce();
+
+                if (key === "W" || e.key === "ArrowUp")
+                  this.model.setNextDirection("UP");
+                if (key === "S" || e.key === "ArrowDown")
+                  this.model.setNextDirection("DOWN");
+                if (key === "A" || e.key === "ArrowLeft")
+                  this.model.setNextDirection("LEFT");
+                if (key === "D" || e.key === "ArrowRight")
+                  this.model.setNextDirection("RIGHT");
+              }
+            }
+          });
+        }
+
+        startLoop() {
+          // Practice特有: stage-root（min/max制約付きの箱型レイアウト）の実寸を基準にリサイズ
+          const rootContainer = document.getElementById("stage-root");
+          const resizeCanvas = () => {
+            this.canvas.width = rootContainer.clientWidth;
+            this.canvas.height = rootContainer.clientHeight;
+          };
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          const loop = () => {
+            try {
+              const isPaused = this.model.isPaused
+                ? this.model.isPaused()
+                : false;
+
+              if (!isPaused) {
+                if (typeof this.model.update === "function") {
+                  this.model.update();
+                }
+
+                if (this.model.isGameOver && this.model.isGameOver()) {
+                  this.stop();
+                  if (this.isTransitioning) return;
+                  this.isTransitioning = true;
+
+                  if (typeof Bgm.stopBGM === "function") Bgm.stopBGM();
+                  console.log(
+                    "💀 敵に捕まりました...ゲームオーバー画面へ遷移します。",
+                  );
+
+                  let finalScore = 0;
+                  if (this.model.getSyujinkou) {
+                    const syujinkou = this.model.getSyujinkou();
+                    if (syujinkou && typeof syujinkou.getScore === "function") {
+                      finalScore = syujinkou.getScore();
+                    }
+                  }
+
+                  if (this.isPractice && window.HighScoreManager) {
+                    GameController.#newRecord =
+                      HighScoreManager.updateHighScore(
+                        this.stageNumber,
+                        finalScore,
+                      );
+                  } else {
+                    GameController.#newRecord = false;
+                  }
+
+                  setTimeout(() => {
+                    GameController.switchToGameover(
+                      this.stageNumber,
+                      this.isPractice,
+                      finalScore,
+                    );
+                  }, 0);
+                  return;
+                }
+
+                if (this.model.isCleared && this.model.isCleared()) {
+                  // Practice特有: クリア判定が出てもステージ遷移せず、
+                  // ドットを再配置して練習プレイを継続させる
+                  if (this.isPractice) {
+                    if (typeof this.model.respawnDots === "function") {
+                      this.model.respawnDots();
+                    }
+                  } else {
+                    this.stop();
+                    if (this.isTransitioning) return;
+                    this.isTransitioning = true;
+
+                    if (typeof Bgm.stopBGM === "function") Bgm.stopBGM();
+                    console.log("🏁 ステージクリア！");
+
+                    let finalScore = 0;
+                    if (this.model.getSyujinkou) {
+                      const syujinkou = this.model.getSyujinkou();
+                      if (
+                        syujinkou &&
+                        typeof syujinkou.getScore === "function"
+                      ) {
+                        finalScore = syujinkou.getScore();
+                      }
+                    }
+
+                    setTimeout(() => {
+                      GameController.switchToStageclear(
+                        this.stageNumber,
+                        finalScore,
+                      );
+                    }, 0);
+                    return;
+                  }
+                }
+              }
+
+              if (this.view && typeof this.view.draw === "function") {
+                this.view.draw(this.gc, this.canvas.width, this.canvas.height);
+              }
+
+              this.timerId = requestAnimationFrame(loop);
+            } catch (ex) {
+              console.error("ループ内エラー:", ex);
+              this.stop();
+            }
+          };
+
+          this.timerId = requestAnimationFrame(loop);
+        }
+
+        forceBackToTitle() {
+          this.stop();
+          if (typeof Bgm.stopBGM === "function") Bgm.stopBGM();
+          console.log("② timer停止");
+          // Practice特有: 本編のStart.htmlではなく、練習モード選択画面のPractice.htmlへ戻る
+          GameController.switchToPractice();
+        }
+
+        // まだBGMが始まっていなければ再生する（最初の移動操作のみ発火）
+        startBgmOnce() {
+          if (!this.bgmStarted) {
+            this.bgmStarted = true;
+            this.playStageBgm(this.stageNumber);
+          }
+        }
+
+        playStageBgm(stageNumber) {
+          if (typeof Bgm.playStageBGM === "function") {
+            Bgm.playStageBGM(stageNumber);
+          }
+        }
+
+        setPauseLayer(pauseLayerElement) {
+          this.pauseLayer = pauseLayerElement;
+        }
+
+        togglePauseByButton() {
+          if (typeof this.model.togglePause === "function") {
+            this.model.togglePause();
+          }
+
+          if (this.pauseLayer) {
+            const isPaused = this.model.isPaused
+              ? this.model.isPaused()
+              : false;
+            this.pauseLayer.classList.toggle("visible", isPaused);
+          }
+        }
+
+        stop() {
+          if (this.timerId) {
+            cancelAnimationFrame(this.timerId);
+            this.timerId = null;
+          }
+        }
+        static switchStart() {
+          window.location.href = "../start/Start.html";
+        }
+        static switchToPractice() {
+          window.location.href = "Practice.html";
+        }
+        static switchToGameover(stageNum, isPractice, score) {
+          window.location.href = `../story/Gameover.html?stage=${stageNum}&practice=${isPractice}&score=${score}`;
+        }
+        static switchToStageclear(stageNum, score) {
+          window.location.href = `sStageclear${stageNum}.html?score=${score}`;
+        }
+      }
+
+      // =====================================================
+      // 練習モード起動メインオブジェクト（ステージ3用）
+      // =====================================================
+      const PracticeMain3 = {
+        controller: null,
+
+        // starts(stageNum) で他のステージの練習モードにも流用可能な構造
+        starts: function (stageNum = 3) {
+          // 1. 再起動時の後始末 (多重起動防止)
+          if (this.controller !== null) {
+            this.controller.stop();
+            this.controller = null;
+          }
+          Bgm.stopBGM();
+
+          // 2. CSSのステージクラスを動的に適用
+          const root = document.getElementById("stage-root");
+          const gameBase = document.getElementById("game-base");
+          root.className = `stage${stageNum}`;
+          gameBase.className = `stage${stageNum}`;
+
+          // 3. モデル生成
+          //    コンストラクタ内で敵の初期化・壁の輪郭生成など基盤を構築したうえで、
+          //    sampleModel(true) により練習用のプレイヤー位置・アイテム配置に上書きし、
+          //    ドット復活（respawnDots）を有効化する。
+          const model = new MapData();
+          model.sampleModel(true);
+
+          const view = new MapView(model);
+
+          // 4. Canvas取得（サイズ設定はGameController.startLoop内でstage-root基準に実施）
+          const canvas = document.getElementById("game-canvas");
+
+          // 5. ポーズUIレイヤーおよび各種ボタンイベントの設定
+          const pauseLayer = document.getElementById("pause-layer");
+
+          document.getElementById("to-play-btn").onclick = () =>
+            this.controller?.togglePauseByButton();
+          document.getElementById("menu-btn").onclick = () =>
+            this.controller?.togglePauseByButton();
+          document.getElementById("title-btn").onclick = () =>
+            this.controller?.forceBackToTitle();
+
+          const howToPlayText = document.getElementById("how-to-play-text");
+          document.getElementById("how-to-play-btn").onclick = () => {
+            const isHidden =
+              window.getComputedStyle(howToPlayText).display === "none";
+            howToPlayText.style.display = isHidden ? "block" : "none";
+          };
+
+          // 6. コントローラーの初期化（stageNumber指定, isPractice=true で登録）
+          //    敵の初期化はMapDataのコンストラクタで完了済みのため、ここでの再呼び出しは不要
+          this.controller = new GameController(
+            model,
+            view,
+            canvas,
+            stageNum,
+            true,
+          );
+          this.controller.setPauseLayer(pauseLayer);
+
+          // 7. キーボードショートカット入力用のフォーカス取得
+          canvas.tabIndex = 1;
+          canvas.focus();
+
+          console.log(`仙石さん - 練習ステージ ${stageNum} 正常に起動しました`);
+        },
+      };
+
+      // ドキュメント読み込み時の初期実行
+      window.onload = () => {
+        document.title = "仙石さん - 練習ステージ 3";
+        // 練習モードのステージ3としてセットアップ
+        PracticeMain3.starts(3);
+      };
+    </script>
+  </body>
+</html>

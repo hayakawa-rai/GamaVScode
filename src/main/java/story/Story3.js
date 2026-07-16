@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         menuBtn: document.getElementById("menu-btn"),
         menuOverlay: document.getElementById("menu-overlay"),
         resumeBtn: document.getElementById("resume-btn"),
+<<<<<<< HEAD
         titleBtn: document.getElementById("title-btn")
     };
 
@@ -122,4 +123,80 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // これにより最初の立ち絵表示や落下アニメーションが正しく発生します
     onStep(0, ui);
+=======
+        titleBtn: document.getElementById("title-btn"),
+        wrappers: {
+            syujinkou: document.getElementById('syujinkou-wrapper'),
+            aniki: document.getElementById('aniki-wrapper'),
+            taku: document.getElementById('taku-wrapper')
+            // nari-wrapperはStory3.htmlに存在しないため削除
+        }
+    };
+
+    // --- 各種アニメーション演出 ---
+
+   // 落下アニメーション（CSSクラス .falling を付与）
+    const triggerTakuFall = () => {
+        const taku = ui.wrappers.taku;
+        if (taku) {
+            taku.classList.remove("falling");
+            void taku.offsetWidth;
+            taku.classList.add("falling");
+            const audio = new Audio("../../resources/music/down.mp3");
+            audio.volume = 0.3;
+            audio.play().catch(error => console.warn("音声再生エラー:", error));
+        }
+    };
+
+    // 画面揺れアニメーション
+    const triggerScreenShake = () => {
+        let count = 0;
+        const interval = setInterval(() => {
+            if (count >= 15) { clearInterval(interval); ui.container.style.transform = "none"; return; }
+            const x = Math.random() * 30 - 15;
+            const y = Math.random() * 20 - 10;
+            ui.container.style.transform = `translate(${x}px, ${y}px)`;
+            count++;
+        }, 40);
+    };
+
+    // ジャンプアニメーション（StoryUtilsの2段ジャンプを呼び出し）
+    const triggerJump = (speaker) => {
+        const views = { "あにき": "aniki-wrapper", "仙石さん": "syujinkou-wrapper","わだたく": "taku-wrapper" };
+        const el = document.getElementById(views[speaker]);
+        if (el) {
+            StoryUtils.createJumpAnimation(el, () => {
+                // 必要に応じてここで音を鳴らす処理を追加可能
+            });
+        }
+    };
+
+    // --- ストーリー進行制御 ---
+    const onStep = (index, ui) => {
+        const d = dialogues[index];
+
+        // 立ち絵切り替え（共通処理）
+        StoryUtils.updateCharacterDisplay(d.speaker, ui.wrappers);
+
+        // 2. 特殊イベント
+        if (index === 0) triggerTakuFall();
+        if (index === 12) triggerScreenShake();
+
+        // 3. ジャンプ演出
+        StoryUtils.triggerJumpIfNeeded(d, ui.wrappers, (sound) => sound && sound.includes("jump06"));
+        };
+
+    // --- エンジンの起動 ---
+    const engine = new StoryEngine(dialogues, {
+        bgmPath: "../../resources/music/takubgm.mp3",
+        ui: ui,
+        onStep: onStep,
+        onEnd: () => {
+            const fadeRect = document.getElementById("fade-rect");
+            if (fadeRect) fadeRect.style.opacity = "1";
+            setTimeout(() => { GameController.switchToGame3(); }, 1500);
+        },
+        onTitle: () => { GameController.switchStart(); }
+    });
+>>>>>>> 4c9ba203863c6fb0528ab58580b6294b4861e7a3
 });

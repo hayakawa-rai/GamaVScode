@@ -31,15 +31,27 @@ body, html {
 
 #game-container {
     position: relative;
-    width: 100vw;
-    height: 100vh;
-    min-width: 1000px;
-    min-height: 800px;
-    max-width: 1920px;
-    max-height: 1080px;
-    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    width: min(100vw, 100vh * 16 / 9);
+    height: min(100vh, 100vw * 9 / 16);
+    min-width: 320px;
+    min-height: 480px;
+    margin: auto;
     overflow: hidden;
     background-color: black;
+    container-type: size;
+    container-name: game;
+}
+
+/* スマホ縦持ち対応：アスペクト比を9:16に切り替え */
+@media (orientation: portrait) {
+    #game-container {
+        aspect-ratio: 9 / 16;
+        width: min(100vw, 100vh * 9 / 16);
+        height: min(100vh, 100vw * 16 / 9);
+        min-width: 320px;
+        min-height: 568px;
+    }
 }
 
 .fit-screen, .bg-image {
@@ -338,6 +350,8 @@ body, html {
     position: absolute;
     bottom: 0;
     height: 85%;
+    height: 85cqh;
+
     z-index: 2;
     display: none;
     justify-content: center;
@@ -354,21 +368,32 @@ body, html {
     width: 100%;
     height: 100%;
     object-fit: contain;
+
     z-index: 5;
+    z-index: 12;
+
     pointer-events: none;
 }
 
 #syujinkou-wrapper {
     left: 0;
+
     width: 45%;
+    width: 45cqw;
+
 }
 
 #nari-wrapper {
     position: absolute;
     right: 0;
     bottom: 0;
+
     width: 80%;
     height: 85%;
+
+    width: 85cqw;
+    height: 90cqh;
+
     z-index: 2;
     display: flex;
     justify-content: flex-end;
@@ -385,7 +410,11 @@ body, html {
 }
 #aniki-wrapper {
     right: 0;
+
     width: 50%;
+    width: 55cqw;
+    height: 90cqh;
+
     z-index: 2;
     display: flex;
     justify-content: flex-end;
@@ -393,15 +422,25 @@ body, html {
 }
 
 #aniki-wrapper .sprite-img {
+
     width: 140%;
     height: 140%;
+
+    width: 100%;
+    height: 100%;
+
     object-fit: contain;
     object-position: bottom right;
 }
 
 #taku-wrapper {
     right: 0;
+
     width: 50%;
+
+    width: 55cqw;
+    height: 90cqh;
+
     z-index: 2;
     display: flex;
     justify-content: flex-end;
@@ -409,8 +448,13 @@ body, html {
 }
 
 #taku-wrapper .sprite-img {
+
     width: 140%;
     height: 140%;
+
+    width: 100%;
+    height: 100%;
+
     object-fit: contain;
     object-position: bottom right;
 }
@@ -426,19 +470,27 @@ body, html {
     opacity: 1;
 }
 
+@supports not (container-type: size) {
+    .sprite-wrapper { height: 85%; }
+    #syujinkou-wrapper { width: 45%; }
+    #nari-wrapper { width: 80%; height: 85%; }
+    #aniki-wrapper, #taku-wrapper { width: 50%; height: 85%; }
+}
+
 /* ==========================================================================
    4. アドベンチャーパート：メッセージボックス
    ========================================================================== */
 #message-container, #message-box-container {
     position: absolute;
-    bottom: 30px;
-    left: 5%;
-    width: 90%;
-    height: 20%;
+    bottom: 3cqh;
+    left: 2.5cqw;
+    width: 95cqw;
+    height: 16cqh;
     display: flex;
     justify-content: center;
     z-index: 10;
 }
+
 #message-container { left: 0; width: 100%; height: 18vh; }
 
 #message-box {
@@ -446,24 +498,24 @@ body, html {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    border: 3px solid #FFF;
+    border: 0.3cqh solid #FFF;
     box-sizing: border-box;
-    padding: 15px 40px;
+    padding: 1.5cqh 3cqw;
     display: flex;
     flex-direction: column;
     cursor: pointer;
 }
 
 #name-text, #speaker-name {
-    font-size: 2.5vh;
+    font-size: 2.2cqh;
     color: lightgray;
-    margin-bottom: 10px;
+    margin-bottom: 1cqh;
     font-weight: bold;
 }
 
 #dialogue-text, #message-text {
     color: white;
-    font-size: 3vh;
+    font-size: 2.8cqh;
     white-space: pre-wrap;
     word-wrap: break-word;
     flex-grow: 1;
@@ -471,10 +523,24 @@ body, html {
 
 #next-mark {
     position: absolute;
-    right: 40px;
-    bottom: 15px;
-    font-size: 3vh;
+    right: 3cqw;
+    bottom: 1.5cqh;
+    font-size: 2.8cqh;
     color: white;
+}
+
+@supports not (container-type: size) {
+    #message-container, #message-box-container {
+        bottom: 30px;
+        left: 5%;
+        width: 90%;
+        height: 20%;
+    }
+    #message-container { left: 0; width: 100%; height: 18vh; }
+    #message-box { border-width: 3px; padding: 15px 40px; }
+    #name-text, #speaker-name { font-size: 2.5vh; margin-bottom: 10px; }
+    #dialogue-text, #message-text { font-size: 3vh; }
+    #next-mark { right: 40px; bottom: 15px; font-size: 3vh; }
 }
 
 /* ==========================================================================
@@ -482,8 +548,8 @@ body, html {
    ========================================================================== */
 #menu-btn {
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 2.5cqh;
+    left: 2.5cqw;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -491,8 +557,10 @@ body, html {
     padding: 0;
 }
 #menu-btn img {
-    width: 100px;
-    height: 90px;
+    width: 8cqw;
+    height: 7.2cqw;
+    max-width: 100px;
+    max-height: 90px;
 }
 
 #menu-overlay {
@@ -502,24 +570,39 @@ body, html {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.3);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 30;
+
     display: none;
 }
 
 #menu-box, .menu-box {
-    width: 300px;
+    width: 26cqw;
+    min-width: 220px;
+    max-width: 320px;
     background: rgba(40, 40, 50, 0.95);
-    border-radius: 20px;
-    border: 2px solid white;
-    padding: 25px;
+    border-radius: 1.5cqh;
+    border: 0.25cqh solid white;
+    padding: 2.5cqh 2cqw;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2cqh;
     align-items: center;
     text-align: center;
+}
+
+@supports not (container-type: size) {
+    #menu-btn { top: 30px; left: 30px; }
+    #menu-btn img { width: 100px; height: 90px; }
+    #menu-box, .menu-box {
+        width: 300px;
+        border-radius: 20px;
+        border-width: 2px;
+        padding: 25px;
+        gap: 20px;
+    }
 }
 
 /* ==========================================================================

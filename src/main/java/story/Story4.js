@@ -90,6 +90,34 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // --- エンジンの起動 ---
+        titleBtn: document.getElementById("title-btn"),
+        wrappers: {
+            syujinkou: document.getElementById("syujinkou-wrapper"),
+            aniki: document.getElementById("aniki-wrapper")
+        }
+    };
+
+    // --- 各種アニメーション演出 ---
+
+     const anikiImg = document.getElementById("aniki");
+
+    const onStep = (index, ui) => {
+        const d = dialogues[index];
+
+        // 立ち絵切り替え（共通処理・.active方式に統一）
+        StoryUtils.updateCharacterDisplay(d.speaker, ui.wrappers);
+
+        // あにきの表情切り替え（Story4固有の演出はそのまま残す）
+        if (d.speaker === "あにき") {
+            const isAngry = (index >= 2 && index <= 10);
+            anikiImg.src = isAngry
+                ? "../../resources/picture/aniki2.png"
+                : "../../resources/picture/aniki-udekumi.png";
+        }
+
+        // ジャンプ演出（jump06サウンドの時だけ）
+        StoryUtils.triggerJumpIfNeeded(d, ui.wrappers, (sound) => sound && sound.includes("jump06"));
+    };
     const engine = new StoryEngine(dialogues, {
         bgmPath: "../../resources/music/endhing.mp3",
         ui: ui,
@@ -97,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         onEnd: () => {
             const fadeRect = document.getElementById("fade-rect");
             if (fadeRect) fadeRect.style.opacity = "1";
+
             setTimeout(() => {
                 GameController.switchStoryClear(); 
             }, 1500);
@@ -104,5 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
         onTitle: () => {
             GameController.switchStart();
         }
+
+            setTimeout(() => { GameController.switchStoryClear(); }, 1500);
+        },
+        onTitle: () => { GameController.switchStart(); }
     });
 });

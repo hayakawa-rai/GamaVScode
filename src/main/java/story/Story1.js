@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         onStep: (index, ui) => {
             const d = dialogues[index];
+
             const w = ui.wrappers;
 
             // A. 立ち絵の切り替え
@@ -81,6 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     StoryUtils.createJumpAnimation(target, () => playEffect(d.sound));
                 }
             }
+
+            StoryUtils.updateCharacterDisplay(d.speaker, ui.wrappers);
+            StoryUtils.triggerJumpIfNeeded(d, ui.wrappers); // Story1/2は音があれば常にジャンプ
         },
         
         onEnd: () => {
@@ -90,6 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
         
         onTitle: () => {
             GameController.switchStart();
-        }
+        },
+
+        onTitle: () => {GameController.switchStart();}
     });
 });
