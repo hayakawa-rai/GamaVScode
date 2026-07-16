@@ -30,27 +30,26 @@ document.addEventListener("DOMContentLoaded", () => {
         menuBtn: document.getElementById("menu-btn"),
         menuOverlay: document.getElementById("menu-overlay"),
         resumeBtn: document.getElementById("resume-btn"),
-        titleBtn: document.getElementById("title-btn")
+        titleBtn: document.getElementById("title-btn"),
+        wrappers: {
+            syujinkou: document.getElementById('syujinkou-wrapper'),
+            aniki: document.getElementById('aniki-wrapper'),
+            taku: document.getElementById('taku-wrapper')
+            // nari-wrapperはStory3.htmlに存在しないため削除
+        }
     };
 
     // --- 各種アニメーション演出 ---
 
    // 落下アニメーション（CSSクラス .falling を付与）
     const triggerTakuFall = () => {
-        const taku = document.getElementById("taku-wrapper");
+        const taku = ui.wrappers.taku;
         if (taku) {
-            // 1. クラスを一旦削除してリセット（これにより何度でもアニメーションが発生する）
             taku.classList.remove("falling");
-            
-            // 2. 強制リフロー（重要：これがないとクラスを再付与してもCSSが即座に認識されない）
-            void taku.offsetWidth; 
-
-            // 3. クラスを付与してアニメーション開始
+            void taku.offsetWidth;
             taku.classList.add("falling");
-
-            // 4. 音声再生
             const audio = new Audio("../../resources/music/down.mp3");
-            audio.volume = 0.3; // 音量を調整してください
+            audio.volume = 0.3;
             audio.play().catch(error => console.warn("音声再生エラー:", error));
         }
     };
@@ -82,44 +81,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const onStep = (index, ui) => {
         const d = dialogues[index];
 
-        // 1. 立ち絵の切り替え（hiddenクラスの付け外し）
-        const views = ["aniki-view", "nari-view", "taku-view", "syujinkou-view"];
-        views.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.classList.add("hidden"); 
-        });
-        
-        const map = { "あにき": "aniki-view", "なりなり": "nari-view", "わだたく": "taku-view", "仙石さん": "syujinkou-view" };
-        const targetEl = document.getElementById(map[d.speaker]);
-        if (targetEl) targetEl.classList.remove("hidden");
+        // 立ち絵切り替え（共通処理）
+        StoryUtils.updateCharacterDisplay(d.speaker, ui.wrappers);
 
         // 2. 特殊イベント
         if (index === 0) triggerTakuFall();
         if (index === 12) triggerScreenShake();
 
         // 3. ジャンプ演出
-        if (d.sound && d.sound.includes("jump06")) {
-            triggerJump(d.speaker);
-        }
-    };
+        StoryUtils.triggerJumpIfNeeded(d, ui.wrappers, (sound) => sound && sound.includes("jump06"));
+        };
 
     // --- エンジンの起動 ---
     const engine = new StoryEngine(dialogues, {
         bgmPath: "../../resources/music/takubgm.mp3",
         ui: ui,
-        onStep: onStep, // ストーリー進行時に呼ばれる
+        onStep: onStep,
         onEnd: () => {
             const fadeRect = document.getElementById("fade-rect");
             if (fadeRect) fadeRect.style.opacity = "1";
-            setTimeout(() => {
-                GameController.switchToGame3(); 
-            }, 1500);
+            setTimeout(() => { GameController.switchToGame3(); }, 1500);
         },
-        onTitle: () => {
-            GameController.switchStart();
-        }
+        onTitle: () => { GameController.switchStart(); }
     });
-
-    // これにより最初の立ち絵表示や落下アニメーションが正しく発生します
-    onStep(0, ui);
 });

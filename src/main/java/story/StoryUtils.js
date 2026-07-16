@@ -2,6 +2,41 @@
  * 純粋な描画・演出用のユーティリティクラス
  */
 export class StoryUtils {
+    // 話している人物の対応表
+    static SPEAKER_KEY_MAP = {
+        "仙石さん": "syujinkou",
+        "あにき": "aniki",
+        "なりなり": "nari",
+        "わだたく": "taku"
+    };
+    // 右側に表示されるキャラ一覧
+    static RIGHT_SIDE_KEYS = ["aniki", "nari", "taku"];
+
+    // 立ち絵の切り替え（全Story共通）
+    static updateCharacterDisplay(speaker, wrappers) {
+        // 主人公は常に表示
+        if (wrappers.syujinkou) wrappers.syujinkou.classList.add('active');
+
+        const key = StoryUtils.SPEAKER_KEY_MAP[speaker];
+
+        // 話者が右側キャラ(あにき/なりなり/わだたく)のときだけ切り替え処理を行う
+        if (key && StoryUtils.RIGHT_SIDE_KEYS.includes(key) && wrappers[key]) {
+            // 現在表示中のキャラと違う場合のみ切り替える
+            StoryUtils.RIGHT_SIDE_KEYS.forEach(k => {
+                if (k !== key && wrappers[k]) {
+                    wrappers[k].classList.remove('active');
+                }
+            });
+            wrappers[key].classList.add('active');
+        }
+    }
+
+    static triggerJumpIfNeeded(d, wrappers, condition = (sound) => !!sound) {
+        if (!condition(d.sound)) return;
+        const key = StoryUtils.SPEAKER_KEY_MAP[d.speaker];
+        const target = key ? wrappers[key] : null;
+        if (target) StoryUtils.createJumpAnimation(target, () => {});
+    }
 
     // ジャンプアニメーション（2段ジャンプを維持）
     static createJumpAnimation(charView, playAudio) {

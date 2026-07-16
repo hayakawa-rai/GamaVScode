@@ -38,14 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fadeOverlay: document.getElementById('fade-overlay')
     };
 
-    // 音声を鳴らすための汎用ヘルパー
-    const playEffect = (path) => {
-        if (!path) return;
-        const audio = new Audio(path);
-        audio.volume = 0.2;
-        audio.play().catch(() => {});
-    };
-
     // --- 3. エンジン起動 ---
     new StoryEngine(dialogues, {
         bgmPath: '../../resources/music/storybgm.mp3',
@@ -53,43 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
         
         onStep: (index, ui) => {
             const d = dialogues[index];
-            const w = ui.wrappers;
-
-            // A. 立ち絵の切り替え
-            
-            // 主人公は常に表示
-            w.syujinkou.classList.add('active');
-            
-            // 右側のキャラの表示ロジック
-            // 話者が「あにき」か「なりなり」のときだけ、そのキャラを有効化する
-            // 「仙石さん」の場合は処理を行わないため、直前の状態が維持される
-            if (d.speaker === "あにき") {
-                w.aniki.classList.add('active');
-                w.nari.classList.remove('active');
-            } else if (d.speaker === "なりなり") {
-                w.nari.classList.add('active');
-                w.aniki.classList.remove('active');
-            }
-
-            // B. ジャンプ演出
-            if (d.sound) {
-                const target = d.speaker === "仙石さん" ? w.syujinkou :
-                               d.speaker === "あにき" ? w.aniki :
-                               d.speaker === "なりなり" ? w.nari : null;
-                
-                if (target) {
-                    StoryUtils.createJumpAnimation(target, () => playEffect(d.sound));
-                }
-            }
+            StoryUtils.updateCharacterDisplay(d.speaker, ui.wrappers);
+            StoryUtils.triggerJumpIfNeeded(d, ui.wrappers); // Story1/2は音があれば常にジャンプ
         },
         
         onEnd: () => {
             ui.fadeOverlay.style.opacity = "1";
             setTimeout(() => GameController.switchToGame1(), 1500);
         },
-        
-        onTitle: () => {
-            GameController.switchStart();
-        }
+        onTitle: () => {GameController.switchStart();}
     });
 });

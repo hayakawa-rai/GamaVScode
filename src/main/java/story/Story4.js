@@ -29,67 +29,35 @@ document.addEventListener("DOMContentLoaded", () => {
         menuBtn: document.getElementById("menu-btn"),
         menuOverlay: document.getElementById("menu-overlay"),
         resumeBtn: document.getElementById("resume-btn"),
-        titleBtn: document.getElementById("title-btn")
+        titleBtn: document.getElementById("title-btn"),
+        wrappers: {
+            syujinkou: document.getElementById("syujinkou-wrapper"),
+            aniki: document.getElementById("aniki-wrapper")
+        }
     };
 
     // --- 各種アニメーション演出 ---
 
-    // 落下アニメーション
-    const triggerTakuFall = () => {
-        const taku = document.getElementById("taku-wrapper");
-        if (taku) {
-            taku.style.transition = "transform 1s ease-in-out";
-            taku.style.transform = "translateY(100px)";
-        }
-    };
+     const anikiImg = document.getElementById("aniki");
 
-    // ジャンプアニメーション
-    const triggerJump = (speaker) => {
-        const views = { "あにき": "aniki-wrapper", "仙石さん": "syujinkou-wrapper" };
-        const el = document.getElementById(views[speaker]);
-        if (el) {
-            StoryUtils.createJumpAnimation(el, () => {});
-        }
-    };
-
-    // 立ち絵・表情更新
-    const updateCharacterDisplay = (speaker, index) => {
-        const anikiWrapper = document.getElementById("aniki-wrapper");
-        const syujinkouWrapper = document.getElementById("syujinkou-wrapper");
-        
-        const anikiImg = document.getElementById("aniki");
-        const syujinkouImg = document.getElementById("syujinkou");
-
-        // 1. 全てを隠す
-        [anikiWrapper, syujinkouWrapper].forEach(el => el.classList.add("hidden"));
-        
-        // 2. 指定されたキャラクターを表示
-        const map = { "あにき": anikiWrapper, "仙石さん": syujinkouWrapper };
-        if (map[speaker]) map[speaker].classList.remove("hidden");
-
-        // 3. あにきの表情切り替え
-        if (speaker === "あにき") {
-            const isAngry = (index >= 2 && index <= 10);
-            anikiImg.src = isAngry ? "../../resources/picture/aniki2.png" : "../../resources/picture/aniki-udekumi.png";
-        }
-    };
-
-    // --- ストーリー進行制御 ---
     const onStep = (index, ui) => {
         const d = dialogues[index];
 
-        updateCharacterDisplay(d.speaker, index);
+        // 立ち絵切り替え（共通処理・.active方式に統一）
+        StoryUtils.updateCharacterDisplay(d.speaker, ui.wrappers);
 
-        // 特殊イベント
-        if (index === 0) triggerTakuFall();
-
-        // ジャンプ演出
-        if (d.sound && d.sound.includes("jump06")) {
-            triggerJump(d.speaker);
+        // あにきの表情切り替え（Story4固有の演出はそのまま残す）
+        if (d.speaker === "あにき") {
+            const isAngry = (index >= 2 && index <= 10);
+            anikiImg.src = isAngry
+                ? "../../resources/picture/aniki2.png"
+                : "../../resources/picture/aniki-udekumi.png";
         }
+
+        // ジャンプ演出（jump06サウンドの時だけ）
+        StoryUtils.triggerJumpIfNeeded(d, ui.wrappers, (sound) => sound && sound.includes("jump06"));
     };
 
-    // --- エンジンの起動 ---
     const engine = new StoryEngine(dialogues, {
         bgmPath: "../../resources/music/endhing.mp3",
         ui: ui,
@@ -97,12 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
         onEnd: () => {
             const fadeRect = document.getElementById("fade-rect");
             if (fadeRect) fadeRect.style.opacity = "1";
-            setTimeout(() => {
-                GameController.switchStoryClear(); 
-            }, 1500);
+            setTimeout(() => { GameController.switchStoryClear(); }, 1500);
         },
-        onTitle: () => {
-            GameController.switchStart();
-        }
+        onTitle: () => { GameController.switchStart(); }
     });
 });
