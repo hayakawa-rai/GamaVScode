@@ -1,342 +1,84 @@
+import { GameController } from "../../control/GameController.js";
+
+import { SoundManager } from "../../sound/SoundManager.js";
+
 /**
- * Stage2クリア画面
- * JavaFX版 Stageclear2.java を JavaScript化
+ * STAGE2 CLEAR画面
  */
-export class Stageclear2 {
+export class StageClear2 {
+  /**
+   * 初期化
+   *
+   * @param {number} score
+   */
+  static create(score) {
+    console.log("StageClear2 create");
 
-    constructor() {
+    // ==========================
+    // CLEAR音
+    // ==========================
 
-        // 効果音
-        this.clearSound = null;
-        this.clickSound = null;
-        this.cancelSound = null;
+    setTimeout(() => {
+      const clearSound = new Audio("../../resources/music/yay.mp3");
 
-        // スコア
-        this.score = 0;
+      clearSound.volume = 0.5;
 
-        // タイマー管理
-        this.delayTimeout = null;
-        this.pauseTimeout = null;
+      clearSound.play().catch((error) => {
+        console.error("CLEAR音再生失敗", error);
+      });
+    }, 500);
+
+    // ==========================
+    // スコア表示
+    // ==========================
+
+    const scoreLabel = document.getElementById("score-label");
+
+    if (scoreLabel) {
+      scoreLabel.textContent = `SCORE : ${score}`;
     }
 
-    /**
-     * スコア設定
-     */
-    setScore(score) {
-        this.score = score;
-    }
-
-    /**
-     * Java版 createAndStart()
-     */
-    static createAndStart(finalScore) {
-
-        const instance = new Stageclear2();
-
-        instance.setScore(finalScore);
-
-        instance.createScene();
-    }
-
-    /**
-     * 後始末
-     */
-    cleanup() {
-
-        if (this.delayTimeout) {
-            clearTimeout(this.delayTimeout);
-            this.delayTimeout = null;
-        }
-
-        if (this.pauseTimeout) {
-            clearTimeout(this.pauseTimeout);
-            this.pauseTimeout = null;
-        }
-
-        if (this.clearSound) {
-            this.clearSound.pause();
-            this.clearSound.currentTime = 0;
-        }
-
-        if (this.clickSound) {
-            this.clickSound.pause();
-            this.clickSound.currentTime = 0;
-        }
-
-        if (this.cancelSound) {
-            this.cancelSound.pause();
-            this.cancelSound.currentTime = 0;
-        }
-    }
-
-    /**
-     * 画面生成
-     */
-    createScene() {
-
-        // =====================================
-        // クリア音読み込み
-        // =====================================
-        try {
-
-            this.clearSound =
-                new Audio("music/yay.mp3");
-
-            this.clearSound.volume = 0.5;
-
-        } catch (e) {
-
-            console.error(
-                "クリア音の読み込みに失敗しました",
-                e
-            );
-        }
-
-        // =====================================
-        // 決定音読み込み
-        // =====================================
-        try {
-
-            this.clickSound =
-                new Audio("music/select.mp3");
-
-            this.clickSound.volume = 0.4;
-
-        } catch (e) {
-
-            console.error(
-                "選択SEの読み込みに失敗しました",
-                e
-            );
-        }
-
-        // =====================================
-        // キャンセル音読み込み
-        // =====================================
-        try {
-
-            this.cancelSound =
-                new Audio("music/cancel.mp3");
-
-            this.cancelSound.volume = 0.4;
-
-        } catch (e) {
-
-            console.error(
-                "キャンセルSEの読み込みに失敗しました",
-                e
-            );
-        }
-
-        // =====================================
-        // 0.5秒後にクリア音再生
-        // =====================================
-        this.delayTimeout = setTimeout(() => {
-
-            if (this.clearSound) {
-                this.clearSound.play();
-            }
-
-        }, 500);
-
-        // =====================================
-        // ルートコンテナ
-        // =====================================
-        const root =
-            document.getElementById("stageclear-root");
-
-        // =====================================
-        // タイトル
-        // =====================================
-        const title =
-            document.getElementById("title");
-
-        title.style.color =
-            "rgb(180,180,180)";
-
-        // =====================================
-        // 説明文
-        // =====================================
-        const text =
-            document.getElementById("text");
-
-        text.style.color =
-            "gray";
-
-        // =====================================
-        // 契約書画像
-        // =====================================
-        const imageView =
-            document.getElementById("imageView");
-
-        try {
-
-            imageView.src =
-                "../../resources/picture/keiyakusho.png";
-
-        } catch (e) {
-
-            console.error(
-                "契約書画像の読み込みに失敗しました",
-                e
-            );
-        }
-
-        // =====================================
-        // スコア表示
-        // =====================================
-        const scoreLabel =
-            document.getElementById("scoreLabel");
-
-        scoreLabel.textContent =
-            `SCORE: ${this.score}`;
-
-        scoreLabel.style.color =
-            "gray";
-
-        // =====================================
-        // 次のステージへボタン
-        // =====================================
-        const next =
-            document.getElementById("nextButton");
-
-        next.textContent =
-            "次のステージへ";
-
-        next.classList.add(
-            "game-button2"
-        );
-
-        next.addEventListener(
-            "click",
-            () => {
-
-                if (this.clickSound) {
-
-                    this.clickSound.pause();
-                    this.clickSound.currentTime = 0;
-
-                    this.clickSound.play();
-                }
-
-                // 0.5秒待つ
-                this.pauseTimeout =
-                    setTimeout(() => {
-
-                        this.cleanup();
-
-                        // Story3へ遷移
-                        GameController.switchStory3();
-
-                    }, 500);
-            }
-        );
-
-        // =====================================
-        // タイトルへ戻るボタン
-        // =====================================
-        const backButton =
-            document.getElementById("backButton");
-
-        backButton.textContent =
-            "タイトルへ";
-
-        backButton.classList.add(
-            "game-button2"
-        );
-
-        backButton.addEventListener(
-            "click",
-            () => {
-
-                if (this.cancelSound) {
-
-                    this.cancelSound.pause();
-                    this.cancelSound.currentTime = 0;
-
-                    this.cancelSound.play();
-                }
-
-                this.pauseTimeout =
-                    setTimeout(() => {
-
-                        this.cleanup();
-
-                        GameController.switchStart();
-
-                    }, 500);
-            }
-        );
-
-        // =====================================
-        // JavaFX Bindings の代替
-        // レスポンシブ処理
-        // =====================================
-        const updateResponsive = () => {
-
-            const width =
-                window.innerWidth;
-
-            const height =
-                window.innerHeight;
-
-            // タイトル
-            title.style.fontSize =
-                `${width * 0.06}px`;
-
-            title.style.fontWeight =
-                "bold";
-
-            // 説明文
-            text.style.fontSize =
-                `${width * 0.015}px`;
-
-            // スコア
-            scoreLabel.style.fontSize =
-                `${width * 0.02}px`;
-
-            scoreLabel.style.fontWeight =
-                "bold";
-
-            // 画像サイズ
-            imageView.style.width =
-                `${width * 0.15}px`;
-
-            imageView.style.height =
-                `${height * 0.18}px`;
-
-            imageView.style.objectFit =
-                "contain";
-
-            // 次へボタン
-            next.style.width =
-                `${width * 0.17}px`;
-
-            next.style.height =
-                `${height * 0.09}px`;
-
-            // 戻るボタン
-            backButton.style.width =
-                `${width * 0.17}px`;
-
-            backButton.style.height =
-                `${height * 0.09}px`;
-
-            // ボタン文字
-            next.style.fontSize =
-                `${width * 0.013}px`;
-
-            backButton.style.fontSize =
-                `${width * 0.013}px`;
-        };
-
-        // 初回実行
-        updateResponsive();
-
-        // リサイズ時再計算
-        window.addEventListener(
-            "resize",
-            updateResponsive
-        );
-    }
+    // ==========================
+    // ボタン取得
+    // ==========================
+
+    const nextBtn = document.getElementById("next-btn");
+
+    const titleBtn = document.getElementById("title-btn");
+
+    // ==========================
+    // 次のステージ
+    // Story3へ
+    // ==========================
+
+    nextBtn.addEventListener("click", () => {
+      SoundManager.play(SoundManager.SELECT);
+
+      setTimeout(() => {
+        GameController.switchToStory3();
+      }, 500);
+    });
+
+    // ==========================
+    // タイトルへ
+    // ==========================
+
+    titleBtn.addEventListener("click", () => {
+      SoundManager.play(SoundManager.CANCEL);
+
+      setTimeout(() => {
+        GameController.switchStart();
+      }, 500);
+    });
+  }
 }
+
+/* テスト用 */
+
+window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+
+  const score = Number(params.get("score")) || 0;
+
+  StageClear2.create(score);
+});
