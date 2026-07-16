@@ -1,6 +1,7 @@
 import { GameController } from "../control/GameController.js";
 import { StoryEngine } from "./StoryEngine.js";
 import { StoryUtils } from "./StoryUtils.js";
+import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -50,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             taku.classList.add("falling");
             const audio = new Audio("../../resources/music/down.mp3");
             audio.volume = 0.3;
-            audio.play().catch(error => console.warn("音声再生エラー:", error));
+            Bgm.unlockPlay(audio);
         }
     };
 

@@ -1,3 +1,4 @@
+import { Bgm } from "./Bgm.js";
 /**
  * 効果音を表現する内部用ラッパークラス (JavaFXのAudioClipに相当)
  */
@@ -34,11 +35,7 @@ class SoundClip {
         this.audio.pause();
         this.currentTime = 0;
 
-        // Web特有の自動再生ブロック対策をして再生
-        this.audio.play().catch(error => {
-            // ゲーム開始後に画面を一度でもクリックしていれば問題なく鳴ります
-            console.warn(`効果音の再生がブロックされました: ${this.path}`, error);
-        });
+        Bgm.unlockPlay(this.audio);
     }
 
     /**

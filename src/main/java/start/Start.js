@@ -1,5 +1,5 @@
 import { GameController } from "../control/GameController.js";
-
+import { Bgm } from "./Bgm.js";
     document.addEventListener("DOMContentLoaded", () => {
     // ==================================================
     // 1. DOM要素の取得
@@ -20,7 +20,7 @@ import { GameController } from "../control/GameController.js";
     startBgm.loop = true;
 
     // 画面ロード時にBGMをスタート
-    startBgm.play().catch(err => console.log("ユーザー操作後にBGMが再生されます", err));
+    Bgm.unlockPlay(startBgm);
 
     function cleanup() {
         startBgm.pause();
@@ -34,7 +34,7 @@ import { GameController } from "../control/GameController.js";
     function transitionTo(action) {
         clickSound.pause();
         clickSound.currentTime = 0;
-        clickSound.play();
+        Bgm.unlockPlay(clickSound);
 
         setTimeout(() => {
             cleanup();
