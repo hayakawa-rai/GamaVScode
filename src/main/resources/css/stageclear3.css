@@ -1,0 +1,144 @@
+@font-face {
+  font-family: "PixelMplus12";
+  src: url("../font/PixelMplus12-Regular.ttf") format("truetype");
+}
+
+/* =========================================
+   全体
+   ========================================= */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+#stageclear-root {
+  width: 100vw;
+  height: 100vh;
+
+  background: #ececec;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+/* =========================================
+   コンテンツ
+   ========================================= */
+
+#clear-container {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 40px;
+}
+
+/* =========================================
+   タイトル
+   ========================================= */
+
+#clear-title {
+  font-family: "PixelMplus12", sans-serif;
+
+  font-size: clamp(60px, 8vw, 110px);
+
+  color: rgb(170, 170, 170);
+
+  font-weight: bold;
+
+  text-align: center;
+
+  margin: 0;
+}
+
+/* =========================================
+   アイテムエリア
+   ========================================= */
+
+#reward-box {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 20px;
+}
+
+#reward-image {
+  width: clamp(80px, 12vw, 150px);
+
+  height: auto;
+
+  object-fit: contain;
+}
+
+#reward-text {
+  font-family: "PixelMplus12", sans-serif;
+
+  color: gray;
+
+  font-size: clamp(20px, 2vw, 35px);
+}
+
+/* =========================================
+   スコア
+   ========================================= */
+
+#score-label {
+  font-family: "PixelMplus12", sans-serif;
+
+  font-size: clamp(30px, 4vw, 50px);
+
+  font-weight: bold;
+
+  color: gray;
+}
+
+/* =========================================
+   ボタン
+   ========================================= */
+
+#button-box {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+#next-btn,
+#title-btn {
+  width: clamp(220px, 30vw, 320px);
+
+  height: clamp(60px, 8vh, 80px);
+}
+
+/* =========================================
+   スマホ縦画面
+   ========================================= */
+
+@media (orientation: portrait) {
+  #clear-container {
+    gap: 30px;
+  }
+
+  #reward-box {
+    flex-direction: column;
+  }
+
+  #reward-image {
+    width: 120px;
+  }
+}
