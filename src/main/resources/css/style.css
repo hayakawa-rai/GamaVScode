@@ -83,17 +83,17 @@ html {
    2. スタート画面 ＆ 説明画面
    ========================================================================== */
 #bg-pane {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  background-image: url("../picture/background.png");
-  background-repeat: repeat;
-  background-position: 0px 0px;
-  background-size: auto 100%;
-  animation: scrollBackground 30s linear infinite;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-image: url('../picture/background.png');
+    background-repeat: repeat;
+    background-position: 0px 0px;
+    background-size: 1920px 100%;
+    animation: scrollBackground 30s linear infinite;
 }
 
 #ui-container {

@@ -1,3 +1,4 @@
+import { Bgm } from "../start/Bgm.js";
 export class StoryEngine {
     constructor(dialogues, options) {
         this.dialogues = dialogues;
@@ -31,7 +32,7 @@ export class StoryEngine {
             if (e.key === "Escape") this.isPaused ? this.resume() : this.pause();
         });
     this.onStep(this.index, this.ui);
-        this.bgm.play().catch(() => {});
+        Bgm.unlockPlay(this.bgm);
         this.startTyping();
     }
 
@@ -68,12 +69,12 @@ export class StoryEngine {
         this.ui.nextMark.classList.remove("hidden");
     }
 
-    // ★重要：全ての音の再生はここを通す
+    // 全ての音の再生はここを通す
     playSound(path) {
         if (!path) return;
         const audio = new Audio(path);
         audio.volume = 0.2;
-        audio.play().catch(() => {});
+        Bgm.unlockPlay(audio);
     }
 
     handleInput() {
@@ -102,7 +103,7 @@ export class StoryEngine {
     resume() { 
         this.isPaused = false; 
         this.ui.menuOverlay.style.display = "none"; 
-        this.bgm.play().catch(() => {});
+        Bgm.unlockPlay(this.bgm);
         if (this.isTyping) this.typeLoop(this.dialogues[this.index].message);
     }
     changeBGM(newPath) {
@@ -110,6 +111,6 @@ export class StoryEngine {
         this.bgm.pause();
         this.bgm = new Audio(newPath);
         this.bgm.loop = true;
-        this.bgm.play().catch(() => {});
+        Bgm.unlockPlay(this.bgm);
     }
 }
