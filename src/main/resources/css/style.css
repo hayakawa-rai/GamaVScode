@@ -90,7 +90,7 @@ body, html {
     background-image: url('../picture/background.png');
     background-repeat: repeat;
     background-position: 0px 0px;
-    background-size: auto 100%;
+    background-size: 1920px 100%;
     animation: scrollBackground 30s linear infinite;
 }
 
@@ -435,7 +435,7 @@ body, html {
 
 @supports not (container-type: size) {
     .sprite-wrapper { height: 85%; }
-    #syujinkou-wrapper { width: 45%; }
+    #syujinkou-wrapper { width: 30%; }
     #aniki-wrapper, #nari-wrapper, #taku-wrapper { width: 50%; height: 85%; }
 }
 
