@@ -30,11 +30,13 @@ document.getElementById("stage3-btn").addEventListener("click", () => {
 // ==================================================
 
 document.getElementById("back-btn").addEventListener("click", () => {
-  SoundManager.play(SoundManager.CANCEL);
+  console.log("タイトルボタン押下");
 
   cleanup();
 
   setTimeout(() => {
+    console.log("タイトルへ遷移");
+
     GameController.switchStart();
   }, 500);
 });
