@@ -1,5 +1,5 @@
 import { GameController } from "../../control/GameController.js";
-import { SoundManager } from "../../sound/SoundManager.js";
+import { SoundManager } from "../../start/SoundManager.js";
 
 //==================================================
 // STAGE1
