@@ -1,10 +1,13 @@
+import { GameController } from "../../control/GameController.js";
+import { SoundManager } from "../../sound/SoundManager.js";
+
 //==================================================
 // STAGE1
 // ==================================================
-document.getElementById("stage1-btn")
-.addEventListener("click", () => {
+document.getElementById("stage1-btn").addEventListener("click", () => {
   cleanup(); // BGM停止
-  window.location.href = "../test1/PracticeMain1.html";});
+  window.location.href = "../test1/PracticeMain1.html";
+});
 
 // ==================================================
 // STAGE2
@@ -25,9 +28,15 @@ document.getElementById("stage3-btn").addEventListener("click", () => {
 // ==================================================
 // タイトルへ戻る
 // ==================================================
+
 document.getElementById("back-btn").addEventListener("click", () => {
+  SoundManager.play(SoundManager.CANCEL);
+
   cleanup();
-  window.location.href = "../start.html";
+
+  setTimeout(() => {
+    GameController.switchStart();
+  }, 500);
 });
 
 // ==================================================
