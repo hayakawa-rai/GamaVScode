@@ -926,6 +926,8 @@ export class MapData {
         // 効果音
         SoundManager.play(SoundManager.DAMAGE);
 
+        this.#syujinkou.takeDamage();
+
         if (this.#syujinkou.getHp() === 1) {
           Bgm.playPinchiBGM();
         }
