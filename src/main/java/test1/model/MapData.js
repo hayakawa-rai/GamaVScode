@@ -927,6 +927,7 @@ export class MapData {
         SoundManager.play(SoundManager.DAMAGE);
 
         this.#syujinkou.takeDamage();
+        console.log("ダメージ後のHP:", this.#syujinkou.getHp());
 
         if (this.#syujinkou.getHp() === 1) {
           Bgm.playPinchiBGM();
