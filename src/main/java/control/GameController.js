@@ -2,7 +2,6 @@
  * ゲーム全体を管理・制御するコントローラークラス (GameController)
  */
 import { Bgm } from '../start/Bgm.js';
-import { GameController } from "../../control/GameController.js";
 
 export class GameController {
     // クラス共通の静的（static）プロパティ
