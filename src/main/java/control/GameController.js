@@ -2,6 +2,7 @@
  * ゲーム全体を管理・制御するコントローラークラス (GameController)
  */
 import { Bgm } from '../start/Bgm.js';
+
 export class GameController {
     // クラス共通の静的（static）プロパティ
     static #touchStart = [0, 0];       // スワイプ開始座標 [x, y]
