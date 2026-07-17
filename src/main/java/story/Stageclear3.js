@@ -1,10 +1,9 @@
-import { GameController } from "../../control/GameController.js";
-
-import { SoundManager } from "../../sound/SoundManager.js";
-
 /**
  * STAGE3 CLEAR画面
  */
+import { GameController } from "../control/GameController.js";
+import { SoundManager } from "../start/SoundManager.js";
+
 export class StageClear3 {
   /**
    * 初期化
@@ -34,7 +33,6 @@ export class StageClear3 {
 
     // ボタン取得
     const nextBtn = document.getElementById("next-btn");
-
     const titleBtn = document.getElementById("title-btn");
 
     // 次のステージ
@@ -48,7 +46,7 @@ export class StageClear3 {
 
     // タイトルへ
     titleBtn.addEventListener("click", () => {
-      SoundManager.play(SoundManager.CANCEL);
+      SoundManager.play(SoundManager.SELECT);
 
       setTimeout(() => {
         GameController.switchStart();
