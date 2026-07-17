@@ -290,6 +290,7 @@ export class MapData {
 
   // 最後にフルーツを出した時点のスコア
   #lastFruitScore = 0;
+  
 
   // 出現条件
   static #FRUIT_TIME_INTERVAL = 15000; // 15秒ごと
