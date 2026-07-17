@@ -25,45 +25,23 @@ export class WindowUtil {
     // ==================================================
 
     static fullScreen(
-        root,
-        minWidth,
-        minHeight,
-        maxWidth,
-        maxHeight
+    root,
+    minWidth = WindowUtil.DEFAULT_MIN_WIDTH,
+    minHeight = WindowUtil.DEFAULT_MIN_HEIGHT,
+    maxWidth = WindowUtil.DEFAULT_MAX_WIDTH,
+    maxHeight = WindowUtil.DEFAULT_MAX_HEIGHT
     ) {
+    if (!root) return;
+    root.dataset.minWidth = minWidth;
+    root.dataset.minHeight = minHeight;
+    root.dataset.maxWidth = maxWidth;
+    root.dataset.maxHeight = maxHeight;
 
-        if (!root) {
-            return;
-        }
-
-        // サイズ制限を保存
-        root.dataset.minWidth = minWidth;
-        root.dataset.minHeight = minHeight;
-        root.dataset.maxWidth = maxWidth;
-        root.dataset.maxHeight = maxHeight;
-
-        // 初回だけリサイズ監視
-        if (
-            !WindowUtil.listenerAttached.has(
-                root
-            )
-        ) {
-
-            WindowUtil.listenerAttached.add(
-                root
-            );
-
-            window.addEventListener(
-                "resize",
-                () =>
-                    WindowUtil.forceRelayout(
-                        root
-                    )
-            );
-        }
-
-        // レイアウト更新
-        WindowUtil.forceRelayout(root);
+    if (!WindowUtil.listenerAttached.has(root)) {
+        WindowUtil.listenerAttached.add(root);
+        window.addEventListener("resize", () => WindowUtil.forceRelayout(root));
+    }
+    WindowUtil.forceRelayout(root);
     }
 
     // ==================================================
