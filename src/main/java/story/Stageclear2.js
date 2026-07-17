@@ -20,7 +20,6 @@ export class StageClear2 {
     // ==========================
     // CLEAR音
     // ==========================
-
     setTimeout(() => {
       const clearSound = new Audio("../../resources/music/yay.mp3");
 
@@ -34,7 +33,6 @@ export class StageClear2 {
     // ==========================
     // スコア表示
     // ==========================
-
     const scoreLabel = document.getElementById("score-label");
 
     if (scoreLabel) {

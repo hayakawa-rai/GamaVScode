@@ -2,9 +2,9 @@
  * STAGE1 CLEAR画面
  */
 
-import { GameController } from "../control/GameController.js";
+import { GameController } from "../../control/GameController.js";
 
-import { SoundManager } from "../start/SoundManager.js";
+import { SoundManager } from "../../start/SoundManager.js";
 
 export class StageClear1 {
   /**
