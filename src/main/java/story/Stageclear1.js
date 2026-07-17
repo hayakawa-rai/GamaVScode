@@ -77,18 +77,3 @@ export class StageClear1 {
     });
   }
 }
-window.addEventListener("DOMContentLoaded", () => {
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-    const score =
-        Number(
-            params.get("score")
-        ) || 0;
-
-    StageClear1.create(score);
-
-});
