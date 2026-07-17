@@ -94,6 +94,29 @@ body, html {
     animation: scrollBackground 30s linear infinite;
 }
 
+#tap-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    pointer-events: none;
+}
+
+#tap-text {
+    color: white;
+    font-size: 5cqh;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    animation: blinkAndMove 1.2s infinite ease-in-out;
+}
+
+@supports not (container-type: size) {
+    #tap-text { font-size: 6vh; }
+}
+
 #ui-container {
     position: absolute;
     top: 50%;
