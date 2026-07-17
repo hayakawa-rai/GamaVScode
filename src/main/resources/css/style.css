@@ -809,3 +809,29 @@ body, html {
     0% { transform: translateY(0vh); }
     100% { transform: translateY(var(--scroll-distance, -2500px)); }
 }
+
+/* ==================================================
+   メニュー内の音量スライダー用スタイル 早川
+   ================================================== */
+.volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px; /* ボタンとの隙間 */
+    background: transparent; 
+    border: none;
+    
+    padding: 8px 16px;
+}
+
+.vol-icon {
+    font-size: 1.2rem;
+    user-select: none;
+}
+
+#volume-slider {
+    width: 140px;
+    cursor: pointer;
+    accent-color: #ffeb3b; /* パックマンらしい黄色いスライダーつまみになります（ブラウザによる） */
+}
