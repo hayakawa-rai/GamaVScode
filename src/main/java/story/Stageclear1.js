@@ -4,7 +4,7 @@
 
 import { GameController } from "../../control/GameController.js";
 
-import { SoundManager } from "../../sound/SoundManager.js";
+import { SoundManager } from "../../start/SoundManager.js";
 
 export class StageClear1 {
   /**
@@ -52,7 +52,7 @@ export class StageClear1 {
     nextBtn.addEventListener("click", () => {
       console.log("次のステージボタン押下");
 
-      //SoundManager.play(SoundManager.SELECT);
+      SoundManager.play(SoundManager.SELECT);
 
       setTimeout(() => {
         console.log("Story2へ遷移");
@@ -67,7 +67,7 @@ export class StageClear1 {
     titleBtn.addEventListener("click", () => {
       console.log("タイトルボタン押下");
 
-      SoundManager.play(SoundManager.CANCEL);
+      SoundManager.play(SoundManager.SELECT);
 
       setTimeout(() => {
         console.log("タイトルへ遷移");

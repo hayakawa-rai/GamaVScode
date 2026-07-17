@@ -1,6 +1,9 @@
-import { GameController } from "../../control/GameController.js";
+/**
+ * STAGE2 CLEAR画面
+ */
+import { GameController } from "../control/GameController.js";
 
-import { SoundManager } from "../../sound/SoundManager.js";
+import { SoundManager } from "../start/SoundManager.js";
 
 /**
  * STAGE2 CLEAR画面
@@ -17,7 +20,6 @@ export class StageClear2 {
     // ==========================
     // CLEAR音
     // ==========================
-
     setTimeout(() => {
       const clearSound = new Audio("../../resources/music/yay.mp3");
 
@@ -31,7 +33,6 @@ export class StageClear2 {
     // ==========================
     // スコア表示
     // ==========================
-
     const scoreLabel = document.getElementById("score-label");
 
     if (scoreLabel) {
@@ -64,7 +65,7 @@ export class StageClear2 {
     // ==========================
 
     titleBtn.addEventListener("click", () => {
-      SoundManager.play(SoundManager.CANCEL);
+      SoundManager.play(SoundManager.SELECT);
 
       setTimeout(() => {
         GameController.switchStart();
