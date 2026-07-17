@@ -20,7 +20,7 @@ export class MapView {
         this.pacmanImage.src = "../../resources/picture/syujinkou.png"; 
 
         this.pacmanFeverImage = new Image();
-        this.pacmanFeverImage.src = "../../resources/picture/syujinkou_fever.png";
+        this.pacmanFeverImage.src = "../../resources/picture/syujinkou_Fever.png";
 
             // ステージ番号を取得して色を決定
     const stageNumber = model.getStageNumber?.() || 1; // モデル側に取得メソッドがある想定
