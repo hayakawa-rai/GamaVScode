@@ -36,23 +36,20 @@ document.addEventListener("DOMContentLoaded", () => {
             syujinkou: document.getElementById('syujinkou-wrapper'),
             aniki: document.getElementById('aniki-wrapper'),
             taku: document.getElementById('taku-wrapper')
-            // nari-wrapperはStory3.htmlに存在しないため削除
         }
     };
 
     // --- 各種アニメーション演出 ---
 
-   // 落下アニメーション（CSSクラス .falling を付与）
+   // 落下アニメーション（ここでBGM.jsをつかっている）
     const triggerTakuFall = () => {
-        const taku = ui.wrappers.taku;
-        if (taku) {
-            taku.classList.remove("falling");
-            void taku.offsetWidth;
-            taku.classList.add("falling");
-            const audio = new Audio("../../resources/music/down.mp3");
-            audio.volume = 0.3;
-            Bgm.unlockPlay(audio);
-        }
+    const taku = ui.wrappers.taku;
+    if (taku) {
+        taku.classList.remove("falling");
+        void taku.offsetWidth;
+        taku.classList.add("falling");
+        Bgm.playOneShot("../../resources/music/down.mp3", 0.3); //効果音の音量調整
+    }
     };
 
     // 画面揺れアニメーション

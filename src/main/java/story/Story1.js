@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- 3. エンジン起動 ---
     new StoryEngine(dialogues, {
         bgmPath: '../../resources/music/storybgm.mp3',
+        bgmVolume: 0.2, //ここでBGMの音を調整できる。デフォは0.3
         ui: ui,
         
         onStep: (index, ui) => {

@@ -1,6 +1,6 @@
 import { Bgm } from "./Bgm.js";
 /**
- * 効果音を表現する内部用ラッパークラス (JavaFXのAudioClipに相当)
+ * ゲーム内の効果音を何度も呼び出す用のクラス
  */
 class SoundClip {
     constructor(path, defaultVolume = 1.0) {

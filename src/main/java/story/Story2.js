@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- 3. エンジン起動 ---
     const engine = new StoryEngine(dialogues, {
         bgmPath: '../../resources/music/naribgm.mp3',
+        bgmVolume: 0.2, //ここでBGMの音を調整できる。デフォは0.3
         ui: ui,
         
         onStep: (index, ui) => {
@@ -64,16 +65,20 @@ document.addEventListener("DOMContentLoaded", () => {
     StoryUtils.updateCharacterDisplay(d.speaker, w);
 
             // B. 特殊演出（差し込み絵）
-            if (index === 4) ui.insertView.style.display = "block";
+            if (index === 4) {
+                ui.insertView.style.display = "block";
+                 w.nari.classList.remove('active');
+            }
             if (index === 5) {
                 ui.insertView.style.display = "none";
-                engine.changeBGM("../../resources/music/storybgm.mp3");
+                engine.changeBGM("../../resources/music/storybgm.mp3", 0.2); //差し込み絵の後のBGMをここで変えれる
             }
 
             // C. 揺れ演出（Index 18）
             if (index === 18) {
         w.syujinkou.classList.add('shake');
         setTimeout(() => w.syujinkou.classList.remove('shake'), 600);
+        StoryUtils.updateCharacterDisplay(d.speaker, w);
             }
 
             // D. ジャンプアニメーション

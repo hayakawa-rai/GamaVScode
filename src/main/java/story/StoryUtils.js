@@ -12,16 +12,28 @@ export class StoryUtils {
     // 右側に表示されるキャラ一覧
     static RIGHT_SIDE_KEYS = ["aniki", "nari", "taku"];
 
+    // スマホサイズ判定（一般的なスマホの横幅を想定）
+    static NARROW_QUERY = window.matchMedia("(max-width: 480px)");
+
     // 立ち絵の切り替え（全Story共通）
     static updateCharacterDisplay(speaker, wrappers) {
-        // 主人公は常に表示
-        if (wrappers.syujinkou) wrappers.syujinkou.classList.add('active');
-
         const key = StoryUtils.SPEAKER_KEY_MAP[speaker];
 
-        // 話者が右側キャラ(あにき/なりなり/わだたく)のときだけ切り替え処理を行う
+        // スマホサイズの場合：喋っている人だけ表示
+        if (StoryUtils.NARROW_QUERY.matches) {
+            Object.values(wrappers).forEach(el => {
+                if (el) el.classList.remove('active');
+            });
+            if (key && wrappers[key]) {
+                wrappers[key].classList.add('active');
+            }
+            return;
+        }
+
+        // ▼通常時の挙動（従来通り）
+        if (wrappers.syujinkou) wrappers.syujinkou.classList.add('active');
+
         if (key && StoryUtils.RIGHT_SIDE_KEYS.includes(key) && wrappers[key]) {
-            // 現在表示中のキャラと違う場合のみ切り替える
             StoryUtils.RIGHT_SIDE_KEYS.forEach(k => {
                 if (k !== key && wrappers[k]) {
                     wrappers[k].classList.remove('active');
@@ -29,6 +41,7 @@ export class StoryUtils {
             });
             wrappers[key].classList.add('active');
         }
+        // speakerが「仙石さん」の場合は右側は直前の状態を維持
     }
 
     static triggerJumpIfNeeded(d, wrappers, condition = (sound) => !!sound) {
