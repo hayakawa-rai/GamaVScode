@@ -858,7 +858,9 @@ export class MapData {
 
         SoundManager.play(SoundManager.DAMAGE);
 
-        this.#syujinkou.takeDamage();
+        if (this.#syujinkou.getHp() === 1) {
+          Bgm.playPinchiBGM();
+        }
         this.#syujinkou.startDying();
 
         return;
