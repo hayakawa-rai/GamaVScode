@@ -2,8 +2,8 @@
  * STAGE1 CLEAR画面
  */
 
-import { GameController } from "../../../control/GameController.js";
-import { SoundManager } from "../../../start/SoundManager.js";
+import { GameController } from "../control/GameController.js";
+import { SoundManager } from "../start/SoundManager.js";
 
 export class StageClear1 {
   /**
@@ -19,7 +19,7 @@ export class StageClear1 {
     // ==========================
 
     setTimeout(() => {
-      const clearSound = new Audio("../../resources/music/yay.mp3");
+      const clearSound = new Audio("../resources/music/yay.mp3");
 
       clearSound.volume = 0.5;
 
