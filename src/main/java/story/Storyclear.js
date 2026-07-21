@@ -1,4 +1,5 @@
 import { GameController } from "../control/GameController.js";
+import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // ==================================================
@@ -51,9 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
   endingBgm.volume = 0.5;
   endingBgm.loop = true;
 
+  console.log(clearSound.src);
+  console.log(endingBgm.src);
+  console.log(clickSound.src);
+
   // 画面がロードされたら即座にクリアファンファーレを鳴らす
-  clearSound
-    .play()
+  Bgm.unlockPlay(clickSound);()
     .catch((err) =>
       console.log(
         "ブラウザの制限：ユーザー操作後に音声が再生可能になります",
