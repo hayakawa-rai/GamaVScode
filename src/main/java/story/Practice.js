@@ -1,77 +1,92 @@
 import { GameController } from "../control/GameController.js";
-import { SoundManager } from "../start/SoundManager.js";
+import { Bgm } from "../start/Bgm.js";
 
-//==================================================
-// STAGE1
-// ==================================================
-document.getElementById("stage1-btn").addEventListener("click", () => {
-  cleanup(); // BGM停止
-  window.location.href = "../test1/PracticeMain1.html";
+document.addEventListener("DOMContentLoaded", () => {
+    // ==================================================
+    // 1. DOM要素の取得
+    // ==================================================
+    const stage1Btn = document.getElementById("stage1-btn");
+    const stage2Btn = document.getElementById("stage2-btn");
+    const stage3Btn = document.getElementById("stage3-btn");
+    const backBtn = document.getElementById("back-btn");
+    const scoreInfo = document.getElementById("score-info");
+    const tooltip = document.getElementById("highscore-tooltip");
+
+    // ==================================================
+    // 2. オーディオの生成と初期設定
+    // ==================================================
+    const clickSound = new Audio("../../resources/music/select.mp3");
+    const practiceBgm = new Audio("../../resources/music/startbgm.mp3");
+
+    clickSound.volume = 0.4;
+    practiceBgm.volume = 0.5;
+    practiceBgm.loop = true;
+
+    // Bgm.unlockPlay を使って自動再生ブロックを回避する
+    Bgm.unlockPlay(practiceBgm);
+
+    // ==================================================
+    // 3. BGM停止関数
+    // ==================================================
+    function cleanup() {
+        practiceBgm.pause();
+        practiceBgm.currentTime = 0;
+    }
+
+        /**
+         * 変更点: 引数をURL文字列ではなく、実行する関数（callback）に変更
+         * @param {Function} action - 遷移時に実行したい GameController のメソッド
+         */
+        function transitionTo(action) {
+            clickSound.pause();
+            clickSound.currentTime = 0;
+            Bgm.unlockPlay(clickSound);
+    
+            setTimeout(() => {
+                cleanup();
+                action(); // ここで渡された GameController のメソッドを実行する
+            }, 500);
+        }
+    // ==================================================
+    // 4. 各ボタンのイベント登録
+    // ==================================================
+
+    // STAGE1
+    if (stage1Btn) {
+        stage1Btn.addEventListener("click", () => {
+          transitionTo(() => GameController.switchToPracticeGame1());
+        });
+    }
+
+    // STAGE2
+    if (stage2Btn) {
+        stage2Btn.addEventListener("click", () => {
+         transitionTo(() => GameController.switchToPracticeGame2());
+        });
+    }
+
+    // STAGE3
+    if (stage3Btn) {
+        stage3Btn.addEventListener("click", () => {
+          transitionTo(() => GameController.switchToPracticeGame3());
+        });
+    }
+
+    // タイトルへ戻る
+    if (backBtn) {
+        backBtn.addEventListener("click", () => {
+          transitionTo(() => GameController.switchStart());
+        });
+    }
+
+    // トロフィー（ハイスコア表示ボタン）
+    if (scoreInfo && tooltip) {
+        scoreInfo.addEventListener("click", () => {
+            if (tooltip.style.display === "block") {
+                tooltip.style.display = "none";
+            } else {
+                tooltip.style.display = "block";
+            }
+        });
+    }
 });
-
-// ==================================================
-// STAGE2
-// ==================================================
-document.getElementById("stage2-btn").addEventListener("click", () => {
-  cleanup();
-  window.location.href = "../test2/PracticeMain2.html";
-});
-
-// ==================================================
-// STAGE3
-// ==================================================
-document.getElementById("stage3-btn").addEventListener("click", () => {
-  cleanup();
-  window.location.href = "../test3/PracticeMain3.html";
-});
-
-// ==================================================
-// タイトルへ戻る
-// ==================================================
-
-document.getElementById("back-btn").addEventListener("click", () => {
-  console.log("タイトルボタン押下");
-
-  cleanup();
-
-  setTimeout(() => {
-    console.log("タイトルへ遷移");
-
-    GameController.switchStart();
-  }, 500);
-});
-
-// ==================================================
-// トロフィー（ハイスコア表示ボタン）
-// ==================================================
-
-// トロフィーアイコンを取得
-const scoreInfo = document.getElementById("score-info");
-// ハイスコア表示用のパネルを取得
-const tooltip = document.getElementById("highscore-tooltip");
-// トロフィーがクリックされたとき
-scoreInfo.addEventListener("click", () => {
-  // 既に表示中なら非表示にする
-  if (tooltip.style.display === "block") {
-    tooltip.style.display = "none";
-  } else {
-    // 非表示中なら表示する
-    tooltip.style.display = "block";
-  }
-});
-
-// ==================================================
-// BGM
-// ==================================================
-const practiceBgm = new Audio("../../resources/music/startbgm.mp3");
-practiceBgm.volume = 0.1;
-practiceBgm.loop = true;
-practiceBgm.play().catch(() => {});
-
-// ==================================================
-// BGM停止
-// ==================================================
-function cleanup() {
-  practiceBgm.pause();
-  practiceBgm.currentTime = 0;
-}

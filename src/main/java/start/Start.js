@@ -1,5 +1,6 @@
 import { GameController } from "../control/GameController.js";
 import { Bgm } from "./Bgm.js";
+
     document.addEventListener("DOMContentLoaded", () => {
     // ==================================================
     // 1. DOM要素の取得
