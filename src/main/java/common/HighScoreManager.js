@@ -2,7 +2,7 @@
 export class HighScoreManager {
     
     // ハイスコア保存先のキー（Javaのファイル名に相当）
-    static STORAGE_KEY = "highscore_data";
+    static STORAGE_KEY = "highscore.properties";
 
     /**
      * 指定したステージのハイスコアを読み込む
