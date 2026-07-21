@@ -1,10 +1,10 @@
 import { GameController } from "../control/GameController.js";
 import { StoryEngine } from "./StoryEngine.js";
 import { StoryUtils } from "./StoryUtils.js";
-import { Bgm } from "../start/Bgm.js"; // ★新しくなったBgmクラスをインポート
+import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // --- 1. データ定義 ---
+    // 1. シナリオデータの定義
     const dialogues = [
         { speaker: "なりなり", message: "あ、あれっ…！？", sound: "../../resources/music/nari.mp3", textColor: "orange" },
         { speaker: "仙石さん", message: "弱いな！？", sound: "../../resources/music/jump06.mp3", textColor: "white" },
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { speaker: "あにき", message: "強そうに見えないが、遊ばれたら最後だ。", sound: "../../resources/music/jump06.mp3", textColor: "red" }
     ];
 
-    // --- 2. DOM要素取得 ---
+    // 2. DOM要素の取得
     const ui = {
         container: document.getElementById('game-container'),
         nameText: document.getElementById('speaker-name'),
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         titleBtn: document.getElementById('title-btn'),
         insertView: document.getElementById('insert-view'),
         fadeOverlay: document.getElementById('fade-overlay'),
-        volumeSlider: document.getElementById('volume-slider'), // ★HTMLに追加したスライダーを取得
+        volumeSlider: document.getElementById('volume-slider'),
         wrappers: {
             syujinkou: document.getElementById('syujinkou-wrapper'),
             aniki: document.getElementById('aniki-wrapper'),
@@ -67,15 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- 3. エンジン起動 ---
     const engine = new StoryEngine(dialogues, {
         bgmPath: '../../resources/music/naribgm.mp3',
-        bgmVolume: 0.2, //ここでBGMの音を調整できる。デフォは0.3
+        bgmVolume: 0.2, //BGM音量
         ui: ui,
         
         onStep: (index, ui) => {
             const d = dialogues[index];
             const w = ui.wrappers;
 
-    // A. 立ち絵切り替え（共通処理）
-    StoryUtils.updateCharacterDisplay(d.speaker, w);
+             // A. 立ち絵切り替え（共通処理）
+            StoryUtils.updateCharacterDisplay(d.speaker, w);
 
             // B. 特殊演出（差し込み絵）
             if (index === 4) {
@@ -89,9 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // C. 揺れ演出（Index 18）
             if (index === 18) {
-        w.syujinkou.classList.add('shake');
-        setTimeout(() => w.syujinkou.classList.remove('shake'), 600);
-        StoryUtils.updateCharacterDisplay(d.speaker, w);
+            w.syujinkou.classList.add('shake');
+            setTimeout(() => w.syujinkou.classList.remove('shake'), 600);
+            StoryUtils.updateCharacterDisplay(d.speaker, w);
             }
 
             // D. ジャンプアニメーション

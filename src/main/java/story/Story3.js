@@ -1,7 +1,7 @@
 import { GameController } from "../control/GameController.js";
 import { StoryEngine } from "./StoryEngine.js";
 import { StoryUtils } from "./StoryUtils.js";
-import { Bgm } from "../start/Bgm.js"; // ★新しくなったBgmクラスをインポート
+import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { speaker: "あにき", message: "絶望を教えてやる！！", sound: "../../resources/music/end.mp3", color: "red" }
     ];
 
-    // 2. UI要素の取得
+    // 2. DOM要素の取得
     const ui = {
         container: document.getElementById("game-container"),
         nameText: document.getElementById("speaker-name"),
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         menuOverlay: document.getElementById("menu-overlay"),
         resumeBtn: document.getElementById("resume-btn"),
         titleBtn: document.getElementById("title-btn"),
-        volumeSlider: document.getElementById('volume-slider'), // ★HTMLに追加したスライダーを取得
+        volumeSlider: document.getElementById('volume-slider'),
         wrappers: {
             syujinkou: document.getElementById('syujinkou-wrapper'),
             aniki: document.getElementById('aniki-wrapper'),
@@ -51,67 +51,44 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 各種アニメーション演出 ---
-
-   // 落下アニメーション（ここでBGM.jsをつかっている）
-    const triggerTakuFall = () => {
-    const taku = ui.wrappers.taku;
-    if (taku) {
-        taku.classList.remove("falling");
-        void taku.offsetWidth;
-        taku.classList.add("falling");
-        Bgm.playOneShot("../../resources/music/down.mp3", 0.3); //効果音の音量調整
-    }
-    };
-
-    // 画面揺れアニメーション
-    const triggerScreenShake = () => {
-        let count = 0;
-        const interval = setInterval(() => {
-            if (count >= 15) { clearInterval(interval); ui.container.style.transform = "none"; return; }
-            const x = Math.random() * 30 - 15;
-            const y = Math.random() * 20 - 10;
-            ui.container.style.transform = `translate(${x}px, ${y}px)`;
-            count++;
-        }, 40);
-    };
-
-    // ジャンプアニメーション（StoryUtilsの2段ジャンプを呼び出し）
-    const triggerJump = (speaker) => {
-        const views = { "あにき": "aniki-wrapper", "仙石さん": "syujinkou-wrapper","わだたく": "taku-wrapper" };
-        const el = document.getElementById(views[speaker]);
-        if (el) {
-            StoryUtils.createJumpAnimation(el, () => {
-                // 必要に応じてここで音を鳴らす処理を追加可能
-            });
-        }
-    };
-
-    // --- ストーリー進行制御 ---
-    const onStep = (index, ui) => {
-        const d = dialogues[index];
-
-        // 立ち絵切り替え（共通処理）
-        StoryUtils.updateCharacterDisplay(d.speaker, ui.wrappers);
-
-        // 2. 特殊イベント
-        if (index === 0) triggerTakuFall();
-        if (index === 12) triggerScreenShake();
-
-        // 3. ジャンプ演出
-        StoryUtils.triggerJumpIfNeeded(d, ui.wrappers, (sound) => sound && sound.includes("jump06"));
-        };
-
-    // --- エンジンの起動 ---
+    // --- 3. エンジン起動 ---
     const engine = new StoryEngine(dialogues, {
         bgmPath: "../../resources/music/takubgm.mp3",
+        bgmVolume: 0.2, // BGM音量
         ui: ui,
-        onStep: onStep,
+        
+        onStep: (index, ui) => {
+            const d = dialogues[index];
+            const w = ui.wrappers;
+
+            // A. 立ち絵切り替え（共通処理）
+            StoryUtils.updateCharacterDisplay(d.speaker, w);
+
+            // B. 特殊演出（わだたくの落下）
+            if (index === 0 && w.taku) {
+                w.taku.classList.remove("falling");
+                void w.taku.offsetWidth;
+                w.taku.classList.add("falling");
+                Bgm.playOneShot("../../resources/music/down.mp3", 0.3);
+            }
+
+            // C. 画面揺れ演出
+            if (index === 12) {
+                StoryUtils.triggerScreenShake(ui.container);
+            }
+
+            // D. ジャンプアニメーション
+            StoryUtils.triggerJumpIfNeeded(d, w, (sound) => sound && sound.includes("jump06"));
+        },
+        
         onEnd: () => {
             const fadeRect = document.getElementById("fade-rect");
             if (fadeRect) fadeRect.style.opacity = "1";
             setTimeout(() => { GameController.switchToGame3(); }, 1500);
         },
-        onTitle: () => { GameController.switchStart(); }
+        
+        onTitle: () => {
+            GameController.switchStart();
+        }
     });
 });

@@ -17,7 +17,7 @@ import { Bgm } from "./Bgm.js";
     const startBgm = new Audio("../../resources/music/startbgm.mp3");
 
     clickSound.volume = 0.4;
-    startBgm.volume = 0.5;
+    startBgm.volume = 0.3;
     startBgm.loop = true;
 
     // 画面ロード時にBGMをスタート

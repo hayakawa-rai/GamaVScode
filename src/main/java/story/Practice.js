@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const practiceBgm = new Audio("../../resources/music/startbgm.mp3");
 
     clickSound.volume = 0.4;
-    practiceBgm.volume = 0.5;
+    practiceBgm.volume = 0.3;
     practiceBgm.loop = true;
 
     // Bgm.unlockPlay を使って自動再生ブロックを回避する

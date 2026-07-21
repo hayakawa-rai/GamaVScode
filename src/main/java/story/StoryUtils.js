@@ -113,4 +113,22 @@ export class StoryUtils {
         );
         return { stop: () => { animation.cancel(); } };
     }
+
+    // 画面全体を揺らす演出
+    static triggerScreenShake(container, durationMs = 600) {
+        if (!container) return;
+        let count = 0;
+        const maxCount = Math.floor(durationMs / 40);
+        const interval = setInterval(() => {
+            if (count >= maxCount) { 
+                clearInterval(interval); 
+                container.style.transform = "none"; 
+                return; 
+            }
+            const x = Math.random() * 30 - 15;
+            const y = Math.random() * 20 - 10;
+            container.style.transform = `translate(${x}px, ${y}px)`;
+            count++;
+        }, 40);
+    }
 }

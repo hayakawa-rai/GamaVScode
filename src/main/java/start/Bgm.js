@@ -20,17 +20,17 @@ export class Bgm {
   //   ※ ここは「全体の最大音量に対して、この効果音は何%にするか」のバランス値になります
   // ==================================================
   static #SOUND_VOLUMES = {
-    "jump06.mp3": 0.15,
-    "nari.mp3": 0.25,
-    "damage.mp3": 0.3,
-    "damage2.mp3": 0.3,
-    "down.mp3": 0.3,
-    "footsteps.mp3": 0.2,
-    "appearance.mp3": 0.25,
-    "shine.mp3": 0.3,
-    "atac.mp3": 0.25,
-    "feel.mp3": 0.25,
-    "end.mp3": 0.35,
+    "jump06.mp3": 0.85,
+    "nari.mp3": 0.95,
+    "damage.mp3": 0.9,
+    "damage2.mp3": 0.9,
+    "down.mp3": 0.9,
+    "footsteps.mp3": 0.9,
+    "appearance.mp3": 0.85,
+    "shine.mp3": 0.9,
+    "atac.mp3": 0.85,
+    "feel.mp3": 0.85,
+    "end.mp3": 0.95,
   };
   static #DEFAULT_SE_VOLUME = 0.2;
 
