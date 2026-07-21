@@ -1,5 +1,7 @@
 // MapView.js
 
+import { HighScoreManager } from "../../common/HighScoreManager.js";
+
 export class MapView {
     /**
      * @param {Object} model - ゲームのデータモデル (MapDataに相当)
@@ -109,7 +111,12 @@ export class MapView {
             ctx.fillStyle = '#FFFFFF';
 
             // スコア表示
-            const scoreText = `SCORE : ${syujinkou.getScore()}  /  HIGH SCORE : ${this.model.getHighScore?.() || 0}`;
+            const isPractice = this.model.isPractice?.() || false;
+            const stageNumber = this.model.getStageNumber?.() || 2;
+            // HighScoreManager の正しいメソッド名 loadHighScore を使用する
+            const highScore = HighScoreManager.loadHighScore(stageNumber);
+
+            const scoreText = `SCORE : ${syujinkou.getScore()}  /  HIGH SCORE : ${highScore}`;
             ctx.fillText(scoreText, 20, 12);
 
             // ライフ（ハート）表示

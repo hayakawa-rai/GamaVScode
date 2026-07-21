@@ -708,6 +708,33 @@ export class MapData {
 		}
 	}
 
+	  /**
+     * ハイスコアを取得する（localStorageから読み込み）
+     * @param {boolean} isPractice - 練習モードかどうか
+     * @param {number} stageNumber - ステージ番号
+     */
+    getHighScore(isPractice = false, stageNumber = 2) {
+        const key = isPractice ? `highScore_practice_${stageNumber}` : `highScore_main_${stageNumber}`;
+        return parseInt(localStorage.getItem(key)) || 0;
+    }
+
+    /**
+     * スコアを更新し、ハイスコアを超えていれば保存する
+     * @param {number} currentScore - 現在のスコア
+     * @param {boolean} isPractice - 練習モードかどうか
+     * @param {number} stageNumber - ステージ番号
+     */
+    checkAndUpdateHighScore(currentScore, isPractice = false, stageNumber = 2) {
+        const key = isPractice ? `highScore_practice_${stageNumber}` : `highScore_main_${stageNumber}`;
+        const currentHighScore = this.getHighScore(isPractice, stageNumber);
+
+        if (currentScore > currentHighScore) {
+            localStorage.setItem(key, currentScore);
+            return true; // 更新された場合
+        }
+        return false;
+      }
+
 	/**
 	 * キー入力などから呼ばれ、プレイヤーの次の移動方向をセットする。
 	 * ゲームがまだ開始待ち(waitingStart)の場合は、この最初の入力をトリガーとして

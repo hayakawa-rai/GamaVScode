@@ -3,6 +3,7 @@
  * Main1〜3 / PracticeMain1〜3 共通で使用する
  */
 import { Bgm } from "../start/Bgm.js";
+import { HighScoreManager } from "../common/HighScoreManager.js";
 
 export class GameController {
   static #touchStart = [0, 0];
@@ -13,13 +14,6 @@ export class GameController {
     return GameController.#newRecord;
   }
 
-  /**
-   * @param {Object} model
-   * @param {Object} view
-   * @param {HTMLCanvasElement} canvas
-   * @param {number} stageNumber
-   * @param {boolean} isPractice
-   */
   constructor(model, view, canvas, stageNumber, isPractice) {
     this.model = model;
     this.view = view;
@@ -38,10 +32,8 @@ export class GameController {
     this.startLoop();
   }
 
-/**
+  /**
    * スマホ・画面操作用：スワイプ（フリック）で移動方向を制御
-   * @param {Object} model
-   * @param {Function} onMove スワイプ操作が発生した瞬間に呼ばれるコールバック(BGM開始トリガー用)
    */
   static applyMobileControls(model, onMove) {
     if (!model) return;
@@ -55,7 +47,6 @@ export class GameController {
       }
     };
 
-    // --- マウス操作用 ---
     window.addEventListener("mousedown", (e) => {
       GameController.#touchStart[0] = e.clientX;
       GameController.#touchStart[1] = e.clientY;
@@ -78,34 +69,6 @@ export class GameController {
         }
       }
     });
-
-    // --- タッチ操作用（スマホ・iPhone 17対応） ---
-    window.addEventListener("touchstart", (e) => {
-      if (e.touches && e.touches.length > 0) {
-        GameController.#touchStart[0] = e.touches[0].clientX;
-        GameController.#touchStart[1] = e.touches[0].clientY;
-      }
-    }, { passive: true });
-
-    window.addEventListener("touchend", (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const deltaX = e.changedTouches[0].clientX - GameController.#touchStart[0];
-        const deltaY = e.changedTouches[0].clientY - GameController.#touchStart[1];
-        const absX = Math.abs(deltaX);
-        const absY = Math.abs(deltaY);
-
-        if (
-          absX > GameController.#FLICK_THRESHOLD ||
-          absY > GameController.#FLICK_THRESHOLD
-        ) {
-          if (absX > absY) {
-            sendDirection(deltaX > 0 ? "RIGHT" : "LEFT");
-          } else {
-            sendDirection(deltaY > 0 ? "DOWN" : "UP");
-          }
-        }
-      }
-    }, { passive: true });
   }
 
   /**
@@ -193,13 +156,10 @@ export class GameController {
               }
             }
 
-            if (this.isPractice && window.HighScoreManager) {
-              GameController.#newRecord = HighScoreManager.updateHighScore(
-                this.stageNumber, finalScore
-              );
-            } else {
-              GameController.#newRecord = false;
-            }
+            // 修正後（本番・練習どちらでもハイスコアを更新する）
+            GameController.#newRecord = HighScoreManager.updateHighScore(
+            this.stageNumber, finalScore
+            );
 
             setTimeout(() => {
               GameController.switchToGameover(this.stageNumber, this.isPractice, finalScore);
@@ -210,10 +170,12 @@ export class GameController {
           // 🏁 ステージクリア判定
           if (this.model.isCleared && this.model.isCleared()) {
             if (this.isPractice) {
+              // 練習モード：クリアの概念はなく、エサを復活させて延々と続行するだけ
               if (typeof this.model.respawnDots === "function") {
                 this.model.respawnDots();
               }
             } else {
+              // 本番モード：ループを止めてクリア画面へ
               this.stop();
               if (this.isTransitioning) return;
               this.isTransitioning = true;
@@ -228,6 +190,11 @@ export class GameController {
                   finalScore = syujinkou.getScore();
                 }
               }
+
+              // 本番モード：ステージクリア時のスコアでハイスコア判定
+              GameController.#newRecord = HighScoreManager.updateHighScore(
+                this.stageNumber, finalScore
+              );
 
               setTimeout(() => {
                 GameController.switchToStageclear(this.stageNumber, finalScore);
@@ -264,9 +231,6 @@ export class GameController {
     }
   }
 
-  /**
-   * まだBGMが始まっていなければ再生する（最初の移動操作のみ発火）
-   */
   startBgmOnce() {
     if (!this.bgmStarted) {
       this.bgmStarted = true;
