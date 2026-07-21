@@ -69,8 +69,17 @@
           style="
             background-color: #87ceeb;
             color: white;
-            border-color: white;
+            border: 2px solid white;
             border-radius: 10px;
+            transition: all 0.2s ease;
+          "
+          onmouseover="
+            this.style.backgroundColor = '#AEEBFF';
+            this.style.transform = 'scale(1.05)';
+          "
+          onmouseout="
+            this.style.backgroundColor = '#87CEEB';
+            this.style.transform = 'scale(1)';
           "
         >
           タイトルへ
