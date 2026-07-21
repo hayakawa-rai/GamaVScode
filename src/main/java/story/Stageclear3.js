@@ -29,7 +29,7 @@ export class StageClear3 {
     const nextBtn = document.getElementById("next-btn");
     const titleBtn = document.getElementById("title-btn");
 
-    // 次のステージ
+    // 次へ
     nextBtn.addEventListener("click", () => {
       SoundManager.play(SoundManager.SELECT);
 
