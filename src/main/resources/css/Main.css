@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Main1〜3 / PracticeMain1〜3 共通スタイル
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000;
+    font-family: "Meiryo", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ゲームのルートコンテナ（StackPane相当）
+   min/max制約はPractice側の設計を踏襲し、全ページで統一 */
+#game-root {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
+    min-width: 320px;
+    min-height: 480px;
+    max-width: 1920px;
+    max-height: 1080px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+/* 背景画像（ぼかし効果） */
+#background-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(10px);
+    z-index: 1;
+}
+
+/* ゲーム画面ベース */
+#game-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+#game-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* メニューボタン */
+#menu-btn {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 100px;
+    height: 90px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 4;
+    padding: 0;
+}
+#menu-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* ポーズ画面レイヤー */
+#pause-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    z-index: 5;
+    pointer-events: none;
+}
+#pause-layer.visible {
+    display: flex;
+    pointer-events: auto;
+}
+
+.pause-title {
+    font-family: "Arial", sans-serif;
+    font-weight: bold;
+    font-size: 48px;
+    color: #ffff00;
+    user-select: none;
+}
+
+.game-button {
+    width: 160px;
+    height: 40px;
+    font-family: "Meiryo", sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+.game-button:hover {
+    background-color: #ddd;
+}
+
+.how-to-play-text {
+    color: #ffffff;
+    font-family: "Meiryo", sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+    text-align: center;
+    white-space: pre-line;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    padding: 12px 20px;
+    user-select: none;
+    display: none;
+}
+
+/* ==================================================
+   ステージカラー設定（拡張用。現状MapViewが色を直接持つが、
+   将来的にCSS側で背景色などを切り替えたい場合はここを使う）
+   ================================================== */
+.stage1 .game-bg { background-color: #000000; }
+.stage1 .game-wall { background-color: rgb(0, 238, 190); }
+.stage1 .game-pacman { background-color: #ffffff; }
+
+.stage2 .game-bg { background-color: rgb(43, 43, 43); }
+.stage2 .game-wall { background-color: #ff44cc; }
+.stage2 .game-pacman { background-color: rgb(28, 221, 216); }
+
+.stage3 .game-bg { background-color: #1a0000; }
+.stage3 .game-wall { background-color: rgb(238, 30, 0); }
+.stage3 .game-pacman { background-color: #ffaa00; }

@@ -1,610 +1,85 @@
 <!doctype html>
 <html lang="ja">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <title>仙石さん - ステージ 2</title>
+    <title>仙石さん - ステージ 1</title>
+    <link rel="stylesheet" href="../../resources/css/Main.css">
+</head>
+<body>
+    <div id="game-root" class="stage1">
+        <img id="background-view" src="../../resources/picture/companyroom.jpg.jpg" alt="Background">
 
-    <style>
-      /* =====================================================
-           JavaFXのレイアウトを再現する基本スタイル
-           ===================================================== */
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background-color: #111;
-      }
-
-      /* StackPane（ルートノード）の再現 */
-      #root {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-      }
-
-      /* 背景画像設定（GaussianBlur風のブラーもCSSで適用） */
-      #backgroundView {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: blur(10px); /* GaussianBlur(10) の再現 */
-        z-index: 1;
-      }
-
-      /* ゲーム画面のベース */
-      #gameBase {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-      }
-
-      #gameCanvas {
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
-
-      /* メニューアイコンボタン */
-      #menuBtn {
-        position: absolute;
-        top: 60px; /* Insets(60, 0, 0, 30) の再現 */
-        left: 30px;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        z-index: 4; /* スライド判定より手前に持ってくる（toFront） */
-        padding: 0;
-      }
-      #menuBtn img {
-        width: 100px;
-        height: 90px;
-        object-fit: contain;
-      }
-
-      /* ポーズ画面レイヤー（VBoxの再現） */
-      #pauseLayer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.65);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 25px; /* VBox(25) の再現 */
-        z-index: 5; /* 最前面 */
-
-        /* 初期状態は非表示（setVisible(false)） */
-        display: none;
-        pointer-events: none; /* 初期状態はクリック不可（setMouseTransparent(true)） */
-      }
-
-      /* ポーズ画面内のテキスト・ボタンのスタイル */
-      #pauseLabel {
-        font-family: "Arial", sans-serif;
-        font-weight: bold;
-        font-size: 48px;
-        color: yellow;
-        user-select: none;
-      }
-
-      .ui-button {
-        font-family: "Meiryo", sans-serif;
-        font-weight: bold;
-        font-size: 14px;
-        width: 160px;
-        height: 40px;
-        cursor: pointer;
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        transition: background-color 0.2s;
-      }
-      .ui-button:hover {
-        background-color: #ddd;
-      }
-
-      /* 操作説明テキストの背景パネル */
-      #howToPlayText {
-        font-family: "Meiryo", sans-serif;
-        font-weight: normal;
-        font-size: 14px;
-        color: white;
-        text-align: center;
-        white-space: pre-wrap; /* 改行を有効化 */
-
-        background-color: rgba(255, 255, 255, 0.12);
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        padding: 12px 20px 12px 20px;
-        user-select: none;
-
-        /* 初期状態は非表示（setVisible(false)） */
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- root (StackPane) -->
-    <div id="root" class="stage1">
-      <!-- 背景画像 (ImageView) -->
-      <img
-        id="backgroundView"
-        src="../../resources/picture/companyroom.jpg"
-        alt="Background"
-        onerror="
-          this.onerror = null;
-          this.src = 'https://picsum.photos/1000/800';
-          console.log(
-            '⚠️ 背景画像の読み込みに失敗したため、テスト用の仮画像を表示します。',
-          );
-        "
-      />
-
-      <!-- ゲーム画面生成 (Pane + Canvas) -->
-      <div id="gameBase" class="stage1">
-        <canvas id="gameCanvas" tabindex="0"></canvas>
-      </div>
-
-      <!-- メニューアイコンボタン -->
-      <button id="menuBtn">
-        <img
-          id="menuImg"
-          src="../../resources/picture/menu.png"
-          alt="Menu"
-          onerror="
-            this.onerror = null;
-            this.style.display = 'none';
-            document.getElementById('menuFallbackText').style.display = 'block';
-          "
-        />
-        <span
-          id="menuFallbackText"
-          style="
-            display: none;
-            color: white;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
-          "
-          >[MENU]</span
-        >
-      </button>
-
-      <!-- ポーズ画面 (VBox) -->
-      <div id="pauseLayer">
-        <div id="pauseLabel">PAUSE</div>
-        <button id="ToPlayButton" class="ui-button">ゲーム再開</button>
-        <button id="howToPlayButton" class="ui-button">操作説明</button>
-        <div id="howToPlayText">
-          移動 : ↑↓←→ / WASD<br />画面スワイプ(スマホ用)
+        <div id="game-base" class="stage1">
+            <canvas id="game-canvas" tabindex="0"></canvas>
         </div>
-        <button id="titleButton" class="ui-button">タイトルへ戻る</button>
-      </div>
+
+        <button id="menu-btn">
+            <img src="../../resources/picture/menu.png" alt="Menu">
+        </button>
+
+        <div id="pause-layer">
+            <div class="pause-title">PAUSE</div>
+            <button id="resume-btn" class="game-button">ゲーム再開</button>
+            <button id="how-to-play-btn" class="game-button">操作説明</button>
+            <div id="how-to-play-text" class="how-to-play-text">
+                移動 : ↑↓←→ / WASD<br>画面スワイプ(スマホ用)
+            </div>
+            <button id="title-btn" class="game-button">タイトルへ戻る</button>
+        </div>
     </div>
 
     <script type="module">
-      import { MapData } from "./model/MapData.js";
-      import { MapView } from "./view/MapView.js";
-      import { Bgm } from "../start/Bgm.js";
-      // =====================================================
-      // 【作成済み】GameController クラス
-      // =====================================================
-      class GameController {
-        static #touchStart = [0, 0];
-        static #FLICK_THRESHOLD = 30.0;
-        static #newRecord = false;
+        import { GameController } from "../control/GameController.js";
+        import { MapData } from "./model/MapData.js";
+        import { MapView } from "./view/MapView.js";
+        import { Bgm } from "../start/Bgm.js";
 
-        static isNewRecord() {
-          return GameController.#newRecord;
-        }
-
-        constructor(model, view, canvas, stageNumber, isPractice) {
-          this.model = model;
-          this.view = view;
-          this.canvas = canvas;
-          this.gc = canvas.getContext("2d");
-          this.stageNumber = stageNumber;
-          this.isPractice = isPractice;
-
-          this.timerId = null;
-          this.pauseLayer = null;
-          this.isTransitioning = false;
-          this.bgmStarted = false;
-
-          this.attachInput();
-          GameController.applyMobileControls(this.model);
-          this.startLoop();
-        }
-
-        static applyMobileControls(model) {
-          if (!model) return;
-          const sendDirection = (dir) => {
-            if (typeof model.isPaused === "function" && !model.isPaused()) {
-              if (typeof model.setNextDirection === "function") {
-                model.setNextDirection(dir);
-              }
-            }
-          };
-
-          window.addEventListener("mousedown", (e) => {
-            GameController.#touchStart[0] = e.clientX;
-            GameController.#touchStart[1] = e.clientY;
-          });
-
-          window.addEventListener("mouseup", (e) => {
-            const deltaX = e.clientX - GameController.#touchStart[0];
-            const deltaY = e.clientY - GameController.#touchStart[1];
-            const absX = Math.abs(deltaX);
-            const absY = Math.abs(deltaY);
-
-            if (
-              absX > GameController.#FLICK_THRESHOLD ||
-              absY > GameController.#FLICK_THRESHOLD
-            ) {
-              if (absX > absY) {
-                sendDirection(deltaX > 0 ? "RIGHT" : "LEFT");
-              } else {
-                sendDirection(deltaY > 0 ? "DOWN" : "UP");
-              }
-            }
-          });
-        }
-
-        attachInput() {
-          window.addEventListener("keydown", (e) => {
-            const key = e.key.toUpperCase();
-
-            if (key === "P") {
-              if (typeof this.model.togglePause === "function") {
-                this.model.togglePause();
-              }
-              if (this.pauseLayer) {
-                const isPaused = this.model.isPaused
-                  ? this.model.isPaused()
-                  : false;
-                if (isPaused) {
-                  this.pauseLayer.style.pointerEvents = "auto";
-                  this.pauseLayer.style.display = "flex";
-                } else {
-                  this.pauseLayer.style.pointerEvents = "none";
-                  this.pauseLayer.style.display = "none";
-                }
-              }
-              return;
+        class Main {
+            constructor(stageNumber, bgSrc, title) {
+                this.stageNumber = stageNumber;
+                this.controller = null;
+                this.dom = {
+                    background: document.getElementById("background-view"),
+                    canvas: document.getElementById("game-canvas"),
+                    menuBtn: document.getElementById("menu-btn"),
+                    pauseLayer: document.getElementById("pause-layer"),
+                    resumeBtn: document.getElementById("resume-btn"),
+                    howToPlayBtn: document.getElementById("how-to-play-btn"),
+                    howToPlayText: document.getElementById("how-to-play-text"),
+                    titleBtn: document.getElementById("title-btn"),
+                };
+                this.dom.background.src = bgSrc;
+                document.title = title;
             }
 
-            if (key === "C") {
-              if (typeof this.model.forceStageClear === "function") {
-                this.model.forceStageClear();
-              } else {
-                console.log(
-                  "⚠️ このモデルには forceStageClear メソッドがありません",
+            start() {
+                if (this.controller) this.controller.stop();
+                Bgm.stopBGM();
+
+                const model = new MapData();
+                const view = new MapView(model);
+
+                this.dom.resumeBtn.onclick = () => this.controller?.togglePauseByButton();
+                this.dom.menuBtn.onclick = () => this.controller?.togglePauseByButton();
+                this.dom.titleBtn.onclick = () => this.controller?.forceBackToTitle();
+                this.dom.howToPlayBtn.onclick = () => {
+                    const isHidden = window.getComputedStyle(this.dom.howToPlayText).display === "none";
+                    this.dom.howToPlayText.style.display = isHidden ? "block" : "none";
+                };
+
+                model.initEnemy(document.createElement("img"));
+
+                this.controller = new GameController(
+                    model, view, this.dom.canvas, this.stageNumber, false
                 );
-              }
-              return;
+                this.controller.setPauseLayer(this.dom.pauseLayer);
+                this.dom.canvas.focus();
             }
-
-            if (this.model.isPaused && this.model.isPaused()) return;
-
-            if (typeof this.model.setNextDirection === "function") {
-              const isMoveKey =
-                key === "W" ||
-                e.key === "ArrowUp" ||
-                key === "S" ||
-                e.key === "ArrowDown" ||
-                key === "A" ||
-                e.key === "ArrowLeft" ||
-                key === "D" ||
-                e.key === "ArrowRight";
-
-              if (isMoveKey) {
-                this.startBgmOnce(); // ★追加：移動キーが押された瞬間にBGM開始
-
-                if (key === "W" || e.key === "ArrowUp")
-                  this.model.setNextDirection("UP");
-                if (key === "S" || e.key === "ArrowDown")
-                  this.model.setNextDirection("DOWN");
-                if (key === "A" || e.key === "ArrowLeft")
-                  this.model.setNextDirection("LEFT");
-                if (key === "D" || e.key === "ArrowRight")
-                  this.model.setNextDirection("RIGHT");
-              }
-            }
-          });
         }
 
-        startLoop() {
-          const resizeCanvas = () => {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-          };
-          window.addEventListener("resize", resizeCanvas);
-          resizeCanvas();
-
-          const loop = () => {
-            try {
-              const isPaused = this.model.isPaused
-                ? this.model.isPaused()
-                : false;
-
-              if (!isPaused) {
-                if (typeof this.model.update === "function") {
-                  this.model.update();
-                }
-
-                if (this.model.isGameOver && this.model.isGameOver()) {
-                  this.stop();
-                  if (this.isTransitioning) return;
-                  this.isTransitioning = true;
-
-                  if (typeof Bgm.stopBGM === "function") Bgm.stopBGM();
-                  console.log(
-                    "💀 敵に捕まりました...ゲームオーバー画面へ遷移します。",
-                  );
-
-                  let finalScore = 0;
-                  if (this.model.getSyujinkou) {
-                    const syujinkou = this.model.getSyujinkou();
-                    if (syujinkou && typeof syujinkou.getScore === "function") {
-                      finalScore = syujinkou.getScore();
-                    }
-                  }
-
-                  if (this.isPractice && window.HighScoreManager) {
-                    GameController.#newRecord =
-                      HighScoreManager.updateHighScore(
-                        this.stageNumber,
-                        finalScore,
-                      );
-                  } else {
-                    GameController.#newRecord = false;
-                  }
-
-                  setTimeout(() => {
-                    GameController.switchToGameover(
-                      this.stageNumber,
-                      this.isPractice,
-                      finalScore,
-                    );
-                  }, 0);
-                  return;
-                }
-
-                if (this.model.isCleared && this.model.isCleared()) {
-                  if (this.isPractice) {
-                    if (typeof this.model.respawnDots === "function") {
-                      this.model.respawnDots();
-                    }
-                  } else {
-                    this.stop();
-                    if (this.isTransitioning) return;
-                    this.isTransitioning = true;
-
-                    if (typeof Bgm.stopBGM === "function") Bgm.stopBGM();
-                    console.log("🏁 ステージクリア！");
-
-                    let finalScore = 0;
-                    if (this.model.getSyujinkou) {
-                      const syujinkou = this.model.getSyujinkou();
-                      if (
-                        syujinkou &&
-                        typeof syujinkou.getScore === "function"
-                      ) {
-                        finalScore = syujinkou.getScore();
-                      }
-                    }
-
-                    setTimeout(() => {
-                      GameController.switchToStageclear(
-                        this.stageNumber,
-                        finalScore,
-                      );
-                    }, 0);
-                    return;
-                  }
-                }
-              }
-
-              if (this.view && typeof this.view.draw === "function") {
-                this.view.draw(this.gc, this.canvas.width, this.canvas.height);
-              }
-
-              this.timerId = requestAnimationFrame(loop);
-            } catch (ex) {
-              console.error("ループ内エラー:", ex);
-              this.stop();
-            }
-          };
-
-          this.timerId = requestAnimationFrame(loop);
-        }
-
-        forceBackToTitle() {
-          this.stop();
-          if (typeof Bgm.stopBGM === "function") Bgm.stopBGM();
-          console.log("② timer停止");
-          GameController.switchStart();
-        }
-
-        startBgmOnce() {
-          if (!this.bgmStarted) {
-            this.bgmStarted = true;
-            this.playStageBgm(this.stageNumber);
-          }
-        }
-
-        playStageBgm(stageNumber) {
-          if (typeof Bgm.playStageBGM === "function") {
-            Bgm.playStageBGM(stageNumber);
-          }
-        }
-
-        setPauseLayer(pauseLayerElement) {
-          this.pauseLayer = pauseLayerElement;
-        }
-
-        togglePauseByButton() {
-          if (typeof this.model.togglePause === "function") {
-            this.model.togglePause();
-          }
-
-          if (this.pauseLayer) {
-            const isPaused = this.model.isPaused
-              ? this.model.isPaused()
-              : false;
-            if (isPaused) {
-              this.pauseLayer.style.pointerEvents = "auto";
-              this.pauseLayer.style.display = "flex";
-            } else {
-              this.pauseLayer.style.pointerEvents = "none";
-              this.pauseLayer.style.display = "none";
-            }
-          }
-        }
-
-        stop() {
-          if (this.timerId) {
-            cancelAnimationFrame(this.timerId);
-            this.timerId = null;
-          }
-        }
-
-        static switchStart() {
-          window.location.href = "../start/Start.html";
-        }
-        static switchToHelp() {
-          window.location.href = "Help.html";
-        }
-        static switchToPractice() {
-          window.location.href = "Practice.html";
-        }
-        static startToStory() {
-          window.location.href = "Story1.html";
-        }
-        static startToStory2() {
-          window.location.href = "Story2.html";
-        }
-        static startToStory3() {
-          window.location.href = "Story3.html";
-        }
-        static startToStory4() {
-          window.location.href = "Story4.html";
-        }
-        static switchToStageclear(stageNum, score) {
-          window.location.href = `../story/Stageclear${stageNum}.html?score=${score}`;
-        }
-        static switchToGameover(stageNum, isPractice, score) {
-          window.location.href = `../story/Gameover.html?stage=${stageNum}&practice=${isPractice}&score=${score}`;
-        }
-      }
-
-      // =====================================================
-      // メイン起動クラス (Main2)
-      // =====================================================
-      class Main2 {
-        constructor() {
-          this.controller = null;
-          this.dom = {
-            root: document.getElementById("root"),
-            backgroundView: document.getElementById("backgroundView"),
-            gameCanvas: document.getElementById("gameCanvas"),
-            menuBtn: document.getElementById("menuBtn"),
-            pauseLayer: document.getElementById("pauseLayer"),
-            ToPlayButton: document.getElementById("ToPlayButton"),
-            howToPlayButton: document.getElementById("howToPlayButton"),
-            howToPlayText: document.getElementById("howToPlayText"),
-            titleButton: document.getElementById("titleButton"),
-          };
-        }
-
-        static createAndStart() {
-          const app = new Main2();
-          app.starts();
-        }
-
-        starts() {
-          // 再起動時の後始末（多重起動防止）
-          if (this.controller !== null) {
-            this.controller.stop();
-            this.controller = null;
-          }
-
-          // BGM重複再生防止
-          Bgm.stopBGM();
-
-          // モデル・ルートノード生成
-          const model = new MapData();
-          const view = new MapView(model);
-
-          // =====================================================
-          // ボタンアクションの設定
-          // =====================================================
-          this.dom.ToPlayButton.onclick = () => {
-            if (this.controller !== null) {
-              this.controller.togglePauseByButton();
-            }
-          };
-
-          this.dom.howToPlayButton.onclick = () => {
-            const isHidden =
-              window.getComputedStyle(this.dom.howToPlayText).display ===
-              "none";
-            this.dom.howToPlayText.style.display = isHidden ? "block" : "none";
-          };
-
-          this.dom.titleButton.onclick = () => {
-            if (this.controller !== null) {
-              console.log("タイトル画面へ戻ります");
-              this.controller.forceBackToTitle();
-            }
-          };
-
-          this.dom.menuBtn.onclick = () => {
-            if (this.controller !== null) {
-              this.controller.togglePauseByButton();
-            }
-          };
-
-          // 敵の初期化
-          const dummyEnemyImg = document.createElement("img");
-          model.initEnemy(dummyEnemyImg);
-
-          // コントローラー生成(引数構成をGameControllerの定義と完全に一致させています)
-          // (model, view, canvas, stageNumber, isPractice)
-          this.controller = new GameController(
-            model,
-            view,
-            this.dom.gameCanvas,
-            2, // stageNumber = 2
-            false, // isPractice = false
-          );
-
-          // ポーズ画面（レイヤー要素）をコントローラーへ登録
-          this.controller.setPauseLayer(this.dom.pauseLayer);
-
-          // ステージ設定 & 入力受付
-          document.title = "仙石さん - ステージ 2";
-          this.dom.gameCanvas.focus();
-        }
-      }
-
-      // 読み込み完了時に実行
-      window.addEventListener("DOMContentLoaded", () => {
-        Main2.createAndStart();
-      });
+        window.addEventListener("DOMContentLoaded", () => {
+            new Main(2, "../../resources/picture/companyroom.jpg", "仙石さん - ステージ 2").start();
+        });
     </script>
-  </body>
+</body>
 </html>
