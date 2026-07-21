@@ -7,7 +7,10 @@
 </head>
 <body>
     <div id="game-root" class="stage1">
-        <img id="background-view" src="../../resources/picture/companyroom.jpg.jpg" alt="Background">
+        <img id="background-view" src="../../resources/picture/companyroom.jpg" alt="Background">
+
+        <!-- 画面上部中央のタイマー表示要素 -->
+        <div id="game-timer">03:00</div>  /* 03:00*/
 
         <div id="game-base" class="stage1">
             <canvas id="game-canvas" tabindex="0"></canvas>
@@ -38,8 +41,12 @@
             constructor(stageNumber, bgSrc, title) {
                 this.stageNumber = stageNumber;
                 this.controller = null;
+                this.timeRemaining = 180; // 3分 = 180秒
+                this.timerInterval = null;
+
                 this.dom = {
                     background: document.getElementById("background-view"),
+                    timer: document.getElementById("game-timer"),
                     canvas: document.getElementById("game-canvas"),
                     menuBtn: document.getElementById("menu-btn"),
                     pauseLayer: document.getElementById("pause-layer"),
@@ -52,16 +59,90 @@
                 document.title = title;
             }
 
+            // タイマーの残り時間を "MM:SS" 形式にフォーマットして画面に反映
+            updateTimerDisplay() {
+                const minutes = Math.floor(this.timeRemaining / 60);
+                const seconds = this.timeRemaining % 60;
+                const formattedMin = String(minutes).padStart(2, '0');
+                const formattedSec = String(seconds).padStart(2, '0');
+                this.dom.timer.textContent = `${formattedMin}:${formattedSec}`;
+            }
+
+            // タイマーのカウントダウン開始
+            startTimer(model) {
+                if (this.timerInterval) return;
+
+                this.timerInterval = setInterval(() => {
+                    // ポーズ中、またはゲーム開始前（キー入力待ち）なら時間を進めない
+                    if (model.isPaused() || model.isWaitingStart()) {
+                        return;
+                    }
+
+                    // 主人公の死亡アニメーション中もタイマーを止める場合
+                    const syujinkou = model.getSyujinkou();
+                    if (syujinkou && syujinkou.isDyingAnimation()) {
+                        return;
+                    }
+
+                    if (this.timeRemaining > 0) {
+                        this.timeRemaining--;
+                        this.updateTimerDisplay();
+                    }
+
+                    // タイムアップ時の処理
+                    if (this.timeRemaining <= 0) {
+                        this.stopTimer();
+                        this.handleTimeUp(model);
+                    }
+                }, 1000);
+            }
+
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+
+            handleTimeUp(model) {
+                if (this.controller) {
+                    this.controller.stop();
+                }
+                if (typeof Bgm.stopBGM === "function") {
+                    Bgm.stopBGM();
+                }
+                console.log("⏰ 制限時間切れ！ゲームオーバー画面へ遷移します。");
+
+                let finalScore = 0;
+                const syujinkou = model.getSyujinkou();
+                if (syujinkou && typeof syujinkou.getScore === "function") {
+                    finalScore = syujinkou.getScore();
+                }
+
+                // ご指定の GameController のゲームオーバー遷移メソッドを呼び出し
+                setTimeout(() => {
+                    GameController.switchToGameover(this.stageNumber, false, finalScore);
+                }, 0);
+            }
+
             start() {
                 if (this.controller) this.controller.stop();
+                this.stopTimer();
                 Bgm.stopBGM();
 
                 const model = new MapData();
                 const view = new MapView(model);
 
+                // タイマーの初期表示リセット
+                this.timeRemaining = 180;
+                this.updateTimerDisplay();
+
                 this.dom.resumeBtn.onclick = () => this.controller?.togglePauseByButton();
                 this.dom.menuBtn.onclick = () => this.controller?.togglePauseByButton();
-                this.dom.titleBtn.onclick = () => this.controller?.forceBackToTitle();
+                this.dom.titleBtn.onclick = () => {
+                    this.stopTimer();
+                    this.controller?.forceBackToTitle();
+                };
                 this.dom.howToPlayBtn.onclick = () => {
                     const isHidden = window.getComputedStyle(this.dom.howToPlayText).display === "none";
                     this.dom.howToPlayText.style.display = isHidden ? "block" : "none";
@@ -73,9 +154,14 @@
                     model, view, this.dom.canvas, this.stageNumber, false
                 );
                 this.controller.setPauseLayer(this.dom.pauseLayer);
+
+                // タイマーの常時監視（初回入力待ちが解除されたら動き出す）
+                this.startTimer(model);
+
                 this.dom.canvas.focus();
             }
         }
+
 
         window.addEventListener("DOMContentLoaded", () => {
             new Main(2, "../../resources/picture/companyroom.jpg", "仙石さん - ステージ 2").start();
