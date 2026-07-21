@@ -52,10 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
   endingBgm.volume = 0.5;
   endingBgm.loop = true;
 
-  console.log(clearSound.src);
-  console.log(endingBgm.src);
-  console.log(clickSound.src);
-
   // 画面がロードされたら即座にクリアファンファーレを鳴らす
   clearSound
     .play()
