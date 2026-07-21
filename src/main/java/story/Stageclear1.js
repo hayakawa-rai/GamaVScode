@@ -17,15 +17,8 @@ export class StageClear1 {
     // ==========================
     // CLEAR音
     // ==========================
-
     setTimeout(() => {
-      const clearSound = new Audio("../resources/music/yay.mp3");
-
-      clearSound.volume = 0.5;
-
-      clearSound.play().catch((error) => {
-        console.error("CLEAR音再生失敗", error);
-      });
+      SoundManager.play(SoundManager.CLEAR);
     }, 500);
 
     // ==========================
@@ -49,7 +42,7 @@ export class StageClear1 {
     // 次のステージ
     // ==========================
     nextBtn.addEventListener("click", () => {
-      console.log("次のステージボタン押下");
+      console.log("次のステージボタン押下");a
 
       SoundManager.play(SoundManager.SELECT);
 
@@ -76,3 +69,10 @@ export class StageClear1 {
     });
   }
 }
+window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+
+  const score = Number(params.get("score")) || 0;
+
+  StageClear1.create(score);
+});

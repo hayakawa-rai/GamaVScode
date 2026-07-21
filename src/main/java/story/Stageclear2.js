@@ -2,7 +2,6 @@
  * STAGE2 CLEAR画面
  */
 import { GameController } from "../control/GameController.js";
-
 import { SoundManager } from "../start/SoundManager.js";
 
 /**

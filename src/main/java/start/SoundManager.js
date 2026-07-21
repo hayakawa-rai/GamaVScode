@@ -62,6 +62,7 @@ export class SoundManager {
   static GAMEOVER = new SoundClip("../../resources/music/gameover.mp3");
   static RETRY = new SoundClip("../../resources/music/retry.mp3");
   static SELECT = new SoundClip("../../resources/music/select.mp3");
+  static CLEAR = new SoundClip("../../resources/music/yay.mp3")
 
   // 2. 音量調節 (Javaの static 初期化ブロックの再現)
   static {
@@ -73,6 +74,7 @@ export class SoundManager {
     this.GAMEOVER.setVolume(0.5); // ゲームオーバー
     this.RETRY.setVolume(0.4); // リトライ
     this.SELECT.setVolume(0.4); // セレクト
+    this.CLEAR.setVolume(0.5); //クリア
   }
 
   /**
