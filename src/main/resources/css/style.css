@@ -35,6 +35,8 @@ body, html {
     aspect-ratio: 16 / 9;
     width: min(100vw, 100vh * 16 / 9);
     height: min(100vh, 100vw * 9 / 16);
+    width: min(100dvw, 100dvh * 16 / 9);
+    height: min(100dvh, 100dvw * 9 / 16);
     min-width: 320px;
     min-height: 180px;
     margin: auto;
@@ -55,6 +57,7 @@ body, html {
         min-width: 320px;
         min-height: 568px;
     }
+
 
     /* 縦持ち時はキャラの幅制約を緩めて、高さいっぱいまで表示させる */
     #syujinkou-wrapper {
@@ -105,6 +108,7 @@ body, html {
     align-items: center;
     z-index: 3;
     pointer-events: none;
+    cursor: pointer;
 }
 
 #tap-text {
@@ -114,6 +118,7 @@ body, html {
     letter-spacing: 0.1em;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
     animation: blinkAndMove 1.2s infinite ease-in-out;
+    pointer-events: none;
 }
 
 @supports not (container-type: size) {
@@ -402,7 +407,7 @@ body, html {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    z-index: 12;
+    z-index: 6;
     pointer-events: none;
 }
 
@@ -432,7 +437,13 @@ body, html {
     pointer-events: none;
 }
 
-#nari-wrapper .sprite-img,
+#nari-wrapper .sprite-img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    object-position: bottom right;
+}
+
 #taku-wrapper .sprite-img {
     width: 110%;
     height: 110%;
@@ -464,6 +475,66 @@ body, html {
     #syujinkou-wrapper { width: 30%; }
     #aniki-wrapper, #nari-wrapper, #taku-wrapper { width: 50%; height: 85%; }
 }
+
+/* ==========================================================================
+   3.5 スマホ単独表示モード：喋っているキャラを画面中央に配置
+   ========================================================================== */
+@media (max-width: 480px) {
+    #syujinkou-wrapper{
+        left: 0;
+        right: 0;
+        width: 100cqw;
+        justify-content: center;
+    }
+    
+    #syujinkou-wrapper .sprite-img {
+        width: 70%;
+        height: 70%;
+        object-fit: contain;
+        object-position: bottom center;
+    }
+
+    #nari-wrapper {
+        left: 0;
+        right: 0;
+        width: 100cqw;
+        justify-content: center;
+    }
+    #taku-wrapper {
+        left: 0;
+        right: 0;
+        width: 100cqw;
+        justify-content: center;
+    }
+    #aniki-wrapper {
+        left: 0;
+        right: 0;
+        width: 100cqw;
+        justify-content: center;
+    }
+
+    #nari-wrapper .sprite-img {
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        object-position: bottom center;
+    }
+
+    #taku-wrapper .sprite-img {
+        width: 110%;
+        height: 110%;
+        object-fit: contain;
+        object-position: bottom center;
+    }
+
+    #aniki-wrapper .sprite-img {
+        width: 130%;
+        height: 130%;
+        object-fit: contain;
+        object-position: bottom center;
+    }
+}
+
 
 /* ==========================================================================
    4. アドベンチャーパート：メッセージボックス
@@ -808,4 +879,30 @@ body, html {
 @keyframes scrollCredits {
     0% { transform: translateY(0vh); }
     100% { transform: translateY(var(--scroll-distance, -2500px)); }
+}
+
+/* ==================================================
+   メニュー内の音量スライダー用スタイル 早川
+   ================================================== */
+.volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px; /* ボタンとの隙間 */
+    background: transparent; 
+    border: none;
+    
+    padding: 8px 16px;
+}
+
+.vol-icon {
+    font-size: 1.2rem;
+    user-select: none;
+}
+
+#volume-slider {
+    width: 140px;
+    cursor: pointer;
+    accent-color: #ffeb3b; /* パックマンらしい黄色いスライダーつまみになります（ブラウザによる） */
 }

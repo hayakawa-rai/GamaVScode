@@ -19,12 +19,11 @@ export class StoryEngine {
         this.isPaused = false;
         this.typingTimer = null;
 
-        // BGM音量：指定が無ければ0.3をデフォルトにする
-        this.bgmVolume = options.bgmVolume ?? 0.3;
+        // 【修正】インスタンスに保持する BGM パスを保存
+        this.bgmPath = options.bgmPath;
 
-        this.bgm = new Audio(options.bgmPath);
-        this.bgm.loop = true;
-        this.bgm.volume = this.bgmVolume;
+        // 【修正】個別の new Audio() は作成せず、Bgmクラスのミキサーを使ってBGMを再生
+        Bgm.playBGM(this.bgmPath);
 
         this.init();
     }
@@ -34,7 +33,8 @@ export class StoryEngine {
         this.ui.menuBtn.addEventListener("click", (e) => { e.stopPropagation(); this.pause(); });
         this.ui.resumeBtn.addEventListener("click", () => this.resume());
         this.ui.titleBtn.addEventListener("click", () => {
-            this.bgm.pause();
+            // 【修正】BGM停止をBgmクラスに委譲
+            Bgm.stopBGM();
             this.options.onTitle();
         });
 
@@ -48,7 +48,6 @@ export class StoryEngine {
         });
         
         this.onStep(this.index, this.ui);
-        Bgm.unlockPlay(this.bgm);
         this.startTyping();
     }
 
@@ -60,7 +59,7 @@ export class StoryEngine {
         this.ui.nextMark.classList.add("hidden");
 
         // 音声再生はここで一括管理
-        if (d.sound) this.playSound(d.sound, d.volume); // d.volumeがあれば個別指定も可能に
+        if (d.sound) this.playSound(d.sound, d.volume); 
 
         this.isTyping = true;
         this.charIndex = 0;
@@ -85,10 +84,10 @@ export class StoryEngine {
         this.ui.nextMark.classList.remove("hidden");
     }
 
-    // 全ての音の再生はここを通す
+    // 全ての音の再生はここを通す（すでに playOneShot でミキサーを完璧に通っています！）
     playSound(path, volume = null) {
         if (!path) return;
-        Bgm.playOneShot(path, volume); // volume省略時はBgm側のテーブルを自動参照
+        Bgm.playOneShot(path, volume); 
     }
 
     handleInput() {
@@ -101,7 +100,8 @@ export class StoryEngine {
                 this.onStep(this.index, this.ui);
                 this.startTyping();
             } else {
-                this.bgm.pause();
+                // 【修正】BGM停止をBgmクラスに委譲
+                Bgm.stopBGM();
                 this.onEnd();
             }
         }
@@ -111,22 +111,22 @@ export class StoryEngine {
         this.isPaused = true;
         clearTimeout(this.typingTimer);
         this.ui.menuOverlay.style.display = "flex";
-        this.bgm.pause();
+        // 【修正】BGMを一時停止
+        Bgm.pauseBGM();
     }
 
     resume() {
         this.isPaused = false;
         this.ui.menuOverlay.style.display = "none";
-        Bgm.unlockPlay(this.bgm);
+        // 【修正】BGMを安全に再開
+        Bgm.resumeBGM();
         if (this.isTyping) this.typeLoop(this.dialogues[this.index].message);
     }
 
     changeBGM(newPath, volume = null) {
-        if (this.bgm.src.includes(newPath)) return;
-        this.bgm.pause();
-        this.bgm = new Audio(newPath);
-        this.bgm.loop = true;
-        this.bgm.volume = volume ?? this.bgmVolume; // 変更後もデフォルト音量を維持
-        Bgm.unlockPlay(this.bgm);
+        if (this.bgmPath === newPath) return;
+        this.bgmPath = newPath;
+        // 【修正】ミキサー経由でBGMを切り替え
+        Bgm.playBGM(newPath);
     }
 }

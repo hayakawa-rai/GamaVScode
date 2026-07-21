@@ -1,7 +1,7 @@
 import { GameController } from "../control/GameController.js";
 import { StoryEngine } from "./StoryEngine.js";
 import { StoryUtils } from "./StoryUtils.js";
-import { Bgm } from "../start/Bgm.js";
+import { Bgm } from "../start/Bgm.js"; // ★新しくなったBgmクラスをインポート
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -32,12 +32,24 @@ document.addEventListener("DOMContentLoaded", () => {
         menuOverlay: document.getElementById("menu-overlay"),
         resumeBtn: document.getElementById("resume-btn"),
         titleBtn: document.getElementById("title-btn"),
+        volumeSlider: document.getElementById('volume-slider'), // ★HTMLに追加したスライダーを取得
         wrappers: {
             syujinkou: document.getElementById('syujinkou-wrapper'),
             aniki: document.getElementById('aniki-wrapper'),
             taku: document.getElementById('taku-wrapper')
         }
     };
+
+    // --- 2.5 音量スライダーの初期化と連動イベント設定 ---
+    if (ui.volumeSlider) {
+        // 保存されているシステム全体の音量をロードしてスライダーの位置を合わせる
+        ui.volumeSlider.value = Bgm.getSystemVolume();
+
+        // つまみが動かされたら、システム全体の音量をリアルタイム変更（自動保存）
+        ui.volumeSlider.addEventListener("input", (e) => {
+            Bgm.setSystemVolume(parseFloat(e.target.value));
+        });
+    }
 
     // --- 各種アニメーション演出 ---
 

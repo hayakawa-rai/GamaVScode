@@ -1,19 +1,23 @@
 /**
- * BGM管理クラス
- * ※ 自動再生ブロック対策(unlockPlay)は、BGM以外の効果音・台詞音でも
- *    共通で使うためこのクラスの静的メソッドとして公開している。
- *    ざっくりいうと、BGMを2つ以上鳴らさないようにしているクラス
+ * BGM・効果音・台詞音管理クラス (音量一括管理・保存対応版)
  */
 export class Bgm {
   static #bgmPlayer = null;
   static #currentPath = null;
   static #currentStageNumber = 1;
-  static #volume = 0.1;
   static #isPinchi = false;
 
+  // Web Audio API（システム全体のミキサー）用のプロパティ
+  static #audioCtx = null;
+  static #masterGain = null;
+  static #systemVolume = 0.5; // デフォルト音量（50%）
+
+  // 各オーディオの接続状態を管理するMap（二重接続エラーを防止する）
+  static #connectedNodes = new WeakMap();
+
   // ==================================================
-  //   台詞・演出用の効果音、ファイルごとの音量テーブル
-  //    ここを書き換えるだけで各SEの大きさを一括調整できる
+  //   台詞・演出用の効果音、ファイルごとの音量バランス
+  //   ※ ここは「全体の最大音量に対して、この効果音は何%にするか」のバランス値になります
   // ==================================================
   static #SOUND_VOLUMES = {
     "jump06.mp3": 0.15,
@@ -31,12 +35,117 @@ export class Bgm {
   static #DEFAULT_SE_VOLUME = 0.2;
 
   // ==================================================
-  // 自動再生ブロック対策
+  // ★重要：システム全体のオーディオ初期化と音量取得・設定
+  // ==================================================
+
+  /**
+   * システムのミキサー（AudioContext）を初期化し、保存されている音量を読み込む
+   */
+  static initSystem() {
+    if (Bgm.#audioCtx) return;
+
+    try {
+      // 1. オーディオシステムを起動
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      Bgm.#audioCtx = new AudioContextClass();
+
+      // 2. 全体の音量を司るミキサー（GainNode）を作成
+      Bgm.#masterGain = Bgm.#audioCtx.createGain();
+
+      // 3. 保存された音量をロード（無ければ 0.5）
+      const savedVolume = localStorage.getItem("gameMasterVolume");
+      Bgm.#systemVolume = savedVolume !== null ? parseFloat(savedVolume) : 0.5;
+
+      // 4. ミキサーの音量を設定し、スピーカーに接続
+      Bgm.#masterGain.gain.value = Bgm.#systemVolume;
+      Bgm.#masterGain.connect(Bgm.#audioCtx.destination);
+    } catch (e) {
+      console.warn("Web Audio API の初期化に失敗しました。標準再生に切り替えます:", e);
+    }
+  }
+
+  /**
+   * 現在の「全体の音量」を取得する（スライダーの初期位置設定に必須）
+   */
+  static getSystemVolume() {
+    Bgm.initSystem();
+    return Bgm.#systemVolume;
+  }
+
+  /**
+   * 【スライダーから呼ぶ用】全体の音量を変更して保存する
+   * @param {number} volume (0.0 〜 1.0)
+   */
+  static setSystemVolume(volume) {
+    Bgm.initSystem();
+    Bgm.#systemVolume = volume;
+
+    // ミキサーの値をリアルタイムで変更
+    if (Bgm.#masterGain) {
+      Bgm.#masterGain.gain.setValueAtTime(volume, Bgm.#audioCtx.currentTime);
+    }
+
+    // ブラウザに自動保存
+    localStorage.setItem("gameMasterVolume", volume);
+  }
+
+  /**
+   * 音源をマスターミキサーに繋いで再生する内部関数
+   * ★修正：play()の成否だけでなく、AudioContextが実際に"running"状態かどうかも確認する。
+   *   モバイルブラウザ(特にiOS Safari)では、ページ遷移直後などユーザー操作の
+   *   文脈外で呼ばれた場合、play()自体は成功したように見えても、AudioContextが
+   *   "suspended"のままで実際には音が出ないことがある。その場合は保留リストに入れて
+   *   次のユーザー操作（タップ/クリック/キー入力）で再試行する。
+   */
+  static #playWithMixer(audioElement) {
+    Bgm.initSystem();
+
+    // タッチ制限対策：サスペンド状態なら再開させる
+    if (Bgm.#audioCtx && Bgm.#audioCtx.state === "suspended") {
+      Bgm.#audioCtx.resume().catch(() => {});
+    }
+
+    // ミキサーが使える場合のみ接続処理
+    if (Bgm.#audioCtx && Bgm.#masterGain) {
+      try {
+        if (!Bgm.#connectedNodes.has(audioElement)) {
+          const source = Bgm.#audioCtx.createMediaElementSource(audioElement);
+          source.connect(Bgm.#masterGain);
+          Bgm.#connectedNodes.set(audioElement, source);
+        }
+      } catch (err) {
+        // すでに接続されている場合などの例外をキャッチ
+        console.debug("Audio node connection managed:", err);
+      }
+    }
+
+    // 自動再生ブロック対策を挟んで再生
+    Bgm.unlockPlay(audioElement);
+
+    // ★AudioContextがまだrunningでなければ、実質的に音が出ていない状態なので
+    //   保留リストに入れて、次のユーザー操作で確実に再試行させる
+    if (Bgm.#audioCtx && Bgm.#audioCtx.state !== "running") {
+      Bgm.#pending.add(audioElement);
+      Bgm.#attachListeners();
+    }
+  }
+
+  // ==================================================
+  // 自動再生ブロック対策（保留リスト）
   // ==================================================
   static #pending = new Set();
   static #listenersAttached = false;
 
+  /**
+   * ★修正：保留中の音を再試行する前に、必ずAudioContextの再開を試みる。
+   *   これがないと、AudioContextがsuspendedのまま個々のaudio.play()だけ
+   *   呼んでも、ミキサーの出口が閉じたままなので音が出ない。
+   */
   static #retryPending() {
+    if (Bgm.#audioCtx && Bgm.#audioCtx.state === "suspended") {
+      Bgm.#audioCtx.resume().catch(() => {});
+    }
+
     Bgm.#pending.forEach((audio) => {
       audio.play().catch((err) => {
         console.warn("再生に失敗しました:", audio.src, err);
@@ -61,12 +170,6 @@ export class Bgm {
     Bgm.#listenersAttached = false;
   }
 
-  /**
-   * audioElement.play() の代わりに必ずこれを呼ぶ。
-   * BGM・効果音・台詞音、すべてこのメソッド経由で再生する。
-   * 自動再生がブロックされた場合は、次のユーザー操作(クリック/タップ/キー入力)で
-   * 保留中の音がまとめて再試行される。呼び出し側でcatchを書く必要はない。
-   */
   static unlockPlay(audioElement) {
     const playPromise = audioElement.play();
     if (playPromise !== undefined) {
@@ -78,38 +181,43 @@ export class Bgm {
     return playPromise;
   }
 
+  // ==================================================
+  // 共通再生機能（これからは volume の個別設定は不要！）
+  // ==================================================
+
   /**
-   * 使い捨ての単発音（台詞ごとの効果音、演出音など）を再生する。
-   * volumeを省略した場合、ファイル名から#SOUND_VOLUMESを自動参照する。
-   * どちらにも無ければ#DEFAULT_SE_VOLUMEを使う。
-   * @param {string} path
-   * @param {number|null} volume 明示指定したい場合のみ渡す
+   * 使い捨ての単発音を再生
    */
   static playOneShot(path, volume = null) {
     const audio = new Audio(path);
+
+    // バランス調整のみ個別で行い、全体音量はミキサーで制御します
     if (volume !== null) {
       audio.volume = volume;
     } else {
       const fileName = path.split("/").pop();
       audio.volume = Bgm.#SOUND_VOLUMES[fileName] ?? Bgm.#DEFAULT_SE_VOLUME;
     }
-    Bgm.unlockPlay(audio);
+
+    Bgm.#playWithMixer(audio);
     return audio;
   }
 
-  // ==================================================
-  // 既存のBGM管理機能（スタート画面用）
-  // ==================================================
+  /**
+   * BGMの開始
+   */
   static playBGM(path) {
     if (this.#bgmPlayer !== null && path === this.#currentPath) return;
     this.stopBGM();
     try {
       const audio = new Audio(path);
       audio.loop = true;
-      audio.volume = this.#volume;
+      audio.volume = 1.0; // BGMの基礎音量は最大にしてミキサー側で制御
+
       this.#bgmPlayer = audio;
       this.#currentPath = path;
-      Bgm.unlockPlay(this.#bgmPlayer);
+
+      Bgm.#playWithMixer(this.#bgmPlayer);
     } catch (error) {
       console.error(
         "BGMファイルの読み込みまたは再生に失敗しました: " + path,
@@ -141,7 +249,6 @@ export class Bgm {
   }
 
   static stopFeverBGM() {
-    // ピンチ状態ならピンチBGMへ、そうでなければ通常のステージBGMへ戻す
     if (this.#isPinchi) {
       this.playPinchiBGM();
     } else {
@@ -175,7 +282,7 @@ export class Bgm {
 
   static resumeBGM() {
     if (this.#bgmPlayer !== null) {
-      Bgm.unlockPlay(this.#bgmPlayer);
+      Bgm.#playWithMixer(this.#bgmPlayer);
     }
   }
 }
