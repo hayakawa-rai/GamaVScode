@@ -1,15 +1,36 @@
 import { GameController } from "../control/GameController.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    let navigated = false;
+let navigated = false;
 
-    // pointerdown = クリック・タップ・ペンを一括カバー
-    document.addEventListener("pointerdown", goToStart);
-    document.addEventListener("keydown", goToStart);
+function goToStart() {
+    if (navigated) return;
+    navigated = true;
 
-    function goToStart() {
-        if (navigated) return; // 連打による二重遷移を防止
-        navigated = true;
-        GameController.switchStart(); // Start.htmlへ遷移
+    // 連打された際に視覚的・操作的にフリーズしたように見せないため、全体を無効化
+    document.body.style.pointerEvents = "none";
+
+    setTimeout(() => {
+        try {
+            GameController.switchStart();
+        } catch (err) {
+            console.error("画面遷移に失敗しました:", err);
+            navigated = false;
+            document.body.style.pointerEvents = "auto";
+        }
+    }, 50);
+}
+
+function attachListeners() {
+    document.addEventListener("pointerdown", goToStart, { once: true });
+    document.addEventListener("keydown", goToStart, { once: true });
+}
+
+document.addEventListener("DOMContentLoaded", attachListeners);
+
+window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+        navigated = false;                          // ①フラグをリセット
+        document.body.style.pointerEvents = "auto";  // ②固まっていたクリック無効化を解除
+        attachListeners();                            // ③{once:true}で消えたリスナーを再登録
     }
 });
