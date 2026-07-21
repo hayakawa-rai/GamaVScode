@@ -15,13 +15,7 @@ export class StageClear3 {
 
     // CLEAR音
     setTimeout(() => {
-      const clearSound = new Audio("../../resources/music/yay.mp3");
-
-      clearSound.volume = 0.5;
-
-      clearSound.play().catch((error) => {
-        console.error("CLEAR音再生失敗", error);
-      });
+      SoundManager.play(SoundManager.CLEAR);
     }, 500);
 
     // スコア表示
