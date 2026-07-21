@@ -44,21 +44,29 @@ document.addEventListener("DOMContentLoaded", () => {
     practiceBgm.volume = 0.5;
     practiceBgm.loop = true;
 
+    // Bgm.unlockPlay を使って自動再生ブロックを回避する
     Bgm.unlockPlay(practiceBgm);
 
+    // ==================================================
+    // 3. BGM停止関数
+    // ==================================================
     function cleanup() {
         practiceBgm.pause();
         practiceBgm.currentTime = 0;
     }
 
+    /**
+     * 変更点: 引数をURL文字列ではなく、実行する関数（callback）に変更
+     * @param {Function} action - 遷移時に実行したい GameController のメソッド
+     */
     function transitionTo(action) {
         clickSound.pause();
         clickSound.currentTime = 0;
         Bgm.unlockPlay(clickSound);
-
+    
         setTimeout(() => {
             cleanup();
-            action();
+            action(); // ここで渡された GameController のメソッドを実行する
         }, 500);
     }
 
