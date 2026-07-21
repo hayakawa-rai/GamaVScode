@@ -20,13 +20,7 @@ export class StageClear2 {
     // CLEAR音
     // ==========================
     setTimeout(() => {
-      const clearSound = new Audio("../../resources/music/yay.mp3");
-
-      clearSound.volume = 0.5;
-
-      clearSound.play().catch((error) => {
-        console.error("CLEAR音再生失敗", error);
-      });
+      SoundManager.play(SoundManager.CLEAR);
     }, 500);
 
     // ==========================
@@ -50,7 +44,6 @@ export class StageClear2 {
     // 次のステージ
     // Story3へ
     // ==========================
-
     nextBtn.addEventListener("click", () => {
       SoundManager.play(SoundManager.SELECT);
 
@@ -62,7 +55,6 @@ export class StageClear2 {
     // ==========================
     // タイトルへ
     // ==========================
-
     titleBtn.addEventListener("click", () => {
       SoundManager.play(SoundManager.SELECT);
 
@@ -74,7 +66,6 @@ export class StageClear2 {
 }
 
 /* テスト用 */
-
 window.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
 

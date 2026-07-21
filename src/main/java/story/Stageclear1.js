@@ -42,7 +42,7 @@ export class StageClear1 {
     // 次のステージ
     // ==========================
     nextBtn.addEventListener("click", () => {
-      console.log("次のステージボタン押下");a
+      console.log("次のステージボタン押下");
 
       SoundManager.play(SoundManager.SELECT);
 
