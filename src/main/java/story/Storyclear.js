@@ -57,7 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(clickSound.src);
 
   // 画面がロードされたら即座にクリアファンファーレを鳴らす
-  Bgm.unlockPlay(clickSound);()
+  clearSound
+    .play()
     .catch((err) =>
       console.log(
         "ブラウザの制限：ユーザー操作後に音声が再生可能になります",
