@@ -38,7 +38,7 @@ export class GameController {
     this.startLoop();
   }
 
-  /**
+/**
    * スマホ・画面操作用：スワイプ（フリック）で移動方向を制御
    * @param {Object} model
    * @param {Function} onMove スワイプ操作が発生した瞬間に呼ばれるコールバック(BGM開始トリガー用)
@@ -55,6 +55,7 @@ export class GameController {
       }
     };
 
+    // --- マウス操作用 ---
     window.addEventListener("mousedown", (e) => {
       GameController.#touchStart[0] = e.clientX;
       GameController.#touchStart[1] = e.clientY;
@@ -77,6 +78,34 @@ export class GameController {
         }
       }
     });
+
+    // --- タッチ操作用（スマホ・iPhone 17対応） ---
+    window.addEventListener("touchstart", (e) => {
+      if (e.touches && e.touches.length > 0) {
+        GameController.#touchStart[0] = e.touches[0].clientX;
+        GameController.#touchStart[1] = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener("touchend", (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const deltaX = e.changedTouches[0].clientX - GameController.#touchStart[0];
+        const deltaY = e.changedTouches[0].clientY - GameController.#touchStart[1];
+        const absX = Math.abs(deltaX);
+        const absY = Math.abs(deltaY);
+
+        if (
+          absX > GameController.#FLICK_THRESHOLD ||
+          absY > GameController.#FLICK_THRESHOLD
+        ) {
+          if (absX > absY) {
+            sendDirection(deltaX > 0 ? "RIGHT" : "LEFT");
+          } else {
+            sendDirection(deltaY > 0 ? "DOWN" : "UP");
+          }
+        }
+      }
+    }, { passive: true });
   }
 
   /**
