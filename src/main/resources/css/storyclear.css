@@ -1,0 +1,30 @@
+/* =========================================
+   STORY CLEAR タイトルボタン専用
+   ========================================= */
+
+#title-btn {
+    background: linear-gradient(
+        to bottom,
+        #AEEBFF,
+        #87CEEB
+    ) !important;
+
+    color: white;
+    border: 3px solid #5BBCE8;
+
+    transition: all 0.2s ease;
+}
+
+#title-btn:hover {
+    background: linear-gradient(
+        to bottom,
+        #DDF8FF,
+        #AEEBFF
+    ) !important;
+
+    transform: scale(1.05);
+}
+
+#title-btn:active {
+    transform: scale(0.95);
+}

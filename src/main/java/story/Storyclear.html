@@ -1,33 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <!-- 文字コード -->
+    <meta charset="UTF-8" />
+
+    <!-- レスポンシブ対応 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ブラウザタブのタイトル -->
     <title>STORY CLEAR</title>
-    <link rel="stylesheet" href="../../resources/css/style.css">
-</head>
-<body>
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="../../resources/css/storyclear.css" />
+    <link rel="stylesheet" href="../../resources/css/style.css" />
+  </head>
+  <body>
+    <!-- =========================================
+            STORY CLEAR画面全体
+        ========================================= -->
     <div id="game-container">
-        <img id="bg" class="fit-screen" src="../../resources/picture/EMD_picture.jpg" alt="Clear Background">
-        <div id="white-filter"></div>
+      <!-- 背景画像 -->
+      <img
+        id="bg"
+        class="fit-screen"
+        src="../../resources/picture/EMD_picture.jpg"
+        alt="Clear Background"
+      />
+      <!-- 白いフィルター -->
+      <div id="white-filter"></div>
 
-        <div id="story-clear-text" class="center-notice">STORY CLEAR!!</div>
+      <!-- =========================================
+            STORY CLEAR文字
+            (最初に表示される）
+            ========================================= -->
+      <div id="story-clear-text" class="center-notice">STORY CLEAR!!</div>
 
-        <div id="roll-container">
-            <div id="credits-text"></div>
+      <!-- =========================================
+            スタッフロールエリア
+            ========================================= -->
+      <div id="roll-container">
+        <!-- JavaScriptでスタッフ情報を挿入 -->
+        <div id="credits-text"></div>
+      </div>
+
+      <!-- =========================================
+            エンディング表示エリア
+            スタッフロール終了後に表示
+            ========================================= -->
+      <div id="thank-box" class="hidden">
+        <!-- ゲームロゴ -->
+        <img
+          id="logo-view"
+          src="../../resources/picture/title.png"
+          alt="Game Logo"
+        />
+        <!-- THANK YOU メッセージ -->
+        <div
+          id="thank-you-text"
+          class="center-notice"
+          style="position: static; transform: none"
+        >
+          THANK YOU FOR PLAYING!!
         </div>
 
-        <div id="thank-box" class="hidden">
-            <img id="logo-view" src="../../resources/picture/title.png" alt="Game Logo">
-            <div id="thank-you-text" class="center-notice" style="position:static; transform:none;">THANK YOU FOR PLAYING!!</div>
-            <button id="title-btn" class="game-button2 hidden" style="background-color: #EAF4FF; color: #2B4A6A; border-color: white; border-radius: 10px;">タイトルへ</button>
-        </div>
+        <!-- タイトルへ戻るボタン -->
+        <button id="title-btn" class="game-button2 hidden">タイトルへ</button>
+      </div>
 
-        <div id="company-box" class="hidden">
-            <img id="company-logo" src="../../resources/picture/EMD_logo.png" alt="Company Logo">
-            <div id="copyright-text">2026年度 EMD 新卒一同</div>
-        </div>
+      <!-- =========================================
+            コピーライト表示エリア
+            エンディング後に表示
+            ========================================= -->
+      <div id="company-box" class="hidden">
+        <!-- 会社ロゴ -->
+        <img
+          id="company-logo"
+          src="../../resources/picture/EMD_logo.png"
+          alt="Company Logo"
+        />
+        <!-- 著作権表記 -->
+        <div id="copyright-text">2026年度 EMD 新卒一同</div>
+      </div>
     </div>
+    <!-- =========================================
+            STORY CLEAR画面処理
+        ========================================= -->
     <script type="module" src="Storyclear.js"></script>
-</body>
+  </body>
 </html>
