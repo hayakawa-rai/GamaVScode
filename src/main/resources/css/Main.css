@@ -156,3 +156,27 @@ html, body {
 .stage3 .game-bg { background-color: #1a0000; }
 .stage3 .game-wall { background-color: rgb(238, 30, 0); }
 .stage3 .game-pacman { background-color: #ffaa00; }
+
+/* ==================================================
+   ポーズ画面内の音量スライダー用スタイル
+   ================================================== */
+.volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 15px 0; /* PAUSEタイトルやボタンとの間隔 */
+    background: transparent; /* 背景なし（透明） */
+    border: none;
+}
+
+.vol-icon {
+    font-size: 1.2rem;
+    user-select: none;
+}
+
+#volume-slider {
+    width: 150px;
+    cursor: pointer;
+    accent-color: #ffeb3b; /* パックマン風の黄色のつまみ */
+}

@@ -19,6 +19,11 @@
 
         <div id="pause-layer">
             <div class="pause-title">PAUSE</div>
+                <div class="volume-container">
+                    <span class="vol-icon">🔈</span>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.05">
+                    <span class="vol-icon">🔊</span>
+                </div>
             <button id="resume-btn" class="game-button">ゲーム再開</button>
             <button id="how-to-play-btn" class="game-button">操作説明</button>
             <div id="how-to-play-text" class="how-to-play-text">
@@ -49,6 +54,7 @@
                     howToPlayBtn: document.getElementById("how-to-play-btn"),
                     howToPlayText: document.getElementById("how-to-play-text"),
                     titleBtn: document.getElementById("title-btn"),
+                    volumeSlider: document.getElementById("volume-slider"),//ボリューム用
                 };
                 this.dom.background.src = bgSrc;
                 document.title = title;
@@ -65,6 +71,17 @@
                 model.sampleModel(true); // 練習モード用の配置に上書き
 
                 const view = new MapView(model);
+
+                // 2. 音量スライダーの初期化とイベント登録を追加
+                if (this.dom.volumeSlider) {
+                    // 保存されている音量をロードしてバーの位置をセット
+                    this.dom.volumeSlider.value = Bgm.getSystemVolume();
+
+                    // バーを動かしたときにリアルタイムで音量を変更＆保存
+                    this.dom.volumeSlider.addEventListener("input", (e) => {
+                        Bgm.setSystemVolume(parseFloat(e.target.value));
+                    });
+                }
 
                 this.dom.resumeBtn.onclick = () => this.controller?.togglePauseByButton();
                 this.dom.menuBtn.onclick = () => this.controller?.togglePauseByButton();
