@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
- </head>   
+ <head>   
 
     <!-- 文字コード -->
     <meta charset="UTF-8">
@@ -17,7 +17,7 @@
 
     <!-- GameOver専用CSS -->
     <link rel="stylesheet" href="../../resources/css/gameover.css">
-
+</head>
 <body>
 
 <div id="gameover-root">
@@ -69,32 +69,10 @@
     </div>
 </div>
 
-    <!-- GameOver処理 -->
-    <script type="module"
-            src="Gameover.js"></script>
-
-            <!-- 起動用スクリプト -->
-<script type="module">
-    import { GameOver } from "./Gameover.js";
-
-    // URLのクエリパラメータを取得
-    const params = new URLSearchParams(window.location.search);
-    const stage = params.get("stage");
-    const isPractice = params.get("practice") === "true";
-    const score = Number(params.get("score")) || 0;
-
-    // GameOver画面を初期化して起動
-    GameOver.create(
-        () => {
-            // リトライボタンが押された時の遷移先
-            window.location.href = isPractice
-                ? `../test${stage}/PracticeMain${stage}.html`
-                : `../test${stage}/Main${stage}.html`;
-        },
-        score,
-        false // NEW RECORD判定は別途ハイスコア管理と連携する場合は差し替え
-    );
-</script>
-
+    <!-- GameOver処理の起動 -->
+    <script type="module">
+        import { GameOver } from "./Gameover.js";
+        GameOver.init();
+    </script>
 </body>
 </html>

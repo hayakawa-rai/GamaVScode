@@ -1,66 +1,49 @@
-/**
- * GameOver画面
- */
-
 import { SoundManager } from "../start/SoundManager.js";
 import { GameController } from "../control/GameController.js";
+import { HighScoreManager } from "../common/HighScoreManager.js";
 
 export class GameOver {
-  /**
-   * ゲームオーバー画面初期化
-   *
-   * @param {Function} retryAction リトライ処理
-   * @param {number} score スコア
-   * @param {boolean} isNewRecord 新記録フラグ
-   */
-  static create(retryAction, score, isNewRecord) {
-    // ===================================
-    // スコア表示
-    // ===================================
-    const scoreLabel = document.getElementById("score-label");
+  static init() {
+    // URLパラメータの取得
+    const params = new URLSearchParams(window.location.search);
+    const stage = params.get("stage") || "1";
+    const isPractice = params.get("practice") === "true";
+    const score = Number(params.get("score")) || 0;
 
-    scoreLabel.textContent = `SCORE : ${score}`;
-
-    // ===================================
-    // GAME OVER 効果音
-    // ===================================
-    SoundManager.play(SoundManager.GAMEOVER);
-
-    // ===================================
-    // 要素取得
-    // ===================================
-    const newRecordLabel = document.getElementById("new-record-label");
-
-    const retryBtn = document.getElementById("retry-btn");
-
-    const titleBtn = document.getElementById("title-btn");
-
-    // ===================================
-    // NEW RECORD 表示
-    // ===================================
+    // ハイスコア判定と保存
+    const oldHighScore = HighScoreManager.loadHighScore(stage);
+    const isNewRecord = score > oldHighScore;
     if (isNewRecord) {
-      newRecordLabel.style.display = "block";
+        HighScoreManager.updateHighScore(stage, score);
     }
 
-    // ===================================
+    // スコア表示
+    const scoreLabel = document.getElementById("score-label");
+    scoreLabel.textContent = `SCORE : ${score}`;
+
+    // NEW RECORD 表示
+    if (isNewRecord) {
+      document.getElementById("new-record-label").style.display = "block";
+    }
+
+    // GAME OVER 効果音
+    SoundManager.play(SoundManager.GAMEOVER);
+
     // リトライ
-    // ===================================
+    const retryBtn = document.getElementById("retry-btn");
     retryBtn.addEventListener("click", () => {
       SoundManager.play(SoundManager.RETRY);
-
       setTimeout(() => {
-        if (retryAction) {
-          retryAction();
-        }
+        window.location.href = isPractice
+            ? `../test${stage}/PracticeMain${stage}.html`
+            : `../test${stage}/Main${stage}.html`;
       }, 500);
     });
 
-    // ===================================
     // タイトルへ戻る
-    // ===================================
+    const titleBtn = document.getElementById("title-btn");
     titleBtn.addEventListener("click", () => {
       SoundManager.play(SoundManager.SELECT);
-
       setTimeout(() => {
         GameController.switchStart();
       }, 500);

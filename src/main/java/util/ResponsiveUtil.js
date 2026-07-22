@@ -3,35 +3,6 @@
  *
  * スマホ～PCまで画面サイズに応じてUIを追従させるための
  * 共通レスポンシブユーティリティ。
- *
- * JavaFX版 ResponsiveUtil.java の JavaScript移植版
- *
- * 使用例:
- *
- * ResponsiveUtil.bindMaxWidth(rootBox, 0.9);
- *
- * ResponsiveUtil.bindImageFitWidth(
- *     logoImage,
- *     0.5
- * );
- *
- * ResponsiveUtil.bindPrefSize(
- *     button,
- *     0.35,
- *     0.11,
- *     160,
- *     44
- * );
- *
- * ResponsiveUtil.bindButtonFontAndPadding(
- *     button,
- *     14,
- *     0.045,
- *     30,
- *     8,
- *     0.02,
- *     20
- * );
  */
 
 export class ResponsiveUtil {

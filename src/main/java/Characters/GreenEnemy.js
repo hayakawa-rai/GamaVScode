@@ -1,3 +1,7 @@
+import { Enemy } from "./Enemy.js";
+import { GameConfig } from "../common/GameConfig.js";
+import { EnemyState } from "./EnemyState.js";
+import { Direction } from "./Direction.js";
 // ==================================================
 // GreenEnemy（緑）
 //
@@ -5,12 +9,6 @@
 // 遠いとき → プレイヤーを追跡
 // 近いとき → 縄張りへ戻る
 // ==================================================
-
-import { Enemy } from "./Enemy.js";
-import { GameConfig } from "../common/GameConfig.js";
-import { EnemyState } from "./EnemyState.js";
-import { Direction } from "./Direction.js";
-
 export class GreenEnemy extends Enemy {
 
     // 初期位置（エネミーハウス内）

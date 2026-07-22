@@ -1,15 +1,13 @@
+import { Enemy } from "./Enemy.js";
+import { GameConfig } from "../common/GameConfig.js";
+import { EnemyState } from "./EnemyState.js";
+import { Direction } from "./Direction.js";
 // ==================================================
 // YellowEnemy（黄）
 //
 // プレイヤーの進行方向を予測して追跡する敵
 // プレイヤーの4マス先を目標地点として移動する
 // ==================================================
-
-import { Enemy } from "./Enemy.js";
-import { GameConfig } from "../common/GameConfig.js";
-import { EnemyState } from "./EnemyState.js";
-import { Direction } from "./Direction.js";
-
 export class YellowEnemy extends Enemy {
 
     // 初期位置（エネミーハウス内）

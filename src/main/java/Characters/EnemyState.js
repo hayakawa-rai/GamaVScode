@@ -1,4 +1,3 @@
-
 export const EnemyState = Object.freeze({
 	// 縄張りモード（自分の縄張りの四隅へ戻る）
     SCATTER: "SCATTER",

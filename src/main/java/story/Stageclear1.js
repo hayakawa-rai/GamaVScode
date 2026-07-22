@@ -1,14 +1,11 @@
+import { GameController } from "../control/GameController.js";
+import { SoundManager } from "../start/SoundManager.js";
 /**
  * STAGE1 CLEAR画面
  */
-
-import { GameController } from "../control/GameController.js";
-import { SoundManager } from "../start/SoundManager.js";
-
 export class StageClear1 {
   /**
    * 初期化
-   *
    * @param {number} score スコア
    */
   static create(score) {
@@ -24,7 +21,6 @@ export class StageClear1 {
     // ==========================
     // スコア表示
     // ==========================
-
     const scoreLabel = document.getElementById("score-label");
 
     if (scoreLabel) {
@@ -34,21 +30,17 @@ export class StageClear1 {
     // ==========================
     // ボタン取得
     // ==========================
-
     const nextBtn = document.getElementById("next-btn");
     const titleBtn = document.getElementById("title-btn");
 
     // ==========================
     // 次のステージ
+    // Story2へ
     // ==========================
     nextBtn.addEventListener("click", () => {
-      console.log("次のステージボタン押下");
-
       SoundManager.play(SoundManager.SELECT);
 
       setTimeout(() => {
-        console.log("Story2へ遷移");
-
         GameController.switchToStory2();
       }, 500);
     });
@@ -57,18 +49,15 @@ export class StageClear1 {
     // タイトルへ
     // ==========================
     titleBtn.addEventListener("click", () => {
-      console.log("タイトルボタン押下");
-
       SoundManager.play(SoundManager.SELECT);
 
       setTimeout(() => {
-        console.log("タイトルへ遷移");
-
         GameController.switchStart();
       }, 500);
     });
   }
 }
+
 window.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
 

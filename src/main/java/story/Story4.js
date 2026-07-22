@@ -1,10 +1,10 @@
 import { GameController } from "../control/GameController.js";
 import { StoryEngine } from "./StoryEngine.js";
 import { StoryUtils } from "./StoryUtils.js";
-import { Bgm } from "../start/Bgm.js"; // ★新しくなったBgmクラスをインポート
+import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. シナリオデータの定義
+    // --- 1. シナリオデータの定義 ---
     const dialogues = [
         { speaker: "あにき", message: "……!?。", sound: "../../resources/music/damage2.mp3", color: "red" },
         { speaker: "仙石さん", message: "……終わりだな。", sound: null, color: "white" },
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { speaker: "あにき", message: "はい。先輩！！", sound: "../../resources/music/jump06.mp3", color: "red" }
     ];
 
-    // 2. UI要素の取得
+    // --- 2. DOM要素の取得 ---
     const ui = {
         container: document.getElementById("game-container"),
         nameText: document.getElementById("name-text"),
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         menuOverlay: document.getElementById("menu-overlay"),
         resumeBtn: document.getElementById("resume-btn"),
         titleBtn: document.getElementById("title-btn"),
-        volumeSlider: document.getElementById('volume-slider'), // ★HTMLに追加したスライダーを取得
+        volumeSlider: document.getElementById('volume-slider'),
         wrappers: {
             syujinkou: document.getElementById("syujinkou-wrapper"),
             aniki: document.getElementById("aniki-wrapper")
@@ -48,38 +48,43 @@ document.addEventListener("DOMContentLoaded", () => {
             Bgm.setSystemVolume(parseFloat(e.target.value));
         });
     }
+    
+    // あにきの画像要素（表情切り替え用）
+    const anikiImg = document.getElementById("aniki");
 
-    // --- 各種アニメーション演出 ---
-
-     const anikiImg = document.getElementById("aniki");
-
-    const onStep = (index, ui) => {
-        const d = dialogues[index];
-
-        // 立ち絵切り替え（共通処理・.active方式に統一）
-        StoryUtils.updateCharacterDisplay(d.speaker, ui.wrappers);
-
-        // あにきの表情切り替え（Story4固有の演出はそのまま残す）
-        if (d.speaker === "あにき") {
-            const isAngry = (index >= 2 && index <= 10);
-            anikiImg.src = isAngry
-                ? "../../resources/picture/aniki2.png"
-                : "../../resources/picture/aniki-udekumi.png";
-        }
-
-        // ジャンプ演出（jump06サウンドの時だけ）
-        StoryUtils.triggerJumpIfNeeded(d, ui.wrappers, (sound) => sound && sound.includes("jump06"));
-    };
-
+    // --- 3. エンジン起動 ---
     const engine = new StoryEngine(dialogues, {
         bgmPath: "../../resources/music/endhing.mp3",
+        bgmVolume: 0.2, // BGM音量
         ui: ui,
-        onStep: onStep,
+        
+        onStep: (index, ui) => {
+            const d = dialogues[index];
+            const w = ui.wrappers;
+
+            // A. 立ち絵切り替え（共通処理）
+            StoryUtils.updateCharacterDisplay(d.speaker, w);
+
+            // B. あにきの表情切り替え
+            if (d.speaker === "あにき" && anikiImg) {
+                const isAngry = (index >= 2 && index <= 10);
+                anikiImg.src = isAngry
+                    ? "../../resources/picture/aniki2.png"
+                    : "../../resources/picture/aniki-udekumi.png";
+            }
+
+            // C. ジャンプ演出
+            StoryUtils.triggerJumpIfNeeded(d, w, (sound) => sound && sound.includes("jump06"));
+        },
+        
         onEnd: () => {
             const fadeRect = document.getElementById("fade-rect");
             if (fadeRect) fadeRect.style.opacity = "1";
             setTimeout(() => { GameController.switchStoryClear(); }, 1500);
         },
-        onTitle: () => { GameController.switchStart(); }
+        
+        onTitle: () => {
+            GameController.switchStart();
+        }
     });
 });

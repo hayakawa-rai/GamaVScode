@@ -1,14 +1,12 @@
+import { Enemy } from "./Enemy.js";
+import { GameConfig } from "../common/GameConfig.js";
+import { EnemyState } from "./EnemyState.js";
+import { Direction } from "./Direction.js";
 // ==================================================
 // RedEnemy（赤）
 //
 // 最短距離でプレイヤーを追跡する敵
 // ==================================================
-
-import { Enemy } from "./Enemy.js";
-import { GameConfig } from "../common/GameConfig.js";
-import { EnemyState } from "./EnemyState.js";
-import { Direction } from "./Direction.js";
-
 export class RedEnemy extends Enemy {
 
     // 初期位置（エネミーハウス中央付近）
@@ -60,7 +58,6 @@ if (this.mapData) {
             break;
     }
 }
-
 
 
         // ==========================================

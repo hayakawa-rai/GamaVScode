@@ -1,10 +1,9 @@
+import { Bgm } from "../start/Bgm.js";
+import { HighScoreManager } from "../common/HighScoreManager.js";
 /**
  * ゲーム全体を管理・制御するコントローラークラス (GameController)
  * Main1〜3 / PracticeMain1〜3 共通で使用する
  */
-import { Bgm } from "../start/Bgm.js";
-import { HighScoreManager } from "../common/HighScoreManager.js";
-
 export class GameController {
   static #touchStart = [0, 0];
   static #FLICK_THRESHOLD = 30.0;
@@ -79,7 +78,7 @@ export class GameController {
         }
       }
     });
-     // --- タッチ操作用（スマホ・iPhone 17対応） ---
+     // --- タッチ操作用（スマホ対応） ---
     window.addEventListener("touchstart", (e) => {
       if (e.touches && e.touches.length > 0) {
         GameController.#touchStart[0] = e.touches[0].clientX;
@@ -126,7 +125,7 @@ export class GameController {
         if (typeof this.model.forceStageClear === "function") {
           this.model.forceStageClear();
         } else {
-          console.log("⚠️ このモデルには forceStageClear メソッドがありません");
+          console.log("このモデルには forceStageClear メソッドがありません");
         }
         return;
       }
@@ -176,7 +175,7 @@ export class GameController {
             this.model.update();
           }
 
-          // 💀 ゲームオーバー判定
+          // ゲームオーバー判定
           if (this.model.isGameOver && this.model.isGameOver()) {
             this.stop();
             if (this.isTransitioning) return;
@@ -204,7 +203,7 @@ export class GameController {
             return;
           }
 
-          // 🏁 ステージクリア判定
+          // ステージクリア判定
           if (this.model.isCleared && this.model.isCleared()) {
             if (this.isPractice) {
               // 練習モード：クリアの概念はなく、エサを復活させて延々と続行するだけ

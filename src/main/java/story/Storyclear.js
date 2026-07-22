@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. JavaFXベースの時間差演出タイムライン
   // ==================================================
 
-  // ① 4秒間 「STORY CLEAR!!」 を見せたのち、スタッフロールを始動
+  // 4秒間 「STORY CLEAR!!」 を見せたのち、スタッフロールを始動
   setTimeout(() => {
     storyClearText.classList.add("hidden"); // 中央の文字を消す
     endingBgm.play().catch((e) => console.log(e)); // BGMループ再生開始
@@ -83,13 +83,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // CSSのクラスを付与してGPU加速の効いた滑らかな23秒アニメーションをトリガー
     rollContainer.classList.add("start-roll");
 
-    // ② 23秒間のスタッフロールスクロールが終了した時の処理（23秒後）
+    // 23秒間のスタッフロールスクロールが終了した時の処理（23秒後）
     setTimeout(() => {
       rollContainer.classList.add("hidden"); // クレジットを消す
       thankBox.classList.remove("hidden"); // ロゴとTHANK YOUを表示
       companyBox.classList.remove("hidden"); // 右下のコピーライトを表示
 
-      // ③ そこからさらに2秒の余韻待機（PauseTransition）を経てボタンを出現させる
+      // そこからさらに2秒の余韻待機（PauseTransition）を経てボタンを出現させる
       setTimeout(() => {
         titleBtn.classList.remove("hidden");
       }, 2000);
