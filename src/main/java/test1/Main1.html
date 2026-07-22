@@ -151,7 +151,6 @@
             pauseLayer: document.getElementById("pause-layer"),
             resumeBtn: document.getElementById("resume-btn"),
             howToPlayBtn: document.getElementById("how-to-play-btn"),
-            howToPlayText: document.getElementById("how-to-play-text"),
             titleBtn: document.getElementById("title-btn"),
             volumeSlider: document.getElementById("volume-slider"), //ボリューム用
           };
@@ -260,12 +259,11 @@
             this.stopTimer();
             this.controller?.forceBackToTitle();
           };
-          this.dom.howToPlayBtn.onclick = () => {
-            const isHidden =
-              window.getComputedStyle(this.dom.howToPlayText).display ===
-              "none";
-            this.dom.howToPlayText.style.display = isHidden ? "block" : "none";
-          };
+            this.dom.howToPlayBtn.onclick = () => {
+                document
+                    .getElementById("help-panel")
+                    .classList.remove("hidden");
+            };
 
           model.initEnemy(document.createElement("img"));
 
@@ -282,8 +280,65 @@
           this.startTimer(model);
 
           this.dom.canvas.focus();
+
+          
+        // ページ送り
+        const pages = document.querySelectorAll(
+            "#help-panel .page-wrapper"
+        );
+
+        const dots = document.querySelectorAll(
+            "#help-panel .indicator-dot"
+        );
+
+        const prevBtn = document.querySelector(
+            "#help-panel #prev-btn"
+        );
+
+        const nextBtn = document.querySelector(
+            "#help-panel #next-btn"
+        );
+
+        let currentPage = 0;
+
+        function updatePage(index) {
+
+            currentPage =
+                (index + pages.length) % pages.length;
+
+            pages.forEach((page, i) => {
+                page.style.display =
+                    i === currentPage ? "block" : "none";
+            });
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle(
+                    "active",
+                    i === currentPage
+                );
+            });
         }
-      }
+
+        updatePage(0);
+
+        prevBtn.onclick = () =>
+            updatePage(currentPage - 1);
+
+        nextBtn.onclick = () =>
+            updatePage(currentPage + 1);
+
+        //  戻るボタン
+        const backBtn = document.getElementById("back-btn");
+
+        if (backBtn) {
+            backBtn.onclick = () => {
+                document
+                    .getElementById("help-panel")
+                    .classList.add("hidden");
+            };
+        }
+    }
+}
 
       window.addEventListener("DOMContentLoaded", () => {
         new Main(
