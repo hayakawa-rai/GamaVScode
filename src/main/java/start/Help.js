@@ -1,3 +1,5 @@
+// Help.js
+
 import { GameController } from "../control/GameController.js";
 import { Bgm } from "./Bgm.js";
 
@@ -18,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const startBgm = new Audio("../../resources/music/startbgm.mp3");
 
     clickSound.volume = 0.4;
-    startBgm.volume = 0.3;
+    startBgm.volume = 0.5;
     startBgm.loop = true;
 
     // 画面ロード時にBGMをスタート
