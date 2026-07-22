@@ -1,187 +1,297 @@
 <!doctype html>
 <html lang="ja">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>仙石さん - ステージ 1</title>
-    <link rel="stylesheet" href="../../resources/css/Main.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../../resources/css/Main.css" />
+  </head>
+  <body>
     <div id="game-root" class="stage1">
-        <img id="background-view" src="../../resources/picture/emd-nottori.jpg" alt="Background">
+      <img
+        id="background-view"
+        src="../../resources/picture/emd-nottori.jpg"
+        alt="Background"
+      />
 
-        <!-- 画面上部中央のタイマー表示要素 -->
-        <div id="game-timer">03:00</div>  /* 03:00*/
+      <!-- 画面上部中央のタイマー表示要素 -->
+      <div id="game-timer">03:00</div>
+      /* 03:00*/
 
-        <div id="game-base" class="stage1">
-            <canvas id="game-canvas" tabindex="0"></canvas>
+      <div id="game-base" class="stage1">
+        <canvas id="game-canvas" tabindex="0"></canvas>
+      </div>
+
+      <button id="menu-btn">
+        <img src="../../resources/picture/menu.png" alt="Menu" />
+      </button>
+
+      <div id="pause-layer">
+        <div class="pause-title">PAUSE</div>
+        <div class="volume-container">
+          <span class="vol-icon">🔈</span>
+          <input type="range" id="volume-slider" min="0" max="1" step="0.05" />
+          <span class="vol-icon">🔊</span>
         </div>
+        <button id="resume-btn" class="game-button">ゲーム再開</button>
+        <button id="how-to-play-btn" class="game-button">基本説明</button>
 
-        <button id="menu-btn">
-            <img src="../../resources/picture/menu.png" alt="Menu">
-        </button>
+        <div id="help-panel" class="hidden">
 
-        <div id="pause-layer">
-            <div class="pause-title">PAUSE</div>
-                <div class="volume-container">
-                    <span class="vol-icon">🔈</span>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.05">
-                    <span class="vol-icon">🔊</span>
+
+
+         <div class="main-container">
+        <div class="panel">
+            <div class="title">基本説明</div>
+            <hr class="divider">
+            
+            <div class="page-stack">
+                <!-- ページ1：操作 -->
+                <div class="page-wrapper" id="page-0">
+                    <div class="page-heading">操作</div>
+                    <div class="page-content">
+                        <div class="move-control-row">
+                            <span>移動：</span>
+                            <img src="../../resources/picture/WASD.png" alt="WASD">
+                            <span>または</span>
+                            <img src="../../resources/picture/yazirusi.png" alt="矢印">
+                        </div>
+                        <div class="spacer" style="height: 6px;"></div>
+                        <div class="note-row">
+                            <div class="icon-box"></div>
+                            <div class="note-text">スマホでの移動：画面スワイプ</div>
+                        </div>
+                    </div>
                 </div>
-            <button id="resume-btn" class="game-button">ゲーム再開</button>
-            <button id="how-to-play-btn" class="game-button">操作説明</button>
-            <div id="how-to-play-text" class="how-to-play-text">
-                移動 : ↑↓←→ / WASD<br>画面スワイプ(スマホ用)
+
+                <!-- ページ2：アイテム -->
+                <div class="page-wrapper" id="page-1">
+                    <div class="page-heading">アイテム</div>
+                    <div class="page-content">
+                        <div class="note-row">
+                            <div class="icon-box"><div class="dot-icon"></div></div>
+                            <div class="note-text">エサを食べるとスコアが加算されます。</div>
+                        </div>
+                        <div class="note-row">
+                            <div class="icon-box"><img src="../../resources/picture/Chii_Item.png" class="power-pellet-icon" alt="パワーエサ"></div>
+                            <div class="note-text">パワーエサを食べるとスコアが加算され、一定時間敵を撃退できます。</div>
+                        </div>
+                        <div class="fruit-row">
+                            <div class="fruit-item"><img src="../../resources/picture/sakuranbo.png"><span>＋100</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/ichigo.png"><span>＋300</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/orange.png"><span>＋500</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/ringo.png"><span>＋700</span></div>
+                            <div class="fruit-item"><img src="../../resources/picture/budo.png"><span>＋1000</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ページ3：ルール -->
+                <div class="page-wrapper" id="page-2">
+                    <div class="page-heading">ルール</div>
+                    <div class="page-content">
+                        <div class="note-row"><div class="note-text">・全てのエサを食べるとステージクリア。</div></div>
+                        <div class="note-row"><div class="note-text">・敵に3回触れるとゲームオーバー。</div></div>
+                        <div class="note-row"><div class="note-text">・端の通路は「ワープトンネル」で繋がっています。</div></div>
+                    </div>
+                </div>
+
+                <!-- ページ4：モード -->
+                <div class="page-wrapper" id="page-3">
+                    <div class="page-heading">モード</div>
+                    <div class="page-content">
+                        <div class="mode-heading">▶ストーリー</div>
+                        <div class="note-text">物語を進めながら遊ぶモードです。</div>
+                        <div class="spacer" style="height: 10px;"></div>
+                        <div class="mode-heading">⚔練習モード</div>
+                        <div class="note-text">エサが無限に再配置され、何度でも遊べます。</div>
+                    </div>
+                </div>
             </div>
-            <button id="title-btn" class="game-button">タイトルへ戻る</button>
+
+            <div class="indicator">
+                <div class="indicator-dot active"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+            </div>
         </div>
+
+        <div class="arrow-row">
+            <button class="arrow-btn" id="prev-btn">◀</button>
+            <button class="arrow-btn" id="next-btn">▶</button>
+        </div>
+
+        <button class="help-button back-button-layout" id="back-btn">戻る</button>
+
+
+
+        </div>
+        <button id="title-btn" class="game-button">タイトルへ戻る</button>
+      </div>
     </div>
 
     <script type="module">
-        import { GameController } from "../control/GameController.js";
-        import { MapData } from "./model/MapData.js";
-        import { MapView } from "./view/MapView.js";
-        import { Bgm } from "../start/Bgm.js";
+      import { GameController } from "../control/GameController.js";
+      import { MapData } from "./model/MapData.js";
+      import { MapView } from "./view/MapView.js";
+      import { Bgm } from "../start/Bgm.js";
 
-        class Main {
-            constructor(stageNumber, bgSrc, title) {
-                this.stageNumber = stageNumber;
-                this.controller = null;
-                this.timeRemaining = 180; // 3分 = 180秒
-                this.timerInterval = null;
+      class Main {
+        constructor(stageNumber, bgSrc, title) {
+          this.stageNumber = stageNumber;
+          this.controller = null;
+          this.timeRemaining = 180; // 3分 = 180秒
+          this.timerInterval = null;
 
-                this.dom = {
-                    background: document.getElementById("background-view"),
-                    timer: document.getElementById("game-timer"),
-                    canvas: document.getElementById("game-canvas"),
-                    menuBtn: document.getElementById("menu-btn"),
-                    pauseLayer: document.getElementById("pause-layer"),
-                    resumeBtn: document.getElementById("resume-btn"),
-                    howToPlayBtn: document.getElementById("how-to-play-btn"),
-                    howToPlayText: document.getElementById("how-to-play-text"),
-                    titleBtn: document.getElementById("title-btn"),
-                    volumeSlider: document.getElementById("volume-slider"),//ボリューム用
-                };
-                this.dom.background.src = bgSrc;
-                document.title = title;
-            }
-
-            // タイマーの残り時間を "MM:SS" 形式にフォーマットして画面に反映
-            updateTimerDisplay() {
-                const minutes = Math.floor(this.timeRemaining / 60);
-                const seconds = this.timeRemaining % 60;
-                const formattedMin = String(minutes).padStart(2, '0');
-                const formattedSec = String(seconds).padStart(2, '0');
-                this.dom.timer.textContent = `${formattedMin}:${formattedSec}`;
-            }
-
-            // タイマーのカウントダウン開始
-            startTimer(model) {
-                if (this.timerInterval) return;
-
-                this.timerInterval = setInterval(() => {
-                    // ポーズ中、またはゲーム開始前（キー入力待ち）なら時間を進めない
-                    if (model.isPaused() || model.isWaitingStart()) {
-                        return;
-                    }
-
-                    // 主人公の死亡アニメーション中もタイマーを止める場合
-                    const syujinkou = model.getSyujinkou();
-                    if (syujinkou && syujinkou.isDyingAnimation()) {
-                        return;
-                    }
-
-                    if (this.timeRemaining > 0) {
-                        this.timeRemaining--;
-                        this.updateTimerDisplay();
-                    }
-
-                    // タイムアップ時の処理
-                    if (this.timeRemaining <= 0) {
-                        this.stopTimer();
-                        this.handleTimeUp(model);
-                    }
-                }, 1000);
-            }
-
-            stopTimer() {
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                    this.timerInterval = null;
-                }
-            }
-
-            handleTimeUp(model) {
-                if (this.controller) {
-                    this.controller.stop();
-                }
-                if (typeof Bgm.stopBGM === "function") {
-                    Bgm.stopBGM();
-                }
-                console.log("⏰ 制限時間切れ！ゲームオーバー画面へ遷移します。");
-
-                let finalScore = 0;
-                const syujinkou = model.getSyujinkou();
-                if (syujinkou && typeof syujinkou.getScore === "function") {
-                    finalScore = syujinkou.getScore();
-                }
-
-                // ご指定の GameController のゲームオーバー遷移メソッドを呼び出し
-                setTimeout(() => {
-                    GameController.switchToGameover(this.stageNumber, false, finalScore);
-                }, 0);
-            }
-
-            start() {
-                if (this.controller) this.controller.stop();
-                this.stopTimer();
-                Bgm.stopBGM();
-
-                const model = new MapData();
-                const view = new MapView(model);
-
-                // タイマーの初期表示リセット
-                this.timeRemaining = 180;
-                this.updateTimerDisplay();
-                
-                // 2. 音量スライダーの初期化とイベント登録を追加
-                if (this.dom.volumeSlider) {
-                    // 保存されている音量をロードしてバーの位置をセット
-                    this.dom.volumeSlider.value = Bgm.getSystemVolume();
-
-                    // バーを動かしたときにリアルタイムで音量を変更＆保存
-                    this.dom.volumeSlider.addEventListener("input", (e) => {
-                        Bgm.setSystemVolume(parseFloat(e.target.value));
-                    });
-                }
-
-                this.dom.resumeBtn.onclick = () => this.controller?.togglePauseByButton();
-                this.dom.menuBtn.onclick = () => this.controller?.togglePauseByButton();
-                this.dom.titleBtn.onclick = () => {
-                    this.stopTimer();
-                    this.controller?.forceBackToTitle();
-                };
-                this.dom.howToPlayBtn.onclick = () => {
-                    const isHidden = window.getComputedStyle(this.dom.howToPlayText).display === "none";
-                    this.dom.howToPlayText.style.display = isHidden ? "block" : "none";
-                };
-
-                model.initEnemy(document.createElement("img"));
-
-                this.controller = new GameController(
-                    model, view, this.dom.canvas, this.stageNumber, false
-                );
-                this.controller.setPauseLayer(this.dom.pauseLayer);
-
-                // タイマーの常時監視（初回入力待ちが解除されたら動き出す）
-                this.startTimer(model);
-
-                this.dom.canvas.focus();
-            }
+          this.dom = {
+            background: document.getElementById("background-view"),
+            timer: document.getElementById("game-timer"),
+            canvas: document.getElementById("game-canvas"),
+            menuBtn: document.getElementById("menu-btn"),
+            pauseLayer: document.getElementById("pause-layer"),
+            resumeBtn: document.getElementById("resume-btn"),
+            howToPlayBtn: document.getElementById("how-to-play-btn"),
+            howToPlayText: document.getElementById("how-to-play-text"),
+            titleBtn: document.getElementById("title-btn"),
+            volumeSlider: document.getElementById("volume-slider"), //ボリューム用
+          };
+          this.dom.background.src = bgSrc;
+          document.title = title;
         }
 
-        window.addEventListener("DOMContentLoaded", () => {
-            new Main(1, "../../resources/picture/emd-nottori.jpg", "仙石さん - ステージ 1").start();
-        });
+        // タイマーの残り時間を "MM:SS" 形式にフォーマットして画面に反映
+        updateTimerDisplay() {
+          const minutes = Math.floor(this.timeRemaining / 60);
+          const seconds = this.timeRemaining % 60;
+          const formattedMin = String(minutes).padStart(2, "0");
+          const formattedSec = String(seconds).padStart(2, "0");
+          this.dom.timer.textContent = `${formattedMin}:${formattedSec}`;
+        }
+
+        // タイマーのカウントダウン開始
+        startTimer(model) {
+          if (this.timerInterval) return;
+
+          this.timerInterval = setInterval(() => {
+            // ポーズ中、またはゲーム開始前（キー入力待ち）なら時間を進めない
+            if (model.isPaused() || model.isWaitingStart()) {
+              return;
+            }
+
+            // 主人公の死亡アニメーション中もタイマーを止める場合
+            const syujinkou = model.getSyujinkou();
+            if (syujinkou && syujinkou.isDyingAnimation()) {
+              return;
+            }
+
+            if (this.timeRemaining > 0) {
+              this.timeRemaining--;
+              this.updateTimerDisplay();
+            }
+
+            // タイムアップ時の処理
+            if (this.timeRemaining <= 0) {
+              this.stopTimer();
+              this.handleTimeUp(model);
+            }
+          }, 1000);
+        }
+
+        stopTimer() {
+          if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+          }
+        }
+
+        handleTimeUp(model) {
+          if (this.controller) {
+            this.controller.stop();
+          }
+          if (typeof Bgm.stopBGM === "function") {
+            Bgm.stopBGM();
+          }
+          console.log("⏰ 制限時間切れ！ゲームオーバー画面へ遷移します。");
+
+          let finalScore = 0;
+          const syujinkou = model.getSyujinkou();
+          if (syujinkou && typeof syujinkou.getScore === "function") {
+            finalScore = syujinkou.getScore();
+          }
+
+          // ご指定の GameController のゲームオーバー遷移メソッドを呼び出し
+          setTimeout(() => {
+            GameController.switchToGameover(
+              this.stageNumber,
+              false,
+              finalScore,
+            );
+          }, 0);
+        }
+
+        start() {
+          if (this.controller) this.controller.stop();
+          this.stopTimer();
+          Bgm.stopBGM();
+
+          const model = new MapData();
+          const view = new MapView(model);
+
+          // タイマーの初期表示リセット
+          this.timeRemaining = 180;
+          this.updateTimerDisplay();
+
+          // 2. 音量スライダーの初期化とイベント登録を追加
+          if (this.dom.volumeSlider) {
+            // 保存されている音量をロードしてバーの位置をセット
+            this.dom.volumeSlider.value = Bgm.getSystemVolume();
+
+            // バーを動かしたときにリアルタイムで音量を変更＆保存
+            this.dom.volumeSlider.addEventListener("input", (e) => {
+              Bgm.setSystemVolume(parseFloat(e.target.value));
+            });
+          }
+
+          this.dom.resumeBtn.onclick = () =>
+            this.controller?.togglePauseByButton();
+          this.dom.menuBtn.onclick = () =>
+            this.controller?.togglePauseByButton();
+          this.dom.titleBtn.onclick = () => {
+            this.stopTimer();
+            this.controller?.forceBackToTitle();
+          };
+          this.dom.howToPlayBtn.onclick = () => {
+            const isHidden =
+              window.getComputedStyle(this.dom.howToPlayText).display ===
+              "none";
+            this.dom.howToPlayText.style.display = isHidden ? "block" : "none";
+          };
+
+          model.initEnemy(document.createElement("img"));
+
+          this.controller = new GameController(
+            model,
+            view,
+            this.dom.canvas,
+            this.stageNumber,
+            false,
+          );
+          this.controller.setPauseLayer(this.dom.pauseLayer);
+
+          // タイマーの常時監視（初回入力待ちが解除されたら動き出す）
+          this.startTimer(model);
+
+          this.dom.canvas.focus();
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        new Main(
+          1,
+          "../../resources/picture/emd-nottori.jpg",
+          "仙石さん - ステージ 1",
+        ).start();
+      });
     </script>
-</body>
+  </body>
 </html>
