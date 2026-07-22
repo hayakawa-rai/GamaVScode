@@ -1,111 +1,125 @@
 <!doctype html>
 <html lang="ja">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>仙石さん - 練習ステージ 1</title>
-    <link rel="stylesheet" href="../../resources/css/Main.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../../resources/css/Main.css" />
+  </head>
+  <body>
     <div id="game-root" class="stage1">
-        <img id="background-view" src="../../resources/picture/emd-nottori.jpg" alt="Background">
+      <img
+        id="background-view"
+        src="../../resources/picture/emd-nottori.jpg"
+        alt="Background"
+      />
 
-        <div id="game-base" class="stage1">
-            <canvas id="game-canvas" tabindex="0"></canvas>
+      <div id="game-base" class="stage1">
+        <canvas id="game-canvas" tabindex="0"></canvas>
+      </div>
+
+      <button id="menu-btn">
+        <img src="../../resources/picture/menu.png" alt="Menu" />
+      </button>
+
+      <div id="pause-layer">
+        <div class="pause-title">PAUSE</div>
+        <div class="volume-container">
+          <span class="vol-icon">🔈</span>
+          <input type="range" id="volume-slider" min="0" max="1" step="0.05" />
+          <span class="vol-icon">🔊</span>
         </div>
+        <button id="resume-btn" class="game-button">ゲーム再開</button>
+        <button id="how-to-play-btn" class="game-button">基本説明</button>
 
-        <button id="menu-btn">
-            <img src="../../resources/picture/menu.png" alt="Menu">
-        </button>
-
-        <div id="pause-layer">
-            <div class="pause-title">PAUSE</div>
-                <div class="volume-container">
-                    <span class="vol-icon">🔈</span>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.05">
-                    <span class="vol-icon">🔊</span>
-                </div>
-            <button id="resume-btn" class="game-button">ゲーム再開</button>
-            <button id="how-to-play-btn" class="game-button">操作説明</button>
-            <div id="how-to-play-text" class="how-to-play-text">
-                移動 : ↑↓←→ / WASD<br>画面スワイプ(スマホ用)
-            </div>
-            <button id="title-btn" class="game-button">タイトルへ戻る</button>
-        </div>
+        <div id="help-panel" class="hidden">テスト表示</div>
+        <button id="title-btn" class="game-button">タイトルへ戻る</button>
+      </div>
     </div>
 
     <script type="module">
-        import { GameController } from "../control/GameController.js";
-        import { MapData } from "./model/MapData.js";
-        import { MapView } from "./view/MapView.js";
-        import { Bgm } from "../start/Bgm.js";
+      import { GameController } from "../control/GameController.js";
+      import { MapData } from "./model/MapData.js";
+      import { MapView } from "./view/MapView.js";
+      import { Bgm } from "../start/Bgm.js";
 
-        class PracticeMain {
-            constructor(stageNumber, bgSrc, title) {
-                this.stageNumber = stageNumber;
-                this.controller = null;
-                this.dom = {
-                    background: document.getElementById("background-view"),
-                    root: document.getElementById("game-root"),
-                    base: document.getElementById("game-base"),
-                    canvas: document.getElementById("game-canvas"),
-                    menuBtn: document.getElementById("menu-btn"),
-                    pauseLayer: document.getElementById("pause-layer"),
-                    resumeBtn: document.getElementById("resume-btn"),
-                    howToPlayBtn: document.getElementById("how-to-play-btn"),
-                    howToPlayText: document.getElementById("how-to-play-text"),
-                    titleBtn: document.getElementById("title-btn"),
-                    volumeSlider: document.getElementById("volume-slider"),//ボリューム用
-                };
-                this.dom.background.src = bgSrc;
-                document.title = title;
-            }
-
-            start() {
-                if (this.controller) this.controller.stop();
-                Bgm.stopBGM();
-
-                this.dom.root.className = `stage${this.stageNumber}`;
-                this.dom.base.className = `stage${this.stageNumber}`;
-
-                const model = new MapData();
-                model.sampleModel(true); // 練習モード用の配置に上書き
-
-                const view = new MapView(model);
-
-                // 2. 音量スライダーの初期化とイベント登録を追加
-                if (this.dom.volumeSlider) {
-                    // 保存されている音量をロードしてバーの位置をセット
-                    this.dom.volumeSlider.value = Bgm.getSystemVolume();
-
-                    // バーを動かしたときにリアルタイムで音量を変更＆保存
-                    this.dom.volumeSlider.addEventListener("input", (e) => {
-                        Bgm.setSystemVolume(parseFloat(e.target.value));
-                    });
-                }
-
-                this.dom.resumeBtn.onclick = () => this.controller?.togglePauseByButton();
-                this.dom.menuBtn.onclick = () => this.controller?.togglePauseByButton();
-                this.dom.titleBtn.onclick = () => this.controller?.forceBackToTitle();
-                this.dom.howToPlayBtn.onclick = () => {
-                    const isHidden = window.getComputedStyle(this.dom.howToPlayText).display === "none";
-                    this.dom.howToPlayText.style.display = isHidden ? "block" : "none";
-                };
-
-                this.controller = new GameController(
-                    model, view, this.dom.canvas, this.stageNumber, true
-                );
-                this.controller.setPauseLayer(this.dom.pauseLayer);
-
-                this.dom.canvas.tabIndex = 1;
-                this.dom.canvas.focus();
-
-                console.log(`仙石さん - 練習ステージ ${this.stageNumber} 正常に起動しました`);
-            }
+      class PracticeMain {
+        constructor(stageNumber, bgSrc, title) {
+          this.stageNumber = stageNumber;
+          this.controller = null;
+          this.dom = {
+            background: document.getElementById("background-view"),
+            root: document.getElementById("game-root"),
+            base: document.getElementById("game-base"),
+            canvas: document.getElementById("game-canvas"),
+            menuBtn: document.getElementById("menu-btn"),
+            pauseLayer: document.getElementById("pause-layer"),
+            resumeBtn: document.getElementById("resume-btn"),
+            helpPanel: document.getElementById("help-panel"),
+            howToPlayText: document.getElementById("how-to-play-text"),
+            titleBtn: document.getElementById("title-btn"),
+            volumeSlider: document.getElementById("volume-slider"), //ボリューム用
+          };
+          this.dom.background.src = bgSrc;
+          document.title = title;
         }
 
-        window.addEventListener("DOMContentLoaded", () => {
-            new PracticeMain(1, "../../resources/picture/emd-nottori.jpg", "仙石さん - 練習ステージ 1").start();
-        });
+        start() {
+          if (this.controller) this.controller.stop();
+          Bgm.stopBGM();
+
+          this.dom.root.className = `stage${this.stageNumber}`;
+          this.dom.base.className = `stage${this.stageNumber}`;
+
+          const model = new MapData();
+          model.sampleModel(true); // 練習モード用の配置に上書き
+
+          const view = new MapView(model);
+
+          // 2. 音量スライダーの初期化とイベント登録を追加
+          if (this.dom.volumeSlider) {
+            // 保存されている音量をロードしてバーの位置をセット
+            this.dom.volumeSlider.value = Bgm.getSystemVolume();
+
+            // バーを動かしたときにリアルタイムで音量を変更＆保存
+            this.dom.volumeSlider.addEventListener("input", (e) => {
+              Bgm.setSystemVolume(parseFloat(e.target.value));
+            });
+          }
+
+          this.dom.resumeBtn.onclick = () =>
+            this.controller?.togglePauseByButton();
+          this.dom.menuBtn.onclick = () =>
+            this.controller?.togglePauseByButton();
+          this.dom.titleBtn.onclick = () => this.controller?.forceBackToTitle();
+          this.dom.howToPlayBtn.onclick = () => {
+            this.dom.helpPanel.classList.remove("hidden");
+          };
+
+          this.controller = new GameController(
+            model,
+            view,
+            this.dom.canvas,
+            this.stageNumber,
+            true,
+          );
+          this.controller.setPauseLayer(this.dom.pauseLayer);
+
+          this.dom.canvas.tabIndex = 1;
+          this.dom.canvas.focus();
+
+          console.log(
+            `仙石さん - 練習ステージ ${this.stageNumber} 正常に起動しました`,
+          );
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        new PracticeMain(
+          1,
+          "../../resources/picture/emd-nottori.jpg",
+          "仙石さん - 練習ステージ 1",
+        ).start();
+      });
     </script>
-</body>
+  </body>
 </html>
