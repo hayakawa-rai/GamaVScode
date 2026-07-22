@@ -22,7 +22,6 @@ export class Item {
     /**
      * アイテム取得時の処理
      * 子クラス側で実装する
-     *
      * @param {Syujinkou} player
      */
     onEaten(player) {
@@ -37,7 +36,6 @@ export class Item {
     /**
      * Canvasへ描画する処理
      * 子クラス側で実装する
-     *
      * @param {CanvasRenderingContext2D} ctx
      * @param {number} x
      * @param {number} y

@@ -66,15 +66,15 @@ export class SoundManager {
 
   // 2. 音量調節 (Javaの static 初期化ブロックの再現)
   static {
-    this.WARP.setVolume(0.5); // ワープ音
+    this.WARP.setVolume(0.5);       // ワープ音
     this.ENEMY_DEAD.setVolume(0.3); // 敵撃破
-    this.DAMAGE.setVolume(0.1); // ダメージ
-    this.FRUIT_EAT.setVolume(0.4); // フルーツ取得
-    this.POWER_EAT.setVolume(0.5); // パワーエサ取得
-    this.GAMEOVER.setVolume(0.5); // ゲームオーバー
-    this.RETRY.setVolume(0.4); // リトライ
-    this.SELECT.setVolume(0.4); // セレクト
-    this.CLEAR.setVolume(0.5); //クリア
+    this.DAMAGE.setVolume(0.1);     // ダメージ
+    this.FRUIT_EAT.setVolume(0.4);  // フルーツ取得
+    this.POWER_EAT.setVolume(0.5);  // パワーエサ取得
+    this.GAMEOVER.setVolume(0.5);   // ゲームオーバー
+    this.RETRY.setVolume(0.4);      // リトライ
+    this.SELECT.setVolume(0.4);     // セレクト
+    this.CLEAR.setVolume(0.5);      //クリア
   }
 
   /**

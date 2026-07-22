@@ -35,7 +35,7 @@ export class Bgm {
   static #DEFAULT_SE_VOLUME = 0.2;
 
   // ==================================================
-  // ★重要：システム全体のオーディオ初期化と音量取得・設定
+  // システム全体のオーディオ初期化と音量取得・設定
   // ==================================================
 
   /**
@@ -91,11 +91,6 @@ export class Bgm {
 
   /**
    * 音源をマスターミキサーに繋いで再生する内部関数
-   * ★修正：play()の成否だけでなく、AudioContextが実際に"running"状態かどうかも確認する。
-   *   モバイルブラウザ(特にiOS Safari)では、ページ遷移直後などユーザー操作の
-   *   文脈外で呼ばれた場合、play()自体は成功したように見えても、AudioContextが
-   *   "suspended"のままで実際には音が出ないことがある。その場合は保留リストに入れて
-   *   次のユーザー操作（タップ/クリック/キー入力）で再試行する。
    */
   static #playWithMixer(audioElement) {
     Bgm.initSystem();
@@ -122,8 +117,6 @@ export class Bgm {
     // 自動再生ブロック対策を挟んで再生
     Bgm.unlockPlay(audioElement);
 
-    // ★AudioContextがまだrunningでなければ、実質的に音が出ていない状態なので
-    //   保留リストに入れて、次のユーザー操作で確実に再試行させる
     if (Bgm.#audioCtx && Bgm.#audioCtx.state !== "running") {
       Bgm.#pending.add(audioElement);
       Bgm.#attachListeners();
@@ -135,12 +128,6 @@ export class Bgm {
   // ==================================================
   static #pending = new Set();
   static #listenersAttached = false;
-
-  /**
-   * ★修正：保留中の音を再試行する前に、必ずAudioContextの再開を試みる。
-   *   これがないと、AudioContextがsuspendedのまま個々のaudio.play()だけ
-   *   呼んでも、ミキサーの出口が閉じたままなので音が出ない。
-   */
   static #retryPending() {
     if (Bgm.#audioCtx && Bgm.#audioCtx.state === "suspended") {
       Bgm.#audioCtx.resume().catch(() => {});

@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", attachListeners);
 
 window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
-        navigated = false;                          // ①フラグをリセット
-        document.body.style.pointerEvents = "auto";  // ②固まっていたクリック無効化を解除
-        attachListeners();                            // ③{once:true}で消えたリスナーを再登録
+        navigated = false;                              // フラグをリセット
+        document.body.style.pointerEvents = "auto";     // 固まっていたクリック無効化を解除
+        attachListeners();                              // {once:true}で消えたリスナーを再登録
     }
 });

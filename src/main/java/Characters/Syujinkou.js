@@ -1,12 +1,3 @@
-// ※ 以下の Direction の構造が前提となる
-// const Direction = {
-//     NONE:  { name: 'NONE',  dx: 0,  dy: 0,  getDX: () => 0,  getDY: () => 0 },
-//     UP:    { name: 'UP',    dx: 0,  dy: -1, getDX: () => 0,  getDY: () => -1 },
-//     DOWN:  { name: 'DOWN',  dx: 0,  dy: 1,  getDX: () => 0,  getDY: () => 1 },
-//     LEFT:  { name: 'LEFT',  dx: -1, dy: 0,  getDX: () => -1, getDY: () => 0 },
-//     RIGHT: { name: 'RIGHT', dx: 1,  dy: 0,  getDX: () => 1,  getDY: () => 0 }
-// };
-
 import { Character } from "./Character.js";
 import { Direction } from "./Direction.js";
 // Character 親クラスを継承した主人公クラス

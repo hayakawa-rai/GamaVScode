@@ -29,7 +29,6 @@ import { Bgm } from "./Bgm.js";
     }
 
     /**
-     * 変更点: 引数をURL文字列ではなく、実行する関数（callback）に変更
      * @param {Function} action - 遷移時に実行したい GameController のメソッド
      */
     function transitionTo(action) {
@@ -47,22 +46,22 @@ import { Bgm } from "./Bgm.js";
     // 3. 各ボタンのクリックイベント
     // ==================================================
 
-    // ① ストーリーモードへ
+    // ストーリーモードへ
     storyBtn.addEventListener("click", () => {
         transitionTo(() => GameController.switchToStory()); 
     });
 
-    // ② 練習モードへ
+    // 練習モードへ
     practiceBtn.addEventListener("click", () => {
         transitionTo(() => GameController.switchToPractice()); 
     });
 
-    // ③ ヘルプ画面へ
+    // ヘルプ画面へ
     helpBtn.addEventListener("click", () => {
         transitionTo(() => GameController.switchToHelp()); 
     });
 
-    // ④ ゲーム終了
+    // ゲーム終了
     exitBtn.addEventListener("click", () => {
         transitionTo(() => {
             window.location.href = "https://www.bing.com";

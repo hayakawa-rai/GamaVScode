@@ -4,7 +4,6 @@ import { StoryUtils } from "./StoryUtils.js";
 import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-
     // --- 1. シナリオデータの定義 ---
     const dialogues = [
         { speaker: "あにき", message: "……!?。", sound: "../../resources/music/damage2.mp3", color: "red" },
@@ -39,9 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // あにきの画像要素（表情切り替え用）
-    const anikiImg = document.getElementById("aniki");
-
     // --- 2.5 音量スライダーの初期化と連動イベント設定 ---
     if (ui.volumeSlider) {
         // 保存されているシステム全体の音量をロードしてスライダーの位置を合わせる
@@ -52,6 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
             Bgm.setSystemVolume(parseFloat(e.target.value));
         });
     }
+    
+    // あにきの画像要素（表情切り替え用）
+    const anikiImg = document.getElementById("aniki");
 
     // --- 3. エンジン起動 ---
     const engine = new StoryEngine(dialogues, {

@@ -1,7 +1,6 @@
 // フルーツアイテム
 import { Item } from "./Item.js";
 import { SoundManager } from "../start/SoundManager.js";
-
 export class Fruit extends Item {
 
     // =========================

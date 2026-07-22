@@ -4,7 +4,7 @@ import { StoryUtils } from "./StoryUtils.js";
 import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. シナリオデータの定義
+    // --- 1. シナリオデータの定義 ---
     const dialogues = [
         { speaker: "なりなり", message: "あ、あれっ…！？", sound: "../../resources/music/nari.mp3", textColor: "orange" },
         { speaker: "仙石さん", message: "弱いな！？", sound: "../../resources/music/jump06.mp3", textColor: "white" },
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { speaker: "あにき", message: "強そうに見えないが、遊ばれたら最後だ。", sound: "../../resources/music/jump06.mp3", textColor: "red" }
     ];
 
-    // 2. DOM要素の取得
+    // --- 2. DOM要素の取得 ---
     const ui = {
         container: document.getElementById('game-container'),
         nameText: document.getElementById('speaker-name'),

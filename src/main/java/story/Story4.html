@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../../resources/css/style.css">
 </head>
 <body>
-
     <div id="game-container">
         <!-- 1. 背景 -->
         <img id="bg" class="bg-image" src="../../resources/picture/shatyoroom.jpg">
@@ -18,7 +17,11 @@
         <div id="aniki-wrapper" class="sprite-wrapper active">
             <img id="aniki" class="sprite-img" src="../../resources/picture/aniki2.png">
         </div>
+
+        <!-- メニューボタン -->
+        <button id="menu-btn"><img src="../../resources/picture/menu.png" alt="Menu"></button>
         
+        <!-- 3. メッセージボックス -->
         <div id="message-container">
             <div id="message-box">
                 <div id="name-text"></div>
@@ -27,9 +30,7 @@
             </div>
         </div>
 
-        <!-- メニューボタン -->
-        <button id="menu-btn"><img src="../../resources/picture/menu.png" alt="Menu"></button>
-
+        <!-- 4. メニューオーバーレイ -->
         <div id="menu-overlay">
             <div id="menu-box">
                 <div class="volume-container">
@@ -42,6 +43,7 @@
             </div>
         </div>
 
+        <!-- 5. フェードレイヤー -->
         <div id="fade-rect"></div>
     </div>
     <script type="module" src="Story4.js"></script>

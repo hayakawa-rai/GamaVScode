@@ -1,7 +1,5 @@
-// パワーエサ（Chii）クラス。Item クラスを継承
-
 import { Item } from "./Item.js";
-
+// パワーエサ（Chii）クラス。Item クラスを継承
 export class Chii extends Item {
     // 画面上の画像の大きさ（Javaの static final double に対応）
     static IMAGE_SIZE = 37.0;
@@ -53,7 +51,6 @@ export class Chii extends Item {
     // ==================================================
     // 描画処理
     // ==================================================
-    // Javaの GraphicsContext -> HTML5 Canvas の ctx に対応
     draw(ctx, x, y, tileSize) {
         // 1. 画像が正常に読み込めている場合
         if (this.imageLoaded && this.img) {

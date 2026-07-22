@@ -1,18 +1,13 @@
-/**
- * STAGE2 CLEAR画面
- */
 import { GameController } from "../control/GameController.js";
 import { SoundManager } from "../start/SoundManager.js";
-
 /**
  * STAGE2 CLEAR画面
  */
 export class StageClear2 {
   /**
-   * 初期化
-   *
-   * @param {number} score
-   */
+  * 初期化
+  * @param {number} score スコア
+  */
   static create(score) {
     console.log("StageClear2 create");
 
@@ -35,9 +30,7 @@ export class StageClear2 {
     // ==========================
     // ボタン取得
     // ==========================
-
     const nextBtn = document.getElementById("next-btn");
-
     const titleBtn = document.getElementById("title-btn");
 
     // ==========================
@@ -65,7 +58,6 @@ export class StageClear2 {
   }
 }
 
-/* テスト用 */
 window.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
 

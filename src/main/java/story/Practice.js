@@ -1,6 +1,6 @@
 import { GameController } from "../control/GameController.js";
 import { Bgm } from "../start/Bgm.js";
-import { HighScoreManager } from "../common/HighScoreManager.js"; // ★追加
+import { HighScoreManager } from "../common/HighScoreManager.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // ==================================================
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tooltip = document.getElementById("highscore-tooltip");
 
     // ==================================================
-    // 1.5 ハイスコア表示を実データで更新 ★追加
+    // 1.5 ハイスコア表示を実データで更新
     // ==================================================
     function renderHighScores() {
         if (!tooltip) return;
@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /**
-     * 変更点: 引数をURL文字列ではなく、実行する関数（callback）に変更
      * @param {Function} action - 遷移時に実行したい GameController のメソッド
      */
     function transitionTo(action) {
@@ -97,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // トロフィー（ハイスコア表示ボタン）
     if (scoreInfo && tooltip) {
         scoreInfo.addEventListener("click", () => {
-            renderHighScores(); // ★開くたびに最新の値を反映
+            renderHighScores(); // 開くたびに最新の値を反映
             if (tooltip.style.display === "block") {
                 tooltip.style.display = "none";
             } else {

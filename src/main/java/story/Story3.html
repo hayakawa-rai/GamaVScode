@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../../resources/css/style.css">
 </head>
 <body>
-
     <div id="game-container">
         <!-- 1. 背景 -->
         <img id="bg" class="bg-image" src="../../resources/picture/shatyoroom.jpg">
@@ -21,9 +20,11 @@
         <div id="taku-wrapper" class="sprite-wrapper">
             <img id="taku" class="sprite-img" src="../../resources/picture/taku2.png">
         </div>
-                <!-- メニューボタン -->
+
+        <!-- メニューボタン -->
         <button id="menu-btn"><img src="../../resources/picture/menu.png" alt="Menu"></button>
 
+        <!-- 3. メッセージボックス -->
         <div id="message-box-container">
             <div id="message-box">
                 <div id="speaker-name"></div>
@@ -32,7 +33,7 @@
             </div>
         </div>
 
-
+        <!-- 4. メニューオーバーレイ -->
         <div id="menu-overlay">
             <div class="menu-box">
                 <div class="volume-container">
@@ -45,6 +46,7 @@
             </div>
         </div>
 
+        <!-- 5. フェードレイヤー -->
         <div id="fade-overlay"></div>
     </div>
     <script type="module" src="Story3.js"></script>

@@ -1,9 +1,9 @@
-//敵キャラクターの共通処理を管理する抽象クラス
-//移動処理、状態管理（SCATTER、FEVER、DEAD）、画像管理、巣への帰還処理
 import{Character}from "./Character.js";
 import{Direction,DirectionValues}from "./Direction.js";
 import{EnemyState}from "./EnemyState.js";
 import{GameConfig}from "../common/GameConfig.js";
+//敵キャラクターの共通処理を管理する抽象クラス
+//移動処理、状態管理（SCATTER、FEVER、DEAD）、画像管理、巣への帰還処理
 export class Enemy extends Character {
 
 	// 敵キャラクターの画像表示用(実質未使用)

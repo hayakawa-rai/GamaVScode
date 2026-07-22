@@ -1,6 +1,5 @@
 import { Bgm } from "../start/Bgm.js";
 import { StoryUtils } from "./StoryUtils.js";
-
 /**
  * ストーリー用の効果音を呼び出す用のクラス
  * その場その場で音が変わるため、分けている。

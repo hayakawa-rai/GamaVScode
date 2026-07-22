@@ -1,3 +1,8 @@
+import { Enemy } from "./Enemy.js";
+import { GameConfig } from "../common/GameConfig.js";
+import { EnemyState } from "./EnemyState.js";
+import { Direction } from "./Direction.js";
+import { RedEnemy } from "./RedEnemy.js";
 // ==================================================
 // BlueEnemy（青）
 //
@@ -5,14 +10,6 @@
 // プレイヤーの進行方向の先を予測し、
 // RedEnemyとの位置関係から追跡地点を決定する
 // ==================================================
-
-import { Enemy } from "./Enemy.js";
-import { GameConfig } from "../common/GameConfig.js";
-import { EnemyState } from "./EnemyState.js";
-import { Direction } from "./Direction.js";
-import { RedEnemy } from "./RedEnemy.js";
-
-
 export class BlueEnemy extends Enemy {
 
     // 初期位置（エネミーハウス中央付近）
@@ -38,7 +35,6 @@ export class BlueEnemy extends Enemy {
 
             BlueEnemy.START_ROW * GameConfig.TILE_SIZE +
             GameConfig.TILE_SIZE / 2,
-
             2
         );
 
