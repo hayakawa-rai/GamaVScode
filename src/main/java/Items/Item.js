@@ -3,55 +3,48 @@
  * ドット・パワーエサ・フルーツなどの共通部分を管理する
  */
 export class Item {
+  // =========================
+  // コンストラクタ
+  // =========================
+  constructor(score, view) {
+    // アイテム取得時のスコア
+    this.score = score;
 
-    // =========================
-    // コンストラクタ
-    // =========================
-    constructor(score, view) {
+    // 描画用オブジェクト（画像など）
+    this.view = view;
+  }
 
-        // アイテム取得時のスコア
-        this.score = score;
+  // =========================
+  // 食べる処理
+  // =========================
+  /**
+   * アイテム取得時の処理
+   * 子クラス側で実装する
+   * @param {Syujinkou} player
+   */
+  onEaten(player) {
+    throw new Error("onEaten() must be implemented.");
+  }
 
-        // 描画用オブジェクト（画像など）
-        this.view = view;
-    }
+  // =========================
+  // 描画処理
+  // =========================
+  /**
+   * Canvasへ描画する処理
+   * 子クラス側で実装する
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {number} x
+   * @param {number} y
+   * @param {number} tileSize
+   */
+  draw(ctx, x, y, tileSize) {
+    throw new Error("draw() must be implemented.");
+  }
 
-    // =========================
-    // 食べる処理
-    // =========================
-    /**
-     * アイテム取得時の処理
-     * 子クラス側で実装する
-     * @param {Syujinkou} player
-     */
-    onEaten(player) {
-        throw new Error(
-            "onEaten() must be implemented."
-        );
-    }
-
-    // =========================
-    // 描画処理
-    // =========================
-    /**
-     * Canvasへ描画する処理
-     * 子クラス側で実装する
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {number} x
-     * @param {number} y
-     * @param {number} tileSize
-     */
-    draw(ctx, x, y, tileSize) {
-        throw new Error(
-            "draw() must be implemented."
-        );
-    }
-
-    // =========================
-    // getter
-    // =========================
-    getView() {
-        return this.view;
-    }
+  // =========================
+  // getter
+  // =========================
+  getView() {
+    return this.view;
+  }
 }
-

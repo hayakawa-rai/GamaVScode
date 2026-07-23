@@ -1,36 +1,60 @@
 import { GameController } from "../control/GameController.js";
 
+// 画面遷移の多重実行防止フラグ
 let navigated = false;
 
+/**
+ * スタート画面へ遷移する
+ * タップ連打や複数入力による二重遷移を防止する
+ */
 function goToStart() {
-    if (navigated) return;
-    navigated = true;
+  if (navigated) return;
 
-    // 連打された際に視覚的・操作的にフリーズしたように見せないため、全体を無効化
-    document.body.style.pointerEvents = "none";
+  navigated = true;
 
-    setTimeout(() => {
-        try {
-            GameController.switchStart();
-        } catch (err) {
-            console.error("画面遷移に失敗しました:", err);
-            navigated = false;
-            document.body.style.pointerEvents = "auto";
-        }
-    }, 50);
+  // 連打対策として一時的に画面全体の操作を無効化
+  document.body.style.pointerEvents = "none";
+
+  setTimeout(() => {
+    try {
+      GameController.switchStart();
+    } catch (err) {
+      console.error("画面遷移に失敗しました:", err);
+
+      // エラー時は再操作できるよう状態を復元
+      navigated = false;
+      document.body.style.pointerEvents = "auto";
+    }
+  }, 50);
 }
 
+/**
+ * タップ・クリック・キー入力のイベントを登録する
+ */
 function attachListeners() {
-    document.addEventListener("pointerdown", goToStart, { once: true });
-    document.addEventListener("keydown", goToStart, { once: true });
+  document.addEventListener("pointerdown", goToStart, { once: true });
+
+  document.addEventListener("keydown", goToStart, { once: true });
 }
 
+/**
+ * 初回表示時のイベント登録
+ */
 document.addEventListener("DOMContentLoaded", attachListeners);
 
+/**
+ * ブラウザの戻る操作などで
+ * ページがキャッシュから復元された場合の再初期化
+ */
 window.addEventListener("pageshow", (event) => {
-    if (event.persisted) {
-        navigated = false;                              // フラグをリセット
-        document.body.style.pointerEvents = "auto";     // 固まっていたクリック無効化を解除
-        attachListeners();                              // {once:true}で消えたリスナーを再登録
-    }
+  if (event.persisted) {
+    // 遷移フラグをリセット
+    navigated = false;
+
+    // 操作無効状態を解除
+    document.body.style.pointerEvents = "auto";
+
+    // once:trueで削除されたイベントを再登録
+    attachListeners();
+  }
 });

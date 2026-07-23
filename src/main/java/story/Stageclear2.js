@@ -5,9 +5,9 @@ import { SoundManager } from "../start/SoundManager.js";
  */
 export class StageClear2 {
   /**
-  * 初期化
-  * @param {number} score スコア
-  */
+   * 初期化
+   * @param {number} score スコア
+   */
   static create(score) {
     console.log("StageClear2 create");
 
