@@ -46,7 +46,8 @@ export class Bgm {
 
     try {
       // 1. オーディオシステムを起動
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      const AudioContextClass =
+        window.AudioContext || window.webkitAudioContext;
       Bgm.#audioCtx = new AudioContextClass();
 
       // 2. 全体の音量を司るミキサー（GainNode）を作成
@@ -60,7 +61,10 @@ export class Bgm {
       Bgm.#masterGain.gain.value = Bgm.#systemVolume;
       Bgm.#masterGain.connect(Bgm.#audioCtx.destination);
     } catch (e) {
-      console.warn("Web Audio API の初期化に失敗しました。標準再生に切り替えます:", e);
+      console.warn(
+        "Web Audio API の初期化に失敗しました。標準再生に切り替えます:",
+        e,
+      );
     }
   }
 
