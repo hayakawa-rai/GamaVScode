@@ -1,0 +1,40 @@
+/* ==================================================
+   縦画面推奨・横向き警告オーバーレイ（共通部品）
+   ================================================== */
+#orientation-warning {
+    display: none; /* デフォルトは非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    color: #ffffff;
+    z-index: 99999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "PixelMplus12", sans-serif;
+    text-align: center;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+#orientation-warning h2 {
+    font-size: clamp(24px, 5vw, 40px);
+    color: #ff5f5f;
+    margin-bottom: 20px;
+}
+
+#orientation-warning p {
+    font-size: clamp(16px, 3vw, 24px);
+    line-height: 1.6;
+    color: #cccccc;
+}
+
+/* スマホサイズ（最大幅900px以下）かつ、横向き（landscape）の場合のみ表示する */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+    #orientation-warning {
+        display: flex !important;
+    }
+}

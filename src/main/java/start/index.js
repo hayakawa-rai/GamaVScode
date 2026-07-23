@@ -1,4 +1,5 @@
 import { GameController } from "../control/GameController.js";
+import { OrientationWarning } from "../common/OrientationWarning.js";
 
 // 画面遷移の多重実行防止フラグ
 let navigated = false;
@@ -33,14 +34,18 @@ function goToStart() {
  */
 function attachListeners() {
   document.addEventListener("pointerdown", goToStart, { once: true });
-
   document.addEventListener("keydown", goToStart, { once: true });
 }
 
 /**
  * 初回表示時のイベント登録
  */
-document.addEventListener("DOMContentLoaded", attachListeners);
+document.addEventListener("DOMContentLoaded", () => {
+  // 起動時に横向き警告機能を初期化
+  OrientationWarning.init();
+
+  attachListeners();
+});
 
 /**
  * ブラウザの戻る操作などで
@@ -53,6 +58,9 @@ window.addEventListener("pageshow", (event) => {
 
     // 操作無効状態を解除
     document.body.style.pointerEvents = "auto";
+
+    // 警告機能の再初期化
+    OrientationWarning.init();
 
     // once:trueで削除されたイベントを再登録
     attachListeners();
