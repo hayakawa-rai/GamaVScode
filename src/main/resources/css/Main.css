@@ -1,6 +1,7 @@
 /* ==========================================================================
-   Main1〜3 / PracticeMain1〜3 共通スタイル
+   1. 共通レイアウト
    ========================================================================== */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,46 +15,61 @@ body {
   overflow: hidden;
   background-color: #000;
   font-family: "Meiryo", sans-serif;
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* ゲームのルートコンテナ（StackPane相当）
-   min/max制約はPractice側の設計を踏襲し、全ページで統一 */
+/* ==========================================================================
+   2. ゲーム画面
+   ========================================================================== */
+
+/* ゲーム全体のルートコンテナ */
 #game-root {
   position: relative;
+
   width: 100vw;
   height: 100vh;
   width: 100dvw;
   height: 100dvh;
+
   min-width: 320px;
   min-height: 480px;
+
   max-width: 1920px;
   max-height: 1080px;
+
   overflow: hidden;
+
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
-/* 背景画像（ぼかし効果） */
+/* 背景画像 */
 #background-view {
   position: absolute;
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+
   filter: blur(10px);
+
   z-index: 1;
 }
 
-/* ゲーム画面ベース */
+/* キャンバス表示領域 */
 #game-base {
   position: absolute;
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   z-index: 2;
 }
 
@@ -68,153 +84,99 @@ body {
   position: absolute;
   top: 30px;
   left: 30px;
+
   width: 100px;
   height: 90px;
+
   background: transparent;
   border: none;
+
   cursor: pointer;
+
   z-index: 4;
+
   padding: 0;
 }
+
 #menu-btn img {
   width: 100%;
   height: 100%;
+
   object-fit: contain;
 }
 
-/* ポーズ画面レイヤー */
+/* ==========================================================================
+   3. ポーズ画面
+   ========================================================================== */
+
+/* ポーズ画面オーバーレイ */
 #pause-layer {
   position: absolute;
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   background-color: rgba(0, 0, 0, 0.65);
+
   display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   gap: 25px;
+
   z-index: 5;
+
   pointer-events: none;
 }
+
 #pause-layer.visible {
   display: flex;
   pointer-events: auto;
 }
 
+/* PAUSE見出し */
 .pause-title {
-  font-family: "Arial", sans-serif;
+  font-family: Arial, sans-serif;
   font-weight: bold;
   font-size: 48px;
+
   color: #ffff00;
+
   user-select: none;
 }
 
+/* ポーズ画面ボタン */
 .game-button {
   width: 160px;
   height: 40px;
+
   font-family: "Meiryo", sans-serif;
-  font-weight: bold;
   font-size: 14px;
+  font-weight: bold;
+
   cursor: pointer;
-  background-color: #f0f0f0;
+
+  background: #f0f0f0;
+
   border: 1px solid #ccc;
   border-radius: 4px;
-  transition: background-color 0.2s;
 }
+
 .game-button:hover {
-  background-color: #ddd;
+  background: #ddd;
 }
 
-.how-to-play-text {
-  color: #ffffff;
-  font-family: "Meiryo", sans-serif;
-  font-weight: normal;
-  font-size: 14px;
-  text-align: center;
-  white-space: pre-line;
-  background-color: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 8px;
-  padding: 12px 20px;
-  user-select: none;
-  display: none;
-}
-
-.hidden {
-  display: none !important;
-}
-
-#help-panel {
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-/* ==================================================
-   ステージカラー設定（拡張用。現状MapViewが色を直接持つが、
-   将来的にCSS側で背景色などを切り替えたい場合はここを使う）
-   ================================================== */
-.stage1 .game-bg {
-  background-color: #000000;
-}
-.stage1 .game-wall {
-  background-color: rgb(0, 238, 190);
-}
-.stage1 .game-pacman {
-  background-color: #ffffff;
-}
-
-.stage2 .game-bg {
-  background-color: rgb(43, 43, 43);
-}
-.stage2 .game-wall {
-  background-color: #ff44cc;
-}
-.stage2 .game-pacman {
-  background-color: rgb(28, 221, 216);
-}
-
-.stage3 .game-bg {
-  background-color: #1a0000;
-}
-.stage3 .game-wall {
-  background-color: rgb(238, 30, 0);
-}
-.stage3 .game-pacman {
-  background-color: #ffaa00;
-}
-
-/* 制限時間表示用タイマーのスタイル */
-#game-timer {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: "Arial", sans-serif;
-  font-weight: bold;
-  font-size: 32px;
-  color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 5px 20px;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  z-index: 3;
-  user-select: none;
-}
-/* ==================================================
-   ポーズ画面内の音量スライダー用スタイル
-   ================================================== */
+/* 音量スライダー */
 .volume-container {
   display: flex;
   align-items: center;
   justify-content: center;
+
   gap: 12px;
-  margin: 15px 0; /* PAUSEタイトルやボタンとの間隔 */
-  background: transparent; /* 背景なし（透明） */
-  border: none;
+  margin: 15px 0;
 }
 
 .vol-icon {
@@ -224,6 +186,351 @@ body {
 
 #volume-slider {
   width: 150px;
+
   cursor: pointer;
-  accent-color: #ffeb3b; /* パックマン風の黄色のつまみ */
+
+  accent-color: #ffeb3b;
+}
+
+/* ==========================================================================
+   4. ヘルプ画面
+   ========================================================================== */
+
+/* ヘルプ画面全体 */
+#help-panel {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.7);
+
+  z-index: 100;
+}
+
+#help-panel.hidden {
+  display: none;
+}
+
+/* ヘルプ画面コンテナ */
+.main-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 560px;
+
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 15px;
+}
+
+/* メインパネル */
+.panel {
+  width: 100%;
+
+  background: rgba(10, 60, 90, 0.9);
+
+  border: 2px solid #6e6e85;
+  border-radius: 4px;
+
+  padding: 25px 30px;
+}
+
+/* タイトル */
+.title {
+  text-align: center;
+
+  color: #f4c022;
+
+  font-size: 36px;
+  font-weight: bold;
+}
+
+/* 区切り線 */
+.divider {
+  height: 2px;
+
+  margin: 15px 0;
+
+  background: #6e6e85;
+  border: none;
+}
+
+/* ==========================================================================
+   ヘルプ画面：ページ
+   ========================================================================== */
+
+.page-stack {
+  width: 100%;
+  max-width: 500px;
+}
+
+.page-wrapper {
+  display: none;
+  width: 100%;
+}
+
+.page-heading {
+  color: #4fd8e8;
+
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+/* ==========================================================================
+   ヘルプ画面：本文
+   ========================================================================== */
+
+.note-row {
+  display: flex;
+  gap: 10px;
+}
+
+.note-text {
+  color: white;
+
+  font-size: 14px;
+  line-height: 1.4;
+
+  max-width: 420px;
+
+  word-wrap: break-word;
+}
+
+.mode-heading {
+  color: #ff9632;
+
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   ヘルプ画面：画像・アイコン
+   ========================================================================== */
+
+.icon-box {
+  width: 40px;
+  min-width: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot-icon {
+  width: 8px;
+  height: 8px;
+
+  background-color: #f4c022;
+
+  border-radius: 50%;
+}
+
+.power-pellet-icon {
+  width: 36px;
+  height: 36px;
+
+  object-fit: contain;
+}
+
+.move-control-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+
+  color: white;
+
+  font-size: 15px;
+}
+
+.move-control-row img {
+  height: 65px;
+
+  object-fit: contain;
+}
+
+.fruit-row {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+
+  gap: 12px;
+}
+
+.fruit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.fruit-item img {
+  width: 32px;
+  height: 32px;
+}
+
+.fruit-item span {
+  color: #f4c022;
+
+  font-size: 11px;
+}
+
+/* ==========================================================================
+   ヘルプ画面：ページインジケータ
+   ========================================================================== */
+
+.indicator {
+  display: flex;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 20px;
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #6e6e85;
+}
+
+.indicator-dot.active {
+  background: #4fd8e8;
+}
+
+/* ==========================================================================
+   ヘルプ画面：ページ送りボタン
+   ========================================================================== */
+
+.arrow-row {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+
+  gap: 40px;
+}
+
+.arrow-btn {
+  width: 45px;
+  height: 40px;
+
+  font-size: 18px;
+
+  color: #4fd8e8;
+
+  background: rgba(0, 0, 0, 0.6);
+
+  border: 2px solid currentColor;
+  border-radius: 10px;
+}
+
+/* ==========================================================================
+   ヘルプ画面：閉じるボタン
+   ========================================================================== */
+
+.help-button {
+  background: #ff9c3b;
+
+  color: white;
+
+  border: 3px solid #c86b18;
+
+  font-size: 18px;
+}
+
+.back-button-layout {
+  width: 180px;
+  height: 45px;
+
+  margin-top: 15px;
+}
+
+/* ==========================================================================
+   5. ゲームタイマー
+   ========================================================================== */
+
+#game-timer {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  font-family: Arial, sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+
+  color: white;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  padding: 5px 20px;
+
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+
+  z-index: 3;
+
+  user-select: none;
+}
+
+/* ==========================================================================
+   6. ステージカラー設定
+   ========================================================================== */
+
+.stage1 .game-bg {
+  background-color: #000;
+}
+
+.stage1 .game-wall {
+  background-color: rgb(0, 238, 190);
+}
+
+.stage1 .game-pacman {
+  background-color: #fff;
+}
+
+.stage2 .game-bg {
+  background-color: rgb(43, 43, 43);
+}
+
+.stage2 .game-wall {
+  background-color: #ff44cc;
+}
+
+.stage2 .game-pacman {
+  background-color: rgb(28, 221, 216);
+}
+
+.stage3 .game-bg {
+  background-color: #1a0000;
+}
+
+.stage3 .game-wall {
+  background-color: rgb(238, 30, 0);
+}
+
+.stage3 .game-pacman {
+  background-color: #ffaa00;
 }
