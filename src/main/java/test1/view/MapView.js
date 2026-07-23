@@ -16,7 +16,7 @@ export class MapView {
     // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
     this.wallColor = "#0000FF"; // 青
 
-    // 主人公用画像の読み込み(Java版のpacmanImage/pacmanFeverImage相当)
+    // 主人公用画像の読み込み
     this.pacmanImage = new Image();
     this.pacmanImage.src = "../../resources/picture/syujinkou.png";
 
@@ -143,12 +143,10 @@ export class MapView {
     const itemMap = this.model.getItemMap();
 
     // --- 壁の輪郭 (WallOutline) の描画 ---
-    // 元のJavaFXコードでは一時的に行列をリセットしていましたが、JSでは独立した座標計算ロジック（WallOutline側）が
-    // 縮小率やオフセットを受け取って直にキャンバスへ描画する設計にするとすっきりします。
     if (this.model.getWallOutline) {
       const outline = this.model.getWallOutline(); // すでに幾何情報が同期されている想定
       ctx.save();
-      ctx.resetTransform(); // 完全な画面生の座標系にする（JavaFXのsetTransform(1,0,0,1,0,0)相当）
+      ctx.resetTransform(); // 完全な画面生の座標系にする
       outline.drawOutline(ctx, this.wallColor);
       ctx.restore();
     }
