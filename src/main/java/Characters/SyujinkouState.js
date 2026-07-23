@@ -2,24 +2,24 @@
 // 主人公の状態を管理する enum 相当のクラス
 // ==================================================
 export class SyujinkouState {
-    // ==================================================
-    // コンストラクタ
-    // ==================================================
-    constructor(speedMultiplier) {
-        // 速度倍率
-        this.speedMultiplier = speedMultiplier;
-        
-        // インスタンスが後から書き換えられないようにフリーズ（安全対策）
-        Object.freeze(this);
-    }
+  // ==================================================
+  // コンストラクタ
+  // ==================================================
+  constructor(speedMultiplier) {
+    // 速度倍率
+    this.speedMultiplier = speedMultiplier;
 
-    // ==================================================
-    // getter
-    // ==================================================
-    // 速度倍率を取得する
-    getSpeedMultiplier() {
-        return this.speedMultiplier;
-    }
+    // インスタンスが後から書き換えられないようにフリーズ（安全対策）
+    Object.freeze(this);
+  }
+
+  // ==================================================
+  // getter
+  // ==================================================
+  // 速度倍率を取得する
+  getSpeedMultiplier() {
+    return this.speedMultiplier;
+  }
 }
 
 // ==================================================
@@ -34,8 +34,8 @@ SyujinkouState.FEVER = new SyujinkouState(1.2);
 
 // Javaの values() やvalueOf() に相当するヘルパー群
 SyujinkouState.VALUES = Object.freeze([
-    SyujinkouState.NORMAL,
-    SyujinkouState.FEVER
+  SyujinkouState.NORMAL,
+  SyujinkouState.FEVER,
 ]);
 
 // 状態全体も後から追加や削除ができないようにフリーズしておく
