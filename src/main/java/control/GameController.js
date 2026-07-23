@@ -78,33 +78,43 @@ export class GameController {
         }
       }
     });
-     // --- タッチ操作用（スマホ対応） ---
-    window.addEventListener("touchstart", (e) => {
-      if (e.touches && e.touches.length > 0) {
-        GameController.#touchStart[0] = e.touches[0].clientX;
-        GameController.#touchStart[1] = e.touches[0].clientY;
-      }
-    }, { passive: true });
+    // --- タッチ操作用（スマホ対応） ---
+    window.addEventListener(
+      "touchstart",
+      (e) => {
+        if (e.touches && e.touches.length > 0) {
+          GameController.#touchStart[0] = e.touches[0].clientX;
+          GameController.#touchStart[1] = e.touches[0].clientY;
+        }
+      },
+      { passive: true },
+    );
 
-    window.addEventListener("touchend", (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const deltaX = e.changedTouches[0].clientX - GameController.#touchStart[0];
-        const deltaY = e.changedTouches[0].clientY - GameController.#touchStart[1];
-        const absX = Math.abs(deltaX);
-        const absY = Math.abs(deltaY);
+    window.addEventListener(
+      "touchend",
+      (e) => {
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          const deltaX =
+            e.changedTouches[0].clientX - GameController.#touchStart[0];
+          const deltaY =
+            e.changedTouches[0].clientY - GameController.#touchStart[1];
+          const absX = Math.abs(deltaX);
+          const absY = Math.abs(deltaY);
 
-        if (
-          absX > GameController.#FLICK_THRESHOLD ||
-          absY > GameController.#FLICK_THRESHOLD
-        ) {
-          if (absX > absY) {
-            sendDirection(deltaX > 0 ? "RIGHT" : "LEFT");
-          } else {
-            sendDirection(deltaY > 0 ? "DOWN" : "UP");
+          if (
+            absX > GameController.#FLICK_THRESHOLD ||
+            absY > GameController.#FLICK_THRESHOLD
+          ) {
+            if (absX > absY) {
+              sendDirection(deltaX > 0 ? "RIGHT" : "LEFT");
+            } else {
+              sendDirection(deltaY > 0 ? "DOWN" : "UP");
+            }
           }
         }
-      }
-    }, { passive: true });
+      },
+      { passive: true },
+    );
   }
 
   /**
@@ -136,18 +146,26 @@ export class GameController {
       // 3. 移動キー受付 (W, A, S, D / 矢印キー)
       if (typeof this.model.setNextDirection === "function") {
         const isMoveKey =
-          key === "W" || e.key === "ArrowUp" ||
-          key === "S" || e.key === "ArrowDown" ||
-          key === "A" || e.key === "ArrowLeft" ||
-          key === "D" || e.key === "ArrowRight";
+          key === "W" ||
+          e.key === "ArrowUp" ||
+          key === "S" ||
+          e.key === "ArrowDown" ||
+          key === "A" ||
+          e.key === "ArrowLeft" ||
+          key === "D" ||
+          e.key === "ArrowRight";
 
         if (isMoveKey) {
           this.startBgmOnce(); // 移動キーが押された瞬間にBGM開始
 
-          if (key === "W" || e.key === "ArrowUp") this.model.setNextDirection("UP");
-          if (key === "S" || e.key === "ArrowDown") this.model.setNextDirection("DOWN");
-          if (key === "A" || e.key === "ArrowLeft") this.model.setNextDirection("LEFT");
-          if (key === "D" || e.key === "ArrowRight") this.model.setNextDirection("RIGHT");
+          if (key === "W" || e.key === "ArrowUp")
+            this.model.setNextDirection("UP");
+          if (key === "S" || e.key === "ArrowDown")
+            this.model.setNextDirection("DOWN");
+          if (key === "A" || e.key === "ArrowLeft")
+            this.model.setNextDirection("LEFT");
+          if (key === "D" || e.key === "ArrowRight")
+            this.model.setNextDirection("RIGHT");
         }
       }
     });
@@ -161,7 +179,9 @@ export class GameController {
     const container = document.getElementById("game-root");
     const resizeCanvas = () => {
       this.canvas.width = container ? container.clientWidth : window.innerWidth;
-      this.canvas.height = container ? container.clientHeight : window.innerHeight;
+      this.canvas.height = container
+        ? container.clientHeight
+        : window.innerHeight;
     };
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
@@ -191,9 +211,12 @@ export class GameController {
               }
             }
 
-
             setTimeout(() => {
-              GameController.switchToGameover(this.stageNumber, this.isPractice, finalScore);
+              GameController.switchToGameover(
+                this.stageNumber,
+                this.isPractice,
+                finalScore,
+              );
             }, 0);
             return;
           }
@@ -224,7 +247,8 @@ export class GameController {
 
               // 本番モード：ステージクリア時のスコアでハイスコア判定
               GameController.#newRecord = HighScoreManager.updateHighScore(
-                this.stageNumber, finalScore
+                this.stageNumber,
+                finalScore,
               );
 
               setTimeout(() => {
