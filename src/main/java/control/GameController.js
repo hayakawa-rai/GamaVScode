@@ -182,7 +182,6 @@ export class GameController {
             this.isTransitioning = true;
 
             if (typeof Bgm.stopBGM === "function") Bgm.stopBGM();
-            console.log("💀 敵に捕まりました...ゲームオーバー画面へ遷移します。");
 
             let finalScore = 0;
             if (this.model.getSyujinkou) {
@@ -192,10 +191,6 @@ export class GameController {
               }
             }
 
-            // 本番・練習どちらでもハイスコアを更新する
-            GameController.#newRecord = HighScoreManager.updateHighScore(
-            this.stageNumber, finalScore
-            );
 
             setTimeout(() => {
               GameController.switchToGameover(this.stageNumber, this.isPractice, finalScore);
