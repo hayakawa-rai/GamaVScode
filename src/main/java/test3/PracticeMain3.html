@@ -1,111 +1,380 @@
 <!doctype html>
 <html lang="ja">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <title>仙石さん - 練習ステージ 1</title>
-    <link rel="stylesheet" href="../../resources/css/Main.css">
-</head>
-<body>
+    <title>仙石さん - 練習ステージ 3</title>
+    <link rel="stylesheet" href="../../resources/css/Main.css" />
+  </head>
+  <body>
+    <!-- ゲームルート -->
     <div id="game-root" class="stage1">
-        <img id="background-view" src="../../resources/picture/shatyoroom.jpg" alt="Background">
+      <img
+        id="background-view"
+        src="../../resources/picture/shatyoroom.jpg"
+        alt="Background"
+      />
+      <!-- ゲーム描画領域 -->
+      <div id="game-base" class="stage1">
+        <canvas id="game-canvas" tabindex="0"></canvas>
+      </div>
 
-        <div id="game-base" class="stage1">
-            <canvas id="game-canvas" tabindex="0"></canvas>
+      <!-- メニューボタン -->
+      <button id="menu-btn">
+        <img src="../../resources/picture/menu.png" alt="Menu" />
+      </button>
+
+      <!-- ポーズ画面 -->
+      <div id="pause-layer">
+        <!-- ポーズタイトル -->
+        <div class="pause-title">PAUSE</div>
+        <!-- 音量調整 -->
+        <div class="volume-container">
+          <span class="vol-icon">🔈</span>
+          <input type="range" id="volume-slider" min="0" max="1" step="0.05" />
+          <span class="vol-icon">🔊</span>
         </div>
 
-        <button id="menu-btn">
-            <img src="../../resources/picture/menu.png" alt="Menu">
-        </button>
+        <!-- ポーズメニュー -->
+        <button id="resume-btn" class="game-button">ゲーム再開</button>
+        <button id="how-to-play-btn" class="game-button">操作説明</button>
 
-        <div id="pause-layer">
-            <div class="pause-title">PAUSE</div>
-                <div class="volume-container">
-                    <span class="vol-icon">🔈</span>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.05">
-                    <span class="vol-icon">🔊</span>
+        <!-- 基本説明(ヘルプ) -->
+        <div id="help-panel" class="hidden">
+          <div class="main-container">
+            <!-- 説明パネル -->
+            <div class="panel">
+              <!-- タイトル -->
+              <div class="title">基本説明</div>
+              <hr class="divider" />
+
+              <!-- ページエリア -->
+              <div class="page-stack">
+                <!-- ページ1：操作 -->
+                <div class="page-wrapper" id="page-0">
+                  <div class="page-heading">操作</div>
+                  <div class="page-content">
+                    <div class="move-control-row">
+                      <span>移動：</span>
+                      <img src="../../resources/picture/WASD.png" alt="WASD" />
+                      <span>または</span>
+                      <img
+                        src="../../resources/picture/yazirusi.png"
+                        alt="矢印"
+                      />
+                    </div>
+                    <div class="spacer" style="height: 6px"></div>
+                    <div class="note-row">
+                      <div class="icon-box"></div>
+                      <div class="note-text">スマホでの移動：画面スワイプ</div>
+                    </div>
+                  </div>
                 </div>
-            <button id="resume-btn" class="game-button">ゲーム再開</button>
-            <button id="how-to-play-btn" class="game-button">操作説明</button>
-            <div id="how-to-play-text" class="how-to-play-text">
-                移動 : ↑↓←→ / WASD<br>画面スワイプ(スマホ用)
+
+                <!-- ページ2：アイテム -->
+                <div class="page-wrapper" id="page-1">
+                  <div class="page-heading">アイテム</div>
+                  <div class="page-content">
+                    <div class="note-row">
+                      <div class="icon-box"><div class="dot-icon"></div></div>
+                      <div class="note-text">
+                        エサを食べるとスコアが加算されます。
+                      </div>
+                    </div>
+                    <div class="note-row">
+                      <div class="icon-box">
+                        <img
+                          src="../../resources/picture/Chii_Item.png"
+                          class="power-pellet-icon"
+                          alt="パワーエサ"
+                        />
+                      </div>
+                      <div class="note-text">
+                        パワーエサを食べるとスコアが加算され、一定時間敵を撃退できます。
+                      </div>
+                    </div>
+                    <div class="fruit-row">
+                      <div class="fruit-item">
+                        <img src="../../resources/picture/sakuranbo.png" /><span
+                          >＋100</span
+                        >
+                      </div>
+                      <div class="fruit-item">
+                        <img src="../../resources/picture/ichigo.png" /><span
+                          >＋300</span
+                        >
+                      </div>
+                      <div class="fruit-item">
+                        <img src="../../resources/picture/orange.png" /><span
+                          >＋500</span
+                        >
+                      </div>
+                      <div class="fruit-item">
+                        <img src="../../resources/picture/ringo.png" /><span
+                          >＋700</span
+                        >
+                      </div>
+                      <div class="fruit-item">
+                        <img src="../../resources/picture/budo.png" /><span
+                          >＋1000</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ページ3：ルール -->
+                <div class="page-wrapper" id="page-2">
+                  <div class="page-heading">ルール</div>
+                  <div class="page-content">
+                    <div class="note-row">
+                      <div class="note-text">
+                        ・全てのエサを食べるとステージクリア。
+                      </div>
+                    </div>
+                    <div class="note-row">
+                      <div class="note-text">
+                        ・敵に3回触れるとゲームオーバー。
+                      </div>
+                    </div>
+                    <div class="note-row">
+                      <div class="note-text">
+                        ・端の通路は「ワープトンネル」で繋がっています。
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ページ4：モード -->
+                <div class="page-wrapper" id="page-3">
+                  <div class="page-heading">モード</div>
+                  <div class="page-content">
+                    <div class="mode-heading">▶ストーリー</div>
+                    <div class="note-text">
+                      物語を進めながら遊ぶモードです。
+                    </div>
+                    <div class="spacer" style="height: 10px"></div>
+                    <div class="mode-heading">⚔練習モード</div>
+                    <div class="note-text">
+                      エサが無限に再配置され、何度でも遊べます。
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ページインジケータ -->
+              <div class="indicator">
+                <div class="indicator-dot active"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+                <div class="indicator-dot"></div>
+              </div>
             </div>
-            <button id="title-btn" class="game-button">タイトルへ戻る</button>
+
+            <!-- ページ切り替えボタン -->
+            <div class="arrow-row">
+              <button class="arrow-btn" id="prev-btn">◀</button>
+              <button class="arrow-btn" id="next-btn">▶</button>
+            </div>
+
+            <!-- 閉じるボタン -->
+            <button class="help-button back-button-layout" id="back-btn">
+              閉じる
+            </button>
+          </div>
+          <!-- main-container -->
         </div>
+        <!-- help-panel -->
+        <!-- ポーズ画面ボタン -->
+        <button id="title-btn" class="game-button">タイトルへ戻る</button>
+      </div>
     </div>
 
     <script type="module">
-        import { GameController } from "../control/GameController.js";
-        import { MapData } from "./model/MapData.js";
-        import { MapView } from "./view/MapView.js";
-        import { Bgm } from "../start/Bgm.js";
+      import { GameController } from "../control/GameController.js";
+      import { MapData } from "./model/MapData.js";
+      import { MapView } from "./view/MapView.js";
+      import { Bgm } from "../start/Bgm.js";
 
-        class PracticeMain {
-            constructor(stageNumber, bgSrc, title) {
-                this.stageNumber = stageNumber;
-                this.controller = null;
-                this.dom = {
-                    background: document.getElementById("background-view"),
-                    root: document.getElementById("game-root"),
-                    base: document.getElementById("game-base"),
-                    canvas: document.getElementById("game-canvas"),
-                    menuBtn: document.getElementById("menu-btn"),
-                    pauseLayer: document.getElementById("pause-layer"),
-                    resumeBtn: document.getElementById("resume-btn"),
-                    howToPlayBtn: document.getElementById("how-to-play-btn"),
-                    howToPlayText: document.getElementById("how-to-play-text"),
-                    titleBtn: document.getElementById("title-btn"),
-                    volumeSlider: document.getElementById("volume-slider"),//ボリューム用
-                };
-                this.dom.background.src = bgSrc;
-                document.title = title;
-            }
+      class PracticeMain {
+        constructor(stageNumber, bgSrc, title) {
+          // ==================================================
+          // 基本情報
+          // ==================================================
 
-            start() {
-                if (this.controller) this.controller.stop();
-                Bgm.stopBGM();
+          this.stageNumber = stageNumber;
+          this.controller = null;
 
-                this.dom.root.className = `stage${this.stageNumber}`;
-                this.dom.base.className = `stage${this.stageNumber}`;
+          // ==================================================
+          // 画面要素（DOM）の取得
+          // ==================================================
 
-                const model = new MapData();
-                model.sampleModel(true); // 練習モード用の配置に上書き
+          this.dom = {
+            background: document.getElementById("background-view"),
+            root: document.getElementById("game-root"),
+            base: document.getElementById("game-base"),
+            canvas: document.getElementById("game-canvas"),
 
-                const view = new MapView(model);
+            // ポーズメニュー
+            menuBtn: document.getElementById("menu-btn"),
+            pauseLayer: document.getElementById("pause-layer"),
+            resumeBtn: document.getElementById("resume-btn"),
+            titleBtn: document.getElementById("title-btn"),
 
-                // 2. 音量スライダーの初期化とイベント登録を追加
-                if (this.dom.volumeSlider) {
-                    // 保存されている音量をロードしてバーの位置をセット
-                    this.dom.volumeSlider.value = Bgm.getSystemVolume();
+            // 基本説明（ヘルプ）
+            howToPlayBtn: document.getElementById("how-to-play-btn"),
+            helpPanel: document.getElementById("help-panel"),
 
-                    // バーを動かしたときにリアルタイムで音量を変更＆保存
-                    this.dom.volumeSlider.addEventListener("input", (e) => {
-                        Bgm.setSystemVolume(parseFloat(e.target.value));
-                    });
-                }
+            // 音量スライダー
+            volumeSlider: document.getElementById("volume-slider"),
+          };
 
-                this.dom.resumeBtn.onclick = () => this.controller?.togglePauseByButton();
-                this.dom.menuBtn.onclick = () => this.controller?.togglePauseByButton();
-                this.dom.titleBtn.onclick = () => this.controller?.forceBackToTitle();
-                this.dom.howToPlayBtn.onclick = () => {
-                    const isHidden = window.getComputedStyle(this.dom.howToPlayText).display === "none";
-                    this.dom.howToPlayText.style.display = isHidden ? "block" : "none";
-                };
+          // ==================================================
+          // ステージ固有設定
+          // ==================================================
 
-                this.controller = new GameController(
-                    model, view, this.dom.canvas, this.stageNumber, true
-                );
-                this.controller.setPauseLayer(this.dom.pauseLayer);
-
-                this.dom.canvas.tabIndex = 1;
-                this.dom.canvas.focus();
-
-                console.log(`仙石さん - 練習ステージ ${this.stageNumber} 正常に起動しました`);
-            }
+          this.dom.background.src = bgSrc;
+          document.title = title;
         }
 
-        window.addEventListener("DOMContentLoaded", () => {
-            new PracticeMain(3, "../../resources/picture/shatyoroom.jpg", "仙石さん - 練習ステージ 3").start();
-        });
+        start() {
+          // ==================================================
+          // 初期化
+          // ==================================================
+
+          if (this.controller) this.controller.stop();
+          Bgm.stopBGM();
+
+          this.dom.root.className = `stage${this.stageNumber}`;
+          this.dom.base.className = `stage${this.stageNumber}`;
+
+          // ==================================================
+          // 基本説明（ヘルプ）のページ切り替え設定
+          // ==================================================
+
+          const pages = document.querySelectorAll(".page-wrapper");
+          const dots = document.querySelectorAll(".indicator-dot");
+          const prevBtn = document.getElementById("prev-btn");
+          const nextBtn = document.getElementById("next-btn");
+
+          let currentPage = 0;
+
+          /**
+           * ヘルプページ表示更新
+           * @param {number} index 表示するページ番号
+           */
+          function updatePage(index) {
+            currentPage = (index + pages.length) % pages.length;
+
+            pages.forEach((p, i) => {
+              p.style.display = i === currentPage ? "block" : "none";
+            });
+
+            dots.forEach((d, i) => {
+              d.classList.toggle("active", i === currentPage);
+            });
+          }
+
+          // 最初のページを表示
+          updatePage(0);
+
+          // ページ送りボタン
+          prevBtn.onclick = () => updatePage(currentPage - 1);
+          nextBtn.onclick = () => updatePage(currentPage + 1);
+
+          // ==================================================
+          // モデル・ビュー生成
+          // ==================================================
+
+          const model = new MapData();
+
+          // 練習モード用マップへ変更
+          model.sampleModel(true);
+
+          const view = new MapView(model);
+
+          // ==================================================
+          // ヘルプ画面 閉じるボタン
+          // ==================================================
+
+          const backBtn = document.getElementById("back-btn");
+
+          if (backBtn) {
+            backBtn.onclick = () => {
+              this.dom.helpPanel.classList.add("hidden");
+            };
+          }
+
+          // ==================================================
+          // 音量スライダー設定
+          // ==================================================
+
+          if (this.dom.volumeSlider) {
+            // 保存されている音量を反映
+            this.dom.volumeSlider.value = Bgm.getSystemVolume();
+
+            // スライダー操作時に音量変更
+            this.dom.volumeSlider.addEventListener("input", (e) => {
+              Bgm.setSystemVolume(parseFloat(e.target.value));
+            });
+          }
+
+          // ==================================================
+          // ボタンイベント登録
+          // ==================================================
+
+          // ゲーム再開
+          this.dom.resumeBtn.onclick = () =>
+            this.controller?.togglePauseByButton();
+
+          // メニューボタン
+          this.dom.menuBtn.onclick = () =>
+            this.controller?.togglePauseByButton();
+
+          // タイトルへ戻る
+          this.dom.titleBtn.onclick = () => this.controller?.forceBackToTitle();
+
+          // 基本説明を開く
+          this.dom.howToPlayBtn.onclick = () => {
+            this.dom.helpPanel.classList.remove("hidden");
+
+            // 開くたびに1ページ目へ戻す
+            updatePage(0);
+          };
+
+          // ==================================================
+          // GameController生成
+          // ==================================================
+
+          this.controller = new GameController(
+            model,
+            view,
+            this.dom.canvas,
+            this.stageNumber,
+            true,
+          );
+
+          this.controller.setPauseLayer(this.dom.pauseLayer);
+
+          // ==================================================
+          // キャンバスへフォーカス
+          // ==================================================
+
+          this.dom.canvas.tabIndex = 1;
+          this.dom.canvas.focus();
+
+          console.log(
+            `仙石さん - 練習ステージ ${this.stageNumber} 正常に起動しました`,
+          );
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        new PracticeMain(
+          3,
+          "../../resources/picture/shatyoroom.jpg",
+          "仙石さん - 練習ステージ 3",
+        ).start();
+      });
     </script>
-</body>
+  </body>
 </html>
