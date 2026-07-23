@@ -1,11 +1,15 @@
-function createDirection(name,dx,dy){
-	return Object.freeze({
-		name,
-		dx,
-		dy,
-		getDX(){return dx;},
-		getDY(){return dy;},
-	});
+function createDirection(name, dx, dy) {
+  return Object.freeze({
+    name,
+    dx,
+    dy,
+    getDX() {
+      return dx;
+    },
+    getDY() {
+      return dy;
+    },
+  });
 }
 
 export const Direction = Object.freeze({
@@ -19,14 +23,13 @@ export const Direction = Object.freeze({
 });
 
 export const DirectionValues = Object.freeze(Object.values(Direction));
-	
-	// ==================================================
-	// 方向決定
-	// ==================================================
-	// JavaFXのキー入力(KeyCode)から対応するDirection(動き)を返すメソッド
-	export function fromKeyCode(key) {
 
-	switch(key){
+// ==================================================
+// 方向決定
+// ==================================================
+// JavaFXのキー入力(KeyCode)から対応するDirection(動き)を返すメソッド
+export function fromKeyCode(key) {
+  switch (key) {
     // 矢印上
     case "ArrowUp":
       return Direction.UP;
