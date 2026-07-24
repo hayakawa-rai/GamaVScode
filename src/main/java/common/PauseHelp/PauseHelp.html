@@ -1,0 +1,137 @@
+<!-- PauseHelp.html 重複防止用 --> 
+
+<!-- 基本説明(ヘルプ) -->
+<div id="help-panel" class="hidden">
+  <div class="main-container">
+    <!-- 説明パネル -->
+    <div class="panel">
+      <!-- タイトル -->
+      <div class="title">基本説明</div>
+      <hr class="divider" />
+
+      <!-- ページエリア -->
+      <div class="page-stack">
+        <!-- ページ1：操作 -->
+        <div class="page-wrapper" id="page-0">
+          <div class="page-heading">操作</div>
+          <div class="page-content">
+            <div class="move-control-row">
+              <span>移動：</span>
+              <img src="../../resources/picture/WASD.png" alt="WASD" />
+              <span>または</span>
+              <img src="../../resources/picture/yazirusi.png" alt="矢印" />
+            </div>
+            <div class="spacer" style="height: 6px"></div>
+            <div class="note-row">
+              <div class="icon-box"></div>
+              <div class="note-text">スマホでの移動：画面スワイプ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ページ2：アイテム -->
+        <div class="page-wrapper" id="page-1">
+          <div class="page-heading">アイテム</div>
+          <div class="page-content">
+            <div class="note-row">
+              <div class="icon-box"><div class="dot-icon"></div></div>
+              <div class="note-text">エサを食べるとスコアが加算されます。</div>
+            </div>
+            <div class="note-row">
+              <div class="icon-box">
+                <img
+                  src="../../resources/picture/Chii_Item.png"
+                  class="power-pellet-icon"
+                  alt="パワーエサ"
+                />
+              </div>
+              <div class="note-text">
+                パワーエサを食べるとスコアが加算され、一定時間敵を撃退できます。
+              </div>
+            </div>
+            <div class="fruit-row">
+              <div class="fruit-item">
+                <img src="../../resources/picture/sakuranbo.png" /><span
+                  >＋100</span
+                >
+              </div>
+              <div class="fruit-item">
+                <img src="../../resources/picture/ichigo.png" /><span
+                  >＋300</span
+                >
+              </div>
+              <div class="fruit-item">
+                <img src="../../resources/picture/orange.png" /><span
+                  >＋500</span
+                >
+              </div>
+              <div class="fruit-item">
+                <img src="../../resources/picture/ringo.png" /><span
+                  >＋700</span
+                >
+              </div>
+              <div class="fruit-item">
+                <img src="../../resources/picture/budo.png" /><span
+                  >＋1000</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ページ3：ルール -->
+        <div class="page-wrapper" id="page-2">
+          <div class="page-heading">ルール</div>
+          <div class="page-content">
+            <div class="note-row">
+              <div class="note-text">
+                ・全てのエサを食べるとステージクリア。
+              </div>
+            </div>
+            <div class="note-row">
+              <div class="note-text">・敵に3回触れるとゲームオーバー。</div>
+            </div>
+            <div class="note-row">
+              <div class="note-text">
+                ・端の通路は「ワープトンネル」で繋がっています。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ページ4：モード -->
+        <div class="page-wrapper" id="page-3">
+          <div class="page-heading">モード</div>
+          <div class="page-content">
+            <div class="mode-heading">▶ストーリー</div>
+            <div class="note-text">物語を進めながら遊ぶモードです。</div>
+            <div class="spacer" style="height: 10px"></div>
+            <div class="mode-heading">⚔練習モード</div>
+            <div class="note-text">
+              エサが無限に再配置され、何度でも遊べます。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ページインジケータ -->
+      <div class="indicator">
+        <div class="indicator-dot active"></div>
+        <div class="indicator-dot"></div>
+        <div class="indicator-dot"></div>
+        <div class="indicator-dot"></div>
+      </div>
+    </div>
+
+    <!-- ページ切り替えボタン -->
+    <div class="arrow-row">
+      <button class="arrow-btn" id="prev-btn">◀</button>
+      <button class="arrow-btn" id="next-btn">▶</button>
+    </div>
+
+    <!-- 閉じるボタン -->
+    <button class="help-button back-button-layout" id="back-btn">閉じる</button>
+  </div>
+  <!-- main-container -->
+</div>
+<!-- help-panel -->
