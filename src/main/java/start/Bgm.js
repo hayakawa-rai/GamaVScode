@@ -4,12 +4,11 @@ export class Bgm {
   static #currentStageNumber = 1;
   static #isPinchi = false;
 
-  static #audioCtx = null;
-  static #masterGain = null;
-  static #systemVolume = 0.5;
+  static #systemVolume = 0.5; // デフォルト音量（50%）
+  static #pendingAudio = new Set();
+  static #listenersAttached = false;
 
-  static #connectedNodes = new WeakMap();
-
+  // ファイルごとの音量バランス
   static #SOUND_VOLUMES = {
     "jump06.mp3": 0.85,
     "nari.mp3": 0.95,
@@ -25,26 +24,11 @@ export class Bgm {
   };
   static #DEFAULT_SE_VOLUME = 0.2;
 
+  // 初期化と保存された音量のロード
   static initSystem() {
-    if (Bgm.#audioCtx) {
-      if (Bgm.#audioCtx.state === "suspended") {
-        Bgm.#audioCtx.resume().catch(() => {});
-      }
-      return;
-    }
-
-    try {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      Bgm.#audioCtx = new AudioContextClass();
-      Bgm.#masterGain = Bgm.#audioCtx.createGain();
-
-      const savedVolume = localStorage.getItem("gameMasterVolume");
-      Bgm.#systemVolume = savedVolume !== null ? parseFloat(savedVolume) : 0.5;
-
-      Bgm.#masterGain.gain.value = Bgm.#systemVolume;
-      Bgm.#masterGain.connect(Bgm.#audioCtx.destination);
-    } catch (e) {
-      console.warn("Web Audio API の初期化に失敗しました:", e);
+    const savedVolume = localStorage.getItem("gameMasterVolume");
+    if (savedVolume !== null) {
+      Bgm.#systemVolume = parseFloat(savedVolume);
     }
   }
 
@@ -53,70 +37,27 @@ export class Bgm {
     return Bgm.#systemVolume;
   }
 
+  /**
+   * システム全体の音量を変更し、再生中のすべての音にリアルタイム反映する
+   */
   static setSystemVolume(volume) {
-    Bgm.initSystem();
-    Bgm.#systemVolume = volume;
-    if (Bgm.#masterGain && Bgm.#audioCtx) {
-      Bgm.#masterGain.gain.setValueAtTime(volume, Bgm.#audioCtx.currentTime);
-    }
-    localStorage.setItem("gameMasterVolume", volume);
-  }
+    Bgm.#systemVolume = Math.min(1.0, Math.max(0.0, volume));
+    localStorage.setItem("gameMasterVolume", Bgm.#systemVolume);
 
-  static #playWithMixer(audioElement) {
-    Bgm.initSystem();
-
-    if (Bgm.#audioCtx) {
-      if (Bgm.#audioCtx.state === "suspended") {
-        Bgm.#audioCtx.resume().then(() => {
-          Bgm.#connectAndPlay(audioElement);
-        }).catch(() => {
-          Bgm.#connectAndPlay(audioElement);
-        });
-      } else {
-        Bgm.#connectAndPlay(audioElement);
-      }
-    } else {
-      Bgm.#connectAndPlay(audioElement);
+    // 再生中のBGMに音量を即時反映
+    if (Bgm.#bgmPlayer) {
+      Bgm.#bgmPlayer.volume = Bgm.#systemVolume;
     }
   }
 
-  static #connectAndPlay(audioElement) {
-    if (Bgm.#audioCtx && Bgm.#masterGain) {
-      try {
-        if (!Bgm.#connectedNodes.has(audioElement)) {
-          const source = Bgm.#audioCtx.createMediaElementSource(audioElement);
-          source.connect(Bgm.#masterGain);
-          Bgm.#connectedNodes.set(audioElement, source);
-        }
-      } catch (err) {
-        console.debug("Audio node connection managed:", err);
-      }
-    }
-
-    const playPromise = audioElement.play();
-    if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        console.warn("自動再生がブロックされました。ユーザー操作を待ちます:", audioElement.src, err);
-        Bgm.#pending.add(audioElement);
-        Bgm.#attachListeners();
-      });
-    }
-  }
-
-  static #pending = new Set();
-  static #listenersAttached = false;
-
+  // 自動再生ブロック時のリトライ機構
   static #retryPending() {
-    if (Bgm.#audioCtx && Bgm.#audioCtx.state === "suspended") {
-      Bgm.#audioCtx.resume().catch(() => {});
-    }
-
-    Bgm.#pending.forEach((audio) => {
+    Bgm.#pendingAudio.forEach((audio) => {
       audio.play().catch((err) => {
-        console.warn("保留音源の再生に失敗しました:", audio.src, err);
+        console.warn("保留音源の再生に失敗しました:", err);
       });
     });
-    Bgm.#pending.clear();
+    Bgm.#pendingAudio.clear();
     Bgm.#detachListeners();
   }
 
@@ -133,39 +74,68 @@ export class Bgm {
     Bgm.#listenersAttached = false;
   }
 
-  static unlockPlay(audioElement) {
-    return audioElement.play();
+  // 音声を確実に再生する内部関数（ブロック対策付き）
+  static #playAudio(audioElement) {
+    Bgm.initSystem();
+    const playPromise = audioElement.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn("自動再生がブロックされました。ユーザー操作を待ちます:", err);
+        Bgm.#pendingAudio.add(audioElement);
+        Bgm.#attachListeners();
+      });
+    }
+    return playPromise;
   }
 
-  static playOneShot(path, volume = null) {
-    const audio = new Audio(path);
-    if (volume !== null) {
-      audio.volume = volume;
-    } else {
-      const fileName = path.split("/").pop();
-      audio.volume = Bgm.#SOUND_VOLUMES[fileName] ?? Bgm.#DEFAULT_SE_VOLUME;
+  /**
+   * 外部からの互換用：Start.js 等のエラーを防ぐためのメソッド
+   */
+  static unlockPlay(audioElement) {
+    if (audioElement instanceof HTMLAudioElement) {
+      return Bgm.#playAudio(audioElement);
     }
-    Bgm.#playWithMixer(audio);
+    return Promise.resolve();
+  }
+
+  /**
+   * 使い捨ての単発音を再生
+   */
+  static playOneShot(path, volume = null) {
+    Bgm.initSystem();
+    const audio = new Audio(path);
+    
+    const fileName = path.split("/").pop();
+    const baseVol = volume !== null ? volume : (Bgm.#SOUND_VOLUMES[fileName] ?? Bgm.#DEFAULT_SE_VOLUME);
+    
+    // システム音量と個別の音量バランスを掛け合わせる
+    audio.volume = Math.min(1.0, Math.max(0.0, baseVol * Bgm.#systemVolume));
+
+    Bgm.#playAudio(audio);
     return audio;
   }
 
+  /**
+   * BGMの開始
+   */
   static playBGM(path) {
     if (this.#bgmPlayer !== null && path === this.#currentPath) {
       if (this.#bgmPlayer.paused) {
-        Bgm.#playWithMixer(this.#bgmPlayer);
+        Bgm.#playAudio(this.#bgmPlayer);
       }
       return;
     }
     this.stopBGM();
     try {
+      Bgm.initSystem();
       const audio = new Audio(path);
       audio.loop = true;
-      audio.volume = 1.0;
+      audio.volume = Math.min(1.0, Math.max(0.0, Bgm.#systemVolume));
 
       this.#bgmPlayer = audio;
       this.#currentPath = path;
 
-      Bgm.#playWithMixer(this.#bgmPlayer);
+      Bgm.#playAudio(this.#bgmPlayer);
     } catch (error) {
       console.error("BGMファイルの読み込みまたは再生に失敗しました: " + path, error);
     }
@@ -227,7 +197,7 @@ export class Bgm {
 
   static resumeBGM() {
     if (this.#bgmPlayer !== null) {
-      Bgm.#playWithMixer(this.#bgmPlayer);
+      Bgm.#playAudio(this.#bgmPlayer);
     }
   }
 }
