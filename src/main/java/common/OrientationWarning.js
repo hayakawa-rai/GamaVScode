@@ -1,6 +1,6 @@
 export class OrientationWarning {
   /**
-   * 画面の向きを監視し、横向き時に警告表示とモデルの自動ポーズを行う
+   * 画面の向きを監視し、横向き時に警告表示と入力ブロックを行う
    * @param {Object} [model] 停止・再開を制御したいゲームモデル
    * @param {HTMLElement} [pauseLayer] ポーズ時に連動させたいUIレイヤー要素
    */
@@ -21,6 +21,9 @@ export class OrientationWarning {
 
       if (isLandscape) {
         warningDiv.style.display = "flex";
+        // 横向きの間は、背景全体のポーズやタッチ入力を完全に塞ぐ
+        document.body.style.pointerEvents = "none";
+        warningDiv.style.pointerEvents = "auto"; // 警告画面自体は触れるようにする
 
         if (model && typeof model.isPaused === "function" && !model.isPaused()) {
           if (typeof model.togglePause === "function") {
@@ -32,6 +35,8 @@ export class OrientationWarning {
         }
       } else {
         warningDiv.style.display = "none";
+        // 縦向きに戻ったら操作無効を解除する（遷移防止フラグが立っていなければ）
+        document.body.style.pointerEvents = "auto";
       }
     };
 
