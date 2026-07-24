@@ -47,6 +47,12 @@
       </div>
     </div>
 
+    <!-- 「READY?」オーバーレイ用のHTML構造 -->
+    <div id="ready-overlay">
+      <h1 class="ready-title">READY?</h1>
+      <p class="ready-subtitle">画面をタップしてスタート</p>
+    </div>
+    
     <script type="module">
       import { GameController } from "../control/GameController.js";
       import { MapData } from "./model/MapData.js";
@@ -73,6 +79,9 @@
             root: document.getElementById("game-root"),
             base: document.getElementById("game-base"),
             canvas: document.getElementById("game-canvas"),
+
+            // READY画面
+            readyOverlay: document.getElementById("ready-overlay"),
 
             // ポーズメニュー
             menuBtn: document.getElementById("menu-btn"),
@@ -118,6 +127,11 @@
           model.sampleModel(true);
 
           const view = new MapView(model);
+
+          // 最初はゲームを「待ち状態（ポーズ）」にしておく
+          if (typeof model.togglePause === "function" && !model.isPaused()) {
+            model.togglePause();
+          }
 
           // ==================================================
           // 音量スライダー設定
@@ -179,6 +193,34 @@
           console.log(
             `仙石さん - 練習ステージ ${this.stageNumber} 正常に起動しました`,
           );
+        // ==================================================
+          // ★「READY?」オーバーレイのタップ・クリック処理
+          // ==================================================
+          if (this.dom.readyOverlay) {
+            const startAction = (e) => {
+              e.preventDefault();
+              SoundManager.play(SoundManager.SELECT);
+
+              // 1. コントローラー経由でBGMの再生トリガーを引く（音声制限解除）
+              this.controller.startBgmOnce();
+
+              // 2. モデルのポーズを解除してゲームを動かす
+              if (typeof model.isPaused === "function" && model.isPaused()) {
+                model.togglePause();
+              }
+
+              // 3. READY画面をDOMから削除
+              this.dom.readyOverlay.remove();
+            };
+
+            this.dom.readyOverlay.addEventListener("click", startAction, {
+              once: true,
+            });
+            this.dom.readyOverlay.addEventListener("touchstart", startAction, {
+              once: true,
+              passive: false,
+            });
+          }
         }
       }
 
