@@ -1,6 +1,8 @@
 export class OrientationWarning {
+  static #isInitialized = false;
+
   /**
-   * 画面の向きを監視し、横向き時に警告表示とモデルの自動ポーズを行う
+   * 画面の向きを監視し、横向き時にモデルの自動ポーズを行う
    * @param {Object} [model] 停止・再開を制御したいゲームモデル
    * @param {HTMLElement} [pauseLayer] ポーズ時に連動させたいUIレイヤー要素
    */
@@ -16,28 +18,28 @@ export class OrientationWarning {
       document.body.prepend(warningDiv);
     }
 
+    // --- ここから追加：向きを判定して表示を切り替える処理 ---
     const checkOrientation = () => {
-      const isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 900;
+      // スマホかつ横向き（landscape）の場合に表示
+      // 画面の幅が高さより大きい、または matchMedia を使う方法
+      const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+      const isMobile = window.innerWidth <= 900; // スマホ判定の閾値（必要に応じて調整）
 
-      if (isLandscape) {
+      if (isLandscape && isMobile) {
         warningDiv.style.display = "flex";
-
-        if (model && typeof model.isPaused === "function" && !model.isPaused()) {
-          if (typeof model.togglePause === "function") {
-            model.togglePause();
-            if (pauseLayer) {
-              pauseLayer.classList.add("visible");
-            }
-          }
+        // 横向きになったらゲームを強制的にポーズする
+        if (model && typeof model.pause === "function" && !model.isPaused()) {
+          model.pause();
+          if (pauseLayer) pauseLayer.classList.add("visible");
         }
       } else {
         warningDiv.style.display = "none";
       }
     };
 
+    // 初期化時と、画面の向き・サイズが変わったときにチェック
+    checkOrientation();
     window.addEventListener("resize", checkOrientation);
     window.addEventListener("orientationchange", checkOrientation);
-    
-    checkOrientation();
   }
 }

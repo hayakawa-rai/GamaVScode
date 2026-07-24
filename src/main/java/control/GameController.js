@@ -1,5 +1,6 @@
 import { Bgm } from "../start/Bgm.js";
 import { HighScoreManager } from "../common/HighScoreManager.js";
+import { OrientationWarning } from "../common/OrientationWarning.js";
 /**
  * ゲーム全体を管理・制御するコントローラークラス (GameController)
  * Main1〜3 / PracticeMain1〜3 共通で使用する
@@ -34,56 +35,8 @@ export class GameController {
     this.bgmStarted = false; // 主人公が動くまでBGMを再生しない
 
     this.attachInput();
-    GameController.applyMobileControls(this.model, () => this.startBgmOnce());
     
-    this.initOrientationListener();
-
     this.startLoop();
-  }
-
-  /**
-   * スマホの画面の向きを監視し、横向きのときに自動でポーズをかける
-   */
-  initOrientationListener() {
-    // 警告用要素がなければDOMに自動生成する
-    let warningDiv = document.getElementById("orientation-warning");
-    if (!warningDiv) {
-      warningDiv = document.createElement("div");
-      warningDiv.id = "orientation-warning";
-      warningDiv.innerHTML = `
-        <h2>縦画面専用のゲームです</h2>
-        <p>スマホを縦向きにしてプレイしてください。</p>
-      `;
-      document.body.prepend(warningDiv);
-    }
-
-    const checkOrientation = () => {
-      // スマホサイズかつ横向き (landscape) の判定
-      const isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 900;
-
-      if (isLandscape) {
-        warningDiv.style.display = "flex";
-
-        // まだポーズ中でなければ自動でポーズをかける
-        if (this.model && typeof this.model.isPaused === "function" && !this.model.isPaused()) {
-          if (typeof this.model.togglePause === "function") {
-            this.model.togglePause();
-            // ポーズレイヤーがあれば一緒に表示を同期
-            if (this.pauseLayer) {
-              this.pauseLayer.classList.add("visible");
-            }
-          }
-        }
-      } else {
-        warningDiv.style.display = "none";
-      }
-    };
-
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
-    
-    // 初回チェック
-    checkOrientation();
   }
 
   /**
@@ -349,6 +302,8 @@ export class GameController {
 
   setPauseLayer(pauseLayerElement) {
     this.pauseLayer = pauseLayerElement;
+    //スマホ横時の警告
+    OrientationWarning.init(this.model, this.pauseLayer);
   }
 
   /**
