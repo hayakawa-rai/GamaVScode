@@ -2,6 +2,17 @@
 import { SoundManager } from "../../start/SoundManager.js";
 
 /**
+ * 共通ヘルプ画面を読み込む
+ */
+export async function loadPauseHelp() {
+  const response = await fetch("../common/PauseHelp/PauseHelp.html");
+
+  const html = await response.text();
+
+  document.getElementById("pause-help-container").innerHTML = html;
+}
+
+/**
  * ポーズ画面のヘルプ機能を初期化する
  * ・ヘルプの表示 / 非表示
  * ・ページ送り / ページ戻し
