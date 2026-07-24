@@ -1,9 +1,12 @@
 import { GameController } from "../control/GameController.js";
 import { StoryEngine } from "./StoryEngine.js";
 import { StoryUtils } from "./StoryUtils.js";
+import { OrientationWarning } from "../common/OrientationWarning.js";
 import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+    //横向き対応の初期化
+    OrientationWarning.init();
     // --- 1. シナリオデータの定義 ---
     const dialogues = [
         { speaker: "わだたく", message: "……あれ……？もう、あそべない……？", sound: "../../resources/music/down.mp3", color: "red" },

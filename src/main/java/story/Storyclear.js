@@ -1,7 +1,10 @@
 import { GameController } from "../control/GameController.js";
+import { OrientationWarning } from "../common/OrientationWarning.js";
 import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  //横向き対応の初期化
+    OrientationWarning.init();
   // ==================================================
   // 1. DOM要素の取得
   // ==================================================

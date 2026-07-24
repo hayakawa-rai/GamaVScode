@@ -1,9 +1,12 @@
 import { SoundManager } from "../start/SoundManager.js";
 import { GameController } from "../control/GameController.js";
 import { HighScoreManager } from "../common/HighScoreManager.js";
+import { OrientationWarning } from "../common/OrientationWarning.js";
 
 export class GameOver {
   static init() {
+    //横向き対応の初期化
+    OrientationWarning.init();
     // URLパラメータの取得
     const params = new URLSearchParams(window.location.search);
     const stage = params.get("stage") || "1";

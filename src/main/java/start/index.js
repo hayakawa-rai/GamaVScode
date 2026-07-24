@@ -5,6 +5,15 @@ import { OrientationWarning } from "../common/OrientationWarning.js";
 let navigated = false;
 
 /**
+ * 現在横向きかどうかを判定するヘルパー
+ */
+function isLandscapeMode() {
+  const warningDiv = document.getElementById("orientation-warning");
+  return (warningDiv && window.getComputedStyle(warningDiv).display !== "none") ||
+         (window.innerWidth > window.innerHeight && window.innerWidth <= 900);
+}
+
+/**
  * スタート画面へ遷移する
  * タップ連打や複数入力による二重遷移を防止する
  */
