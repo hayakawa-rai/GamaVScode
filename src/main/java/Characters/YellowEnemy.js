@@ -32,7 +32,7 @@ export class YellowEnemy extends Enemy {
     super(
       YellowEnemy.START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2,
       YellowEnemy.START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2,
-      2,
+      2.5,
     );
 
     this.mapData = mapData;

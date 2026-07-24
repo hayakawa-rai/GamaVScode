@@ -212,7 +212,7 @@ export class MapData {
 	 */
 	sampleModel(enableRespawn) {
 		this.#enableRespawn = enableRespawn;
-		this.#syujinkou = new Syujinkou(14 * MapData.TILE_SIZE, 23 * MapData.TILE_SIZE, 2);
+		this.#syujinkou = new Syujinkou(14 * MapData.TILE_SIZE, 23 * MapData.TILE_SIZE, 2.5);
 		this.#itemMap = new Array(this.#map.length);
 		this.#remainingItems = 0;
 		this.#lastFruitSpawnTime = Date.now();
@@ -265,7 +265,7 @@ export class MapData {
 	 * 総アイテム数(totalItems)を記録する。
 	 */
 	constructor(paused = false) {
-		this.#syujinkou = new Syujinkou(14 * MapData.TILE_SIZE, 23 * MapData.TILE_SIZE, 2);
+		this.#syujinkou = new Syujinkou(14 * MapData.TILE_SIZE, 23 * MapData.TILE_SIZE, 2.5);
 		this.#itemMap = new Array(this.#map.length);
 		this.#remainingItems = 0;
 		this.#lastFruitSpawnTime = Date.now();

@@ -1,6 +1,6 @@
 import { Bgm } from "../start/Bgm.js";
 import { HighScoreManager } from "../common/HighScoreManager.js";
-import { OrientationWarning } from "../common/OrientationWarning.js";
+import { OrientationWarning } from "../common/OrientationWarning.js"; 
 /**
  * ゲーム全体を管理・制御するコントローラークラス (GameController)
  * Main1〜3 / PracticeMain1〜3 共通で使用する
@@ -35,7 +35,10 @@ export class GameController {
     this.bgmStarted = false; // 主人公が動くまでBGMを再生しない
 
     this.attachInput();
+    GameController.applyMobileControls(this.model, () => this.startBgmOnce());
     
+    OrientationWarning.init(this.model);
+
     this.startLoop();
   }
 
@@ -302,8 +305,7 @@ export class GameController {
 
   setPauseLayer(pauseLayerElement) {
     this.pauseLayer = pauseLayerElement;
-    //スマホ横時の警告
-    OrientationWarning.init(this.model, this.pauseLayer);
+     OrientationWarning.setPauseLayer(pauseLayerElement); // ここで再チェック
   }
 
   /**
