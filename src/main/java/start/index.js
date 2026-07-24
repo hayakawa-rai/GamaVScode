@@ -11,6 +11,11 @@ let navigated = false;
 function goToStart() {
   if (navigated) return;
 
+  const warningDiv = document.getElementById("orientation-warning");
+  if (warningDiv && window.getComputedStyle(warningDiv).display !== "none") {
+    return;
+  }
+  
   navigated = true;
 
   // 連打対策として一時的に画面全体の操作を無効化
