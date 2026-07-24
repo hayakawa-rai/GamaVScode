@@ -121,14 +121,6 @@
   /* 初期状態は非表示 */
   display: none;
 
-  @media (max-width: 480px) {
-    #highscore-tooltip {
-      right: 5px;
-      width: 110px;
-      font-size: 12px;
-    }
-  }
-
   /* トロフィー付近に固定表示 */
   position: fixed;
 
@@ -160,4 +152,14 @@
   white-space: nowrap;
 
   box-sizing: border-box;
+}
+
+/* スマホ対応 */
+@media (max-width: 480px) {
+  #highscore-tooltip {
+    right: 5px;
+    width: 110px;
+    font-size: 12px;
+    padding: 8px;
+  }
 }
