@@ -1,11 +1,10 @@
 export class OrientationWarning {
   /**
-   * 画面の向きを監視し、横向き時に警告表示とモデルの自動ポーズを行う
-   * @param {Object} [model] 停止・再開を制御したいゲームモデル（Main画面などの場合）
-   * @param {HTMLElement} [pauseLayer] ポーズ時に連動させたいUIレイヤー要素（任意）
+   * 画面の向きを監視し、横向き時に警告表示と入力ブロックを行う
+   * @param {Object} [model] 停止・再開を制御したいゲームモデル
+   * @param {HTMLElement} [pauseLayer] ポーズ時に連動させたいUIレイヤー要素
    */
   static init(model = null, pauseLayer = null) {
-    // すでに警告用要素がなければDOMに自動生成する
     let warningDiv = document.getElementById("orientation-warning");
     if (!warningDiv) {
       warningDiv = document.createElement("div");
@@ -18,13 +17,14 @@ export class OrientationWarning {
     }
 
     const checkOrientation = () => {
-      // スマホサイズかつ横向き (landscape) の判定
       const isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 900;
 
       if (isLandscape) {
         warningDiv.style.display = "flex";
+        // 横向きの間は、背景全体のポーズやタッチ入力を完全に塞ぐ
+        document.body.style.pointerEvents = "none";
+        warningDiv.style.pointerEvents = "auto"; // 警告画面自体は触れるようにする
 
-        // モデルが存在し、まだポーズ中でなければ自動でポーズをかける
         if (model && typeof model.isPaused === "function" && !model.isPaused()) {
           if (typeof model.togglePause === "function") {
             model.togglePause();
@@ -35,13 +35,14 @@ export class OrientationWarning {
         }
       } else {
         warningDiv.style.display = "none";
+        // 縦向きに戻ったら操作無効を解除する（遷移防止フラグが立っていなければ）
+        document.body.style.pointerEvents = "auto";
       }
     };
 
     window.addEventListener("resize", checkOrientation);
     window.addEventListener("orientationchange", checkOrientation);
     
-    // 初回チェック
     checkOrientation();
   }
 }
