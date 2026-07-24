@@ -1,5 +1,6 @@
 import { GameController } from "../control/GameController.js";
 import { SoundManager } from "../start/SoundManager.js";
+import { OrientationWarning } from "../common/OrientationWarning.js";
 /**
  * STAGE2 CLEAR画面
  */
@@ -59,6 +60,8 @@ export class StageClear2 {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  //横向き対応の初期化
+    OrientationWarning.init();
   const params = new URLSearchParams(window.location.search);
 
   const score = Number(params.get("score")) || 0;
