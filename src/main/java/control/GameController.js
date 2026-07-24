@@ -89,6 +89,9 @@ export class GameController {
         if (e.touches && e.touches.length > 0) {
           GameController.#touchStart[0] = e.touches[0].clientX;
           GameController.#touchStart[1] = e.touches[0].clientY;
+          if (typeof onMove === "function") {
+            onMove();
+          }
         }
       },
       { passive: true },
