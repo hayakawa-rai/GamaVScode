@@ -193,6 +193,11 @@
       </div>
     </div>
 
+    <!-- 「READY?」オーバーレイ用のHTML構造 -->
+    <div id="ready-overlay">
+      <h1 class="ready-title">READY?</h1>
+      <p class="ready-subtitle">画面をタップしてスタート</p>
+    </div>
     <script type="module">
       import { GameController } from "../control/GameController.js";
       import { MapData } from "./model/MapData.js";
@@ -220,6 +225,8 @@
             base: document.getElementById("game-base"),
             canvas: document.getElementById("game-canvas"),
 
+            // READY画面
+            readyOverlay: document.getElementById("ready-overlay"),
             // ポーズメニュー
             menuBtn: document.getElementById("menu-btn"),
             pauseLayer: document.getElementById("pause-layer"),
@@ -394,6 +401,11 @@
           const model = new MapData();
           const view = new MapView(model);
 
+          // 最初はゲームを「待ち状態（ポーズ）」にしておく
+          if (typeof model.togglePause === "function" && !model.isPaused()) {
+            model.togglePause();
+          }
+
           // ==================================================
           // ヘルプ画面 閉じるボタン
           // ==================================================
@@ -483,6 +495,29 @@
           this.startTimer(model);
           this.dom.canvas.tabIndex = 1;
           this.dom.canvas.focus();
+          // ==================================================
+          // ★「READY?」オーバーレイのタップ・クリック処理
+          // ==================================================
+          if (this.dom.readyOverlay) {
+            const startAction = (e) => {
+              e.preventDefault();
+              SoundManager.play(SoundManager.SELECT);
+
+              // 1. コントローラー経由でBGMの再生トリガーを引く（音声制限解除）
+              this.controller.startBgmOnce();
+
+              // 2. モデルのポーズを解除してゲームを動かす
+              if (typeof model.isPaused === "function" && model.isPaused()) {
+                model.togglePause();
+              }
+
+              // 3. READY画面をDOMから削除
+              this.dom.readyOverlay.remove();
+            };
+
+            this.dom.readyOverlay.addEventListener("click", startAction, { once: true });
+            this.dom.readyOverlay.addEventListener("touchstart", startAction, { once: true, passive: false });
+          }
         }
       }
 
