@@ -1,10 +1,12 @@
 export class OrientationWarning {
-  /**
-   * 画面の向きを監視し、横向き時に警告表示とモデルの自動ポーズを行う
-   * @param {Object} [model] 停止・再開を制御したいゲームモデル
-   * @param {HTMLElement} [pauseLayer] ポーズ時に連動させたいUIレイヤー要素
-   */
+  static #model = null;
+  static #pauseLayer = null;
+  static #isInitialized = false;
+
   static init(model = null, pauseLayer = null) {
+    if (model) OrientationWarning.#model = model;
+    if (pauseLayer) OrientationWarning.#pauseLayer = pauseLayer;
+
     let warningDiv = document.getElementById("orientation-warning");
     if (!warningDiv) {
       warningDiv = document.createElement("div");
@@ -17,27 +19,46 @@ export class OrientationWarning {
     }
 
     const checkOrientation = () => {
-      const isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 900;
+      const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+      const isMobile = window.innerWidth <= 900;
 
-      if (isLandscape) {
+      const currentModel = OrientationWarning.#model;
+      const currentLayer = OrientationWarning.#pauseLayer;
+
+      if (isLandscape && isMobile) {
         warningDiv.style.display = "flex";
 
-        if (model && typeof model.isPaused === "function" && !model.isPaused()) {
-          if (typeof model.togglePause === "function") {
-            model.togglePause();
-            if (pauseLayer) {
-              pauseLayer.classList.add("visible");
-            }
+        if (currentModel && typeof currentModel.isPaused === "function" && !currentModel.isPaused()) {
+          // pause()があれば優先、無ければtogglePause()にフォールバック
+          if (typeof currentModel.pause === "function") {
+            currentModel.pause();
+          } else if (typeof currentModel.togglePause === "function") {
+            currentModel.togglePause();
           }
+          if (currentLayer) currentLayer.classList.add("visible");
         }
       } else {
         warningDiv.style.display = "none";
       }
     };
 
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
-    
+    // 外から再チェックできるように保持しておく
+    OrientationWarning.#recheck = checkOrientation;
+
+    if (!OrientationWarning.#isInitialized) {
+      OrientationWarning.#isInitialized = true;
+      window.addEventListener("resize", checkOrientation);
+      window.addEventListener("orientationchange", checkOrientation);
+    }
+
     checkOrientation();
+  }
+
+  static #recheck = null;
+
+  // GameControllerのようにmodelとpauseLayerが別タイミングで揃う場合に使う
+  static setPauseLayer(pauseLayer) {
+    OrientationWarning.#pauseLayer = pauseLayer;
+    if (OrientationWarning.#recheck) OrientationWarning.#recheck();
   }
 }

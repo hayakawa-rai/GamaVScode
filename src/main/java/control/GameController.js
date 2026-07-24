@@ -1,5 +1,6 @@
 import { Bgm } from "../start/Bgm.js";
 import { HighScoreManager } from "../common/HighScoreManager.js";
+import { OrientationWarning } from "../common/OrientationWarning.js"; 
 /**
  * ゲーム全体を管理・制御するコントローラークラス (GameController)
  * Main1〜3 / PracticeMain1〜3 共通で使用する
@@ -36,54 +37,9 @@ export class GameController {
     this.attachInput();
     GameController.applyMobileControls(this.model, () => this.startBgmOnce());
     
-    this.initOrientationListener();
+    OrientationWarning.init(this.model);
 
     this.startLoop();
-  }
-
-  /**
-   * スマホの画面の向きを監視し、横向きのときに自動でポーズをかける
-   */
-  initOrientationListener() {
-    // 警告用要素がなければDOMに自動生成する
-    let warningDiv = document.getElementById("orientation-warning");
-    if (!warningDiv) {
-      warningDiv = document.createElement("div");
-      warningDiv.id = "orientation-warning";
-      warningDiv.innerHTML = `
-        <h2>縦画面専用のゲームです</h2>
-        <p>スマホを縦向きにしてプレイしてください。</p>
-      `;
-      document.body.prepend(warningDiv);
-    }
-
-    const checkOrientation = () => {
-      // スマホサイズかつ横向き (landscape) の判定
-      const isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 900;
-
-      if (isLandscape) {
-        warningDiv.style.display = "flex";
-
-        // まだポーズ中でなければ自動でポーズをかける
-        if (this.model && typeof this.model.isPaused === "function" && !this.model.isPaused()) {
-          if (typeof this.model.togglePause === "function") {
-            this.model.togglePause();
-            // ポーズレイヤーがあれば一緒に表示を同期
-            if (this.pauseLayer) {
-              this.pauseLayer.classList.add("visible");
-            }
-          }
-        }
-      } else {
-        warningDiv.style.display = "none";
-      }
-    };
-
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
-    
-    // 初回チェック
-    checkOrientation();
   }
 
   /**
@@ -119,6 +75,8 @@ export class GameController {
         absX > GameController.#FLICK_THRESHOLD ||
         absY > GameController.#FLICK_THRESHOLD
       ) {
+        if (typeof onMove === "function") onMove(); // ★マウスアップ時にも確実にBGMトリガーを呼ぶ
+
         if (absX > absY) {
           sendDirection(deltaX > 0 ? "RIGHT" : "LEFT");
         } else {
@@ -126,6 +84,7 @@ export class GameController {
         }
       }
     });
+
     // --- タッチ操作用（スマホ対応） ---
     window.addEventListener(
       "touchstart",
@@ -133,6 +92,12 @@ export class GameController {
         if (e.touches && e.touches.length > 0) {
           GameController.#touchStart[0] = e.touches[0].clientX;
           GameController.#touchStart[1] = e.touches[0].clientY;
+          
+          // ここでの onMove() はブラウザにブロックされる可能性があるため残しつつ、
+          // 次の touchend で確実にトリガーを引くようにします
+          if (typeof onMove === "function") {
+            onMove();
+          }
         }
       },
       { passive: true },
@@ -153,6 +118,11 @@ export class GameController {
             absX > GameController.#FLICK_THRESHOLD ||
             absY > GameController.#FLICK_THRESHOLD
           ) {
+            // ★ここで「フリック操作が完了した＝ユーザーの明確なジェスチャー」とみなしてBGMを確実に鳴らす
+            if (typeof onMove === "function") {
+              onMove();
+            }
+
             if (absX > absY) {
               sendDirection(deltaX > 0 ? "RIGHT" : "LEFT");
             } else {
@@ -349,6 +319,7 @@ export class GameController {
 
   setPauseLayer(pauseLayerElement) {
     this.pauseLayer = pauseLayerElement;
+     OrientationWarning.setPauseLayer(pauseLayerElement); // ここで再チェック
   }
 
   /**

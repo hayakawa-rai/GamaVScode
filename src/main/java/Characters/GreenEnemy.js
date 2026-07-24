@@ -31,7 +31,7 @@ export class GreenEnemy extends Enemy {
     super(
       GreenEnemy.START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2,
       GreenEnemy.START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2,
-      2,
+      2.5,
     );
 
     // マップデータ保持

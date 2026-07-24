@@ -26,7 +26,7 @@ export class RedEnemy extends Enemy {
     super(
       RedEnemy.START_COL * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2,
       RedEnemy.START_ROW * GameConfig.TILE_SIZE + GameConfig.TILE_SIZE / 2,
-      2,
+      2.5,
     );
 
     // ステージ情報を保存

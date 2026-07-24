@@ -14,9 +14,8 @@
         alt="Background"
       />
 
-      <!-- 画面上部中央のタイマー表示要素 -->
-      <div id="game-timer">03:00</div>
-      /* 03:00*/
+      <!-- 画面上部中央のタイマー表記 内部のタイマーは別 -->
+      <div id="game-timer">02:00</div>
 
       <!-- ゲーム描画領域 -->
       <div id="game-base" class="stage1">
@@ -208,7 +207,7 @@
           // ==================================================
           this.stageNumber = stageNumber;
           this.controller = null;
-          this.timeRemaining = 180; // 3分 = 180秒
+          this.timeRemaining = 120; // 2分 = 120秒
           this.timerInterval = null;
 
           // ==================================================
