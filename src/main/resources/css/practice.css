@@ -97,21 +97,22 @@
    トロフィー（ハイスコア表示ボタン）
    ================================================== */
 #score-info {
-  /* 常に画面右上に固定 */
   position: fixed;
 
   top: clamp(5px, 1vw, 15px);
   right: clamp(5px, 1vw, 15px);
 
-  /* 画面サイズに応じて縮小 */
-  font-size: clamp(35px, 3vw, 50px);
-
-  color: gold;
-
-  /* クリック可能を示す */
   cursor: pointer;
-
   z-index: 4;
+}
+
+#score-info img {
+  width: clamp(40px, 4vw, 64px);
+  height: auto;
+
+  display: block;
+
+  image-rendering: pixelated; /* ドット絵向け */
 }
 
 /* ==================================================
@@ -124,7 +125,7 @@
   /* トロフィー付近に固定表示 */
   position: fixed;
 
-  top: clamp(50px, 8vh, 70px);
+  top: clamp(80px, 10vh, 120px);
   right: clamp(10px, 2vw, 20px);
 
   z-index: 100;
@@ -146,7 +147,7 @@
   border-radius: 8px;
 
   /* パネル横幅 */
-  width: clamp(120px, 30vw, 250px);
+  width: clamp(120px, 30vw, 270px);
 
   /* 改行を防止 */
   white-space: nowrap;
