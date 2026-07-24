@@ -7,6 +7,7 @@ export class Bgm {
   static #systemVolume = 0.5; // デフォルト音量（50%）
   static #pendingAudio = new Set();
   static #listenersAttached = false;
+  static #isUnlocked = false; // ユーザー操作によるアンロックが済んだかどうか
 
   // ファイルごとの音量バランス
   static #SOUND_VOLUMES = {
@@ -30,6 +31,8 @@ export class Bgm {
     if (savedVolume !== null) {
       Bgm.#systemVolume = parseFloat(savedVolume);
     }
+    // システム初期化時に、まだリスナーがついていなければ常時スタンバイさせる
+    Bgm.#attachGlobalListener();
   }
 
   static getSystemVolume() {
@@ -50,7 +53,28 @@ export class Bgm {
     }
   }
 
-  // 自動再生ブロック時のリトライ機構
+  // ユーザーが最初に画面をタッチした瞬間に、保留されていた音源をすべてウェイクアップさせる
+  static #handleUserGesture() {
+    Bgm.#isUnlocked = true;
+    Bgm.#retryPending();
+    // 一度アンロックされたらグローバルリスナーは外す（必要に応じて再アタッチも可能）
+    Bgm.#detachGlobalListener();
+  }
+
+  static #attachGlobalListener() {
+    if (Bgm.#listenersAttached) return;
+    Bgm.#listenersAttached = true;
+    window.addEventListener("pointerdown", Bgm.#handleUserGesture, { passive: true });
+    window.addEventListener("keydown", Bgm.#handleUserGesture);
+  }
+
+  static #detachGlobalListener() {
+    window.removeEventListener("pointerdown", Bgm.#handleUserGesture);
+    window.removeEventListener("keydown", Bgm.#handleUserGesture);
+    Bgm.#listenersAttached = false;
+  }
+
+  // 保留リストにある音源をまとめて再トライする
   static #retryPending() {
     Bgm.#pendingAudio.forEach((audio) => {
       audio.play().catch((err) => {
@@ -58,31 +82,19 @@ export class Bgm {
       });
     });
     Bgm.#pendingAudio.clear();
-    Bgm.#detachListeners();
-  }
-
-  static #attachListeners() {
-    if (Bgm.#listenersAttached) return;
-    Bgm.#listenersAttached = true;
-    window.addEventListener("pointerdown", Bgm.#retryPending, { passive: true, once: true });
-    window.addEventListener("keydown", Bgm.#retryPending, { once: true });
-  }
-
-  static #detachListeners() {
-    window.removeEventListener("pointerdown", Bgm.#retryPending);
-    window.removeEventListener("keydown", Bgm.#retryPending);
-    Bgm.#listenersAttached = false;
   }
 
   // 音声を確実に再生する内部関数（ブロック対策付き）
   static #playAudio(audioElement) {
     Bgm.initSystem();
+
     const playPromise = audioElement.play();
     if (playPromise !== undefined) {
       playPromise.catch((err) => {
+        // 自動再生ブロックされた場合、保留リストに入れてユーザー操作を待つ
         console.warn("自動再生がブロックされました。ユーザー操作を待ちます:", err);
         Bgm.#pendingAudio.add(audioElement);
-        Bgm.#attachListeners();
+        Bgm.#attachGlobalListener();
       });
     }
     return playPromise;
