@@ -403,7 +403,7 @@
           const model = new MapData();
           const view = new MapView(model);
 
-          // ★ 最初はゲームを「待ち状態（ポーズ）」にしておく
+          // 最初はゲームを「待ち状態（ポーズ）」にしておく
           if (typeof model.togglePause === "function" && !model.isPaused()) {
             model.togglePause();
           }

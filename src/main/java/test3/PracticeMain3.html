@@ -189,6 +189,11 @@
       </div>
     </div>
 
+    <!-- 「READY?」オーバーレイ用のHTML構造 -->
+    <div id="ready-overlay">
+      <h1 class="ready-title">READY?</h1>
+      <p class="ready-subtitle">画面をタップしてスタート</p>
+    </div>
     <script type="module">
       import { GameController } from "../control/GameController.js";
       import { MapData } from "./model/MapData.js";
@@ -302,6 +307,11 @@
           model.sampleModel(true);
 
           const view = new MapView(model);
+
+          // 最初はゲームを「待ち状態（ポーズ）」にしておく
+          if (typeof model.togglePause === "function" && !model.isPaused()) {
+            model.togglePause();
+          }
 
           // ==================================================
           // ヘルプ画面 閉じるボタン
