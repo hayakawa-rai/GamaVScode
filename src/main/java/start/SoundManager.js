@@ -33,7 +33,7 @@ class SoundClip {
 
     // 同じ効果音を連続再生できるよう一度停止して巻き戻す (clip.stop()の再現)
     this.audio.pause();
-    this.currentTime = 0;
+    this.audio.currentTime = 0;
 
     Bgm.unlockPlay(this.audio);
   }
