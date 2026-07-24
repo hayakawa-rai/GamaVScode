@@ -9,6 +9,12 @@ let navigated = false;
  * タップ連打や複数入力による二重遷移を防止する
  */
 function goToStart() {
+  if (isLandscapeMode()) {
+    // 横向きのときはタッチされてもイベントが消えてしまわないよう再登録してスルーする
+    attachListeners();
+    return;
+  }
+
   if (navigated) return;
 
   navigated = true;
@@ -20,11 +26,10 @@ function goToStart() {
     try {
       GameController.switchStart();
     } catch (err) {
-      console.error("画面遷移に失敗しました:", err);
-
       // エラー時は再操作できるよう状態を復元
       navigated = false;
       document.body.style.pointerEvents = "auto";
+      attachListeners();
     }
   }, 50);
 }
