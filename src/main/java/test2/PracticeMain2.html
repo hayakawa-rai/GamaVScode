@@ -190,191 +190,207 @@
     </div>
 
     <script type="module">
-      import { GameController } from "../control/GameController.js";
-      import { MapData } from "./model/MapData.js";
-      import { MapView } from "./view/MapView.js";
-      import { Bgm } from "../start/Bgm.js";
+            import { GameController } from "../control/GameController.js";
+            import { MapData } from "./model/MapData.js";
+            import { MapView } from "./view/MapView.js";
+            import { Bgm } from "../start/Bgm.js";
+            import { SoundManager } from "../start/SoundManager.js";
 
-      class PracticeMain {
-        constructor(stageNumber, bgSrc, title) {
-          // ==================================================
-          // 基本情報
-          // ==================================================
+            class PracticeMain {
+              constructor(stageNumber, bgSrc, title) {
+                // ==================================================
+                // 基本情報
+                // ==================================================
 
-          this.stageNumber = stageNumber;
-          this.controller = null;
+                this.stageNumber = stageNumber;
+                this.controller = null;
 
-          // ==================================================
-          // 画面要素（DOM）の取得
-          // ==================================================
+                // ==================================================
+                // 画面要素（DOM）の取得
+                // ==================================================
 
-          this.dom = {
-            background: document.getElementById("background-view"),
-            root: document.getElementById("game-root"),
-            base: document.getElementById("game-base"),
-            canvas: document.getElementById("game-canvas"),
+                this.dom = {
+                  background: document.getElementById("background-view"),
+                  root: document.getElementById("game-root"),
+                  base: document.getElementById("game-base"),
+                  canvas: document.getElementById("game-canvas"),
 
-            // ポーズメニュー
-            menuBtn: document.getElementById("menu-btn"),
-            pauseLayer: document.getElementById("pause-layer"),
-            resumeBtn: document.getElementById("resume-btn"),
-            titleBtn: document.getElementById("title-btn"),
+                  // ポーズメニュー
+                  menuBtn: document.getElementById("menu-btn"),
+                  pauseLayer: document.getElementById("pause-layer"),
+                  resumeBtn: document.getElementById("resume-btn"),
+                  titleBtn: document.getElementById("title-btn"),
 
-            // 基本説明（ヘルプ）
-            howToPlayBtn: document.getElementById("how-to-play-btn"),
-            helpPanel: document.getElementById("help-panel"),
+                  // 基本説明（ヘルプ）
+                  howToPlayBtn: document.getElementById("how-to-play-btn"),
+                  helpPanel: document.getElementById("help-panel"),
 
-            // 音量スライダー
-            volumeSlider: document.getElementById("volume-slider"),
-          };
+                  // 音量スライダー
+                  volumeSlider: document.getElementById("volume-slider"),
+                };
 
-          // ==================================================
-          // ステージ固有設定
-          // ==================================================
+                // ==================================================
+                // ステージ固有設定
+                // ==================================================
 
-          this.dom.background.src = bgSrc;
-          document.title = title;
-        }
+                this.dom.background.src = bgSrc;
+                document.title = title;
+              }
 
-        start() {
-          // ==================================================
-          // 初期化
-          // ==================================================
+              start() {
+                // ==================================================
+                // 初期化
+                // ==================================================
 
-          if (this.controller) this.controller.stop();
-          Bgm.stopBGM();
+                if (this.controller) this.controller.stop();
+                Bgm.stopBGM();
 
-          this.dom.root.className = `stage${this.stageNumber}`;
-          this.dom.base.className = `stage${this.stageNumber}`;
+                this.dom.root.className = `stage${this.stageNumber}`;
+                this.dom.base.className = `stage${this.stageNumber}`;
 
-          // ==================================================
-          // 基本説明（ヘルプ）のページ切り替え設定
-          // ==================================================
+                // ==================================================
+                // 基本説明（ヘルプ）のページ切り替え設定
+                // ==================================================
 
-          const pages = document.querySelectorAll(".page-wrapper");
-          const dots = document.querySelectorAll(".indicator-dot");
-          const prevBtn = document.getElementById("prev-btn");
-          const nextBtn = document.getElementById("next-btn");
+                const pages = document.querySelectorAll(".page-wrapper");
+                const dots = document.querySelectorAll(".indicator-dot");
+                const prevBtn = document.getElementById("prev-btn");
+                const nextBtn = document.getElementById("next-btn");
 
-          let currentPage = 0;
+                let currentPage = 0;
 
-          /**
-           * ヘルプページ表示更新
-           * @param {number} index 表示するページ番号
-           */
-          function updatePage(index) {
-            currentPage = (index + pages.length) % pages.length;
+                /**
+                 * ヘルプページ表示更新
+                 * @param {number} index 表示するページ番号
+                 */
+                function updatePage(index) {
+                  currentPage = (index + pages.length) % pages.length;
 
-            pages.forEach((p, i) => {
-              p.style.display = i === currentPage ? "block" : "none";
+                  pages.forEach((p, i) => {
+                    p.style.display = i === currentPage ? "block" : "none";
+                  });
+
+                  dots.forEach((d, i) => {
+                    d.classList.toggle("active", i === currentPage);
+                  });
+                }
+
+                // 最初のページを表示
+                updatePage(0);
+
+                // ページ送りボタン
+                prevBtn.onclick = () => {
+                  SoundManager.play(SoundManager.SELECT);
+                  updatePage(currentPage - 1);
+                };
+
+                nextBtn.onclick = () => {
+                  SoundManager.play(SoundManager.SELECT);
+                  updatePage(currentPage + 1);
+                };
+
+                // ==================================================
+                // モデル・ビュー生成
+                // ==================================================
+
+                const model = new MapData();
+
+                // 練習モード用マップへ変更
+                model.sampleModel(true);
+
+                const view = new MapView(model);
+
+                // ==================================================
+                // ヘルプ画面 閉じるボタン
+                // ==================================================
+
+                const backBtn = document.getElementById("back-btn");
+
+                if (backBtn) {
+                  backBtn.onclick = () => {
+                    SoundManager.play(SoundManager.SELECT);
+                    this.dom.helpPanel.classList.add("hidden");
+                  };
+                }
+                // ==================================================
+                // 音量スライダー設定
+                // ==================================================
+
+                if (this.dom.volumeSlider) {
+                  // 保存されている音量を反映
+                  this.dom.volumeSlider.value = Bgm.getSystemVolume();
+
+                  // スライダー操作時に音量変更
+                  this.dom.volumeSlider.addEventListener("input", (e) => {
+                    Bgm.setSystemVolume(parseFloat(e.target.value));
+                  });
+                }
+
+                // ==================================================
+                // ボタンイベント登録
+                // ==================================================
+
+                // ゲーム再開
+                this.dom.resumeBtn.onclick = () => {
+                  SoundManager.play(SoundManager.SELECT);
+                  this.controller?.togglePauseByButton();
+                };
+
+                // メニューボタン
+                this.dom.menuBtn.onclick = () => {
+                SoundManager.play(SoundManager.SELECT);
+                this.controller?.togglePauseByButton();
+                };
+
+                // タイトルへ戻る
+                this.dom.titleBtn.onclick = () => {
+                  SoundManager.play(SoundManager.SELECT);
+                  this.controller?.forceBackToTitle();
+                };
+
+                // 基本説明を開く
+                this.dom.howToPlayBtn.onclick = () => {
+                  SoundManager.play(SoundManager.SELECT);
+                  this.dom.helpPanel.classList.remove("hidden");
+
+                  // 開くたびに1ページ目へ戻す
+                  updatePage(0);
+                };
+
+                // ==================================================
+                // GameController生成
+                // ==================================================
+
+                this.controller = new GameController(
+                  model,
+                  view,
+                  this.dom.canvas,
+                  this.stageNumber,
+                  true,
+                );
+
+                this.controller.setPauseLayer(this.dom.pauseLayer);
+
+                // ==================================================
+                // キャンバスへフォーカス
+                // ==================================================
+
+                this.dom.canvas.tabIndex = 1;
+                this.dom.canvas.focus();
+
+                console.log(
+                  `仙石さん - 練習ステージ ${this.stageNumber} 正常に起動しました`,
+                );
+              }
+            }
+
+            window.addEventListener("DOMContentLoaded", () => {
+              new PracticeMain(
+                2,
+                "../../resources/picture/companyroom.jpg",
+                "仙石さん - 練習ステージ 2",
+              ).start();
             });
-
-            dots.forEach((d, i) => {
-              d.classList.toggle("active", i === currentPage);
-            });
-          }
-
-          // 最初のページを表示
-          updatePage(0);
-
-          // ページ送りボタン
-          prevBtn.onclick = () => updatePage(currentPage - 1);
-          nextBtn.onclick = () => updatePage(currentPage + 1);
-
-          // ==================================================
-          // モデル・ビュー生成
-          // ==================================================
-
-          const model = new MapData();
-
-          // 練習モード用マップへ変更
-          model.sampleModel(true);
-
-          const view = new MapView(model);
-
-          // ==================================================
-          // ヘルプ画面 閉じるボタン
-          // ==================================================
-
-          const backBtn = document.getElementById("back-btn");
-
-          if (backBtn) {
-            backBtn.onclick = () => {
-              this.dom.helpPanel.classList.add("hidden");
-            };
-          }
-
-          // ==================================================
-          // 音量スライダー設定
-          // ==================================================
-
-          if (this.dom.volumeSlider) {
-            // 保存されている音量を反映
-            this.dom.volumeSlider.value = Bgm.getSystemVolume();
-
-            // スライダー操作時に音量変更
-            this.dom.volumeSlider.addEventListener("input", (e) => {
-              Bgm.setSystemVolume(parseFloat(e.target.value));
-            });
-          }
-
-          // ==================================================
-          // ボタンイベント登録
-          // ==================================================
-
-          // ゲーム再開
-          this.dom.resumeBtn.onclick = () =>
-            this.controller?.togglePauseByButton();
-
-          // メニューボタン
-          this.dom.menuBtn.onclick = () =>
-            this.controller?.togglePauseByButton();
-
-          // タイトルへ戻る
-          this.dom.titleBtn.onclick = () => this.controller?.forceBackToTitle();
-
-          // 基本説明を開く
-          this.dom.howToPlayBtn.onclick = () => {
-            this.dom.helpPanel.classList.remove("hidden");
-
-            // 開くたびに1ページ目へ戻す
-            updatePage(0);
-          };
-
-          // ==================================================
-          // GameController生成
-          // ==================================================
-
-          this.controller = new GameController(
-            model,
-            view,
-            this.dom.canvas,
-            this.stageNumber,
-            true,
-          );
-
-          this.controller.setPauseLayer(this.dom.pauseLayer);
-
-          // ==================================================
-          // キャンバスへフォーカス
-          // ==================================================
-
-          this.dom.canvas.tabIndex = 1;
-          this.dom.canvas.focus();
-
-          console.log(
-            `仙石さん - 練習ステージ ${this.stageNumber} 正常に起動しました`,
-          );
-        }
-      }
-
-      window.addEventListener("DOMContentLoaded", () => {
-        new PracticeMain(
-          2,
-          "../../resources/picture/companyroom.jpg",
-          "仙石さん - 練習ステージ 2",
-        ).start();
-      });
     </script>
   </body>
 </html>
