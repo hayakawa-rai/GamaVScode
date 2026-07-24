@@ -199,6 +199,7 @@
       import { MapData } from "./model/MapData.js";
       import { MapView } from "./view/MapView.js";
       import { Bgm } from "../start/Bgm.js";
+      import { SoundManager } from "../start/SoundManager.js";
 
       class Main {
         constructor(stageNumber, bgSrc, title) {
@@ -378,8 +379,15 @@
           updatePage(0);
 
           // ページ送りボタン
-          prevBtn.onclick = () => updatePage(currentPage - 1);
-          nextBtn.onclick = () => updatePage(currentPage + 1);
+          prevBtn.onclick = () => {
+            SoundManager.play(SoundManager.SELECT);
+            updatePage(currentPage - 1);
+          };
+
+          nextBtn.onclick = () => {
+            SoundManager.play(SoundManager.SELECT);
+            updatePage(currentPage + 1);
+          };
 
           // ==================================================
           // モデル・ビュー生成
@@ -396,10 +404,11 @@
 
           if (backBtn) {
             backBtn.onclick = () => {
+              SoundManager.play(SoundManager.SELECT);
               this.dom.helpPanel.classList.add("hidden");
             };
           }
-          
+
           // ==================================================
           // タイマーの初期表示リセット
           // ==================================================
@@ -426,20 +435,27 @@
           // ==================================================
 
           // ゲーム再開
-          this.dom.resumeBtn.onclick = () =>
+          this.dom.resumeBtn.onclick = () => {
+            SoundManager.play(SoundManager.SELECT);
             this.controller?.togglePauseByButton();
+          };
 
           // メニューボタン
-          this.dom.menuBtn.onclick = () =>
+          this.dom.menuBtn.onclick = () => {
+            SoundManager.play(SoundManager.SELECT);
             this.controller?.togglePauseByButton();
+          };
 
           // タイトルへ戻る
           this.dom.titleBtn.onclick = () => {
+            SoundManager.play(SoundManager.SELECT);
             this.stopTimer();
             this.controller?.forceBackToTitle();
           };
+
           // 基本説明を開く
           this.dom.howToPlayBtn.onclick = () => {
+            SoundManager.play(SoundManager.SELECT);
             this.dom.helpPanel.classList.remove("hidden");
             updatePage(0);
           };
