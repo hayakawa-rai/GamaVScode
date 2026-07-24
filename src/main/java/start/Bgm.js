@@ -1,24 +1,15 @@
-/**
- * BGM・効果音・台詞音管理クラス (音量一括管理・保存対応版)
- */
 export class Bgm {
   static #bgmPlayer = null;
   static #currentPath = null;
   static #currentStageNumber = 1;
   static #isPinchi = false;
 
-  // Web Audio API（システム全体のミキサー）用のプロパティ
-  static #audioCtx = null;
-  static #masterGain = null;
   static #systemVolume = 0.5; // デフォルト音量（50%）
+  static #pendingAudio = new Set();
+  static #listenersAttached = false;
+  static #isUnlocked = false; // ユーザー操作によるアンロックが済んだかどうか
 
-  // 各オーディオの接続状態を管理するMap（二重接続エラーを防止する）
-  static #connectedNodes = new WeakMap();
-
-  // ==================================================
-  //   台詞・演出用の効果音、ファイルごとの音量バランス
-  //   ※ ここは「全体の最大音量に対して、この効果音は何%にするか」のバランス値になります
-  // ==================================================
+  // ファイルごとの音量バランス
   static #SOUND_VOLUMES = {
     "jump06.mp3": 0.85,
     "nari.mp3": 0.95,
@@ -34,163 +25,105 @@ export class Bgm {
   };
   static #DEFAULT_SE_VOLUME = 0.2;
 
-  // ==================================================
-  // システム全体のオーディオ初期化と音量取得・設定
-  // ==================================================
-
-  /**
-   * システムのミキサー（AudioContext）を初期化し、保存されている音量を読み込む
-   */
+  // 初期化と保存された音量のロード
   static initSystem() {
-    if (Bgm.#audioCtx) return;
-
-    try {
-      // 1. オーディオシステムを起動
-      const AudioContextClass =
-        window.AudioContext || window.webkitAudioContext;
-      Bgm.#audioCtx = new AudioContextClass();
-
-      // 2. 全体の音量を司るミキサー（GainNode）を作成
-      Bgm.#masterGain = Bgm.#audioCtx.createGain();
-
-      // 3. 保存された音量をロード（無ければ 0.5）
-      const savedVolume = localStorage.getItem("gameMasterVolume");
-      Bgm.#systemVolume = savedVolume !== null ? parseFloat(savedVolume) : 0.5;
-
-      // 4. ミキサーの音量を設定し、スピーカーに接続
-      Bgm.#masterGain.gain.value = Bgm.#systemVolume;
-      Bgm.#masterGain.connect(Bgm.#audioCtx.destination);
-    } catch (e) {
-      console.warn(
-        "Web Audio API の初期化に失敗しました。標準再生に切り替えます:",
-        e,
-      );
+    const savedVolume = localStorage.getItem("gameMasterVolume");
+    if (savedVolume !== null) {
+      Bgm.#systemVolume = parseFloat(savedVolume);
     }
+    // システム初期化時に、まだリスナーがついていなければ常時スタンバイさせる
+    Bgm.#attachGlobalListener();
   }
 
-  /**
-   * 現在の「全体の音量」を取得する（スライダーの初期位置設定に必須）
-   */
   static getSystemVolume() {
     Bgm.initSystem();
     return Bgm.#systemVolume;
   }
 
   /**
-   * 【スライダーから呼ぶ用】全体の音量を変更して保存する
-   * @param {number} volume (0.0 〜 1.0)
+   * システム全体の音量を変更し、再生中のすべての音にリアルタイム反映する
    */
   static setSystemVolume(volume) {
-    Bgm.initSystem();
-    Bgm.#systemVolume = volume;
+    Bgm.#systemVolume = Math.min(1.0, Math.max(0.0, volume));
+    localStorage.setItem("gameMasterVolume", Bgm.#systemVolume);
 
-    // ミキサーの値をリアルタイムで変更
-    if (Bgm.#masterGain) {
-      Bgm.#masterGain.gain.setValueAtTime(volume, Bgm.#audioCtx.currentTime);
-    }
-
-    // ブラウザに自動保存
-    localStorage.setItem("gameMasterVolume", volume);
-  }
-
-  /**
-   * 音源をマスターミキサーに繋いで再生する内部関数
-   */
-  static #playWithMixer(audioElement) {
-    Bgm.initSystem();
-
-    // タッチ制限対策：サスペンド状態なら再開させる
-    if (Bgm.#audioCtx && Bgm.#audioCtx.state === "suspended") {
-      Bgm.#audioCtx.resume().catch(() => {});
-    }
-
-    // ミキサーが使える場合のみ接続処理
-    if (Bgm.#audioCtx && Bgm.#masterGain) {
-      try {
-        if (!Bgm.#connectedNodes.has(audioElement)) {
-          const source = Bgm.#audioCtx.createMediaElementSource(audioElement);
-          source.connect(Bgm.#masterGain);
-          Bgm.#connectedNodes.set(audioElement, source);
-        }
-      } catch (err) {
-        // すでに接続されている場合などの例外をキャッチ
-        console.debug("Audio node connection managed:", err);
-      }
-    }
-
-    // 自動再生ブロック対策を挟んで再生
-    Bgm.unlockPlay(audioElement);
-
-    if (Bgm.#audioCtx && Bgm.#audioCtx.state !== "running") {
-      Bgm.#pending.add(audioElement);
-      Bgm.#attachListeners();
+    // 再生中のBGMに音量を即時反映
+    if (Bgm.#bgmPlayer) {
+      Bgm.#bgmPlayer.volume = Bgm.#systemVolume;
     }
   }
 
-  // ==================================================
-  // 自動再生ブロック対策（保留リスト）
-  // ==================================================
-  static #pending = new Set();
-  static #listenersAttached = false;
-  static #retryPending() {
-    if (Bgm.#audioCtx && Bgm.#audioCtx.state === "suspended") {
-      Bgm.#audioCtx.resume().catch(() => {});
-    }
-
-    Bgm.#pending.forEach((audio) => {
-      audio.play().catch((err) => {
-        console.warn("再生に失敗しました:", audio.src, err);
-      });
-    });
-    Bgm.#pending.clear();
-    Bgm.#detachListeners();
+  // ユーザーが最初に画面をタッチした瞬間に、保留されていた音源をすべてウェイクアップさせる
+  static #handleUserGesture() {
+    Bgm.#isUnlocked = true;
+    Bgm.#retryPending();
+    // 一度アンロックされたらグローバルリスナーは外す（必要に応じて再アタッチも可能）
+    Bgm.#detachGlobalListener();
   }
 
-  static #attachListeners() {
+  static #attachGlobalListener() {
     if (Bgm.#listenersAttached) return;
     Bgm.#listenersAttached = true;
-    document.addEventListener("pointerdown", Bgm.#retryPending, {
-      passive: true,
-    });
-    document.addEventListener("keydown", Bgm.#retryPending);
+    window.addEventListener("pointerdown", Bgm.#handleUserGesture, { passive: true });
+    window.addEventListener("keydown", Bgm.#handleUserGesture);
   }
 
-  static #detachListeners() {
-    document.removeEventListener("pointerdown", Bgm.#retryPending);
-    document.removeEventListener("keydown", Bgm.#retryPending);
+  static #detachGlobalListener() {
+    window.removeEventListener("pointerdown", Bgm.#handleUserGesture);
+    window.removeEventListener("keydown", Bgm.#handleUserGesture);
     Bgm.#listenersAttached = false;
   }
 
-  static unlockPlay(audioElement) {
+  // 保留リストにある音源をまとめて再トライする
+  static #retryPending() {
+    Bgm.#pendingAudio.forEach((audio) => {
+      audio.play().catch((err) => {
+        console.warn("保留音源の再生に失敗しました:", err);
+      });
+    });
+    Bgm.#pendingAudio.clear();
+  }
+
+  // 音声を確実に再生する内部関数（ブロック対策付き）
+  static #playAudio(audioElement) {
+    Bgm.initSystem();
+
     const playPromise = audioElement.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        Bgm.#pending.add(audioElement);
-        Bgm.#attachListeners();
+      playPromise.catch((err) => {
+        // 自動再生ブロックされた場合、保留リストに入れてユーザー操作を待つ
+        console.warn("自動再生がブロックされました。ユーザー操作を待ちます:", err);
+        Bgm.#pendingAudio.add(audioElement);
+        Bgm.#attachGlobalListener();
       });
     }
     return playPromise;
   }
 
-  // ==================================================
-  // 共通再生機能（これからは volume の個別設定は不要！）
-  // ==================================================
+  /**
+   * 外部からの互換用：Start.js 等のエラーを防ぐためのメソッド
+   */
+  static unlockPlay(audioElement) {
+    if (audioElement instanceof HTMLAudioElement) {
+      return Bgm.#playAudio(audioElement);
+    }
+    return Promise.resolve();
+  }
 
   /**
    * 使い捨ての単発音を再生
    */
   static playOneShot(path, volume = null) {
+    Bgm.initSystem();
     const audio = new Audio(path);
+    
+    const fileName = path.split("/").pop();
+    const baseVol = volume !== null ? volume : (Bgm.#SOUND_VOLUMES[fileName] ?? Bgm.#DEFAULT_SE_VOLUME);
+    
+    // システム音量と個別の音量バランスを掛け合わせる
+    audio.volume = Math.min(1.0, Math.max(0.0, baseVol * Bgm.#systemVolume));
 
-    // バランス調整のみ個別で行い、全体音量はミキサーで制御します
-    if (volume !== null) {
-      audio.volume = volume;
-    } else {
-      const fileName = path.split("/").pop();
-      audio.volume = Bgm.#SOUND_VOLUMES[fileName] ?? Bgm.#DEFAULT_SE_VOLUME;
-    }
-
-    Bgm.#playWithMixer(audio);
+    Bgm.#playAudio(audio);
     return audio;
   }
 
@@ -198,22 +131,25 @@ export class Bgm {
    * BGMの開始
    */
   static playBGM(path) {
-    if (this.#bgmPlayer !== null && path === this.#currentPath) return;
+    if (this.#bgmPlayer !== null && path === this.#currentPath) {
+      if (this.#bgmPlayer.paused) {
+        Bgm.#playAudio(this.#bgmPlayer);
+      }
+      return;
+    }
     this.stopBGM();
     try {
+      Bgm.initSystem();
       const audio = new Audio(path);
       audio.loop = true;
-      audio.volume = 1.0; // BGMの基礎音量は最大にしてミキサー側で制御
+      audio.volume = Math.min(1.0, Math.max(0.0, Bgm.#systemVolume));
 
       this.#bgmPlayer = audio;
       this.#currentPath = path;
 
-      Bgm.#playWithMixer(this.#bgmPlayer);
+      Bgm.#playAudio(this.#bgmPlayer);
     } catch (error) {
-      console.error(
-        "BGMファイルの読み込みまたは再生に失敗しました: " + path,
-        error,
-      );
+      console.error("BGMファイルの読み込みまたは再生に失敗しました: " + path, error);
     }
   }
 
@@ -273,7 +209,7 @@ export class Bgm {
 
   static resumeBGM() {
     if (this.#bgmPlayer !== null) {
-      Bgm.#playWithMixer(this.#bgmPlayer);
+      Bgm.#playAudio(this.#bgmPlayer);
     }
   }
 }
