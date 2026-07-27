@@ -180,30 +180,32 @@ export class GameController {
    * Canvasのリサイズは #game-root の実寸(clientWidth/clientHeight)を基準にする
    */
   startLoop() {
-    const container = document.getElementById("game-root");
+   const container = document.getElementById("game-root");
 
   const resizeCanvas = () => {
-    const width = container ? container.clientWidth : window.innerWidth;
-    const height = container ? container.clientHeight : window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
 
-    // サイズが実際に変わったときだけ更新(無駄な再割り当てを防ぐ)
-    if (this.canvas.width !== width || this.canvas.height !== height) {
-      this.canvas.width = width;
-      this.canvas.height = height;
+    const cssWidth = container ? container.clientWidth : window.innerWidth;
+    const cssHeight = container ? container.clientHeight : window.innerHeight;
+
+    const targetWidth = Math.round(cssWidth * dpr);
+    const targetHeight = Math.round(cssHeight * dpr);
+
+    if (this.canvas.width !== targetWidth || this.canvas.height !== targetHeight) {
+      this.canvas.width = targetWidth;
+      this.canvas.height = targetHeight;
+
     }
   };
 
-  // ResizeObserverでコンテナの実サイズ変化を直接検知(向き変更にも自動で追従)
   if (container && typeof ResizeObserver !== "undefined") {
     const ro = new ResizeObserver(() => resizeCanvas());
     ro.observe(container);
-    this._resizeObserver = ro; // 必要ならstop()側で ro.disconnect() する
+    this._resizeObserver = ro;
   }
 
-  // 念のためwindowのresize/orientationchangeも残す(フォールバック)
   window.addEventListener("resize", resizeCanvas);
   window.addEventListener("orientationchange", () => {
-    // 回転直後はレイアウト確定が遅れることがあるので少し遅延させて再実行
     setTimeout(resizeCanvas, 50);
     setTimeout(resizeCanvas, 300);
   });
