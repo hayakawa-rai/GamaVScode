@@ -97,10 +97,10 @@
    トロフィー（ハイスコア表示ボタン）
    ================================================== */
 #score-info {
-  position: fixed;
+  position: absolute;
 
-  top: clamp(5px, 1vw, 15px);
-  right: clamp(5px, 1vw, 15px);
+  top: 20px;
+  right: 20px;
 
   cursor: pointer;
   z-index: 4;
@@ -132,7 +132,7 @@
   /* トロフィー付近に固定表示 */
   position: fixed;
 
-  top: clamp(80px, 10vh, 120px);
+  top: clamp(100px, 12vh, 150px);
   right: clamp(10px, 2vw, 20px);
 
   z-index: 100;
