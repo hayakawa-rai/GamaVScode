@@ -2,8 +2,11 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>仙石さん - ステージ 1</title>
     <link rel="stylesheet" href="../../resources/css/Main.css" />
+    <!-- スマホ版　横対応時の警告スタイルシート-->
+    <link rel="stylesheet" href="../../resources/css/OrientationWarning.css" />
   </head>
   <body>
     <!-- ゲームルート -->
@@ -50,7 +53,7 @@
       </div>
     </div>
 
-    <!-- ★追加: 「READY?」オーバーレイ用のHTML構造 -->
+    <!-- 「READY?」オーバーレイ用のHTML構造 -->
     <div id="ready-overlay">
       <h1 class="ready-title">READY?</h1>
       <p class="ready-subtitle">画面をタップしてスタート</p>
@@ -292,7 +295,7 @@
           this.dom.canvas.focus();
 
           // ==================================================
-          // ★「READY?」オーバーレイのタップ・クリック処理
+          // 「READY?」オーバーレイのタップ・クリック処理
           // ==================================================
           if (this.dom.readyOverlay) {
             const startAction = (e) => {

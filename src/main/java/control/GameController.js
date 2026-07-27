@@ -181,14 +181,34 @@ export class GameController {
    */
   startLoop() {
     const container = document.getElementById("game-root");
-    const resizeCanvas = () => {
-      this.canvas.width = container ? container.clientWidth : window.innerWidth;
-      this.canvas.height = container
-        ? container.clientHeight
-        : window.innerHeight;
-    };
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
+
+  const resizeCanvas = () => {
+    const width = container ? container.clientWidth : window.innerWidth;
+    const height = container ? container.clientHeight : window.innerHeight;
+
+    // サイズが実際に変わったときだけ更新(無駄な再割り当てを防ぐ)
+    if (this.canvas.width !== width || this.canvas.height !== height) {
+      this.canvas.width = width;
+      this.canvas.height = height;
+    }
+  };
+
+  // ResizeObserverでコンテナの実サイズ変化を直接検知(向き変更にも自動で追従)
+  if (container && typeof ResizeObserver !== "undefined") {
+    const ro = new ResizeObserver(() => resizeCanvas());
+    ro.observe(container);
+    this._resizeObserver = ro; // 必要ならstop()側で ro.disconnect() する
+  }
+
+  // 念のためwindowのresize/orientationchangeも残す(フォールバック)
+  window.addEventListener("resize", resizeCanvas);
+  window.addEventListener("orientationchange", () => {
+    // 回転直後はレイアウト確定が遅れることがあるので少し遅延させて再実行
+    setTimeout(resizeCanvas, 50);
+    setTimeout(resizeCanvas, 300);
+  });
+
+  resizeCanvas();
 
     const loop = () => {
       try {
@@ -323,11 +343,15 @@ export class GameController {
   }
 
   stop() {
-    if (this.timerId) {
-      cancelAnimationFrame(this.timerId);
-      this.timerId = null;
-    }
+  if (this.timerId) {
+    cancelAnimationFrame(this.timerId);
+    this.timerId = null;
   }
+  if (this._resizeObserver) {
+    this._resizeObserver.disconnect();
+    this._resizeObserver = null;
+  }
+}
 
   // ==========================================
   // 画面遷移メソッド群
