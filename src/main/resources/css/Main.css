@@ -369,6 +369,20 @@ body {
   object-fit: contain;
 }
 
+/* スマホ時のみ */
+@media (max-width: 480px) {
+    .move-control-row {
+        font-size: 12px;
+        gap: 4px;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .move-control-row img {
+        height: 40px;
+    }
+}
+
 .fruit-row {
   display: flex;
   justify-content: center;
