@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>仙石さん - 練習ステージ 3</title>
     <link rel="stylesheet" href="../../resources/css/Main.css" />
+    <!-- スマホ版　横対応時の警告スタイルシート-->
+    <link rel="stylesheet" href="../../resources/css/OrientationWarning.css" />
   </head>
   <body>
     <!-- ゲームルート -->
@@ -189,7 +191,7 @@
           this.dom.canvas.focus();
 
           // ==================================================
-          // ★「READY?」オーバーレイのタップ・クリック処理
+          // 「READY?」オーバーレイのタップ・クリック処理
           // ==================================================
           if (this.dom.readyOverlay) {
             const startAction = (e) => {

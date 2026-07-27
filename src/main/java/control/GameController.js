@@ -343,11 +343,15 @@ export class GameController {
   }
 
   stop() {
-    if (this.timerId) {
-      cancelAnimationFrame(this.timerId);
-      this.timerId = null;
-    }
+  if (this.timerId) {
+    cancelAnimationFrame(this.timerId);
+    this.timerId = null;
   }
+  if (this._resizeObserver) {
+    this._resizeObserver.disconnect();
+    this._resizeObserver = null;
+  }
+}
 
   // ==========================================
   // 画面遷移メソッド群
