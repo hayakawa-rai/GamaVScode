@@ -113,11 +113,12 @@
   display: block;
 
   image-rendering: pixelated; /* ドット絵向け */
+}
 
-  @media (max-width: 480px) {
-    #score-info img {
-      width: 32px;
-    }
+/* スマホのみ */
+@media (max-width: 480px) {
+  #score-info img {
+    width: 32px;
   }
 }
 
