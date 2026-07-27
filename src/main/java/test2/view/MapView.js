@@ -17,7 +17,11 @@ export class MapView {
         // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
         this.wallColor = '#0000FF'; // 青
 
-              // 主人公用画像の読み込み(Java版のpacmanImage/pacmanFeverImage相当)
+        // ライフ用ハート画像
+        this.heartImage = new Image();
+        this.heartImage.src = "../../resources/picture/heart.png";
+
+        // 主人公用画像の読み込み(Java版のpacmanImage/pacmanFeverImage相当)
         this.pacmanImage = new Image();
         this.pacmanImage.src = "../../resources/picture/syujinkou.png"; 
 
@@ -48,6 +52,9 @@ export class MapView {
     draw(ctx, canvasWidth, canvasHeight) {
         const syujinkou = this.model.getSyujinkou?.();
         const TILE_SIZE = this.model.constructor.TILE_SIZE || 20; // マップデータのタイルサイズ
+
+        // ドット絵をぼかさない
+        ctx.imageSmoothingEnabled = false;
 
         // 1. キャンバスのクリアとヘッダー背景の塗りつぶし
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -113,6 +120,7 @@ export class MapView {
             // スコア表示
             const isPractice = this.model.isPractice?.() || false;
             const stageNumber = this.model.getStageNumber?.() || 2;
+
             // HighScoreManager の正しいメソッド名 loadHighScore を使用する
             const highScore = HighScoreManager.loadHighScore(stageNumber);
 
@@ -120,10 +128,23 @@ export class MapView {
             ctx.fillText(scoreText, 20, 12);
 
             // ライフ（ハート）表示
-            ctx.fillStyle = '#FF0000';
-            const hearts = '❤'.repeat(syujinkou.getHp());
-            ctx.textAlign = 'right';
-            ctx.fillText(hearts, canvasWidth - 20, 12);
+            const hp = syujinkou.getHp();
+
+            const heartSize = 24;
+            const spacing = 4;
+
+            for (let i = 0; i < hp; i++) {
+            const x = canvasWidth - 20 -  (hp - i) * (heartSize + spacing);
+            const y = 8;
+
+            ctx.drawImage(
+                this.heartImage,
+                x,
+                y,
+                heartSize,
+                heartSize,
+            );
+        }
 
             // 区切り線
             ctx.strokeStyle = '#A9A9A9'; // DARKGRAY
