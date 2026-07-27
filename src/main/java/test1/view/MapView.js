@@ -52,8 +52,6 @@ export class MapView {
     const syujinkou = this.model.getSyujinkou?.();
     const TILE_SIZE = this.model.constructor.TILE_SIZE || 20; // マップデータのタイルサイズ
 
-    // ドット絵をぼかさない
-    ctx.imageSmoothingEnabled = false;
 
     // 1. キャンバスのクリアとヘッダー背景の塗りつぶし
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
