@@ -17,27 +17,31 @@ export class MapView {
         // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
         this.wallColor = '#0000FF'; // 青
 
-              // 主人公用画像の読み込み
+        // ライフ用ハート画像
+        this.heartImage = new Image();
+        this.heartImage.src = "../../resources/picture/heart.png";
+
+        // 主人公用画像の読み込み
         this.pacmanImage = new Image();
         this.pacmanImage.src = "../../resources/picture/syujinkou.png"; 
 
         this.pacmanFeverImage = new Image();
         this.pacmanFeverImage.src = "../../resources/picture/syujinkou_Fever.png";
 
-            // ステージ番号を取得して色を決定
-    const stageNumber = model.getStageNumber?.() || 1; // モデル側に取得メソッドがある想定
-    const colors = MapView.STAGE_COLORS[stageNumber] || MapView.STAGE_COLORS[1];
+        // ステージ番号を取得して色を決定
+        const stageNumber = model.getStageNumber?.() || 1; // モデル側に取得メソッドがある想定
+        const colors = MapView.STAGE_COLORS[stageNumber] || MapView.STAGE_COLORS[1];
 
-    this.bgColor = colors.bg;
-    this.wallColor = colors.wall;
-    this.pacmanColor = colors.pacman;
-    }
+        this.bgColor = colors.bg;
+        this.wallColor = colors.wall;
+        this.pacmanColor = colors.pacman;
+        }
 
-      static STAGE_COLORS = {
-    1: { bg: "#000000", wall: "rgb(0, 238, 190)", pacman: "#ffffff" },
-    2: { bg: "rgb(43, 43, 43)", wall: "#ff44cc", pacman: "rgb(28, 221, 216)" },
-    3: { bg: "#1a0000", wall: "rgb(238, 30, 0)", pacman: "#ffaa00" },
-  };
+         static STAGE_COLORS = {
+        1: { bg: "#000000", wall: "rgb(0, 238, 190)", pacman: "#ffffff" },
+        2: { bg: "rgb(43, 43, 43)", wall: "#ff44cc", pacman: "rgb(28, 221, 216)" },
+        3: { bg: "#1a0000", wall: "rgb(238, 30, 0)", pacman: "#ffaa00" },
+    };
 
     /**
      * メイン描画メソッド
@@ -48,6 +52,9 @@ export class MapView {
     draw(ctx, canvasWidth, canvasHeight) {
         const syujinkou = this.model.getSyujinkou?.();
         const TILE_SIZE = this.model.constructor.TILE_SIZE || 20; // マップデータのタイルサイズ
+
+        // ドット絵をぼかさない
+        ctx.imageSmoothingEnabled = false;
 
         // 1. キャンバスのクリアとヘッダー背景の塗りつぶし
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -120,10 +127,23 @@ export class MapView {
             ctx.fillText(scoreText, 20, 12);
 
             // ライフ（ハート）表示
-            ctx.fillStyle = '#FF0000';
-            const hearts = '❤'.repeat(syujinkou.getHp());
-            ctx.textAlign = 'right';
-            ctx.fillText(hearts, canvasWidth - 20, 12);
+            const hp = syujinkou.getHp();
+
+            const heartSize = 24;
+            const spacing = 4;
+
+            for (let i = 0; i < hp; i++) {
+            const x =  canvasWidth - 20 - (hp - i) * (heartSize + spacing);
+            const y = 8;
+
+            ctx.drawImage(
+                this.heartImage,
+                x,
+                y,
+                heartSize,
+                heartSize,
+            );
+        }
 
             // 区切り線
             ctx.strokeStyle = '#A9A9A9'; // DARKGRAY
@@ -320,6 +340,6 @@ drawPacman(ctx, syujinkou, TILE_SIZE) {
             ctx.arc(0, 0, TILE_SIZE / 2.0, 0, Math.PI * 2);
             ctx.fill();
         }
-        ctx.restore();
+            ctx.restore();
+        }
     }
-}
