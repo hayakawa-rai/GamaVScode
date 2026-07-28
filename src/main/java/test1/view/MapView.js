@@ -12,7 +12,7 @@ export class MapView {
 
     // スマホ時はヘッダーを広くする
     this.INFO_HEIGHT =
-    window.innerWidth <= 480 ? 120 : 40;
+    window.innerWidth <= 480 ? 100 : 40;
 
     // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
     this.wallColor = "#0000FF"; // 青
