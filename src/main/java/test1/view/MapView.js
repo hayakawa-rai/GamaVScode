@@ -12,7 +12,7 @@ export class MapView {
 
     // スマホ時はヘッダーを広くする
     this.INFO_HEIGHT =
-    window.innerWidth <= 480 ? 95 : 40;
+    window.innerWidth <= 480 ? 90 : 40;
 
     // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
     this.wallColor = "#0000FF"; // 青
@@ -114,7 +114,7 @@ export class MapView {
     if (syujinkou) {
 
       const headerFontSize =
-        window.innerWidth <= 480 ? 48 : 18;
+        window.innerWidth <= 480 ? 46 : 18;
 
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
@@ -137,7 +137,7 @@ export class MapView {
       const hp = syujinkou.getHp();
 
       const heartSize =
-        window.innerWidth <= 480 ? 48 : 24;
+        window.innerWidth <= 480 ? 50 : 24;
       const spacing = 4;
 
       for (let i = 0; i < hp; i++) {
