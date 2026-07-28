@@ -12,7 +12,7 @@ export class MapView {
 
     // スマホ時はヘッダーを広くする
     this.INFO_HEIGHT =
-    window.innerWidth <= 480 ? 90 : 40;
+      window.innerWidth <= 480 ? 90 : 40;
 
     // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
     this.wallColor = "#0000FF"; // 青
@@ -53,7 +53,6 @@ export class MapView {
     const syujinkou = this.model.getSyujinkou?.();
     const TILE_SIZE = this.model.constructor.TILE_SIZE || 20; // マップデータのタイルサイズ
 
-
     // 1. キャンバスのクリアとヘッダー背景の塗りつぶし
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.fillStyle = this.bgColor;
@@ -75,9 +74,7 @@ export class MapView {
 
     // 中央配置のためのオフセット計算
     const offsetX = (canvasWidth - stageWidth * scale) / 2.0;
-    const offsetY =
-      (canvasHeight - this.INFO_HEIGHT - stageHeight * scale) / 2.0 +
-      this.INFO_HEIGHT;
+    const offsetY = (canvasHeight - this.INFO_HEIGHT - stageHeight * scale) / 2.0 + this.INFO_HEIGHT;
 
     // グラフィックス状態の保存
     ctx.save();
@@ -141,7 +138,6 @@ export class MapView {
       const spacing = 4;
 
       for (let i = 0; i < hp; i++) {
-
       const x = canvasWidth - 20 -  (hp - i) * (heartSize + spacing);
       const y =  window.innerWidth <= 480 ? 18 : 8;
 
@@ -215,7 +211,7 @@ export class MapView {
       ctx.textBaseline = "middle";
       
       const headerFontSize =
-      window.innerWidth <= 480 ? 24 : 18;
+        window.innerWidth <= 480 ? 24 : 18;
 
       ctx.font =
   `   bold ${headerFontSize}px "PixelMplus12", Arial`;

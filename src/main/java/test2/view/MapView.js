@@ -11,8 +11,9 @@ export class MapView {
         this.model = model;
         this.images = images;
         
-        // ヘッダー（情報バー）の高さ
-        this.INFO_HEIGHT = 40;
+        // スマホ時はヘッダーを広くする
+        this.INFO_HEIGHT =
+            window.innerWidth <= 480 ? 90 : 40;
         
         // デフォルトの色設定 (JavaFXのCSSダミーの代わり)
         this.wallColor = '#0000FF'; // 青
@@ -28,13 +29,13 @@ export class MapView {
         this.pacmanFeverImage = new Image();
         this.pacmanFeverImage.src = "../../resources/picture/syujinkou_Fever.png";
 
-            // ステージ番号を取得して色を決定
-    const stageNumber = model.getStageNumber?.() || 1; // モデル側に取得メソッドがある想定
-    const colors = MapView.STAGE_COLORS[stageNumber] || MapView.STAGE_COLORS[1];
+        // ステージ番号を取得して色を決定
+        const stageNumber = model.getStageNumber?.() || 1; // モデル側に取得メソッドがある想定
+        const colors = MapView.STAGE_COLORS[stageNumber] || MapView.STAGE_COLORS[1];
 
-    this.bgColor = colors.bg;
-    this.wallColor = colors.wall;
-    this.pacmanColor = colors.pacman;
+        this.bgColor = colors.bg;
+        this.wallColor = colors.wall;
+        this.pacmanColor = colors.pacman;
     }
 
       static STAGE_COLORS = {
@@ -52,7 +53,6 @@ export class MapView {
     draw(ctx, canvasWidth, canvasHeight) {
         const syujinkou = this.model.getSyujinkou?.();
         const TILE_SIZE = this.model.constructor.TILE_SIZE || 20; // マップデータのタイルサイズ
-
 
         // 1. キャンバスのクリアとヘッダー背景の塗りつぶし
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -110,10 +110,14 @@ export class MapView {
 
         // UI（スコア・ライフ）の描画
         if (syujinkou) {
+
+            const headerFontSize =
+                window.innerWidth <= 480 ? 46 : 18;
+
             ctx.textAlign = 'left';
             ctx.textBaseline = 'top';
-            ctx.font = 'bold 18px "PixelMplus12", Arial';
             ctx.fillStyle = '#FFFFFF';
+            ctx.font =  `bold ${headerFontSize}px "PixelMplus12", Arial`;
 
             // スコア表示
             const isPractice = this.model.isPractice?.() || false;
@@ -123,17 +127,19 @@ export class MapView {
             const highScore = HighScoreManager.loadHighScore(stageNumber);
 
             const scoreText = `SCORE : ${syujinkou.getScore()}  /  HIGH SCORE : ${highScore}`;
-            ctx.fillText(scoreText, 20, 12);
+            const scoreY =  window.innerWidth <= 480 ? 20 : 12;
+            ctx.fillText(scoreText, 20, scoreY);
 
             // ライフ（ハート）表示
             const hp = syujinkou.getHp();
 
-            const heartSize = 24;
+            const heartSize =
+                window.innerWidth <= 480 ? 52 : 24;
             const spacing = 4;
 
             for (let i = 0; i < hp; i++) {
             const x = canvasWidth - 20 -  (hp - i) * (heartSize + spacing);
-            const y = 8;
+            const y =  window.innerWidth <= 480 ? 18 : 8;
 
             ctx.drawImage(
                 this.heartImage,
