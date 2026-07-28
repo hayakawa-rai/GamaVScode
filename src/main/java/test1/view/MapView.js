@@ -137,7 +137,7 @@ export class MapView {
       const hp = syujinkou.getHp();
 
       const heartSize =
-        window.innerWidth <= 480 ? 50 : 24;
+        window.innerWidth <= 480 ? 52 : 24;
       const spacing = 4;
 
       for (let i = 0; i < hp; i++) {
