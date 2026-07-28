@@ -124,11 +124,9 @@ export class MapView {
 
       // HighScoreManager の正しいメソッド名 loadHighScore を使用する
       const highScore = HighScoreManager.loadHighScore(stageNumber);
-
       const scoreText = `SCORE : ${syujinkou.getScore()}  /  HIGH SCORE : ${highScore}`;
       const scoreY =  window.innerWidth <= 480 ? 20 : 12;
       ctx.fillText(scoreText, 20, scoreY);
-
 
       // ライフ（ハート）表示
       const hp = syujinkou.getHp();
@@ -209,13 +207,8 @@ export class MapView {
       ctx.globalAlpha = alpha;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      
-      const headerFontSize =
-        window.innerWidth <= 480 ? 24 : 18;
-
-      ctx.font =
-  `   bold ${headerFontSize}px "PixelMplus12", Arial`;
-
+      ctx.font = "bold 14px Arial";
+     
       // 袋文字（縁取り）
       ctx.strokeStyle = "#000000";
       ctx.lineWidth = 3;
