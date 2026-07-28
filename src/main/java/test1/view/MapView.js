@@ -114,7 +114,7 @@ export class MapView {
     if (syujinkou) {
 
       const headerFontSize =
-        window.innerWidth <= 480 ? 48 : 18;
+        window.innerWidth <= 480 ? 52 : 18;
 
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
@@ -137,13 +137,13 @@ export class MapView {
       const hp = syujinkou.getHp();
 
       const heartSize =
-        window.innerWidth <= 480 ? 50 : 24;
+        window.innerWidth <= 480 ? 52 : 24;
       const spacing = 4;
 
       for (let i = 0; i < hp; i++) {
 
       const x = canvasWidth - 20 -  (hp - i) * (heartSize + spacing);
-     const y =  window.innerWidth <= 480 ? 18 : 8;
+      const y =  window.innerWidth <= 480 ? 18 : 8;
 
       ctx.drawImage(
         this.heartImage,
