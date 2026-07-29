@@ -69,17 +69,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tapStart.remove();
 
-    // STORY CLEAR 効果音
+    // STORY CLEAR!! を表示
+    storyClearText.classList.remove("hidden");
+
+    // 効果音
     clearSound.play().catch(console.error);
 
-    // 4秒間 STORY CLEAR!! を表示
     setTimeout(() => {
       storyClearText.classList.add("hidden");
 
-      // BGM開始
       endingBgm.play().catch(console.error);
 
-      // スクロール距離計算
       const scrollDistance = rollContainer.offsetHeight + window.innerHeight;
 
       rollContainer.style.setProperty(
@@ -87,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `-${scrollDistance}px`,
       );
 
-      // スタッフロール開始
       rollContainer.classList.add("start-roll");
 
       // スタッフロール終了
@@ -97,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
         thankBox.classList.remove("hidden");
         companyBox.classList.remove("hidden");
 
-        // 2秒後にタイトルボタン表示
         setTimeout(() => {
           titleBtn.classList.remove("hidden");
         }, 2000);
@@ -112,13 +110,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // 5. 「タイトルへ」ボタンクリック処理
   // ==================================================
   titleBtn.addEventListener("click", () => {
-    clickSound.play();
-
-    // BGMを止めてリセット
+    // エンドロールBGMを停止
     endingBgm.pause();
     endingBgm.currentTime = 0;
 
-    // タイトル画面のHTMLへ遷移
-    GameController.switchStart();
+    // タイトルへ戻る効果音を最初から再生
+    clickSound.currentTime = 0;
+
+    // 効果音の再生を開始
+    clickSound.play().catch(() => {
+      // 再生に失敗した場合でもタイトルへ遷移
+      GameController.switchStart();
+    });
+
+    // 効果音の再生が終わったらタイトル画面へ遷移
+    clickSound.onended = () => {
+      GameController.switchStart();
+    };
   });
 });
