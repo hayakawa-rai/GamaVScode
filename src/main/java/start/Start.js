@@ -24,16 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   startBgm.loop = true;
 
   // 画面ロード時にBGMをスタート
-  let bgmStarted = false;
-
-  function startBgmOnce() {
-    if (bgmStarted) return;
-
-    bgmStarted = true;
-    Bgm.unlockPlay(startBgm);
-  }
-
-  window.addEventListener("pointerdown", startBgmOnce, { once: true });
+  Bgm.unlockPlay(startBgm);
 
   function cleanup() {
     startBgm.pause();
