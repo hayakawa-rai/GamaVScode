@@ -4,7 +4,7 @@ import { Bgm } from "../start/Bgm.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   //横向き対応の初期化
-    OrientationWarning.init();
+  OrientationWarning.init();
   // ==================================================
   // 1. DOM要素の取得
   // ==================================================
@@ -55,49 +55,58 @@ document.addEventListener("DOMContentLoaded", () => {
   endingBgm.volume = 0.5;
   endingBgm.loop = true;
 
-  // 画面がロードされたら即座にクリアファンファーレを鳴らす
-  clearSound
-    .play()
-    .catch((err) =>
-      console.log(
-        "ブラウザの制限：ユーザー操作後に音声が再生可能になります",
-        err,
-      ),
-    );
-
   // ==================================================
-  // 4. JavaFXベースの時間差演出タイムライン
+  // 4. タップ後にエンドロール開始
   // ==================================================
 
-  // 4秒間 「STORY CLEAR!!」 を見せたのち、スタッフロールを始動
-  setTimeout(() => {
-    storyClearText.classList.add("hidden"); // 中央の文字を消す
-    endingBgm.play().catch((e) => console.log(e)); // BGMループ再生開始
+  const tapStart = document.getElementById("tap-start");
 
-    // 画面外（下）から画面外（上）に完璧に引き抜く距離を算出
-    const scrollDistance = rollContainer.offsetHeight + window.innerHeight;
+  let started = false;
 
-    // CSS変数（--scroll-distance）に計算結果を設定
-    rollContainer.style.setProperty(
-      "--scroll-distance",
-      `-${scrollDistance}px`,
-    );
+  function startEnding() {
+    if (started) return;
+    started = true;
 
-    // CSSのクラスを付与してGPU加速の効いた滑らかな23秒アニメーションをトリガー
-    rollContainer.classList.add("start-roll");
+    tapStart.remove();
 
-    // 23秒間のスタッフロールスクロールが終了した時の処理（23秒後）
+    // STORY CLEAR 効果音
+    clearSound.play().catch(console.error);
+
+    // 4秒間 STORY CLEAR!! を表示
     setTimeout(() => {
-      rollContainer.classList.add("hidden"); // クレジットを消す
-      thankBox.classList.remove("hidden"); // ロゴとTHANK YOUを表示
-      companyBox.classList.remove("hidden"); // 右下のコピーライトを表示
+      storyClearText.classList.add("hidden");
 
-      // そこからさらに2秒の余韻待機（PauseTransition）を経てボタンを出現させる
+      // BGM開始
+      endingBgm.play().catch(console.error);
+
+      // スクロール距離計算
+      const scrollDistance = rollContainer.offsetHeight + window.innerHeight;
+
+      rollContainer.style.setProperty(
+        "--scroll-distance",
+        `-${scrollDistance}px`,
+      );
+
+      // スタッフロール開始
+      rollContainer.classList.add("start-roll");
+
+      // スタッフロール終了
       setTimeout(() => {
-        titleBtn.classList.remove("hidden");
-      }, 2000);
-    }, 23000);
-  }, 4000);
+        rollContainer.classList.add("hidden");
+
+        thankBox.classList.remove("hidden");
+        companyBox.classList.remove("hidden");
+
+        // 2秒後にタイトルボタン表示
+        setTimeout(() => {
+          titleBtn.classList.remove("hidden");
+        }, 2000);
+      }, 23000);
+    }, 4000);
+  }
+
+  tapStart.addEventListener("click", startEnding);
+  tapStart.addEventListener("touchstart", startEnding);
 
   // ==================================================
   // 5. 「タイトルへ」ボタンクリック処理
